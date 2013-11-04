@@ -9,25 +9,38 @@
 
 else
 {
-    using (Html.BeginForm("LogOn", "Account", FormMethod.Post, new { @class="navbar-form pull-right" }))
+    using (Html.BeginForm("LogOn", "Account", FormMethod.Post, new { @class = "navbar-form pull-right" }))
     {
-        <nav class="pull-right">
-             @Html.TextBoxFor(m => m.UserName, new { @class = "span2", @type = "text", @placeholder = "Email" })
-       
-             @Html.PasswordFor(m => m.Password, new { @class = "span2", @type = "password", @placeholder = "Password" })
-                
-             <button type="submit" class="btn" cursor="pointer">Sign in</button>
-        </nav>
-        @*<nav_bottom>
-            <div class="editor-label" style="margin:0; float:left; color:#eee;">
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe)
-            </div>
-        </nav_bottom>*@
+    <nav class="pull-right">
+        @Html.TextBoxFor(m => m.UserName, new { @class = "span2", @type = "text", @placeholder = "Email" })
+
+        @Html.PasswordFor(m => m.Password, new { @class = "span2", @type = "password", @placeholder = "Password" })
+
+        <button type="submit" class="btn" cursor="pointer">Sign in</button> 
+
+        
+    </nav>
+    
+    <div class="checkbox">
+    @Html.CheckBoxFor(m => m.RememberMe)
+    @Html.LabelFor(m => m.RememberMe)
+    </div>
+    
+    <div class="forgotpassword">
+        <a href=".">Forgot Password?</a>
+    </div>
+
+     
+        
+    
+     
+@*<nav_bottom>*@
+            
+@*</nav_bottom>*@
             
     }
     <script type="text/javascript" language="javascript">
-        function puthint(divname,hinttext) {
+        function puthint(divname, hinttext) {
             $(document).ready(function () {
 
                 // Define what happens when the textbox comes under focus
@@ -68,8 +81,8 @@ else
 
             });
         }
-        puthint("#UserName", "Email Address");
-        
+        @*puthint("#UserName", "Email Address");*@
+
     </script>
     <style type="text/css">
         .watermarkOn
