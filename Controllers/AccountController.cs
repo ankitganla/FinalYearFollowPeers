@@ -130,6 +130,7 @@ namespace FollowPeers.Controllers
         {
             if (ModelState.IsValid)
             {
+                ModelState.Clear();
                 // Attempt to register the user
                 MembershipCreateStatus createStatus;
                 //changed from model.UserName to model.Email of parameter 1
@@ -189,6 +190,8 @@ namespace FollowPeers.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+            
+ 
         }
 
         //
