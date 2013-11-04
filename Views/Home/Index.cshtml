@@ -33,11 +33,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
+
           </a>
-          <a class="brand" href="index.cshtml">Follow Peers</a>
+            
+          <a class="brand" href=".">Follow Peers</a>
           <div class="nav-collapse collapse">
                 @Html.Partial("_LogOnPartial")
+              
           </div><!--/.nav-collapse -->
+            
         </div>
       </div>
     </div>
@@ -61,31 +65,26 @@
       	</div>
       	<div class="span4">
       		<h2>New User?</h2>
-          <h5>Register Here!</h5>
+            <h5>Register Here!</h5>
                 @Html.Partial("_RegisterPartial")
-
-
 		</div>
 
       <!-- Example row of columns -->
       <div class="row">
         <div class="span6">
-          <h2>Individual</h2>
-          <p>Sign up as individual if you are a student, teacher, reseracher, professor, job seeker from any academic institution or anyone seeking information related to a particuar field.  </p>
+          <h2>Individual Account</h2>
+          <p>Allows students, professors, researchers, job seekers or other individuals to connect, share publications, collaborate and look for educational and professional opportunities</p>
           
         </div>
         <div class="span6">
-          <h2>Corporate</h2>
-          <p>Sign up as corporate if you would like to invest a study or a research project. If you'd like to invest in a research, you could contact the reserachers directly via our messaging service. </p>
+          <h2>Corporate Account</h2>
+          <p>Allows commercial entities to connect with researchers or job seekers, find investment opportunities, and follow research and industry trends</p>
    
        </div>
   
       </div>
 
-      <hr>
-
-      <footer>
-      </footer>
+       @Html.Partial("_Footer")
 
     </div> <!-- /container -->
 
