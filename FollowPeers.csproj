@@ -3177,6 +3177,7 @@
     <Content Include="Views\Shared\CourseRightSideBar.cshtml" />
     <Content Include="Views\Message\Reply.cshtml" />
     <Content Include="Views\Profile\EditEmployment.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\TempImages\" />

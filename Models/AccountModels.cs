@@ -8,6 +8,13 @@ using System.Web.Security;
 namespace FollowPeers.Models
 {
 
+    public class ForgotPasswordModel
+    {
+        [Required]
+        [Display(Name = "Email Address")]
+        public string UserName { get; set; }
+    }
+
     public class ChangePasswordModel
     {
         [Required]
@@ -38,7 +45,7 @@ namespace FollowPeers.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }
     }
 

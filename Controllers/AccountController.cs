@@ -20,6 +20,13 @@ namespace FollowPeers.Controllers
     {
         FollowPeersDBEntities followPeersDB = new FollowPeersDBEntities();
 
+
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+        
+        
         //
         // GET: /Account/LogOn
 

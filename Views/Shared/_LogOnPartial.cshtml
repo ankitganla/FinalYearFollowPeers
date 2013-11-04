@@ -20,13 +20,8 @@ else
          <div class="checkbox" style="display:inline-block">
         @Html.CheckBoxFor(m => m.RememberMe)
         @Html.LabelFor(m => m.RememberMe)
-             <a href="." style="display:inline-block; float:left; font-size:xx-small;color:white">Forgot Password?</a>
+        @Html.ActionLink("Forgot Password?", "ForgotPassword","Account", new { style="display:inline-block; float:left; font-size:xx-small;color:white" })
         </div>
-
-         <div class="forgotpassword" >
-        
-        </div>
-        
         
     </nav>
     
