@@ -1,0 +1,127 @@
+﻿@model IEnumerable<FollowPeers.Models.Event>
+@using FollowPeers.Models;
+
+@{
+    ViewBag.Title = "Event Details";
+}
+
+@{
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+    List<string> InviteDates = new List<string>();
+    List<EventUserProfileJoin> JoinedEvents = new List<EventUserProfileJoin>();
+    //JoinedEvents = followPeersDB.EventUserProfileJoin.Where(p => p.UserProfileId == myprofile.UserProfileId && p.JoinStatus == 1).ToList();
+}
+
+@Html.Partial("_Header")
+@Html.Partial("_SideBar1")
+@Html.Partial("_SideBar6(Tags)")
+
+
+<div class="grid_9">
+    <div class="box" style="margin-left:15px">
+        <div style="margin-left:15px">
+            <h2 style="margin-left:15px">     Events </h2>
+            <p style="margin-left:15px">
+            @Html.ActionLink("Add New Event", "AddEvent")
+            </p>
+        </div>
+        @using (Html.BeginForm("AddEvent","Event"))
+        {
+            @Html.ValidationSummary(true)
+             
+            <!DOCTYPE html>  
+            <head>
+            <link href="@Url.Content("~/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+            <link href="@Url.Content("~/css/bootstrap.css")" rel="stylesheet" type="text/css" />
+            <link href="@Url.Content("~/css/datepicker.css")" rel="stylesheet" type="text/css" />
+            <link href="css/datepicker.less" rel="stylesheet" type="text/css" />
+            <link href="@Url.Content("~/css/bootstrap-responsive.css")" rel="stylesheet" type="text/css" />
+            <script src="@Url.Content("~/js/jquery-1.8.2.min.js")" type="text/javascript"></script>
+            <script src="js/bootstrap-datepicker.js" ></script>
+            </head>
+            
+            <body>
+            <fieldset>
+                
+            @{ 
+                if (Model!=null)
+                {
+                    
+                    <div style="margin-left:15px">
+
+                    
+                    <div style="font-family:Verdana"><b>Invites: </b><span class="badge badge-important"> @Model.Count()</span></div> 
+                    </div>
+                    <div style="margin-top:10px; margin-left:15px">
+                    <ul class ="nav nav-tabs nav-stacked">
+                        @foreach (var item in Model)
+                        {
+                            if(item.Invitees.Any(p=>p.UserProfileId==myprofile.UserProfileId))
+                            {
+                                if (InviteDates.Contains(item.EventDate.ToShortDateString()))
+                                {
+                                    <li><a href="/Event/EventDetail/@item.EventId"><b>@item.EventName</b>
+                                    
+                                    
+                                    @{EventUserProfileJoin EventCheck = followPeersDB.EventUserProfileJoins.FirstOrDefault(p=>p.EventId==item.EventId && p.UserProfileId==myprofile.UserProfileId);
+                                    if (EventCheck!=null && EventCheck.JoinStatus==1)
+                                    {
+                                        <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">Status | Going
+                                        </div>
+                                    }
+                                    if (EventCheck!=null && EventCheck.JoinStatus==0)
+                                    {
+                                        <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">Status | Declined
+                                        </div>
+                                    }}
+                                    </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    InviteDates.Add(item.EventDate.ToShortDateString());
+                                    <a href="#" style="color:darkred">@item.EventDate.ToShortDateString()</a>
+                                    <li><a href="/Event/EventDetail/@item.EventId"><b>@item.EventName</b>
+                                    
+                                    
+                                    @{EventUserProfileJoin EventCheck = followPeersDB.EventUserProfileJoins.FirstOrDefault(p=>p.EventId==item.EventId && p.UserProfileId==myprofile.UserProfileId);
+                                    if (EventCheck!=null && EventCheck.JoinStatus==1)
+                                    {
+                                        <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">Status | Going
+                                        </div>
+                                    }
+                                    if (EventCheck!=null && EventCheck.JoinStatus==0)
+                                    {
+                                        <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">Status | Declined
+                                        </div>
+                                    }}
+                                    </a>
+                                    </li>
+                                }
+                                }
+                            }
+                        
+                    </ul>
+                    </div>
+                }
+                else
+                {
+                    <div>No events to Display on your profile.</div>
+                }
+                                
+            }
+            
+            </fieldset>  
+            <script src="@Url.Content("~/js/bootstrap.min.js")"></script>
+            </body>
+                    
+        }
+    </div>
+</div>
+
+@Html.Partial("_Footer")
+
+
+

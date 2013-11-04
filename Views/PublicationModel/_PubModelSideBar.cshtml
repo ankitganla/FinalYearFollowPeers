@@ -1,0 +1,52 @@
+﻿
+@using FollowPeers.Models;
+@using WebMatrix.Data;@{
+    ViewBag.Title = "_PubModelSideBar";
+
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+			     
+    
+
+        <!--<div class=""><div class="hero-unit"></div></div>-->
+       <div class="scrollspy" data-spy="scroll" data-target=".navlist">
+					<h4>Recent Publications</h4>
+							<!--<div class=""><div class="hero-unit"></div></div>-->
+							<div class="accordion" id="accordion2">
+                            @{var db = Database.Open("FollowPeersDB");
+                              int number = 1;
+                              string hrefid1 = "#collapse" + 1;
+                              string hrefid2 = "collapse" + 1;
+                              if(@myprofile.Specializations.Count() > 0 )
+                              {
+                              foreach (var row in @myprofile.Specializations)
+                              {
+                                  hrefid1 = "#collapse" + number;
+                                  hrefid2 = "collapse" + number;
+                                  <div class="accordion-group">
+						          <div class="accordion-heading">
+						            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="@hrefid1">
+						              @row.Field
+						            </a>
+						          </div>
+						          <div id="@hrefid2" class="accordion-body in collapse">
+						            <div class="accordion-inner">
+                                     @{foreach (var row2 in db.Query("Select * from PublicationModels where specialisation='" + @row.Field + "' ORDER BY timestamp DESC"))
+                                       {
+                                        <li><a href="/PublicationModel/Details/@row2.publicationID">@row2.Title</a></li>
+                                       }
+                                       }
+						              <a class="pull-right" href="@Url.Content("~/Forum/CategoryDetail/?Category=" + @row.Field)" style="font-size:10px">View All</a>
+						            </div>
+						          </div>
+						        </div>
+                                       number++;
+                              }
+                            }     
+                            }
+						    </div>
+                        </div>
+
+    
+}

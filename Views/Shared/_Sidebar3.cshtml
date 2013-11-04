@@ -1,0 +1,17 @@
+﻿@{
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+
+<div class="span2" style="margin-left:0px;">
+        <h4>Privacy Settings</h4>
+        <div class="block">
+            <ul class="menu nav nav-tabs nav-stacked">
+                <li><a href="/Profile/TierFollowers">
+                    <img src="../../Content/images/icons/16x16/user.png" />Tier Followers</a></li>
+                <li><a href="/Profile/Privacy">
+                    <img src="../../Content/images/icons/16x16/blogs.png" />Tiers Configurations</a></li>
+            </ul>
+        </div>
+</div>
+    }

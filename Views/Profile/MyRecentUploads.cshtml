@@ -1,0 +1,98 @@
+﻿@model FollowPeers.Models.UserProfile
+@{
+    ViewBag.Title = "RecentUpdates";
+    
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+    List<FollowPeers.Models.PublicationModel> pubupdates;
+    int i =0;
+    pubupdates = followPeersDB.PublicationModels.Where(p => p.ownerID == Model.UserProfileId).OrderBy(p => p.publicationID).ToList();
+    int uploadflag = 0;
+       if(myprofile.UserProfileId == Model.UserProfileId)
+    {
+      <h5>My uploads</h5>
+    }
+    else
+    {
+        <h5>@Model.FirstName's recent uploads</h5>
+        
+    }
+    if(pubupdates.Count() == 0)
+    {
+      
+       
+    }
+    
+    else
+    {
+    <h6>Publications</h6>
+        uploadflag = 1;
+    <ul>
+   @{DateTime curr = System.DateTime.Now;
+    do
+    {
+        if(i == 10) {break;} // display only top recent 10 uploads
+        if (i < pubupdates.Count())
+        {
+             <li><a href="@Url.Content("~/PublicationModel/Details/" + @pubupdates[i].publicationID)">@pubupdates[i].title</a></li>
+        }
+        
+        i++;
+        
+       
+           
+
+    } while (i < pubupdates.Count());}
+        </ul>
+}
+    
+                        string path = HttpRuntime.AppDomainAppPath;
+                        string newpath = path + "\\Content\\Files\\";
+                        var directoryInfo = new DirectoryInfo(newpath + Model.UserName + "\\");
+                        if (directoryInfo.Exists)
+                        {
+                            path = newpath + Model.UserName + "\\uploadedList.txt";
+                            if(File.Exists(path))
+                            {
+                            string[] readtext = File.ReadAllLines(newpath + Model.UserName + "\\uploadedList.txt");
+                           
+                         // string[] q = readtext.Distinct().ToArray();
+                           
+                            
+                           if (readtext == null || readtext.Length == 0)
+                            {
+         
+                            }
+                            
+                            else
+                            {
+                                uploadflag = 1;
+                                   <h6>Files</h6>
+                               <ul>
+                                @foreach (var fileName in readtext)
+                                {
+                                    string link = @Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName }).ToString();
+                                    string shortlink = link.Substring(9, link.Length - 23);
+                                    <li><a href="@shortlink">@fileName</a></li>
+                               
+                           }
+
+                                 </ul>
+                                
+                            }
+                            }
+                        }
+                        
+                       if(uploadflag == 0)
+                       {
+                           
+                           <p>No files uploaded</p>
+                       }
+                              
+                    }
+    
+    
+		      <script src="Scripts/bootstrap.js"></script>
+
+

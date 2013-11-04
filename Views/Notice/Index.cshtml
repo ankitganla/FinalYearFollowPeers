@@ -1,0 +1,418 @@
+﻿@model FollowPeers.Models.UserProfile
+@using FollowPeers.Models;
+
+@*Page Header*@
+@Html.Partial("_Header")
+
+
+@*Container*@
+<div class="container">
+
+    @*rows within container*@
+    <div class="row">
+
+        @*Left Sidebar*@
+        @{
+            ViewBag.Title = Model.FirstName + " " + Model.LastName + "'s Notice Board";
+            FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+            string name = Membership.GetUser().UserName;
+            FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            if (Model.UserProfileId == myprofile.UserProfileId)
+            {
+            @Html.Partial("_SideBar1", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
+            }
+            else
+            {
+            @Html.Partial("_SideBar1", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
+ 
+            }
+        }
+        @*Center Container*@
+        <div class="span7 main-content">
+            <div class="box" style="overflow: auto; min-height: 200px; height: auto;">
+                <script type="text/javascript" language="javascript">
+                    function puthint(divname, hinttext) {
+                        $(document).ready(function () {
+
+                            // Define what happens when the textbox comes under focus
+                            // Remove the watermark class and clear the box
+                            $(divname).focus(function () {
+
+                                $(this).filter(function () {
+
+                                    // We only want this to apply if there's not 
+                                    // something actually entered
+                                    return $(this).val() == "" || $(this).val() == hinttext
+
+                                }).removeClass("watermarkOn").val("");
+
+                            });
+
+                            // Define what happens when the textbox loses focus
+                            // Add the watermark class and default text
+                            $(divname).filter(function () {
+
+                                // We only want this to apply if there's not
+                                // something actually entered
+                                return $(this).val() == ""
+
+                            }).addClass("watermarkOn").val(hinttext);
+
+                            $(divname).blur(function () {
+
+                                $(this).filter(function () {
+
+                                    // We only want this to apply if there's not
+                                    // something actually entered
+                                    return $(this).val() == ""
+
+                                }).addClass("watermarkOn").val(hinttext);
+
+                            });
+
+                        });
+                    }
+                    puthint("#message", "Update your status message...");
+                    puthint("#posttonotice", "Write something on the @Model.FirstName @Model.LastName's Noticeboard...");
+        
+                </script>
+
+
+
+              
+             
+                @{
+                    if (Model.UserProfileId == myprofile.UserProfileId)
+                    {
+                        List<FollowPeers.Models.Specialization> userInterests = Model.Specializations.ToList();
+                        int countInterests = userInterests.Count;
+                        int randnum, spID;
+                        int topicid;
+                        string spField;
+                        List<FollowPeers.Models.ForumPost> posts = new List<ForumPost>();
+                        List<FollowPeers.Models.ForumTopic> temptopic = new List<ForumTopic>();
+
+
+                        int i = 0;
+                        if (countInterests != 0)
+                        {
+                            do
+                            {
+                                Random rand = new Random();
+                                randnum = (int)rand.Next(0, countInterests);
+                                spID = userInterests[randnum].SpecializationId;
+                                spField = userInterests[randnum].Field;
+                                List<FollowPeers.Models.Specialization> fieldids = followPeersDB.Specializations.Where(p => p.Field == spField).ToList(); //list of sub-category ids under same category
+                                List<FollowPeers.Models.Forum> forums = new List<FollowPeers.Models.Forum>();
+                                foreach (var fieldid in fieldids)
+                                {
+                                    List<FollowPeers.Models.Forum> tempforums = followPeersDB.Forums.Where(p => p.ForumId == fieldid.SpecializationId).ToList();
+
+                                    foreach (var tempforum in tempforums)
+                                    {
+                                        forums.Add(tempforum); // adding all forums which are linked to spField
+                                    }
+                                }
+
+                                for (int c = forums.Count() - 1; c >= 0; c--)
+                                {
+
+                                    temptopic = forums[c].Topics.ToList();
+                                    topicid = temptopic[temptopic.Count() - 1].ForumTopicId;
+                                    temptopic.RemoveAt(0); // removing all the default topics
+                                    if (temptopic.Count() > 0)
+                                    {
+
+                                        foreach (var post in temptopic[temptopic.Count() - 1].Posts)
+                                        {
+
+                                            posts.Add(post);
+
+
+                                        }
+                                        if (posts.Count() > 0) { break; }
+                                    }
+                                }
+
+                                /* List<FollowPeers.Models.Forum> forum = followPeersDB.Forums.Where(p => p.ForumId == spID).ToList();
+                                 lastindex = forum.Count();
+
+                                 lastpostindex = forum[lastindex - 1].Topics.ToList().Count();
+                                 do
+                                 {
+                                     post = forum[lastindex - 1].Topics.ToList()[lastpostindex - 1].Posts.OrderByDescending(t => t.TimeStamp < System.DateTime.Now).ToList();
+                                     topicid = forum[lastindex - 1].Topics.ToList()[lastpostindex - 1].ForumTopicId;
+                                     if (post.Count == 0) { lastpostindex--; }
+                                 } while (post.Count <= 0 && lastpostindex != 0);*/
+
+                                if (i == countInterests) { i = 0; break; }
+                                i++;
+                            } while (posts.Count <= 0);
+                        
+                      
+                      
+                         
+                    <div class="well">
+
+                     
+                            @if(posts.Count() == 0)
+                            {
+                            <h3>No posts in the categories you have joined!</h3> 
+                            <h4>Start a conversation by choosing from the below categories</h4>
+                            
+                            <ul>
+                            @foreach (var interest in userInterests)
+                            {
+                            <li><a href="@Url.Content("~/Forum/CategoryDetail/?Category=" + @interest.Field)" style="font-size:12px">@interest.Field</a></li>         
+                            }
+                                
+                        </ul>
+                        
+                        }
+                        else
+                        {
+                            <h2 style=" padding-left:130px"> Featured Post </h2>
+                                <br />
+                                
+                                     <p>@posts[posts.Count()-1].PostMessage</p>
+                            <b style="color:#2fa4e7">Posted by: </b><b><a style="color:#555555" href="@Url.Content("~/Profile/Index/?id=" + @posts[posts.Count()-1].Postedby.UserProfileId)">@posts[posts.Count()-1].Postedby.FirstName  @posts[posts.Count() - 1].Postedby.LastName</a></b>
+                                <br />
+                          
+
+                           
+                                   <b style="color:#2fa4e7">Topic: </b>
+                                   <b> @temptopic[temptopic.Count()-1].Name</b>
+                                    <br />
+
+                                    <b style="color:#2fa4e7">Forum: </b>
+                                    <b>@temptopic[temptopic.Count()-1].Category</b>
+                                
+                
+                                   
+                            
+                                <h4>
+                                <a href="@Url.Content("~/Forum/TopicDetail/?id=" + @temptopic[0].ForumTopicId)" style="font-size:12px">Respond to the post
+                                </a>
+                            </h4>
+                        }
+
+                    </div>
+                    }
+
+                    else
+                    {
+                    <div class="well">
+
+
+                        <h3>No categoies joined. Update Research interest to join a category</h3>
+                        <h4>Click to <a href="@Url.Content("~/Profile/Edit/?id=" + @myprofile.UserProfileId)">update</a></h4>
+
+
+                    </div>
+      
+                    }
+                    
+                }
+                }
+
+
+
+
+                <h2>@Model.FirstName @Model.LastName's Notice Board</h2>
+
+                @{
+                    int count = 0;
+                    if (myprofile.UserProfileId == Model.UserProfileId)
+                    {
+                     <form action="/Profile/UpdateStatus" method="post">
+                        <div>
+                            <div class="input-append">
+                                <input id="appendedInputButton" name="message" type="text" value="" style="width: 78%;" />
+                                 
+                                <input class="btn" type="submit" value="Post" />
+                                <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a> <br /><br />
+                              <label type="checkbox">  <span class="label label-info" style="padding:5px">Broadcast this post?</span> <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left:100px"/> </label>
+                                  <input type="hidden" name="Ischecked" value="false"/>
+                            </div>
+                        </div>
+                    </form>
+            
+                    }
+                    else
+                    {
+
+                        bool allowPostonWall = false;
+
+                        string membername = Membership.GetUser().UserName;
+
+                        IQueryable<int> custQuery = from cust in followPeersDB.Relationships where cust.personAName == membername && cust.personBName == Model.UserName select cust.tier;
+                        if (custQuery.Count() != 0)
+                        {
+                            foreach (int tier in custQuery)
+                            {
+                                FollowPeers.Models.Tier temp = Model.Tiers.SingleOrDefault(p => p.Level == tier);
+                                if (temp.Noticeboard == 1) { allowPostonWall = true; }
+
+                            }
+                        }
+                        //else (meaning public view.. so check tier 1)
+                        else
+                        {
+                            FollowPeers.Models.Tier temp = Model.Tiers.SingleOrDefault(p => p.Level == 1);
+                            if (temp.Noticeboard == 1) { allowPostonWall = true; }
+
+                        }
+                        if (allowPostonWall == true)
+                        {
+                    <form action="/Profile/PosttoNoticeBoard" method="post">
+                        <textarea rows="2" cols="120" id="posttonotice" name="message" type="text" value=""
+                            style="width: 100%;"></textarea>
+                        <input type="hidden" name="redirect" value="@Model.UserProfileId" />
+                        <input type="submit" title="Write something on @Model.FirstName's Notice Board..." style="cursor: pointer; float: right;
+                            padding: 2px 5px;" value="Post">
+                    </form>
+                        }
+                    }
+                }
+
+
+                @if (Model.Updates != null)
+                {
+                    var newList = Model.Updates.OrderByDescending(x => x.Time).ToList();
+
+                    foreach (var currentUpdate in newList)
+                    {
+                        //need to display only own's updates
+                        if (currentUpdate.Own == true)
+                        {
+
+                            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.owner);
+                    <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-bottom: 5px;">
+                        <div style="float: left; height: 50px; overflow: hidden;">
+                            <a href="../../Profile/Index/@userprofile.UserProfileId">
+                                <img src="@Html.Encode(userprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:50px;"/></a>
+                        </div>
+                        <div style="margin-left: 8px; float: left; width: 88%;">
+                            <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
+                            @if (currentUpdate.type == 3)
+                            {
+                                //  <text>@currentUpdate.message @currentUpdate.UpdateId @Model.UserProfileId </text>
+                                NoticeComment tempcomment = followPeersDB.NoticeComments.SingleOrDefault(p => p.commenterId == Model.UserProfileId && p.message == currentUpdate.message);
+                                <text>@tempcomment.message</text>
+                                Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.UpdateId == tempcomment.update.UpdateId);
+                                // UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempupdate.owner);
+                                UserProfile tempprofile = tempupdate.UserProfiles.ElementAt(0);
+                                <text>Commented: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
+                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
+                            }
+                            else if (currentUpdate.type == 4)
+                            {
+                                Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.message == currentUpdate.message && p.type == 5);
+                                int tempuserprofileID = tempupdate.UserProfiles.ElementAt(0).UserProfileId;
+                                UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempuserprofileID);
+                              
+                                <text>Wrote: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
+                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
+                            }
+                             else if (currentUpdate.type == 9) 
+                            {
+                                <span class="label label-info">Broadcast</span> <br /> @currentUpdate.message
+                            }
+                            else
+                            {@currentUpdate.message}
+                            <br />
+
+                            @{
+                            string id1 = "comment1" + @count;
+                            string time = "";
+                            TimeSpan temp = DateTime.Now - currentUpdate.Time;
+                            if (temp.Days > 1) { time += temp.Days.ToString() + " days ago"; }
+                            else if (temp.Hours > 1) { time += temp.Hours.ToString() + " hrs ago"; }
+                            else { time += temp.Minutes.ToString() + " mins ago"; }
+                            }
+                            <text style="color: #777">@time </text>
+
+                            @{                      
+                            //if it is a comment on other people's wall, dont allow commenting
+                            if (currentUpdate.type != 3 && currentUpdate.type != 4)
+                            {
+                                <div style="background: #eee; padding: 5px 3px; margin-bottom: 5px;">
+                                    @{var commentslist = followPeersDB.NoticeComments.OrderBy(x => x.time);
+                                    }
+                                    @{foreach (NoticeComment cmt in commentslist)
+                                      {
+                                          if (cmt.update.UpdateId == currentUpdate.UpdateId)
+                                          {   <div style="border-bottom: 1px solid #ddd;">
+                                              @{
+                                              IQueryable<UserProfile> custQuery2 = from cust in followPeersDB.UserProfiles where cust.UserProfileId == cmt.commenterId select cust;
+                                              foreach (UserProfile user in custQuery2)
+                                              {
+                                                  <div style="float: left; margin: 3px; height: 30px; overflow: hidden;">
+                                                      <img src="@Html.Encode(user.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:30px;"/>
+                                                  </div>
+                                                  <div style="margin-left: 8px; float: left;">
+                                                      <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
+                                                  </div>
+                                      
+                                                  if (user.UserProfileId == myprofile.UserProfileId)
+                                                  {<div id="mydiv" style="float: right; margin-right: 5px; color: #888; font-size: 15px; cursor: pointer;">@Html.ActionLink("x", "DeleteComment", "Notice", new { id = cmt.NoticeCommentId, redirect = Model.UserProfileId }, null)
+                                              </div>}
+                                                  <div style="clear: both;">
+                                                  </div>
+                                              }
+                                              }
+                                          </div>
+                                          } //end of if
+                                      }
+                                    }
+                                    <form action="/Profile/AddComment" method="post" style="margin-bottom: 0px;">
+                                        <input type="hidden" name="commentid" value="@currentUpdate.UpdateId" />
+                                        <input type="hidden" name="redirect" value="@Model.UserProfileId" />
+                                        @{string id = "comment" + @count;}
+                                        <input id="@id" type="text" name="message" value="" style="width:97%;" />
+                                    </form>
+                                    <script type="text/javascript" language="javascript"> puthint("#@id", "Write a comment...");</script>
+                                    @{count++;}
+                                </div>}
+                            }
+                        </div>
+                        <div style="clear: both;">
+                        </div>
+                    </div>
+                        }
+
+
+                    }
+                }
+
+            </div>
+        </div>
+
+        @*Right Sidebar*@
+        <div class="span2 right-sideabr">
+            @Html.Partial("_HomepageRightSidebar")
+        </div>
+
+    </div>
+    <div class="row">
+        @Html.Partial("_Footer")
+    </div>
+
+</div>
+
+@*Scripts*@
+<script src="scripts/jquery.js"></script>
+<script src="Scripts/bootstrap-dropdown.js"></script>
+<script src="Scripts/bootstrap.js"></script>
+<script>
+    $('.dropdown-toggle').dropdown()
+</script>
+<script>
+    $('#navbar').scrollspy()
+</script>
+<script src="scripts/bootstrap-fileupload.js"></script>
+<script>
+
+    $('.fileupload').fileupload()
+</script>
+

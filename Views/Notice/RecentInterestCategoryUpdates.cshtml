@@ -1,0 +1,126 @@
+﻿@model FollowPeers.Models.UserProfile
+@{
+    ViewBag.Title = "RecentInterestCategoryUpdates";
+    
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+    
+    
+  //int countInterests = followPeersDB.SpecializationUserProfile1.Where(p => p.UserProfileId != myprofile.UserProfileId).Count();
+    int countInterests = Model.Specializations.Count();
+  List<FollowPeers.Models.Specialization> userInterests = Model.Specializations.ToList();
+
+  if(Model.UserProfileId == myprofile.UserProfileId)
+  {
+      <h5>My Forums</h5>
+  }
+  else
+  {
+      <h5>@Model.FirstName's Forums</h5>
+  }
+    int i = 0;
+    string pronoun = "his";
+    if(@Model.Gender == null)
+    {
+        pronoun = "their";
+    }
+    else
+    if(@Model.Gender.ToLower() == "female")
+    {
+        pronoun = "her";
+    }
+        
+    if(userInterests.Count() == 0)
+    {
+          if(Model.UserProfileId == myprofile.UserProfileId)
+  {
+      <p>You have not joined any category! Proceed to update your research interest to join a category</p>
+  }
+  else
+  {
+     <p>@Model.FirstName has not joined any category!</p>
+    <p>Share a post on @pronoun noticeboard to recommend a category.</p> 
+  }
+        
+       
+    }
+    
+    else
+    {
+    
+     <div class="accordion" id="accordion2">
+      
+
+    @while (i < countInterests)
+    {
+        // FollowPeers.Models.Specialization specialization = fo.Where(p => p.SpecializationId == userInterests[i].SpecializationId).First();
+        int spID = userInterests[i].SpecializationId;
+        string spField = userInterests[i].Field;
+        string spName = userInterests[i].SpecializationName;
+        string id = i + "collapse";
+      
+            <div class="accordion-group">
+						          <div class="accordion-heading">
+						            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#@id">
+						              
+                                      @userInterests[i].Field
+						            </a>
+						          </div>
+
+     @{List<FollowPeers.Models.Forum> forums = new List<FollowPeers.Models.Forum>(); 
+       List<FollowPeers.Models.Specialization> fieldids = followPeersDB.Specializations.Where(p => p.Field == spField).ToList(); //list of sub-category ids under same category
+       foreach (var fieldid in fieldids)
+       {
+           List<FollowPeers.Models.Forum> tempforums = followPeersDB.Forums.Where(p => p.ForumId == fieldid.SpecializationId).ToList();
+ 
+           foreach (var tempforum in tempforums)
+           {
+               forums.Add(tempforum); // adding all forums which are liked to spField
+           }
+       }
+       //int lastindex = forum.Count();
+       //int lastpostindex = forum[lastindex - 1].Topics.ToList().Count();
+       
+						          <div id="@id" class="accordion-body in collapse" style="height: auto; ">
+						            <div class="accordion-inner">
+						             <div>
+                                     
+                                        @foreach(var forum in forums)
+                                        {
+                                            List<FollowPeers.Models.ForumTopic> temptopic = forum.Topics.ToList();
+                                            temptopic.RemoveAt(0); // removing all the default topics
+                                            if(temptopic.Count() > 0)
+                                            {
+                                            <span class="label label-default">@forum.Category</span>
+                                            <ul>
+
+                                            @for(int temp = temptopic.Count()-1; temp >= 0; temp--)
+                                            {
+                                               List<FollowPeers.Models.ForumTopic> topic = temptopic.ToList();
+                                            <li><a href="@Url.Content("~/Forum/TopicDetail/?id=" + @topic[temp].ForumTopicId )">@topic[temp].Name</a></li>
+                                        }
+                                                </ul>
+                                        }
+                                        }
+                                        
+                                                
+						              <a href="@Url.Content("~/Forum/CategoryDetail/?Category=" + @spField)" style="font-size:10px; padding-left:10px">View All</a>
+                                         
+						         	</div>
+						            </div>
+						          </div>
+
+         i++;
+         }
+               </div>
+     }
+                                     
+			     
+                             </div>
+    
+}
+}
+
+
+      

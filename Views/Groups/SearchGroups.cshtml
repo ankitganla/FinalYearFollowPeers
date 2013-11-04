@@ -1,0 +1,116 @@
+﻿@model IEnumerable<FollowPeers.Models.Group>
+@using FollowPeers.Models;
+@{
+    ViewBag.Title = "Search Results";
+    @Html.Partial("_Header")
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+
+    var keywords = ViewData["keywords"];
+}
+<div class="container" id="main">
+    <div class="row">
+    @*@Html.Partial("_SideBarJob") *@
+    <div class="span8">  
+    <table class="table" style="color:Gray">
+       <tr style="color:Gray"><th>  
+            @{
+                string sel1 = ""; string sel2 = "";
+                if (ViewBag.sort == 1) { sel1 = "selected"; }
+                if (ViewBag.sort == 2) { sel2 = "selected"; }
+            } 
+            <select style="float:right" onchange="return setswitch(this);">
+                <option value='1' @sel1>Sort by Name</option>
+                <option value='2' @sel2>Sort by Ownder ID</option>
+            </select><h5 style="color:Black" class="pull-left">@ViewBag.searchstring</h5>         
+           </th></tr></table>  
+        @if (Model.Count() == 0)
+        {
+            <h4>Sorry! No Results Found</h4>
+        }
+        else
+        {
+            IEnumerable<FollowPeers.Models.Group> listtosort = null;
+            listtosort = Model.OrderByDescending(x => x.Name);
+            <table class="table table-hover">
+            @foreach (var item in listtosort)
+            {   <tr><td>
+                <div>
+                @{
+                FollowPeers.Models.UserProfile me = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == item.OwnerId);
+                string myname = Membership.GetUser().UserName;
+                FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == myname);
+                }
+                <a href="/Groups/Details/@item.GroupId" id="title"><b>@item.Name</b></a> 
+                <div>
+                @item.GroupDesc    |  Posted By
+                    @if (Membership.GetUser().UserName == me.UserName)
+                    {
+                       @Html.ActionLink("Me", "Index", new { id = me.UserProfileId }) 
+                    }
+                    else
+                    {
+                        @Html.ActionLink(me.FirstName + " " + me.LastName, "Index", new { id = me.UserProfileId }) 
+                    }
+                    on @item.Name
+                    <br />
+                                        
+                </div>
+                @*<div id="follow" style="float: right; margin: 15px;">
+                    @if (myprofile.UserProfileId != item.OwnerId)
+                    {
+
+                        if (ViewData[item.GroupId.ToString()] == "1")
+                        {
+                            using (Html.BeginForm("UnBookmark", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                            {
+                        <input type="hidden" name="jobid" value="@item.JobId" />
+                        <input type="submit" value="UnBookmark" style="padding: 8px 20px; color: gray; float: right;
+                            cursor: pointer; font-weight: bold;" />
+                            }
+                        }
+                        else
+                        {
+                            using (Html.BeginForm("Bookmark", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                            {
+                        <input type="hidden" name="jobid" value="@item.JobId" />
+                        <input type="submit" value="Bookmark" style="padding: 8px 20px; float: right; cursor: pointer;
+                            font-weight: bold;" />
+                            }
+                        }
+                    }
+                </div> *@
+
+                </div></td></tr>
+            }</table>
+        }
+    </div></div></div>
+
+@Html.Partial("_Footer")
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#trigger").click(function () {
+            $('#toolWrapper').toggle(function () {
+                $(document).click(function (event) {
+                    if (!($(event.target).is('#toolWrapper') || $(event.target).parents('#toolWrapper').length || $(event.target).is('#trigger'))) {
+                        $('#toolWrapper').hide(500);
+                    }
+                });
+            });
+        });
+    });
+
+    function setswitch(sel) {
+        var opt = sel.options[sel.selectedIndex].value;
+        if (opt == 1) {
+            var location = document.URL.replace("sort=2", "sort=1");
+            window.location = location;
+        }
+        else if (opt == 2) {
+            var location = document.URL.replace("sort=1", "sort=2");
+            window.location = location;
+        }
+    }
+
+
+</script>

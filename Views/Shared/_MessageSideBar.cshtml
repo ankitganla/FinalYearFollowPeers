@@ -1,0 +1,26 @@
+﻿@{
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+
+    <div class="span2" style="margin-left:0px;">
+        <div class="box">
+            <h2>Options</h2>
+            <div class="block">
+                <ul class="menu nav nav-tabs nav-stacked" style="list-style:none; margin-top:15px;">
+                    <li><a href="/Message/Create">
+                        <img src="../../Content/images/icons/16x16/add.png" />Compose</a></li>
+                    <li><a href="/Message/Index">
+                        <img src="../../Content/images/icons/16x16/box_open.png" />Inbox</a></li>
+                    <li><a href="/Message/Sent">
+                        <img src="../../Content/images/icons/16x16/email_go.png" />Sent</a></li>
+                    <li><a href="/Message/Starred">
+                        <img src="../../Content/images/icons/16x16/draw_star.png" />Starred</a></li>
+                    <li><a href="/Message/Trashed/">
+                        <img src="../../Content/images/icons/16x16/bin.png" />Trash</a></li>
+
+                    </ul>
+            </div>
+        </div>
+    </div>
+}

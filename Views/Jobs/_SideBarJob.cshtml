@@ -1,0 +1,71 @@
+﻿@model IEnumerable<FollowPeers.Models.Jobs>
+@using FollowPeers.Models;
+@{
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+    var keywords = ViewData["keywords"];
+    }
+<div class="span2" style="border-right: 1px solid #eee; padding-right:10px;">
+ <div class="header"><h4>Job Search</h4></div>
+        <div >
+        <label>Keywords:</label>
+        <input id="keywordstring" type="text" class="span2"/>
+        <br />
+        <label>Job Title:</label>
+        <input id="jobtitlestring" type="text" class="span2"/>
+        <br />
+        <label>Country:</label>
+        <div class="editor-field" style="height: auto">
+                        @{
+                            List<SelectListItem> items = new List<SelectListItem>();
+                            foreach (var i in followPeersDB.Countries)
+                            {
+                                items.Add(new SelectListItem { Text = i.Name, Value = i.Name });
+                            }
+                            IEnumerable<SelectListItem> list = items.ToArray();
+                            @Html.DropDownList("Country", list, new { id = "countrystring" , style = "width:135px;" });
+                             
+                        }
+                    </div>
+        <label>Specialization:</label>
+           @{
+                            List<SelectListItem> items2 = new List<SelectListItem>();
+                            List<FollowPeers.Models.Specialization> temp = followPeersDB.Specializations.ToList();
+                            var newlist = temp.OrderBy(x => x.SpecializationName).ToList();
+                            items2.Add(new SelectListItem { Text = "Any Specialization", Value = "Any" });
+                            foreach (var i in newlist)
+                            {
+                                items2.Add(new SelectListItem { Text = i.SpecializationName, Value = i.SpecializationName });
+                            }
+                            IEnumerable<SelectListItem> list2 = items2.ToArray();
+                            @Html.DropDownList("Specialization", list2, new { id = "specialisation" , style = "width:135px;" });
+                             
+                        }
+        <br />
+        <a id="AdvanceSearch" class="btn btn-danger">Search</a>
+        </div>
+ </div>
+@helper Script(string scriptName)
+    {
+    <script src="@Url.Content("~/Scripts/" + scriptName)" type="text/javascript"></script>
+}
+ <script type="text/javascript">
+     $(document).ready(function () {
+        $("#AdvanceSearch").click(function () {
+        var keyword_string = $("#keywordstring").val();
+        var jobtitle_string = $("#jobtitlestring").val();
+        var country_string = $("#countrystring").val();
+            $.ajax({
+            type: "POST",
+            url: "/Jobs/AdvanceTemp",
+            data: {id : keyword_string, jobtitle : jobtitle_string, country : country_string},
+            success: function () {
+                var link = "@Url.Action("AdvanceSearch", "Jobs",null)";
+                window.location.href=link;
+            }
+            });
+        });
+    });
+ 
+ </script>

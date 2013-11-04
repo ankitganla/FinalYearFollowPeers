@@ -1,0 +1,80 @@
+﻿@model FollowPeers.Models.Event
+@using FollowPeers.Models
+
+@{
+    ViewBag.Title = "EventDetail";
+    string EventDate = Model.EventDate.ToShortDateString();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+}
+
+@Html.Partial("_Header")
+@Html.Partial("_SideBar1")
+
+<fieldset>
+    <h2 style="height: 20px"> Event Details </h2>
+
+    <div class="box">
+        @using (Html.BeginForm("EventDetail", "Event", new { id = Model.EventId, Name = Model.EventName }))
+        {
+            @Html.ValidationSummary(true)
+            <fieldset>
+                <hr />
+                <div class="display-label" style="margin:5px"><b> Name</b></div>
+                <div class="display-field" style="margin:5px">
+                    @Html.DisplayFor(model => model.EventName)
+                </div>
+
+                <div class="display-label" style="margin:5px"><b>Date</b></div>
+                <div class="display-field" style="margin:5px">
+                    @Html.Label(EventDate)
+                </div>
+
+                <div class="display-label" style="margin:5px"><b>Time</b></div>
+                <div class="display-field" style="margin:5px">
+                    @Html.DisplayFor(model => model.EventTime.TimeOfDay)
+                </div>
+
+                <div class="display-label" style="margin:5px"><b>Venue</b></div>
+                <div class="display-field" style="margin:5px">
+                    @Html.DisplayFor(model => model.EventLocation)
+                </div>
+
+                <div class="display-label" style="margin:5px"><b>Details</b></div>
+                <div class="display-field" style="margin:5px">
+                    @Html.DisplayFor(model => model.EventDesc)
+                </div>
+                @{EventUserProfileJoin EventCheck = followPeersDB.EventUserProfileJoins.FirstOrDefault(p=>p.EventId==Model.EventId && p.UserProfileId==myprofile.UserProfileId);
+                if (EventCheck==null)
+                {                
+                    <div>
+                        <input name="Join" type="submit" value="Join" style="float: left; padding: 3px 8px;" class="btn btn-primary" />
+                        <input name="Decline" type="submit" value="Decline" style="float: left; padding: 3px 8px;" class="btn btn-primary" />
+                    </div>
+                }
+                else{
+                    if(EventCheck.JoinStatus==1)
+                    {
+                    <div style="float: left; margin-right: 5px; color: #888; font-size: 15px;">Status | Going
+                                        </div>
+                    }
+                    if(EventCheck.JoinStatus==0)
+                    {
+                    <div style="float: left; margin-right: 5px; color: #888; font-size: 15px;">Status | Declined
+                                        </div>
+                    }
+                }}
+                <hr />
+            <p>
+                @Html.ActionLink("Back to Events List", "Index")
+            </p>
+            </fieldset>
+        }
+        
+
+    </div>
+    <hr />
+</fieldset>
+
+@Html.Partial("_Footer")

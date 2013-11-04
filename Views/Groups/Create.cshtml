@@ -1,0 +1,65 @@
+﻿@model FollowPeers.Models.Group
+@using WebMatrix.Data;
+@Html.Partial("_Header")
+@Html.Partial("_SideBar1")
+<div class="container" id="main">   
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <fieldset>
+            <div style="margin-left:10px">
+                <legend>Enter Group Details!</legend>          
+                @*-----------Job ID-----------*@
+                @*<div class="editor-label" id="title_l">
+                    @Html.LabelFor(model => model.GroupId, "Group ID")
+                </div>
+                
+                <div class="editor-field" id="title_f">
+                    @Html.TextBoxFor(model => model.GroupId, new { size = 78 })
+                    @Html.ValidationMessageFor(model => model.GroupId)
+                </div>
+                *@
+                @*-----------Title-----------*@
+                <div class="editor-label" id="title_l">
+                    @Html.LabelFor(model => model.Name, "Group Name ")
+                </div>
+                <div class="editor-field" id="title_f">
+                    @Html.TextBoxFor(model => model.Name, new { size = 78 })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+                      @*-----------Company-----------*@
+                <div class="editor-label" id="title_l">
+                    @Html.LabelFor(model => model.GroupDesc, "Description")
+                </div>
+                <div class="editor-field" id="title_f">
+                    @Html.TextBoxFor(model => model.GroupDesc, new { size = 78 })
+                    @Html.ValidationMessageFor(model => model.GroupDesc)
+                </div>
+                 
+                @*-----------Type-----------*@
+               @* <div class="editor-label" id = "type_l">
+                    @Html.LabelFor(model => model, "Type ")
+                </div>
+                <div class="editor-field" id = "type_f">
+                    @{
+            List<string> publicationtype = new List<string>();
+            publicationtype.Add("Full-time");
+            publicationtype.Add("Part-time");
+            publicationtype.Add("Contract");
+            publicationtype.Add("Temporary");
+            publicationtype.Add("Other");
+                    }
+                    @Html.DropDownList("Type", new SelectList(publicationtype))
+                    @Html.ValidationMessageFor(model => model.Type)
+                </div>
+                 @*-----------Country-----------*@
+                
+            </div>
+            </fieldset>
+            <p>
+                <input type="submit" value="Create" style="float: right; padding: 3px 8px;" class="btn btn-primary"/>
+            </p> 
+        }
+    </div>
+@Html.Partial("_Footer")
+

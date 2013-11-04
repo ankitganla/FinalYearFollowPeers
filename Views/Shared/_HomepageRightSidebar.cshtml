@@ -1,0 +1,29 @@
+﻿@model FollowPeers.Models.UserProfile
+@{
+    ViewBag.Title = "_HomepageRightSidebar";
+
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+			     
+    
+   if(myprofile.UserProfileId == Model.UserProfileId)
+   {
+        <div style="overflow-y:auto; height:250px" >
+            @Html.Partial("RecentUpdates")
+        
+        </div>
+    <hr />
+}
+else
+{
+       @Html.Partial("RecentUpdates")
+   }
+        
+        <!--<div class=""><div class="hero-unit"></div></div>-->
+        @Html.Partial("RecentInterestCategoryUpdates")
+ 
+
+    
+}
+

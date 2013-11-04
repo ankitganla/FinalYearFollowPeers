@@ -1,0 +1,97 @@
+﻿@model FollowPeers.Models.ForumTopic
+
+@Html.Partial("_Header")
+@Html.Partial("_SideBar1")
+
+<div class="grid_9">
+    <div class="box">
+        <h2 style="height: 20px">Add new Forum Topic</h2>
+        @{
+            if(ViewBag.TopicAdded != null && ViewBag.TopicAdded == "true"){
+                <p>Topic has been added successfully.</p>
+            }
+        }
+        <fieldset>
+        <legend>Add Topic</legend>
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <div class="editor-label">
+                    <a>Category</a>
+            </div>
+            <div class="editor-field">
+                @Html.DropDownList("Category", new SelectList(ViewBag.CategoryList))
+            </div>
+            <div class="editor-label">
+                    @Html.LabelFor(model => model.Name, "Topic")
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+            <div class="editor-label">
+                    @Html.LabelFor(model => model.Description, "Description")
+            </div>
+            <div class="editor-field">
+                @Html.TextAreaFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
+            <div>
+                <input type="hidden" name="groupId" id="groupId" value="@ViewBag.GroupID" />
+            </div>                                
+            <div><input type="submit" name="Submit" value="Add Topic" class="btn btn-primary" /></div>
+        }
+        </fieldset>
+    </div>
+</div>
+
+@Html.Partial("_Footer")
+
+
+
+<form action="/Comment/CreateAjax" method="post">
+    <input type="hidden" name="ParentType" value="@ViewBag.ParentType" />
+    <input type="hidden" name="ParentId" value="@ViewBag.ParentId" />
+     <input type="hidden" name="SubmittedBy" value="@Membership.GetUser().UserName" />
+      <input type="hidden" name="TimeSent" value="@DateTime.Now" />
+       <input type="hidden" name="Flagged" value="false" />
+       <input type="hidden" name="Starred" value="false" />
+       <input id="commentBodyTextBox" name="CommentBody" type="text" style="width:80%" />
+</form>
+
+<script type="text/javascript" language="javascript">
+    $("#Save_it").click(function () {
+        // Get publication ID
+        var id1 = $("#Category").val();
+        var id2 = $("#Name").val();
+        var id3 = $("#Description").val();
+        // Send Ajax Request
+        $.ajax({
+            type: "POST",
+            url: "/Forum/AddTopic2",
+            data: "values=" + id1 + ":" + id2 + ":" + id3,
+            success: function () {
+                alert('Topic Added');
+                window.history.back(-1);
+            }
+        });
+    });
+
+    $("#unbookmark_it").click(function () {
+        // Get publication ID
+        var id2 = $("#publicationIdAJAX").val();
+        // Send Ajax Request
+        $.ajax({
+            type: "POST",
+            url: "/PublicationModel/DeleteBookmark",
+            data: "ID=" + id2,
+            success: function () {
+                alert('Un-Bookmarked');
+                window.history.back(-1);
+            }
+        });
+    });
+
+</script>
+    
+    

@@ -1,0 +1,229 @@
+﻿@model FollowPeers.Models.Group
+
+@using FollowPeers.Models;
+@{
+    ViewBag.Title = "Group Details";
+    int counter = 0;
+    int ShowTopics = 10;
+}
+@Html.Partial("_Header")
+ @{
+     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+     string name = Membership.GetUser().UserName;
+     ViewBag.UserName = name;
+     FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == name);
+}
+<div class="container" id="main">
+<div class="row">
+@*@{ if (myprofile.UserProfileId == Model.OwnerId)
+   {
+                    @Html.Partial("_SideBar1")
+   }
+ }
+    *@
+    @Html.Partial("_SideBar1")
+    <div class="span6">
+    <div class="box" style="border: 1px solid #eee; padding-left:5px;">
+
+    </div>
+        @Script("jquery.validate.min.js")
+        @Script("jquery.validate.unobtrusive.min.js")
+        @Script("jquery.bgiframe.js")
+        @Script("jquery.mcdropdown.js")
+        <link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
+        <link href="../../Content/css/jquery-ui.css" rel="stylesheet" type="text/css" />
+        <fieldset>
+                @*-----------JobId-----------*@
+                @Html.HiddenFor(model => model.GroupId)
+                @*-----------OwnerID-----------*@
+                @Html.HiddenFor(model => model.OwnerId)
+            <div>
+             <h1>@Html.DisplayFor(model => model.Name)</h1>
+             @*<h3>@Html.DisplayFor(model => model.GroupDesc)</h3></div> *@
+            
+            @*
+            <div class="display-label">
+                Owner Id: 
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.OwnerId)
+            </div>
+            
+            *@
+            
+            @{
+                FollowPeers.Models.UserProfile ownerprofile = followPeersDB.UserProfiles.First(p => p.UserProfileId == Model.OwnerId);
+                if (ownerprofile != null)
+                {
+                    <div class="display-label">
+                        Owner Name:
+                    </div>
+                    <div class="display-field">
+                        <p><a href="../../Profile/Index/?id=@ownerprofile.UserProfileId">@ownerprofile.FirstName @ownerprofile.LastName</a></p>
+                    </div>
+
+                }
+            }
+                
+            
+            <hr />
+            <div class="display-label">
+                Description:</div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.GroupDesc)
+            </div>
+            <hr />            
+            <div class="display-label">
+                Group Members:</div>
+            <div class="display-field">
+                
+                    <p>
+                        @{
+                    foreach (var mem in Model.Members)
+                    {
+                     <a href="../../Profile/Index/?id=@mem.UserProfileId">@mem.FirstName @mem.LastName , </a>                         
+                    }
+                    }
+                    </p>
+             
+            </div>
+            <hr />
+                      
+        </fieldset>        
+    </div>
+     <div class="span3" style=" text-align:left; border-left: 1px solid #eee; padding-left:10px;">
+      <input id="JobId" style="display:none" type="text" value="@Model.GroupId" >
+    @{
+        if (Model.OwnerId != myprofile.UserProfileId)
+        {
+            Group group = followPeersDB.Groups.SingleOrDefault(p => p.GroupId == Model.GroupId);
+            if (group.Members.ToList().Count != 0)
+            {
+                if (group.Members.Contains(myprofile) == true || myprofile.Groups.Contains(group) == true)
+                {
+                    <a id="Save_it" class="btn btn-warning" style="width:150px;">Unjoin</a>
+                }
+
+                else
+                {
+                <a id="Save_it" class="btn btn-warning" style="width:150px;">Join</a> 
+                }
+            }
+            else
+            {
+                <a id="Save_it" class="btn btn-warning" style="width:150px;">Join</a> 
+            }
+        }
+
+        else
+        {
+           @Html.ActionLink("Delete Group", "Delete", new { id = Model.GroupId })
+        <br />
+           @Html.ActionLink("Edit Group", "Edit", new { id = Model.GroupId })
+        <br />
+
+            @*@Html.ActionLink("Search Group", "Search", new { id = Model.GroupId }) *@
+        <br />
+        <a class="btn btn-primary" href="@Url.Content("~/Groups/AddTopic/?GroupId=" + Model.GroupId)"><i class="icon-upload icon-white"></i>Add Topic</a>
+        <br />
+        }
+    <br />
+    <br />
+         
+            @*
+                 Add new functions here
+
+               @Html.ActionLink("Save Job", "SavedJob", new { id = Model.JobId }) 
+            <br />             
+            <a href="#">Recommend Job</a>
+            *@
+        
+    }
+         </div>
+<!------------------------------ -->
+        
+     <div class="span7" style="border: 1px solid #eee; padding-left:5px;">
+            
+                         
+         @{ 
+             <h1>Related Discussion Forums</h1>
+             
+             string curr_name = Membership.GetUser().UserName;
+             FollowPeers.Models.UserProfile currentuser = followPeersDB.UserProfiles.First(p => p.UserName == curr_name);
+
+             foreach (var forums in followPeersDB.Forums)
+             {
+                 //var currentForumTopic = followPeersDB.ForumTopics.SingleOrDefault(t => t. == currentuser);
+                 List<ForumTopic> topics = forums.Topics.ToList();
+                 Group group = followPeersDB.Groups.SingleOrDefault(p => p.OwnerId == currentuser.UserProfileId && p.GroupId == Model.GroupId);
+                 Group group2 = followPeersDB.Groups.SingleOrDefault(p => p.GroupId == Model.GroupId);
+                 foreach (var topic in topics)
+                 {
+                     //if ((((group != null && group.Members.Contains(currentuser) && group2 != null && !group2.Members.Contains(currentuser)) || (group != null && !group.Members.Contains(currentuser) && group2 != null && group2.Members.Contains(currentuser))) && topic.createdUser != null && topic.createdUser != currentuser) || (topic.createdUser != null && topic.createdUser == currentuser && topic.groupId == Model.GroupId.ToString()))
+                     if ((topic.createdUser != null && topic.createdUser != currentuser && topic.groupId == Model.GroupId.ToString() && group2.Members.Contains(currentuser)) || (topic.createdUser != null && topic.createdUser == currentuser && topic.groupId == Model.GroupId.ToString()))
+                     {
+                                                
+                                                <tr >
+                                                    <td>
+                                                        <div class="MessageContainer">
+                                                            <div class="messageDetails" style="width:73%;float:left;">
+                                                                <div class="messageName"><h4><a href="/Forum/TopicDetail/?id=@topic.ForumTopicId">@topic.Name</a></h4></div>
+                                                                <div class="messageSubject">@topic.Description</div>
+                                                                <div class="messageName"><a>Posts: </a>@topic.Posts.Count</div>                                                                
+                                                            </div>
+                                                            
+                                                            <!--
+                                                            <div class="MessageOptions" style="width:15%; float:right; display:inline-block;">
+                                                                <div class="messageName"><a>Posts</a></div>
+                                                                <div class="messageSubject">@topic.Posts.Count</div>
+                                                            </div>
+                                                            -->
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                     }
+                 }
+             }
+                         }
+      </div>
+
+<!------------------------------ -->
+</div>
+</div>
+@Html.Partial("_Footer")
+@helper Script(string scriptName)
+{
+    <script src="@Url.Content("~/Scripts/" + scriptName)" type="text/javascript"></script>
+}
+
+<script type="text/javascript" language="javascript">
+    $("#Save_it").click(function () {
+        // Get publication ID
+        var id1 = $("#JobId").val();
+        // Send Ajax Request
+        $.ajax({
+            type: "POST",
+            url: "/Groups/AppliedGroup",
+            data: "ID=" + id1,
+            success: function () {
+                window.history.back(-1);
+            }
+        });
+    });
+
+    $("#unbookmark_it").click(function () {
+        // Get publication ID
+        var id2 = $("#publicationIdAJAX").val();
+        // Send Ajax Request
+        $.ajax({
+            type: "POST",
+            url: "/PublicationModel/DeleteBookmark",
+            data: "ID=" + id2,
+            success: function () {
+                alert('Un-Bookmarked');
+                window.history.back(-1);
+            }
+        });
+    });
+
+</script>

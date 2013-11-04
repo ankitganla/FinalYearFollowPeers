@@ -1,0 +1,127 @@
+﻿@model FollowPeers.Models.UserProfile
+@{
+    ViewBag.Title = "RecentUpdates";
+    
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+    FollowPeers.Models.Update peerupdates;
+    int i =0;
+    List<FollowPeers.Models.Relationship> following = followPeersDB.Relationships.Where(p => p.personAName == Model.UserName && p.tier == 2).ToList();
+    List<FollowPeers.Models.UserProfile> peerprofile = new List<FollowPeers.Models.UserProfile>();
+    
+
+    if(Model.UserProfileId == myprofile.UserProfileId)
+    {
+      <h5>Recent Updates</h5>
+       
+    DateTime curr = System.DateTime.Now;
+      <ul> 
+@do
+ {
+
+    int countupdate = followPeersDB.Updates.Where(p => p.owner != Model.UserProfileId && p.Time.CompareTo(curr) < 0).Count();
+        if(countupdate > 0)
+        {
+        peerupdates = followPeersDB.Updates.Where(p => p.owner != Model.UserProfileId).OrderByDescending(o => o.Time).First(t => t.Time.CompareTo(curr) < 0);
+        curr = peerupdates.Time;
+        }
+        else 
+        {
+            if(i == 0)
+            {
+            <p>No updates from the peers you follow.</p>
+            }
+            break;
+        }
+       
+       
+        FollowPeers.Models.UserProfile OwnerProfile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
+        foreach( var peer in following)
+        {
+            if (peer.personBName == OwnerProfile.UserName)
+            {
+             
+           
+      
+        string pronoun = "";
+        string gender = "";
+        string OwnerName = "Anonymous";
+        if (OwnerProfile.Gender != null)
+        {
+            gender = OwnerProfile.Gender.ToLower();
+        }
+        if (gender.Equals("male"))
+        {
+            pronoun = "his";
+        }
+        else
+            if (gender.Equals("female"))
+            {
+                pronoun = "her";
+            }
+            else
+            {
+                pronoun = "their";
+            }
+        if (OwnerProfile.FirstName != null)
+        {
+            OwnerName = OwnerProfile.FirstName;
+        }
+   
+       if (peerupdates.type == 2 && peerupdates.Own == true)
+        {
+            i++;
+          
+        <li> <a href="@Url.Content("~/Profile/Index/?id=" + @OwnerProfile.UserProfileId)">@OwnerName</a> shared a post on @pronoun
+        <a href="@Url.Content("~/Notice/Index/?id=" + @OwnerProfile.UserProfileId)">noticeboard</a></li>
+        }
+        else
+            if (peerupdates.type == 1)
+            {
+                i++;
+                <li><a href= "@Url.Content("~/Profile/Index/?id=" + @OwnerProfile.UserProfileId)">@OwnerName</a> made changes to @pronoun profile. @peerupdates.message</li>      
+            }
+            else
+                if (peerupdates.type == 6)
+                {
+                    i++;
+             <li><a href="@Url.Content("~/Profile/Index/?id=" + @OwnerProfile.UserProfileId)">@OwnerName</a> has @peerupdates.message.ToLower()</li>
+                }
+                else
+                if (peerupdates.type == 10)
+                {
+                    i++;
+                    string msg = peerupdates.message;
+                    int comma_index = peerupdates.message.IndexOf(",");
+                    if (comma_index < 0) { comma_index = 0; }
+                     <li><a href="@Url.Content("~/Profile/Index/?id=" + @OwnerProfile.UserProfileId)">@OwnerName</a> liked <a href="@Url.Content(@peerupdates.link)">@peerupdates.message.Substring(0, comma_index)'s</a> achievement titled @peerupdates.message.Substring(comma_index+1).</li>
+                    
+                }
+            
+                     else if(peerupdates.type == 8) 
+                {
+                    i++;
+                         string msg = peerupdates.link;
+                    int comma_index = peerupdates.link.IndexOf(",");
+                    if (comma_index < 0) { comma_index = 0; }
+                     <li><a href="@Url.Content("~/Profile/Index/?id=" + @Convert.ToInt16(peerupdates.link.Substring(0, comma_index)))">@peerupdates.link.Substring(comma_index+1) </a> was  tagged in a post by <a href="@Url.Content("~/Profile/Index/?id=" + @OwnerProfile.UserProfileId)">@OwnerName</a></li>
+                
+                }
+                else {
+                }
+
+                }
+                }
+              
+
+
+
+                  } while (peerupdates.Time < System.DateTime.Now);
+              </ul>
+               
+		      <script src="Scripts/bootstrap.js"></script>
+
+}
+}
+

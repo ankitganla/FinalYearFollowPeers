@@ -1,0 +1,68 @@
+﻿@model FollowPeers.Models.Event
+
+@{
+    ViewBag.Title = "EventEdit";
+    string EventDate = Model.EventDate.ToShortDateString();
+    DateTime EventTime = Model.EventTime;
+}
+
+@Html.Partial("_Header")
+@Html.Partial("_SideBar1")
+
+<h2>EventEdit</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Event</legend>
+
+        @Html.HiddenFor(model => model.EventId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EventName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EventName)
+            @Html.ValidationMessageFor(model => model.EventName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EventDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EventDate)
+            @Html.ValidationMessageFor(model => model.EventDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EventTime)
+        </div>
+        <div class="editor-field">
+            @Html.Label("EventTimeDisplay", Model.EventTime.ToShortTimeString())
+            @Html.Label("EventTimeChange", "New Time (Requirement)")
+            <input id="EventTime" class="small" type="time" name ="EventTime" value="@Model.EventTime" data-datepicker="timepicker" />                
+            @Html.ValidationMessage("Please Fill in Time")
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EventDesc)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EventDesc)
+            @Html.ValidationMessageFor(model => model.EventDesc)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@Html.Partial("_Footer")

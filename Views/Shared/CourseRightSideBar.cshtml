@@ -1,0 +1,78 @@
+﻿@using WebMatrix.Data;
+@using FollowPeers.Models;
+
+@{
+    ViewBag.Title = "Browse Courses";
+    FollowPeersDBEntities db = new FollowPeersDBEntities();
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name1 = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name1);
+    List<FollowPeers.Models.Favourite> FavouriteList = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 4).ToList();
+    
+    //Getting My Courses
+    List<Course> MyCourses = new List<Course>();
+    myprofile = db.UserProfiles.SingleOrDefault(p => p.UserName == name1);
+
+    //Publication Tagnames used
+    MyCourses=followPeersDB.Courses.Where(p=>p.Owner.UserProfileId==myprofile.UserProfileId).OrderBy(p=>p.CourseName).ToList();
+ 
+}
+
+
+<div class="span4" style="width:200px; vertical-align:top;float:right; margin-top:15px">
+    <div class="pull-left">
+		<h5>Other Course Links</h5>
+		<div class="accordion" id="accordion2">
+        @{
+            var db1 = Database.Open("FollowPeersDB");
+
+                                //For My Tags
+            <div class="accordion-group">
+				<div class="accordion-heading">
+				<a class="accordion-toggle" href="/Course/Mine">
+					My Courses
+				</a>
+				</div>
+				<div id="collapse2" class="accordion-body in collapse" style="height: auto; ">
+					<div class="accordion-inner">
+						<div>
+                            @{
+                                foreach (Course Item in MyCourses)
+                                {
+                                    <li style="list-style:none">
+                                        <a href="/Course/Details/@Item.CourseId" >@Item.CourseName</a>
+                                    </li>
+                                }
+                                }
+						<a class="pull-right" href="/Course/Mine" style="font-size:10px">View All</a>
+                        </div>
+					</div>
+				</div>
+			</div> 
+            
+            <div class="accordion-group">
+				<div class="accordion-heading">
+				<a class="accordion-toggle" href="#">
+					Favourite Courses
+				</a>
+				</div>
+				<div id="collapse3" class="accordion-body in collapse" style="height: auto; ">
+					<div class="accordion-inner">
+						<div>
+                            @{
+                                foreach (Favourite Item in FavouriteList)
+                                {
+                                    <li style="list-style:none">
+                                        <a href="/Course/Details/@Item.ItemTypeId" >@Item.ItemName</a>
+                                    </li>
+                                }
+                                }
+						<a class="pull-right" href="/Course/Mine" style="font-size:10px">View All</a>
+                        </div>
+					</div>
+				</div>
+			</div> 
+        }
+		</div>
+    </div>
+</div>

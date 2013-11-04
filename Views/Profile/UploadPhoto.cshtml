@@ -1,0 +1,55 @@
+﻿@model FollowPeers.Models.UserProfile 
+@{
+    ViewBag.Title = @Model.FirstName + " " + @Model.LastName + " Update Your Profile";
+}
+@*Header*@
+@Html.Partial("_Header")
+@*Container*@
+<div class="container">
+
+    @*rows within container*@
+    <div class="row">
+        @*Left Sidebar*@
+        @Html.Partial("_SideBar2")
+
+        @*Main Content*@
+        <div class="span9">
+            <div class="box">
+                <h2>Update Your Profile
+                </h2>
+                <div class="">
+                    <div class="box">
+                        @{Html.RenderAction("ProgressTracker", "Profile");}
+
+                    </div>
+                </div>
+                <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+                <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+                <script src=@Url.Content("~/Scripts/jquery.bgiframe.js") type="text/javascript"></script>
+                <script src=@Url.Content("~/Scripts/jquery.mcdropdown.js") type="text/javascript"></script>
+                <link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
+                @using (Html.BeginForm("UploadPhoto", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
+                {
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.UserProfileId)
+                    @Html.HiddenFor(model => model.UserName)
+                    @Html.HiddenFor(model => model.activated)
+          
+                    <fieldset>
+                        <legend>Upload Profile Picture</legend>
+
+                        <input type='file' name='photo' id='photo' />
+                    </fieldset>
+            
+                    <br />
+                    <p>
+                        <input type="submit" name="submit" value="Save" class="btn btn-primary">
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        @Html.Partial("_Footer")
+    </div>
+</div>

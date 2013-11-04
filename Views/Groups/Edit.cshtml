@@ -1,0 +1,147 @@
+﻿@model FollowPeers.Models.Group
+@using WebMatrix.Data;
+@{
+    ViewBag.Title = "Edit ";
+}
+@Html.Partial("_Header")
+    <div class="container" id="main">
+    <div class="box">
+    @Html.Partial("_SideBar2")
+        @Script("jquery.validate.min.js")
+        @Script("jquery.validate.unobtrusive.min.js")
+        @Script("jquery.bgiframe.js")
+        @Script("jquery.mcdropdown.js")
+        @Script("modernizr-1.7.min.js")
+        @Script("jquery-ui-1.8.11.js")
+        @Script("jquery.tools.min.js")
+        @Script("jquery.rte.js")
+        <link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
+        <link href="../../Content/css/jquery-ui.css" rel="stylesheet" type="text/css" />
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+            <div style="margin-left:10px">
+
+               @*-----------PublicationId-----------*@
+                @Html.HiddenFor(model => model.GroupId)
+                @*-----------OwnerID-----------*@
+                @Html.HiddenFor(model => model.OwnerId)
+                @*-----------Job ID-----------*@
+                <div class="editor-label" id="title_l">
+                    @Html.LabelFor(model => model.GroupId, "Group ID")
+                </div>
+                <div class="editor-field" id="title_f">
+                    @Html.TextBoxFor(model => model.GroupId, new { size = 78 })
+                    @Html.ValidationMessageFor(model => model.GroupId)
+                </div>
+                @*-----------Title-----------*@
+                <div class="editor-label" id="title_l">
+                    @Html.LabelFor(model => model.Name, "Group Title ")
+                </div>
+                <div class="editor-field" id="title_f">
+                    @Html.TextBoxFor(model => model.Name, new { size = 78 })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+                      @*-----------Company-----------*@
+                <div class="editor-label" id="title_l">
+                    @Html.LabelFor(model => model.GroupDesc, "Description")
+                </div>
+                <div class="editor-field" id="title_f">
+                    @Html.TextBoxFor(model => model.GroupDesc, new { size = 78 })
+                    @Html.ValidationMessageFor(model => model.GroupDesc)
+                </div>
+                  
+            </div>
+            <p>
+                <input type="submit" value="Save" style="float: right; padding: 3px 8px;" />
+            </p>
+        }
+    </div>
+</div>
+@Html.Partial("_Footer")
+@helper Script(string scriptName)
+    {
+    <script src="@Url.Content("~/Scripts/" + scriptName)" type="text/javascript"></script>
+}
+
+@*
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+       if ($('#journal').length) {
+            AutoCompleteJournal();
+        }
+        if ($('#publisher').length) {
+            AutoCompletePublisher();
+        }
+        if ($('#conference').length) {
+            AutoCompleteConference();
+        }
+        if ($('#university').length) {
+            AutoCompleteUniversity();
+        }
+    });
+
+        function AutoCompleteJournal() 
+        {
+            $("#journal").autocomplete({source: function (request, response) {$.ajax({
+            url: "/PublicationModel/findJournalNames", type: "POST", dataType: "json",
+            data: { searchText: request.term, maxResults: 5 },
+            success: function (data) {
+            response($.map(data, function (item) {
+            return { label: item.Name, value: item.Name, id: item.JournalID }
+                }))
+                }
+                })
+                },
+            });
+        }
+
+
+            function AutoCompletePublisher() 
+        {
+            $("#publisher").autocomplete({source: function (request, response) {$.ajax({
+            url: "/PublicationModel/findPublisherNames", type: "POST", dataType: "json",
+            data: { searchText: request.term, maxResults: 5 },
+            success: function (data) {
+            response($.map(data, function (item) {
+            return { label: item.Name, value: item.Name, id: item.PublisherID }
+                }))
+                }
+                })
+                },
+            });
+        }
+
+            function AutoCompleteConference() 
+        {
+            $("#conference").autocomplete({source: function (request, response) {$.ajax({
+            url: "/PublicationModel/findConferenceNames", type: "POST", dataType: "json",
+            data: { searchText: request.term, maxResults: 5 },
+            success: function (data) {
+            response($.map(data, function (item) {
+            return { label: item.Name, value: item.Name, id: item.ConferenceID }
+                }))
+                }
+                })
+                },
+            });
+        }
+
+        function AutoCompleteUniversity() 
+        {
+            $("#university").autocomplete({source: function (request, response) {$.ajax({
+            url: "/PublicationModel/findUniversityNames", type: "POST", dataType: "json",
+            data: { searchText: request.term, maxResults: 5 },
+            success: function (data) {
+            response($.map(data, function (item) {
+            return { label: item.Name, value: item.Name, id: item.UniversityID }
+                }))
+                }
+                })
+                },
+            });
+        }
+
+</script>
+
+*@

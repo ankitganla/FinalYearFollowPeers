@@ -1,0 +1,202 @@
+﻿@model FollowPeers.Models.UserProfile 
+@{
+    ViewBag.Title = @Model.FirstName + " " + @Model.LastName + " Update Your Profile";
+}
+@*Header*@
+@Html.Partial("_Header")
+@*Container*@
+<div class="container">
+
+    @*rows within container*@
+    <div class="row">
+        @*Left Sidebar*@
+        @Html.Partial("_SideBar2")
+
+        @*Main Content*@
+        <div class="span9">
+             <div class="box">
+        <h2>
+            Update Employment
+        </h2>
+        <div class="">
+    <div class="box">
+        @{Html.RenderAction("ProgressTracker", "Profile");}
+        
+    </div>
+</div>
+        @{var message = ViewData["message"];}
+        <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.bgiframe.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.mcdropdown.js")" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
+        @using (Html.BeginForm("EditEmployment", "Profile", FormMethod.Post ))
+        {
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.UserProfileId)
+            @Html.HiddenFor(model => model.UserName)
+            @Html.HiddenFor(model => model.activated)
+            if (message != null)
+            {
+                <div style="background: #eee;padding: 5px;color: green;">@message</div>
+            }
+            int i = 0;
+            <div id="EmploymentFields">
+                
+                @foreach (var E in Model.Employments)
+                {
+                    
+                    string TempData = "Employ" + i.ToString();
+                    string TempData2 = "Delete" + i.ToString();
+                    <div id="@TempData">
+                        <fieldset>
+                            <legend>Achievement</legend>
+                            <div id="@TempData2"  style="float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;" title="Click to delete this record.">
+                                x</div>
+
+                            <div class="control-group">
+                                <div class="editor-label">
+                                    Employer
+                                </div> 
+                                <div class="editor-field controls">
+                                    <input type="text" name="EmployerName" value="@Model.Employments.ElementAt(i).EmployerName" />
+                                    <span class="help-inline hide">Employer name cannot be empty</span>
+                                </div>
+
+                            </div>
+
+                            
+
+                              <div class="editor-label">
+                                Position
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" name="Role" value="@Model.Employments.ElementAt(i).Role" />
+                     
+                              
+                            </div>
+
+                             <div class="editor-label">
+                                Start Year (yyyy)
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" name="startYear" value="@Model.Employments.ElementAt(i).startYear" />
+                            </div>
+                            
+                           
+                            
+                            <div class="editor-label">
+                                End Year (yyyy)
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" name="endYear" value="@Model.Employments.ElementAt(i).endYear" />
+                            </div>
+
+                            <div class="editor-label">
+                                Description
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" name="Description" value="@Model.Employments.ElementAt(i).Description" />
+                            </div>
+                           
+
+                        </fieldset>
+                    
+                        
+                    </div>
+            
+                    i = i + 1;
+                }</div>
+            
+            <p>
+                <a class="btn" id="Add" style="" title="Click to add another record.">
+                    Add Another <i class="icon-plus"></i></a>
+
+                         <input id="submit-form" type="submit"  value="Save" class="btn btn-primary"/>
+                
+            </p>
+        }</div>
+        </div>
+    </div>
+    <div class="row">
+        @Html.Partial("_Footer")
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function select() {
+
+        $(".dropdown-menu li a").click(function () {
+
+            $(".btn:first-child").text($(this).text());
+            $(".btn:first-child").val($(this).text());
+
+        });
+
+    });
+
+
+    $(document).ready(function () {
+        counter = 0;
+        if ($('#Employ0').length) { counter++; $('#Delete0').click(function () { Delete(0); }); }
+        if ($('#Employ1').length) { counter++; $('#Delete1').click(function () { Delete(1); }); }
+        if ($('#Employ2').length) { counter++; $('#Delete2').click(function () { Delete(2); }); }
+        $('#Add').click(function () { AddField(); });
+        if (counter == 0) AddField();
+
+
+        function AddField() {
+
+            if (counter >= 3) alert("You can add a maximum of 3 Employment Records");
+            else {
+                var name;
+                if (!($('#Employ0').length)) name = 0;
+                else if (!($('#Employ1').length)) name = 1;
+                else if (!($('#Employ2').length)) name = 2;
+                $('#EmploymentFields').append("<div id='Employ" + name + "'><fieldset><legend>Employment</legend><div id='Delete" + name + "' style='float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;' title='Click to delete this record.'>x</div><div class='control-group'><div class='editor-label'>Employer</div><div class='editor-field'><input type='text' name='EmployerName'/><span class='help-inline hide'>Employer name cannot be empty</span></div></div><div class='editor-label'>Position</div><div class='editor-field'><input type='text' name='Role' /></div><div class='editor-label'>Start Year (yyyy)</div><div class='editor-field'><input type='text' name='startYear' /></div><div class='editor-label'>End Year (yyyy)</div><div class='editor-field'><input type='text' name='endYear' /></div><div class='editor-label'>Description</div><div class='editor-field'><input type='text' name='Description' /></div></fieldset></div>");
+                
+                $('#Delete' + name).click(function () { Delete(name); });
+                counter++;
+            }
+        }
+
+
+        function Delete(id) {
+
+            if ($('#Employ' + id).length) {
+                $('#Employ' + id).slideUp('fast', function () { $('#Employ' + id).remove(); });
+                counter--;
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("form").submit(function () {
+
+            isValid = true;
+
+            $("input[name=EmployerName]").each(function () {
+                if ($(this).attr("value") == "") {
+                    isValid = false;
+                    $(".control-group").addClass("error");
+                    $(".help-inline").removeClass("hide");
+
+
+                }
+              
+            });
+
+
+            if (isValid) {
+                console.log("return true");
+                return true;
+            }
+            else {
+                alert('validation failed');
+                return false;
+            }
+        })
+    });
+</script>

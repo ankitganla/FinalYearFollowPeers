@@ -1,0 +1,120 @@
+﻿@using FollowPeers.Models;
+@using WebMatrix.Data;
+@{
+    FollowPeersDBEntities db = new FollowPeersDBEntities();
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name1 = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name1);
+    var profileUserName = myprofile.UserName;
+
+    //Getting My Tag Details
+    List<Tag> MyTagNames = new List<Tag>();
+    List<Tag> PubTagNames = new List<Tag>();
+    List<Tag> JobTagNames = new List<Tag>();
+    myprofile = db.UserProfiles.SingleOrDefault(p => p.UserName == name1);
+
+    //Publication Tagnames used
+    List<PublicationModel> MyPubs = new List<PublicationModel>();
+    MyPubs = followPeersDB.PublicationModels.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId).ToList();
+    foreach (PublicationModel pub in MyPubs)
+    {
+        PubTagNames.AddRange(pub.Tags.Distinct().ToList());
+    }
+    foreach (Tag name in PubTagNames)
+    {
+        MyTagNames.Add(name);
+    }
+
+    //Jobs Tagnames used
+    List<Jobs> MyJobs = new List<Jobs>();
+    MyJobs = myprofile.Jobs.ToList();
+    foreach (Jobs job in MyJobs)
+    {
+        JobTagNames.AddRange(job.Tags.Distinct().ToList());
+    }
+    foreach (Tag name in JobTagNames)
+    {
+        bool Check = MyTagNames.Any(TagItem => TagItem.TagId == name.TagId);
+        if (Check == false)
+        {
+            MyTagNames.Add(name);
+        }
+    }
+
+
+    //Add the Final Tag Names
+    MyTagNames = MyTagNames.OrderBy(p=>p.TagName).Distinct().ToList();
+    
+    <div class="span4" style="float:right; width:200px">
+        <div class="pull-left">
+			<h5>Recent Tags</h5>
+			<!--<div class=""><div class="hero-unit"></div></div>-->
+			<div class="accordion" id="accordion2">
+            @{
+                var db1 = Database.Open("FollowPeersDB");
+
+                                    //For My Tags
+                <div class="accordion-group">
+					<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" >
+						My Tags
+					</a>
+					</div>
+					<div id="collapse2" class="accordion-body in collapse" style="height: auto; ">
+					    <div class="accordion-inner">
+						    <div>
+                                @{
+                                    int ids = 1;
+                                    foreach (Tag Item in MyTagNames)
+                                    {
+                                        string namex = "FormA" + ids;
+                                        <form id="@namex" action="/Favourites/Index?keyword=@Item.TagName" method="POST">
+                                        <li style="list-style:none"><a href="javascript:;" onclick="document.getElementById('@namex').submit();">@Item.TagName</a></li>
+                                        </form>
+                                        ids = ids + 1;
+                                    }
+                                 }
+						    <a class="pull-right" href="/Tags/Index" style="font-size:10px">View All</a>
+                            </div>
+					    </div>
+					</div>
+				</div>
+                
+                                        //For Popular Tags
+                <div class="accordion-group">
+					<div class="accordion-heading">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" >
+						Popular Tags
+					</a>
+					</div>
+					<div id="collapse3" class="accordion-body in collapse" style="height: auto; ">
+					    <div class="accordion-inner">
+						    <div>
+                                @{
+                                        int idv = 1;
+                                        foreach (var row in db1.Query("Select * from Tags ORDER BY TagLinkedItems DESC"))
+                                        {
+                                            string name = "FormB" + idv;
+                                            <form id="@name" action="/Favourites/Index?keyword=@row.TagName" method="POST">
+                                            <li style="list-style:none"><a href="javascript:;" onclick="document.getElementById('@name').submit();">@row.TagName</a></li>
+                                            </form>
+                                            idv = idv + 1;
+                                        }
+                                 }
+						    <a class="pull-right" href="/Tags/Index" style="font-size:10px">View All</a>
+                            </div>
+					    </div>
+					</div>
+				</div>
+                                    }     
+			</div>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $(".collapse").collapse();
+    });
+
+</script>

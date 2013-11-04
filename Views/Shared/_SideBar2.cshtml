@@ -1,0 +1,61 @@
+﻿@{
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+    <div class="span2" style="">
+						<!--<div class="span2"><div class="hero-unit"></div></div>-->
+					
+						    <div class="thumbnail" style="text-align:center;">
+						      <a href="profile.html"><img src="@Html.Encode(myprofile.PhotoUrl)" class="img" alt=""/></a> 
+						      <h4>@myprofile.FirstName @myprofile.LastName</h4>
+						    </div>
+                <ul class="menu nav nav-tabs nav-stacked" style="list-style:none; margin-top:15px;">
+                    <li class="active" style="text-align:center"><a style="background:#eee"><b>Profile Sections</b></a></li>
+                    <li><a href="/Profile/Edit">
+                        <img src="../../Content/images/icons/16x16/user.png" /> Basic Info</a></li>
+                    <li><a href="/Profile/UploadPhoto">
+                        <img src="../../Content/images/icons/16x16/photo.png" /> Photo</a></li>
+                    <li><a href="/Profile/EditResearch">
+                        <img src="../../Content/images/icons/16x16/document_stand.png" /> Research</a></li>
+                    <li><a href="/Profile/EditEducation">
+                        <img src="../../Content/images/icons/16x16/blogs.png" /> Education</a></li>
+                    <li><a href="/Profile/EditEmployment">
+                        <img src="../../Content/images/icons/16x16/application_cascade.png" /> Employment</a></li>
+                    <li><a href="/Profile/EditAchievement">
+                        <img src="../../Content/images/icons/16x16/star.png" /> Achievement</a></li>
+                     @*<li><a href="/Event/Index">
+                        <img src="../../Content/images/icons/16x16/calendar.png" /> Events</a></li>*@
+
+                    @{ if (myprofile.Profession == "Professor")
+                       {
+                        <li><a href="/Profile/EditStudents">
+                            <img src="../../Content/images/icons/16x16/ceo.png" /> Students</a></li>
+                       }
+                    }
+                    <li><a href="/Profile/EditContact">
+                        <img src="../../Content/images/icons/16x16/book_addresses.png" /> Contact</a></li>
+
+                    @{ if (myprofile.Profession == "Investor")
+                       {
+                        <li><a href="/Profile/EditPortfolio">
+                            <img src="../../Content/images/icons/16x16/package.png" /> Portfolio</a></li>
+                       }
+                    }
+
+                    <li><a href="../../PublicationModel/Create/2">
+                        <img src="../../Content/images/icons/16x16/advanced_data_grid.png" /> Publication
+                        </a></li>
+                  
+                    <li><a href="../../PatentModel/Create/2">
+                        <img src="../../Content/images/icons/16x16/advanced_data_grid.png" /> Patent
+                        </a></li>
+                    <li><a href="../../Jobs/Create/2">
+                        <img src="../../Content/images/icons/16x16/advanced_data_grid.png" /> Jobs
+                        </a></li>
+                    <li><a href="/Course/Mine/">
+                        <img src="../../Content/images/icons/16x16/blackboard_drawing.png" /> My Courses</a></li>
+                   @* <li><a href="/Event/Index">
+                        <img src="../../Content/images/icons/16x16/calendar.png" />Events</a></li>*@
+                </ul>
+            </div>
+}

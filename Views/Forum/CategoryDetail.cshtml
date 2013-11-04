@@ -1,0 +1,401 @@
+﻿@using WebMatrix.Data;
+@using FollowPeers.Models;
+@{
+    ViewBag.Title = "CategoryDetail";
+    int ShowTopics = 2;
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string category = @ViewBag.Category;
+}
+
+@Html.Partial("_Header")
+@Html.Partial("_SideBar1")
+
+<div class="grid_9">
+    <div class="box">
+        <script type="text/javascript" language="javascript">
+            function puthint(divname, hinttext) {
+                $(document).ready(function () {
+
+                    // Define what happens when the textbox comes under focus
+                    // Remove the watermark class and clear the box
+                    $(divname).focus(function () {
+
+                        $(this).filter(function () {
+
+                            // We only want this to apply if there's not 
+                            // something actually entered
+                            return $(this).val() == "" || $(this).val() == hinttext
+
+                        }).removeClass("watermarkOn").val("");
+
+                    });
+
+                    // Define what happens when the textbox loses focus
+                    // Add the watermark class and default text
+                    $(divname).filter(function () {
+
+                        // We only want this to apply if there's not
+                        // something actually entered
+                        return $(this).val() == ""
+
+                    }).addClass("watermarkOn").val(hinttext);
+
+                    $(divname).blur(function () {
+
+                        $(this).filter(function () {
+
+                            // We only want this to apply if there's not
+                            // something actually entered
+                            return $(this).val() == ""
+
+                        }).addClass("watermarkOn").val(hinttext);
+
+                    });
+
+                });
+            }
+            puthint("#message", "Post Any News In This Category...");
+
+        </script>
+        <h2 style="height: 20px">Related Happenings For @ViewBag.Category</h2>
+
+        <fieldset>
+        <table style="margin:5px 15px 5px 15px">
+        <tr>
+        <td valign="top">
+            <div style="margin-top:10px; margin-left:15px" >
+            <p> 
+
+                <form action="/Forum/PostMessage"  method="post">
+                <textarea rows="2" id="message" name="message" type="text" style="width: 80%";"></textarea>
+                <input type="hidden" name ="PostCategory" value="@ViewBag.Category" />
+                <input class="btn btn-primary" type="submit" title="Update your status message" style="cursor: pointer; float: right;
+                padding: 2px 5px;" value="Update">
+                </form>
+
+                @{
+                    
+                    List<FollowPeers.Models.CategoryPost> CategoryPosts = followPeersDB.CategoryPosts.Where(m => m.Category == category).ToList();
+
+                    if (CategoryPosts != null)
+                    {
+                        var newList = followPeersDB.CategoryPosts.Where(x => x.Category == category).OrderByDescending(x => x.TimeStamp).ToList();
+
+                        <ul class ="nav nav-tabs nav-stacked" style="width:500px">
+                        @foreach (var currentUpdate in newList)
+                        {
+                            //If it is a post on the Category page
+                            if (currentUpdate.Type == 0)
+                            {
+                                FollowPeers.Models.UserProfile User = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.Postedby);
+                                <li><a href ="@currentUpdate.Link">@User.FirstName @User.LastName
+                                <p style="color:darkslategray">@currentUpdate.PostMessage</p></a></li>
+                            }
+
+                            //If it is a Publication notification
+                            if (currentUpdate.Type == 6)
+                            {
+                                FollowPeers.Models.UserProfile User = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.Postedby);
+                                <li><a href ="@currentUpdate.Link">@User.FirstName @User.LastName
+                                <p style="color:darkslategray">@currentUpdate.PostMessage</p></a></li>
+                            }
+
+                            //If it is job
+                            if (currentUpdate.Type == 7)
+                            {
+                                FollowPeers.Models.UserProfile User = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.Postedby);
+                                <li><a href ="@currentUpdate.Link">@User.FirstName @User.LastName
+                                <p style="color:darkslategray">@currentUpdate.PostMessage</p></a></li>
+                            }
+
+                            //If it is an Event notification
+                            if (currentUpdate.Type == 3)
+                            {
+                                FollowPeers.Models.UserProfile User = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.Postedby);
+                                <li><a href ="@currentUpdate.Link">@User.FirstName @User.LastName
+                                <p style="color:darkslategray">@currentUpdate.PostMessage</p></a></li>
+                            }
+
+                            //If it is an Patent
+                            if (currentUpdate.Type == 5)
+                            {
+                                FollowPeers.Models.UserProfile User = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.Postedby);
+                                <li><a href ="@currentUpdate.Link">@User.FirstName @User.LastName
+                                <p style="color:darkslategray">@currentUpdate.PostMessage</p></a></li>
+                            }
+
+                            //If it is a Group
+                            if (currentUpdate.Type == 2)
+                            {
+                                FollowPeers.Models.UserProfile User = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.Postedby);
+                                <li><a href ="@currentUpdate.Link">@User.FirstName @User.LastName
+                                <p style="color:darkslategray">@currentUpdate.PostMessage</p></a></li>
+                            }
+
+                            //If it is a Course
+                            if (currentUpdate.Type == 4)
+                            {
+                                FollowPeers.Models.UserProfile User = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.Postedby);
+                                <li><a href ="@currentUpdate.Link">@User.FirstName @User.LastName
+                                <p style="color:darkslategray">@currentUpdate.PostMessage</p></a></li>
+                            }
+                        }
+                        </ul>
+                    }
+                
+                }
+            </p>
+            </div>
+        </td>
+        <td valign="top"">
+
+            @{
+                List<FollowPeers.Models.Specialization> CategoryTopicList = followPeersDB.Specializations.Where(m => m.Field.ToLower() == category.ToLower()).ToList();
+                List<FollowPeers.Models.PublicationModel> PublicationsList = followPeersDB.PublicationModels.Where(m => m.specialisation.ToLower() == category.ToLower()).ToList();
+                List<FollowPeers.Models.PatentModel> PatentList = followPeersDB.PatentModels.Where(p => p.Tags.Any(a=>a.TagName.ToLower() == category.ToLower())).ToList();
+                List<FollowPeers.Models.Jobs>  JobList = followPeersDB.Jobs.Where(p => p.Tags.Any(a => a.TagName.ToLower() == category.ToLower())).ToList();
+                List<FollowPeers.Models.Course>  CourseList = followPeersDB.Courses.Where(p => p.Tags.Any(a => a.TagName.ToLower() == category.ToLower())).ToList();
+                List<FollowPeers.Models.Group>  GroupList = followPeersDB.Groups.Where(p => p.Tags.Any(a => a.TagName.ToLower() == category.ToLower())).ToList();
+             }
+
+            <div style="margin-top:10px; margin-left:15px" >
+
+            @using (Html.BeginForm())
+            {
+                        @Html.ValidationSummary(true)
+             
+                        <!DOCTYPE html>  
+                        <head>
+                        <link href="@Url.Content("~/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+                        <link href="@Url.Content("~/css/bootstrap.css")" rel="stylesheet" type="text/css" />
+                        <link href="@Url.Content("~/css/bootstrap-responsive.css")" rel="stylesheet" type="text/css" />
+                        <script src="@Url.Content("~/js/jquery-1.8.2.min.js")" type="text/javascript"></script>
+                        </head>
+            
+                        <body>
+
+                         <div class="span4" style="float:right; width:200px">
+                            <div class="pull-left">
+			                    <h5>Related Items</h5>
+			                    <!--<div class=""><div class="hero-unit"></div></div>-->
+			                    <div class="accordion" id="accordion1">
+                                @{
+                                    var db1 = Database.Open("FollowPeersDB");
+
+                                    //For Forums
+                                    <div class="accordion-group">
+					                    <div class="accordion-heading">
+					                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">
+						                    Forums
+					                    </a>
+					                    </div>
+					                    <div id="collapse1" class="accordion-body collapse in" style="height: auto; ">
+					                        <div class="accordion-inner">
+						                        <div>
+                                                    @{
+                                                        if (CategoryTopicList != null)
+                                                        {
+                                                            int counter = 0;
+                                                            foreach (var item in CategoryTopicList)
+                                                            {
+                                                                if (@counter == @ShowTopics)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                <li style="list-style:none"><a href="/Forum/Index/?Category=@item.SpecializationName">@item.SpecializationName</a></li>
+                                                                counter = counter + 1;
+                                                            }
+
+                                                        } 
+                                                     }
+						                        <a class="pull-right" href="/Forum/TopicList/?Category=@ViewBag.Category" style="font-size:10px">View All</a>
+                                                </div>
+					                        </div>
+					                    </div>
+				                    </div>
+                                    
+                                    <!--For Publications-->
+                                    <div class="accordion-group">
+					                    <div class="accordion-heading">
+					                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse2">
+						                    Publications
+					                    </a>
+					                    </div>
+					                    <div id="collapse2" class="accordion-body in collapse" style="height: auto; ">
+					                        <div class="accordion-inner">
+						                        <div>
+                                                    @{
+                                                        if (PublicationsList != null)
+                                                        {
+                                                            int counter = 0;
+                                                            foreach (var item in PublicationsList)
+                                                            {
+                                                                if (@counter == @ShowTopics)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                <li style="list-style:none"><a href="/PublicationModel/Details/@item.publicationID">@item.title</a></li>
+                                                                counter = counter + 1;
+                                                            }
+
+                                                        } 
+                                                     }
+						                        <a class="pull-right" href="/PublicationModel/Index/" style="font-size:10px">View All</a>
+                                                </div>
+					                        </div>
+					                    </div>
+				                    </div>
+                                    <!--For Patents-->
+                                    <div class="accordion-group">
+					                    <div class="accordion-heading">
+					                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse3">
+						                    Patents
+					                    </a>
+					                    </div>
+					                    <div id="collapse3" class="accordion-body in collapse" style="height: auto; ">
+					                        <div class="accordion-inner">
+						                        <div>
+                                                    @{
+                                                        if (PatentList != null)
+                                                        {
+                                                            int counter = 0;
+                                                            foreach (var item in PatentList)
+                                                            {
+                                                                if (@counter == @ShowTopics)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                <li style="list-style:none"><a href="/PatentModel/Details/@item.ID">@item.Title</a></li>
+                                                                counter = counter + 1;
+                                                            }
+
+                                                        } 
+                                                     }
+						                        <a class="pull-right" href="/PatentModel/Index/" style="font-size:10px">View All</a>
+                                                </div>
+					                        </div>
+					                    </div>
+				                    </div>
+                                    <!--For Jobs-->
+                                    <div class="accordion-group">
+					                    <div class="accordion-heading">
+					                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse4">
+						                    Jobs
+					                    </a>
+					                    </div>
+					                    <div id="collapse4" class="accordion-body in collapse" style="height: auto; ">
+					                        <div class="accordion-inner">
+						                        <div>
+                                                    @{
+                                                        if (JobList != null)
+                                                        {
+                                                            int counter = 0;
+                                                            foreach (var item in JobList)
+                                                            {
+                                                                if (@counter == @ShowTopics)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                <li style="list-style:none"><a href="/Jobs/Details/@item.JobId">@item.Title</a></li>
+                                                                counter = counter + 1;
+                                                            }
+
+                                                        } 
+                                                     }
+						                        <a class="pull-right" href="/Jobs/Index/" style="font-size:10px">View All</a>
+                                                </div>
+					                        </div>
+					                    </div>
+				                    </div>
+                                    <!--For Courses-->
+                                    <div class="accordion-group">
+					                    <div class="accordion-heading">
+					                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse5">
+						                    Courses
+					                    </a>
+					                    </div>
+					                    <div id="collapse5" class="accordion-body in collapse" style="height: auto; ">
+					                        <div class="accordion-inner">
+						                        <div>
+                                                    @{
+                                                        if (CourseList != null)
+                                                        {
+                                                            int counter = 0;
+                                                            foreach (var item in CourseList)
+                                                            {
+                                                                if (@counter == @ShowTopics)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                <li style="list-style:none"><a href="/Course/Details/@item.CourseId">@item.CourseName</a></li>
+                                                                counter = counter + 1;
+                                                            }
+
+                                                        } 
+                                                     }
+						                        <a class="pull-right" href="/Course/Index/" style="font-size:10px">View All</a>
+                                                </div>
+					                        </div>
+					                    </div>
+				                    </div>
+                                    <!--For Groups-->
+                                    <div class="accordion-group">
+					                    <div class="accordion-heading">
+					                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapse6">
+						                    Groups
+					                    </a>
+					                    </div>
+					                    <div id="collapse6" class="accordion-body in collapse" style="height: auto; ">
+					                        <div class="accordion-inner">
+						                        <div>
+                                                    @{
+                                                        if (GroupList != null)
+                                                        {
+                                                            int counter = 0;
+                                                            foreach (var item in GroupList)
+                                                            {
+                                                                if (@counter == @ShowTopics)
+                                                                {
+                                                                    break;
+                                                                }
+                                                                <li style="list-style:none"><a href="/Groups/Details/@item.GroupId">@item.Name</a></li>
+                                                                counter = counter + 1;
+                                                            }
+
+                                                        } 
+                                                     }
+						                        <a class="pull-right" href="/Groups/Index/" style="font-size:10px">View All</a>
+                                                </div>
+					                        </div>
+					                    </div>
+				                    </div>
+                                }
+                                </div>
+                            </div>
+                        </div>
+                     </body>           
+                     <script src="@Url.Content("~/js/bootstrap.min.js")"></script>
+
+            }
+            </div>
+        </td>
+        </tr>
+        </table>
+        </fieldset>
+            
+    </div>
+</div>
+
+@Html.Partial("_Footer")
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $(".collapse").collapse();
+    });
+
+    $('.carousel').carousel({
+        interval: 2000
+    });
+</script>
+
+

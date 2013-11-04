@@ -1,0 +1,271 @@
+﻿@model FollowPeers.Models.UserProfile 
+@{
+    ViewBag.Title = @Model.FirstName + " " + @Model.LastName + " Update Your Profile";
+}
+@*Header*@
+@Html.Partial("_Header")
+@*Container*@
+<div class="container">
+
+    @*rows within container*@
+    <div class="row">
+        @*Left Sidebar*@
+        @Html.Partial("_SideBar2")
+
+        @*Main Content*@
+        <div class="span9">
+             <div class="box">
+        <h2>
+            Update Achievements
+        </h2>
+        <div class="">
+    <div class="box">
+        @{Html.RenderAction("ProgressTracker", "Profile");}
+        
+    </div>
+</div>
+        @{var message = ViewData["message"];}
+        <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.bgiframe.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Scripts/jquery.mcdropdown.js")" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
+        @using (Html.BeginForm("EditAchievement", "Profile", FormMethod.Post ))
+        {
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.UserProfileId)
+            @Html.HiddenFor(model => model.UserName)
+            @Html.HiddenFor(model => model.activated)
+            if (message != null)
+            {
+                <div style="background: #eee;padding: 5px;color: green;">@message</div>
+            }
+            int i = 0;
+            <div id="AchievementFields">
+                
+                @foreach (var E in Model.Achievements)
+                {
+                    
+                    string TempData = "Achieve" + i.ToString();
+                    string TempData2 = "Delete" + i.ToString();
+                    <div id="@TempData">
+                        <fieldset>
+                            <legend>Achievement</legend>
+                            <div id="@TempData2"  style="float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;" title="Click to delete this record.">
+                                x</div>
+
+                            <div class="control-group">
+                                <div class="editor-label">
+                                    Title
+                                </div> 
+                                <div class="editor-field controls">
+                                    <input type="text" name="Title" value="@Model.Achievements.ElementAt(i).Title" />
+                                    <span class="help-inline hide">Title cannot be empty</span>
+                                </div>
+                            </div>
+                            <div class="editor-label">
+                                Description
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" name="Description" value="@Model.Achievements.ElementAt(i).Description" />
+                            </div>
+                           
+                             <div class="editor-label">
+                                Start Year (yyyy)
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" name="startYear" value="@Model.Achievements.ElementAt(i).startYear" />
+                            </div>
+                            <div class="editor-label">
+                                End Year (yyyy)
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" name="endYear" value="@Model.Achievements.ElementAt(i).endYear" />
+                            </div>
+
+                             <div class="editor-label">
+                                Keyword (separated by ;)
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" name="Keyword" value="@Model.Achievements.ElementAt(i).Keyword" />
+                            </div>
+                            <div class="editor-label">
+                                File (Note : Upload new files in the upload section)
+                            </div>
+                            <div  class="editor-field">
+                                 <select name="Link">
+                                <option value="@Model.Achievements.ElementAt(i).Link">NA</option>
+
+                          @{string path = HttpRuntime.AppDomainAppPath;
+                        string newpath = path + "\\Content\\Files\\";
+                        var directoryInfo = new DirectoryInfo(newpath + Model.UserName + "\\");
+                        if (directoryInfo.Exists)
+                        {
+                            string[] readtext = File.ReadAllLines(newpath + Model.UserName + "\\uploadedList.txt");
+                           
+                         // string[] q = readtext.Distinct().ToArray();
+                           
+                            
+                           if (readtext == null || readtext.Length == 0)
+                            {
+                                <option>""</option>
+                            }
+                            
+                            else
+                            {
+                                
+                                foreach (var fileName in readtext)
+                                {
+                                    string name = "shortlink" + i;
+                                    string link = @Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName }).ToString();
+                                    string shortlink = link.Substring(9, link.Length - 23);
+                                   
+                                    <option value="@shortlink">@fileName</option>
+                               
+                                }
+                               
+                                
+                            }
+                        }
+                        }
+                            
+
+                            </select>
+                                
+                               
+                           
+                                </div>
+                           
+
+                        </fieldset>
+                    
+                        
+                    </div>
+            
+                    i = i + 1;
+                }</div>
+            
+            <p>
+                <a class="btn" id="Add" style="" title="Click to add another record.">
+                    Add Another <i class="icon-plus"></i></a>
+
+                         <input id="submit-form" type="submit"  value="Save" class="btn btn-primary"/>
+                
+            </p>
+        }</div>
+        </div>
+    </div>
+    <div class="row">
+        @Html.Partial("_Footer")
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function select() {
+
+        $(".dropdown-menu li a").click(function () {
+
+            $(".btn:first-child").text($(this).text());
+            $(".btn:first-child").val($(this).text());
+
+        });
+
+    });
+
+
+    $(document).ready(function () {
+        counter = 0;
+        if ($('#Achieve0').length) { counter++; $('#Delete0').click(function () { Delete(0); }); }
+        if ($('#Achieve1').length) { counter++; $('#Delete1').click(function () { Delete(1); }); }
+        if ($('#Achieve2').length) { counter++; $('#Delete2').click(function () { Delete(2); }); }
+        $('#Add').click(function () { AddField(); });
+        if (counter == 0) AddField();
+
+
+        function AddField() {
+
+             @{string path1 = HttpRuntime.AppDomainAppPath;
+               string opt = "<option value=''>NA</option>";
+                        string newpath1 = path1 + "\\Content\\Files\\";
+                        var directoryInfo1 = new DirectoryInfo(newpath1 + Model.UserName + "\\");
+                        if (directoryInfo1.Exists)
+                        {
+                            string[] readtext = File.ReadAllLines(newpath1 + Model.UserName + "\\uploadedList.txt");
+                           
+                         // string[] q = readtext.Distinct().ToArray();
+                           
+                            
+                           if (readtext == null || readtext.Length == 0)
+                            {
+                                opt = opt + "<option>''</option>";
+                            }
+                            
+                            else
+                            {
+                                
+                                foreach (var fileName in readtext)
+                                {
+                                    string name = "shortlink" + 99;
+                                    string link = @Html.ActionLink("Download", "Download", new { downloadPath = newpath1 + Model.UserName + "\\" + fileName }).ToString();
+                                    string shortlink = link.Substring(9, link.Length - 23);
+
+                                    opt = opt + "<option value='" + @shortlink + "'>" + @fileName + "</option>";
+                               
+                                }
+                               
+                                
+                            }
+                        }
+                        }
+
+            if (counter >= 3) alert("You can add a maximum of 3 Education Records");
+            else {
+                var name;
+                if (!($('#Achieve0').length)) name = 0;
+                else if (!($('#Achieve1').length)) name = 1;
+                else if (!($('#Achieve2').length)) name = 2;
+                $('#AchievementFields').append("<div id='Achieve" + name + "'><fieldset><legend>Achievement</legend><div id='Delete" + name + "' style='float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;' title='Click to delete this record.'>x</div><div class='control-group'><div class='editor-label'>Title</div><div class='editor-field'><input type='text' name='Title'/><span class='help-inline hide'>Title cannot be empty</span></div></div><div class='editor-label'>Description</div><div class='editor-field'><input type='text' name='Description' /></div><div class='editor-label'>Start Year (yyyy)</div><div class='editor-field'><input type='text' name='startYear' /></div><div class='editor-label'>End Year (yyyy)</div><div class='editor-field'><input type='text' name='endYear' /></div><div class='editor-label'>Keyword (separated by ;)</div><div class='editor-field'><input type='text' name='Keyword' /></div><div class='editor-label'>File (Note : Upload new files in the upload section)</div><div class='editor-field'><select name='Link' class='valid'>@Html.Raw(opt)</select></div></fieldset></div>");
+                
+                $('#Delete' + name).click(function () { Delete(name); });
+                counter++;
+            }
+        }
+
+
+        function Delete(id) {
+
+            if ($('#Achieve' + id).length) {
+                $('#Achieve' + id).slideUp('fast', function () { $('#Achieve' + id).remove(); });
+                counter--;
+            }
+        }
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("form").submit(function () {
+
+            isValid = true;
+
+            $("input[name=Title]").each(function () {
+                if ($(this).attr("value") == "") {
+                    isValid = false;
+                    $(".control-group").addClass("error");
+                    $(".help-inline").removeClass("hide");
+                    
+                }
+            });
+
+
+            if (isValid) {
+                console.log("return true");
+                return true;
+            }
+            else {
+                alert('validation failed');
+                return false;
+            }
+        })
+    });
+</script>

@@ -1,0 +1,217 @@
+﻿@model IEnumerable<FollowPeers.Models.Group>
+@using FollowPeers.Models;
+@Html.Partial("_Header")
+@{
+    ViewBag.Title = "Groups";
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    ViewBag.UserName = name;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == name);
+    List<FollowPeers.Models.Favourite> FavouriteList = new List<FollowPeers.Models.Favourite>();
+    FavouriteList = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 2).ToList();
+
+}
+<div class="container" id="main">
+    <div class="row">
+@Html.Partial("_SideBar1")
+        <div class="span8">
+           <ul class="nav nav-tabs"> 
+                    <li id="li_tab1" onclick="tab('tab1')" class="active"><a>Groups Home</a></li>
+                    <li id="li_tab2" onclick="tab('tab2')"><a>Joined Groups</a></li>
+                    <!-- <li id="li_tab3" onclick="tab('tab3')"><a>Created Groups</a></li> -->
+                    <li id="li_tab4" onclick="tab('tab4')"><a>Created Groups</a></li>
+                    <li id="li_tab5" onclick="tab('tab5')"><a>Favorite Groups</a></li>
+               </ul>   
+                <div id="Content_Area" class="tab-content">
+
+
+
+                    <div id="tab2" style="display: none;" class="tab-pane" >
+                        @{
+                        List<Group> tempresult = myprofile.Groups.ToList();
+                        <table>
+                        @foreach (var item in tempresult)
+                        {
+                            if (item.OwnerId != myprofile.UserProfileId)
+                            {
+                                <tr><td>       
+                                <div style="margin-left: 8px;">
+                                    <a href="/Groups/Details/@item.GroupId" id="Name"><b>@item.Name</b></a> 
+                                </div>
+                                <div>
+                                    <b>@item.GroupDesc </b>
+                                </div>
+                                </td></tr>                             
+                            }
+                        }
+                       </table>
+                    }
+                    </div>
+                    @*
+                    <div id="tab3" style="display: none;" class="tab-pane" >
+                    @{
+                        List<Group> result = myprofile.Groups.ToList();
+                        <table>
+                        @foreach (var item in result)
+                        {
+                            if (item.OwnerId != myprofile.UserProfileId)
+                            {
+                                <tr><td>       
+                                <div style="margin-left: 8px;">
+                                    <a href="/Groups/Details/@item.GroupId" id="Name"><b>@item.Name</b></a> 
+                                </div>
+                                <div>
+                                    <b>@item.GroupDesc    |   @item.Members</b>
+                                </div>
+                                </td></tr>                             
+                            }
+                        }
+                       </table>
+                    }
+                    </div>
+                    *@
+                    <div id="tab4" style="display: none;" class="tab-pane" >
+                       @{ 
+                           if (Model.Count() != 0)
+                           {
+                               <table class="table table-hover">
+                               @foreach (var item in Model)
+                               {
+                                   if (item.OwnerId == myprofile.UserProfileId)
+                                   {                        
+                    <tr><td>       
+                <div style="margin-left: 8px;">
+                    <a href="/Groups/Details/@item.GroupId" id="Name"><b>@item.Name</b></a> 
+                </div>
+                <div>
+                    <b>@item.GroupDesc    </b>
+                </div>
+            </td></tr>
+                                   }
+                               }
+                                 </table>
+                           }
+                         
+                        
+                           }
+                           </div>
+                    <div id="tab1" style="overflow:hidden; padding:0px,0px,0px,0px; margin:0px;" class="tab-pane" >
+                    <div class="span8" style="padding:0px,0px,0px,0px; margin:0px;">
+                        <div class="row span7">
+                            <a class="btn btn-primary" href="@Url.Content("~/Groups/Create")"><i class="icon-upload icon-white"></i>Add new</a>
+                            <div class="form-search pull-right" >
+                                <!--<input type="text" class="input-medium search-query" />
+                                <button type="submit" class="btn">Search Groups</button> -->
+                                <input type="text" id="keyword_string" class="input-medium search-query span4"  />
+                                <a id="Search_Group" class="btn btn-danger">Search</a>&nbsp;&nbsp;
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                       <table  class="table table-hover">
+                       @{ if (Model.Count() != 0)
+                          {
+                              foreach (var item in Model)
+                              {
+                                       <tr><td>       
+                <div style="margin-left: 8px;">
+                    <a href="/Groups/Details/@item.GroupId" id="title"><b>@item.Name</b></a> 
+                </div>
+                <div>
+                    <b>@item.GroupDesc    </b>
+                </div>
+            </td></tr>
+                              }
+
+                          }
+                          }
+                          </table>
+                        </div>
+                    </div>
+                 <!--For Favourites-->
+                    <div id="tab5" style="display: none;" class="tab-pane" >
+                    @if (FavouriteList.Count() != 0)
+
+                         {
+                            <div class="row span7">
+                                <div class="form-search pull-right" >
+                                    <span class="label label-info">Favourite Publications: @FavouriteList.Count()</span>
+                                    <table class="span7">  
+                                        @foreach (var item in FavouriteList)
+                                        {
+                                        <tr>
+                                            <td>
+                                                <div style="margin: 10px 0px;">
+                                                @{ String link = item.ItemLink;}
+                                                    <a href="@Url.Content(link)" id="title"><b>@item.ItemName</b></a>
+                                                </div>
+                                                <hr />
+                                            </td>
+                                        </tr>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                            }
+                            else
+                            {
+                                <span class="label label-info">No Favourite Groups Found</span>
+                            }
+                        </div>
+                    
+                </div>
+                </div>
+            </div>
+    </div>
+
+<script type="text/javascript">
+    function tab(tab) {
+        document.getElementById('tab1').style.display = 'none';
+        document.getElementById('tab2').style.display = 'none';
+        //document.getElementById('tab3').style.display = 'none';
+        document.getElementById('tab4').style.display = 'none';
+        document.getElementById('tab5').style.display = 'none';
+        document.getElementById('li_tab1').setAttribute("class", "");
+        document.getElementById('li_tab2').setAttribute("class", "");
+        //document.getElementById('li_tab3').setAttribute("class", "");
+        document.getElementById('li_tab4').setAttribute("class", "");
+        document.getElementById('li_tab5').setAttribute("class", "");
+        document.getElementById(tab).style.display = 'block';
+        document.getElementById('li_' + tab).setAttribute("class", "active");
+    }
+    $(document).ready(function () {
+        tab('tab1');
+    });
+
+    $("#Search_Group").click(function () {
+        // Get publication ID
+        var keyword = $("#keyword_string").val();
+        // Send Ajax Request
+        $.ajax({
+            type: "POST",
+            url: "/Groups/SearchTemp",
+            data: "ID=" + keyword,
+            success: function () {
+                var link = "@Url.Action("SearchGroups", "Groups", null)";
+                window.location.href = link;
+            }
+        });
+    });
+
+    $("#AdvanceSearch").click(function () {
+        var keyword_string = $("#keywordstring").val();
+        var jobtitle_string = $("#jobtitlestring").val();
+        var country_string = $("#countrystring").val();
+        $.ajax({
+            type: "POST",
+            url: "/Jobs/AdvanceTemp",
+            data: { id: keyword_string, jobtitle: jobtitle_string, country: country_string },
+            success: function () {
+                var link = "@Url.Action("AdvanceSearch", "Jobs",null)";
+                window.location.href = link;
+            }
+        });
+    });
+
+</script>
+

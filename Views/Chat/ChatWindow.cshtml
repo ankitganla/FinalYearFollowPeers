@@ -1,0 +1,70 @@
+﻿@model SignalR.Chat.Models.Client
+@{
+               FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+               string name = Membership.GetUser().UserName;
+               FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+               string id = myprofile.UserProfileId.ToString();
+}
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        var chatHubClient = $.connection.chatHub;
+
+        // Send a new message to the server
+        $("#SendMessage").click(function () {
+            var message = $('#textMessage').val();
+            chatHubClient.sendMessage(message);
+            $('#textMessage').val("");
+        });
+
+        // Log off
+        $("#LogOff").click(function () {
+            chatHubClient.unjoin('@Model.Name');
+        });
+
+        // Start the connection
+        $.connection.hub.start(function () {
+            chatHubClient.join('@Model.Name');
+        });
+
+        // Receive a new message from the server
+        chatHubClient.newMessage = function (message) {
+            message = $("#chatWindow").html() + "<br />" + '<h6>' + message + '</h6>';
+            $("#chatWindow").html(message);
+        };
+
+        // Receive the new active userlist
+        chatHubClient.userList = function (message) {
+            message = JSON.parse(message);
+            var options;
+            $.each(message, function (index) {
+                options += '<option value="' + message[index].Name + '">' + message[index].Name + '</option>';
+            });
+            $("select#users").html(options);
+        }
+    });
+</script>
+
+
+<div style="position: absolute; left: 0; top: 0; height: 100%; width: 100%">
+    <p id="chatWindow" style="position:relative; left: 0; top: -15px; height: 95%; width: 80%;background-color: #eeeeee;float:left;">
+    </p>
+    <select multiple="multiple" id="users" style="float:left;width:20%; height: 95%;">
+
+    </select>
+    <div style="bottom:0;position:absolute;width:80%;height:5%;float:left;">
+        <span class="display-label" style="float:left;"><h5>Message: </h5></span><input type="text" id="textMessage"  style="float:left;height:80%;width:90%;background-color:#CCCCCC" />
+        
+    </div>    
+
+    <div style="float:right; width:5%; height: 5%;">
+       <a href="/Profile/Index/?id=@id" id="Back"><h4><b>Go Back</b></h4></a> 
+    </div>
+
+    <div style="float:right; width:10%; height: 5%;">
+        <input class="btn btn-primary" type="button" id="LogOff" value="Log Off" style="width:100%;height:100%" />
+    </div>
+    <div style="float:right; width:10%; height: 5%;">
+        <input class="btn btn-primary" type="button" id="SendMessage" value="Send" style="width:100%;height:100%" />
+    </div>
+</div>

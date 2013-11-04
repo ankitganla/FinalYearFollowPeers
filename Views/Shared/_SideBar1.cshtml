@@ -1,0 +1,134 @@
+﻿@{
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name1 = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name1);
+    var profileUserName = myprofile.UserName;
+    var name = ViewData["Name"];
+
+    if (name == null) { name = myprofile.FirstName + " " + myprofile.LastName; }
+
+    var photourl = ViewData["PhotoUrl"];
+    int myself = 0;
+    if (photourl == null) { myself = 1; } //if cannot read from ViewData, I am viewing my own profile
+    if (photourl == null) { photourl = myprofile.PhotoUrl; }
+
+    var Myself = ViewData["Myself"];
+    if (Myself != null && (int)Myself == 1) { myself = 1; }
+    if (Myself != null && (int)Myself == 0) { myself = 0; }
+
+    var profilename = ViewData["ProfileName"];
+    if (profilename == null) { profilename = myprofile.UserProfileId; }
+
+    <div class="span2" style="margin-left: 0px;">
+        <!--<div class="span2"><div class="hero-unit"></div></div>-->
+        <div class="thumbnail" style="text-align: center;">
+            <a href=""../../Profile/Index/@profilename"">
+                <img src="@Html.Encode(photourl)" class="img" alt=""/></a>
+            <h4>@name</h4>
+        </div>
+        @{
+            char[] delimiterChars = { ' ' };
+            string name2 = name.ToString();
+
+            string[] firstname = name2.Split(delimiterChars);
+        }
+        <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+            @if (myself == 0)
+            {
+                <li><a href="../../Profile/Index/@profilename">
+                    <img src="../../Content/images/icons/16x16/user.png" />@firstname[0]'s Info</a></li>
+            }
+
+            <li><a href="/Notice/Index/@profilename">
+                <img src="../../Content/images/icons/16x16/sign.png" />@if (myself == 1)
+                                                                       {<text> My </text>}
+                                                                       else
+                                                                       {<text></text>}Noticeboard</a></li>
+
+            <li><a href="/PublicationModel/Index">
+                <img src="../../Content/images/icons/16x16/database.png" />@if (myself == 1)
+                                                                           {<text> Publications</text>}
+                                                                           else
+                                                                           {<text>Publications</text>}
+            </a></li>
+            <li><a href="/PatentModel/MyPatent">
+                <img src="../../Content/images/icons/16x16/database_connect.png" />@if (myself == 1)
+                                                                                   {<text> Patents</text>}
+                                                                                   else
+                                                                                   {<text> Patents</text>}
+            </a></li>
+
+            <li><a href="/Profile/UploadFile">
+                <img src="../../Content/images/icons/16x16/upload.png" />
+                @if (myself == 1)
+                {<text> Upload</text>}
+                else
+                {<text> Upload</text>}
+            </a></li>
+
+            <li><a href="/Course/Index">
+                <img src="../../Content/images/icons/16x16/blackboard_drawing.png" />
+                @if (myself == 1)
+                {<text> Courses </text>}
+                else
+                {<text> Courses </text>}
+            </a></li>
+
+            <li><a href="/Chat/Index">
+                <img src="../../Content/images/icons/16x16/user_comment.png" />
+
+                @if (myself == 1)
+                {<text> Let's Chat </text>}
+                else
+                {<text> Let's Chat </text>}
+            </a></li>
+
+
+            <li><a href="/Forum/Categories">
+                <img src="../../Content/images/icons/16x16/comments.png" />@if (myself == 1)
+                                                                           {<text> Categories</text>}
+                                                                           else
+                                                                           {<text> Categories</text>}
+            </a></li>
+            <li><a href="/Event/Index">
+                <img src="../../Content/images/icons/16x16/calendar.png" />@if (myself == 1)
+                                                                           {<text> Events</text>}
+                                                                           else
+                                                                           {<text> Events</text>}
+            </a></li>
+            <li><a href="/Favourites/Index">
+                <img src="../../Content/images/icons/16x16/emotion_smile.png" />@if (myself == 1)
+                                                                                {<text> Favourites</text>}
+                                                                                else
+                                                                                {<text> Favourites</text>}
+            </a></li>
+            <li><a href="/Groups/Index">
+                <img src="../../Content/images/icons/16x16/group.png" />
+                @if (myself == 1)
+                {<text>Groups</text>}
+                else
+                {<text>Groups</text>}
+            </a></li>
+            <li><a href="/Jobs/Index">
+                <img src="../../Content/images/icons/16x16/calendar.png" />@if (myself == 1)
+                                                                           {<text> Jobs</text>}
+                                                                           else
+                                                                           {<text> Jobs</text>}
+            </a></li>
+            @if (myself == 0)
+            {
+                <li><a href="../../Message/Create?Receiver=@profilename">
+                    <img src="../../Content/images/icons/16x16/email.png" />Message</a></li>
+            }
+        </ul>
+        <!--<h5>GROUPS</h5>
+
+		          <ul class="nav nav-list">
+					  <!--<li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
+					  <li><a href="#"><i class="icon-flag"></i>Economics <!--<span class="badge pull-right">1</span2></a></li>
+					  <li><a href="#"><i class="icon-leaf"></i>Photosynthesis<span class="badge pull-right">2</span></a></li>
+					  <li><a href="#"><i class="icon-camera"></i>Photography <span class="badge pull-right">1</span></a></li>
+					  <li><a href="#"><i class="icon-globe"></i>Science Facts <span class="badge pull-right">5</span></a></li>
+					</ul>-->
+    </div>
+}

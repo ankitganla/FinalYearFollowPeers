@@ -1,0 +1,89 @@
+﻿@model FollowPeers.Models.Group
+using FollowPeers.Models;
+
+@{
+    ViewBag.Title = "AddGroup";
+}
+
+@{
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+}
+
+@Html.Partial("_Header")
+@Html.Partial("_SideBar1")
+
+<div class="grid_9">
+    <div class="box">
+        <h2 style="height: 20px"> Add Groups </h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+             
+            <!DOCTYPE html>  
+            <head>
+            <title>Event Calendar</title>
+            <link href="@Url.Content("~/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+            <link href="@Url.Content("~/css/bootstrap.css")" rel="stylesheet" type="text/css" />
+            <link href="@Url.Content("~/css/datepicker.css")" rel="stylesheet" type="text/css" />
+            <link href="css/datepicker.less" rel="stylesheet" type="text/css" />
+            <link href="@Url.Content("~/css/bootstrap-responsive.css")" rel="stylesheet" type="text/css" />
+            <script src="@Url.Content("~/js/jquery-1.8.2.min.js")" type="text/javascript"></script>
+            <script src="js/bootstrap-datepicker.js" ></script>
+            </head>            
+                  
+                    
+                    <table style="margin:5px 0px 5px 0px">
+                        <tr>
+                            <td>
+                                <table>
+                                   <tr>
+                                        @using (Html.BeginForm()) 
+                                        {
+                                            @Html.ValidationSummary(true)
+                                            <fieldset>
+
+                                                <div class="editor-label">
+                                                    @Html.LabelFor(model => model.Name, "Group Name")
+                                                </div>
+                                                <div class="editor-field">
+                                                    @Html.EditorFor(model => model.Name)
+                                                    @Html.ValidationMessageFor(model => model.Name)
+                                                </div>
+
+                                                <div class="editor-label">
+                                                    @Html.LabelFor(model => model.GroupDesc, "What's The Group About")
+                                                </div>
+                                                <div class="editor-field">
+                                                    @Html.EditorFor(model => model.GroupDesc)
+                                                    @Html.ValidationMessageFor(model => model.GroupDesc)
+                                                </div>
+
+                                                <p>
+                                                    <input type="submit" value="Add" style="float: right; padding: 3px 8px;" class="btn btn-primary" />
+                                                </p>
+                                            </fieldset>
+                                        }
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+           
+            <script src="@Url.Content("~/js/bootstrap.min.js")"></script>
+
+           
+                       
+        }
+
+
+    </div>
+</div>
+
+@Html.Partial("_Footer")
+
+
+
+

@@ -1,0 +1,192 @@
+﻿@model FollowPeers.Models.Jobs
+@using WebMatrix.Data;
+@Html.Partial("_Header")
+@{
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    List<FollowPeers.Models.Jobs> Jobs = followPeersDB.Jobs.ToList();
+    int jobid = Jobs.Count() + 1;
+}
+<div class="container" id="main">
+<div class="row">
+  @if (ViewData["SideBar"].ToString() == "2")
+    {
+    @Html.Partial("_SideBar2");
+    }
+    else
+    {
+    @Html.Partial("_SideBar1");
+   }  
+            <div style="margin-left:10px" class="span7">
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary(true)
+               <legend>Enter Job Details!</legend>          
+                @*-----------Job ID-----------*@
+                <div class="editor-label" id="title_l">
+                    Job ID : @jobid
+                </div>
+                @*-----------Title-----------*@
+                <div class="editor-label" id="title_l">
+                    @Html.LabelFor(model => model.Title, "Job Title ")
+                </div>
+                <div class="editor-field" id="title_f">
+                    @Html.TextBoxFor(model => model.Title, new { size = 78 })
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>
+                      @*-----------Company-----------*@
+                <div class="editor-label" id="title_l">
+                    @Html.LabelFor(model => model.Company, "Company")
+                </div>
+                <div class="editor-field" id="title_f">
+                    @Html.TextBoxFor(model => model.Company, new { size = 78 })
+                    @Html.ValidationMessageFor(model => model.Company)
+                </div>
+                  @*-----------Specialisations-----------*@
+                <div class="editor-label" id="author_l">
+       
+                </div>
+                 <div>
+                 @{
+            var db = Database.Open("FollowPeersDB");
+            List<string> specialisations = new List<string>();
+            foreach (var row in db.Query("Select distinct(Field) from Specializations"))
+            {
+                specialisations.Add(row.Field);
+            }
+                    }
+                </div>
+                @*-----------Type-----------*@
+                <div class="editor-label" id = "type_l">
+                    @Html.LabelFor(model => model, "Type ")
+                </div>
+                <div class="editor-field" id = "type_f">
+                    @{
+            List<string> publicationtype = new List<string>();
+            publicationtype.Add("Full-time");
+            publicationtype.Add("Part-time");
+            publicationtype.Add("Contract");
+            publicationtype.Add("Temporary");
+            publicationtype.Add("Other");
+                    }
+                    @Html.DropDownList("Type", new SelectList(publicationtype))
+                    @Html.ValidationMessageFor(model => model.Type)
+                </div>
+                 @*-----------Country-----------*@
+                <div class="editor-label" id="country_l">
+                    @Html.LabelFor(model => model.Country, "Country")
+                </div>
+                <div>
+                 @{
+            List<string> countries = new List<string>();
+            foreach (var row in db.Query("Select distinct(Name) from Countries"))
+            {
+                countries.Add(row.Name);
+            }
+                    @Html.DropDownList("Country", new SelectList(countries))
+                    @Html.ValidationMessageFor(model => model.Country)
+                  }  
+                </div>  
+                  @*-----------Industry-----------*@
+                <div class="editor-label" id="industry_l">
+                    @Html.LabelFor(model => model.Industry, "Industry")
+                </div>
+                <div>
+                 @{
+            List<string> industry = new List<string>();
+            foreach (var row in db.Query("Select distinct(Name) from Industries"))
+            {
+                industry.Add(row.Name);
+            }
+                    @Html.DropDownList("Industry", new SelectList(industry))
+                    @Html.ValidationMessageFor(model => model.Industry)
+                  }  
+                  
+                </div>
+            <div class="editor-label" id="end date_l"> 
+            @Html.LabelFor(model => model.Industry, "End Date: ")
+            <input id="Enddate" class="small" type="date" name ="EventDate" value= "01/05/2013" data-datepicker="datepicker">
+            </div>
+                @*-----------Experience-----------*@
+                <div class="editor-label" id="experience_l">
+                    @Html.LabelFor(model => model.Experience, "Experience")
+                </div>
+                <div>
+                 @{
+            List<string> experience = new List<string>();
+            experience.Add("Executive");
+            experience.Add("Director");
+            experience.Add("Mid-Senior Level");
+            experience.Add("Associate");
+            experience.Add("Entry Level");
+            experience.Add("Internship");
+            experience.Add("Not Applicable");
+            
+                    @Html.DropDownList("Experience", new SelectList(experience))
+                    @Html.ValidationMessageFor(model => model.Experience)
+                  }  
+                </div>  
+                  @*-----------Job Function-----------*@
+                <div class="editor-label" id="experience_l">
+                    @Html.LabelFor(model => model.Jobfunction, "Job Function")
+                </div>
+                <div>
+                 @{
+            List<string> jobfunction = new List<string>();
+            foreach (var row in db.Query("Select distinct(Name) from Industries"))
+            {
+                jobfunction.Add(row.Name);
+            }
+                    @Html.DropDownList("Job Function", new SelectList(jobfunction))
+                    @Html.ValidationMessageFor(model => model.Jobfunction)
+                  }  
+                </div>  
+                 @*-----------Requirements-----------*@
+                <div class="editor-label" id="Requirements_l">
+                    @Html.LabelFor(model => model.Requirements, "Requirements")
+                </div>
+                <div class="editor-field" id="Requirements_f">
+                    @Html.TextAreaFor(model => model.Requirements, new { style = "width:650px" , rows = 7})
+                    @Html.ValidationMessageFor(model => model.Requirements)
+                </div>                         
+                @*-----------Description-----------*@
+                <div class="editor-label" id="description_l">
+                    @Html.LabelFor(model => model.Description, "Description")
+                </div>
+                <div>
+                    @Html.TextAreaFor(model => model.Description, new { style = "width:650px", rows = 7})
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+                 @*-----------Email-----------*@
+                <div class="editor-label" id="publishingdate_l">
+                    @Html.LabelFor(model => model.Email, "External email at which applicants could apply")
+                </div>
+                <div class="editor-field" id="publishingdate_f">
+                    @Html.TextBoxFor(model => model.Email, new { size = 78 })
+                    @Html.ValidationMessageFor(model => model.Email)
+                </div>
+                 @*-----------URL-----------*@
+                <div class="editor-label" id="publishingdate_l">
+                    @Html.LabelFor(model => model.URL, "URL of the company application portal (if available)")
+                </div>
+                <div class="editor-field" id="publishingdate_f">
+                    @Html.TextBoxFor(model => model.URL, new { size = 78 })
+                    @Html.ValidationMessageFor(model => model.URL)
+                </div>
+            <p>
+                <input type="submit" value="Create" style="float: right; padding: 3px 8px;" class="btn btn-primary"/>
+            </p> 
+        }
+        </div>
+    </div>
+    </div>
+@Html.Partial("_Footer")
+
+<script type="text/javascript">
+    window.onload = function () {
+        var randomNumber = Math.random()*(1000+1);
+        randomNumber = Math.floor(randomNumber);
+        var element = document.getElementById('random');
+        element.value = randomNumber;
+    }
+</script>
+

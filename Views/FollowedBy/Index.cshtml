@@ -1,0 +1,407 @@
+﻿@model IEnumerable<FollowPeers.Models.UserProfile>
+@using FollowPeers.Models;
+@Html.Partial("_Header")
+@{
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    var myself = ViewData["Myself"];
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+    List<UserProfile> AllFollowing = Model.Where(p => (ViewData[p.UserName] == "1") || (ViewData[p.UserName] == "2")).ToList();
+    List<UserProfile> AllFollowers = Model.Where(p => (ViewData[p.UserName] == "0") || (ViewData[p.UserName] == "2")).ToList();
+    List<UserProfile> IndividualFollowing = Model.Where(p => p.Profession == "Individual" && ((ViewData[p.UserName] == "1") || (ViewData[p.UserName] == "2"))).ToList();
+    List<UserProfile> IndividualFollowers = Model.Where(p => p.Profession == "Individual" && ((ViewData[p.UserName] == "0") || (ViewData[p.UserName] == "2"))).ToList();
+    List<UserProfile> CorporateFollowing = Model.Where(p => p.Profession == "Corporate" && ((ViewData[p.UserName] == "1") || (ViewData[p.UserName] == "2"))).ToList();
+    List<UserProfile> CorporateFollowers = Model.Where(p => p.Profession == "Corporate" && ((ViewData[p.UserName] == "0") || (ViewData[p.UserName] == "2"))).ToList();
+    List<Tuple<UserProfile, List<Update>, List<Update>>> list = new List<Tuple<UserProfile, List<Update>, List<Update>>>();
+    IQueryable<string> custQuery = from cust in followPeersDB.Relationships where cust.personAName == name select cust.personBName; 
+    List<Update> newupdates = new List<Update>();
+     }
+<div class="container" id="main">
+<div class="row">
+ @Html.Partial("_SideBar1", new ViewDataDictionary { { "PhotoUrl", @myprofile.PhotoUrl }, { "ProfileName", @myprofile.UserProfileId }, { "Name", @myprofile.FirstName + " " + myprofile.LastName }, { "Myself", myself } })
+    <div class="span10" style="margin-left:10px">
+        
+          <ul class="nav nav-tabs" id="myTab"> 
+                <li id="li_tab1" class="active" onclick="tab('tab1')"><a>All</a></li>
+                <li id="li_tab2" onclick="tab('tab2')"><a>Individuals</a></li>
+                <li id="li_tab3" onclick="tab('tab3')"><a>Corporate</a></li>
+                <li id="li_tab4" onclick="tab('tab4')"><a>Updated Profiles</a></li>
+            </ul>   
+                <div class="tab-content">
+                    <div id="tab1" style="display: none;margin-left:10px;" class="tab-pane active" >
+        <table >
+        <tr>
+        <td><h3 style="text-align:center">Following (@AllFollowing.Count())</h3></td>
+        <td><h3 style="text-align:center">Followers (@AllFollowers.Count())</h3></td>
+        </tr>
+        
+        <tr>
+        <td style="width:400px;">
+        
+        <div>
+            @{
+                if (AllFollowing.Count() == 0)
+                {
+                    <text>@myprofile.FirstName @myprofile.LastName does not follow any one yet.</text>
+              
+                }
+            }
+            @foreach (var item in AllFollowing)
+            {
+                <div class="thumbnail" style="height:70px;width:80%">
+                        <div style="overflow:hidden; height:70px; width:70px;float:left;">
+                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" />                      
+                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a><br />&nbsp; @item.Organization
+                        <div style="overflow:hidden;">
+                             @{string myname = Membership.GetUser().UserName; }
+                             @if (item.UserName != myname)
+                             {
+                                 using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                                 {
+                            <input type="hidden" name="username" value="@item.UserName" />
+                            <input class="btn btn-primary pull-right" type="submit" value="UnFollow" style="width:70px;" />
+                                 }
+
+                             }
+                        </div>
+                    </div>
+                <br />
+            }       
+        </div>
+        </td> 
+        <td style="width:400px;">
+            
+            <div>
+            @{
+                if (AllFollowers.Count() == 0)
+                {
+                    <text>@myprofile.FirstName @myprofile.LastName does not follow any one yet.</text>
+                }
+            }
+            @foreach (var item2 in AllFollowers)
+            {
+               <div class="thumbnail" style="height:70px;width:80%">
+                        <div style="overflow:hidden; height:70px; width:70px;float:left;">
+                            <a href="/Profile/Index/@item2.UserProfileId"><img src="@Html.Encode(item2.PhotoUrl)" style="height:70px;width:70px;" />                      
+                        </a></div><a href="/Profile/Index/@item2.UserProfileId">&nbsp; @item2.FirstName @item2.LastName</a><br />&nbsp; @item2.Organization
+                        <div style="overflow:hidden;">
+                             @{string myname = Membership.GetUser().UserName; }
+                             @if (item2.UserName != myname)
+                             {
+                                 if (ViewData[item2.UserName] == "0")
+                                 {
+                                     using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                                     {
+                            <input type="hidden" name="username" value="@item2.UserName" />
+                            <input class="btn btn-primary pull-right" type="submit" value="Follow" style="width:70px;" />
+                                     }
+                                 }
+                             }
+                        </div>
+                    </div>
+                <br />
+            }
+        </div>
+        </td>
+        </tr>
+        </table>   
+        </div>
+        <div id="tab2" style="display: none;margin-left:10px;" class="tab-pane" >
+        <table>
+        <tr>
+        <td><h3 style="text-align:center">Following (@IndividualFollowing.Count())</h3></td>
+        <td><h3 style="text-align:center">Followers (@IndividualFollowers.Count())</h3></td>
+        </tr>
+        <tr>
+        <td style="width:400px;">
+        <div>
+        @{
+            if (IndividualFollowing.Count() == 0)
+            {
+                <text>@myprofile.FirstName @myprofile.LastName does not follow any one yet.</text> 
+            }
+        }
+        @foreach (var item in IndividualFollowing)
+        {
+                    <div class="thumbnail" style="height:70px;width:80%">
+                        <div style="overflow:hidden; height:70px; width:70px;float:left;">
+                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" />                      
+                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a><br />&nbsp; @item.Organization
+                        <div style="overflow:hidden;">
+                             @{string myname = Membership.GetUser().UserName; }
+                             @if (item.UserName != myname)
+                             {
+                                 using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                                 {
+                                 <input type="hidden" name="username" value="@item.UserName" />
+                                 <input type="submit" class="btn btn-primary pull-right" value="UnFollow" style="width:70px;" />
+                                 }
+                             }
+                        </div>
+                    </div>
+            <br />
+        }      
+        </div>
+        </td> 
+        <td style="width:400px;">
+        <div>
+            @{
+                if (IndividualFollowers.Count() == 0)
+                {
+                    <text>You do not follow any one yet.</text>
+                }
+            }
+            @foreach (var item in IndividualFollowers)
+            {
+                       <div class="thumbnail" style="height:70px;width:80%">
+                        <div style="overflow:hidden; height:70px; width:70px;float:left;">
+                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" />                      
+                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a><br />&nbsp; @item.Organization
+                        <div style="overflow:hidden;">
+                             @{string myname = Membership.GetUser().UserName; }
+                             @if (item.UserName != myname)
+                             {
+                                 if (ViewData[item.UserName] == "0")
+                                 {
+                                     using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                                     {
+                                 <input type="hidden" name="username" value="@item.UserName" />
+                                 <input type="submit" class="btn btn-primary pull-right" value="Follow" style="width:70px;" />
+                                     }
+                                 }
+                             }
+                        </div>
+                    </div>
+                <br />
+            }
+        
+        </div>
+        </td>
+        </tr>
+        </table>   
+        </div>
+       <div id="tab3" style="display: none;margin-left:10px;" class="tab-pane" >            
+        <table>
+        <tr>
+        <td><h3 style="text-align:center">Following (@CorporateFollowing.Count())</h3></td>
+        <td><h3 style="text-align:center">Followers (@CorporateFollowers.Count())</h3></td>
+        </tr>
+        <tr>
+        <td style="width:400px;">
+        <div>
+            @{
+                if (CorporateFollowing.Count() == 0)
+                {
+                    <text>You do not follow any one yet.</text>
+                }
+            }
+            @foreach (var item in CorporateFollowing)
+            {
+                       <div class="thumbnail" style="height:70px;width:80%">
+                        <div style="overflow:hidden; height:70px; width:70px;float:left;">
+                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" />                      
+                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a><br />&nbsp; @item.Organization
+                        <div style="overflow:hidden;">
+                             @{string myname = Membership.GetUser().UserName; }
+                             @if (item.UserName != myname)
+                             {
+                                 using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                                 {
+                                 <input type="hidden" name="username" value="@item.UserName" />
+                                 <input type="submit" class="btn btn-primary pull-right" value="UnFollow" style="width:70px;" />
+                                 }
+                             }
+                        </div>
+                    </div>
+                <br />
+            }   
+       </div>
+        </td> 
+        <td style="width:400px;">
+        <div>
+            @{
+                if (CorporateFollowers.Count() == 0)
+                {
+                <div>You do not follow anyone yet</div>
+           
+                }
+            }            
+            @foreach (var item2 in CorporateFollowers)
+            {
+                        <div class="thumbnail" style="height:70px;width:80%">
+                        <div style="overflow:hidden; height:70px; width:70px;float:left;">
+                            <a href="/Profile/Index/@item2.UserProfileId"><img src="@Html.Encode(item2.PhotoUrl)" style="height:70px;width:70px;" />                      
+                        </a></div><a href="/Profile/Index/@item2.UserProfileId">&nbsp; @item2.FirstName @item2.LastName</a><br />&nbsp; @item2.Organization
+                        <div style="overflow:hidden;">
+                             @{string myname = Membership.GetUser().UserName; }
+                             @if (item2.UserName != myname)
+                             {
+                                 if (ViewData[item2.UserName] == "0")
+                                 {
+                                     using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                                     {
+                                 <input type="hidden" name="username" value="@item2.UserName" />
+                                 <input type="submit" class="btn btn-primary pull-right" value="Follow" style="width:70px" />
+                                     }
+                                 }
+                             }
+                        </div>
+                    </div>
+                <br />
+            }
+      </div> 
+        </td>
+        </tr>
+        </table>       
+        </div>
+        <div id="tab4" style="display: none;margin-left:10px;" class="tab-pane" >  
+        <table >
+        <tr>
+        <td style="width:400px;"><h3 style="text-align:center">Following</h3></td></tr>
+           @foreach (string personBname in custQuery)
+           {
+               UserProfile temp = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == personBname);
+               //numOfUpdates is number of updates this person has for the logged in user
+               IQueryable<Update> updateQuery = from cust in followPeersDB.Updates where cust.owner == temp.UserProfileId select cust;
+               var newlist = updateQuery.OrderByDescending(x => x.Time).ToList();
+               List<Update> allupdates = new List<Update>();
+               
+               foreach (var update in newlist)
+               {
+                   if (update.UserProfiles.Contains(myprofile))
+                   {
+                       allupdates.Add(update);
+                       if (update.New == true)
+                       {
+                           newupdates.Add(update);
+                       }
+                   }
+
+               }
+
+           if (newupdates.Count() == 0)
+           {
+            <tr><td>No profile updates</td></tr>
+           }
+
+           else
+           {
+               var list2 = list.OrderByDescending(x => x.Item3.Count());
+                       string temphref = "/FollowedBy/MarkCommentAsRead/" + temp.UserProfileId;
+                       string tempstyle = "cursor:pointer";
+                       string temp1 = "Mark as seen";
+                   <tr><td width="400px">
+                      <div class="thumbnail" style="height:70px;width:80%">
+                        <div style="overflow:hidden; height:70px; width:70px;float:left;">
+                            <a href="/Profile/Index/@temp.UserProfileId"><img src="@Html.Encode(temp.PhotoUrl)" style="height:70px;width:70px;" />                      
+                        </a></div><a href="/Profile/Index/@temp.UserProfileId">&nbsp; @temp.FirstName @temp.LastName  <c style="color: red;font-weight: bold;">@{if ( newupdates.Count()!= 0)
+                                                                                                                                                                                      {<text>(@newupdates.Count())</text>}}</c></a><br />&nbsp; @temp.Organization
+                    </div></td>
+               <td>
+                   <a href="@temphref"><div class='markasseen' style="@tempstyle">@temp1</div></a><div style='overflow:auto;width:100%'>
+                   @foreach (var Update in newupdates)
+                   {
+                       string time = "";
+                       TimeSpan tempt = DateTime.Now - Update.Time;
+                       if (tempt.Days > 1) { time += tempt.Days.ToString() + " days ago"; }
+                       else if (tempt.Hours > 1) { time += tempt.Hours.ToString() + " hrs ago"; }
+                       else { time += tempt.Minutes.ToString() + " mins ago"; }
+                       //if item2 is a comment type
+                       if (Update.type == 3)
+                       { Update.message = @Update.message; }
+                       <a style='font-weight:normal;' href="@Update.link"><div class='notiitem'><div class='msgitem'>@Update.message</div></div></a>
+
+                   }
+                  </div></td></tr>
+                
+                   }
+           
+               }
+           </table>
+        </div>
+    </div>
+</div>   
+</div>
+               </div>
+<script type="text/javascript">
+    function setswitch(sel) 
+    {
+        var opt = sel.options[sel.selectedIndex].value;
+        if(opt == 2)
+        {
+            var link = "@Url.Action("Index", "FollowedBy", new { id = 2 })";
+            window.location.href=link;
+         }
+          if(opt == 1)
+        {
+            var link = "@Url.Action("Index", "FollowedBy", new { id = 1 })";
+            window.location.href=link;
+         }
+          if(opt == 3)
+        {
+            var link = "@Url.Action("Index", "FollowedBy", new { id = 3 })";
+            window.location.href=link;
+         }
+    }
+
+     function tab(tab) 
+    {
+        document.getElementById('tab1').style.display = 'none';
+        document.getElementById('tab2').style.display = 'none';
+        document.getElementById('tab3').style.display = 'none';
+        document.getElementById('tab4').style.display = 'none';
+        document.getElementById('li_tab1').setAttribute("class", "");
+        document.getElementById('li_tab2').setAttribute("class", "");
+        document.getElementById('li_tab3').setAttribute("class", "");
+        document.getElementById('li_tab4').setAttribute("class", "");
+        document.getElementById(tab).style.display = 'block';
+        document.getElementById('li_'+ tab).setAttribute("class", "active");
+    }
+
+    $(document).ready(function () {
+        tab('tab1');
+    });
+
+     function puthint(divname, hinttext) {
+            $(document).ready(function () {
+
+                // Define what happens when the textbox comes under focus
+                // Remove the watermark class and clear the box
+                $(divname).focus(function () {
+
+                    $(this).filter(function () {
+
+                        // We only want this to apply if there's not 
+                        // something actually entered
+                        return $(this).val() == "" || $(this).val() == hinttext
+
+                    }).removeClass("watermarkOn").val("");
+
+                });
+
+                // Define what happens when the textbox loses focus
+                // Add the watermark class and default text
+                $(divname).filter(function () {
+
+                    // We only want this to apply if there's not
+                    // something actually entered
+                    return $(this).val() == ""
+
+                }).addClass("watermarkOn").val(hinttext);
+
+                $(divname).blur(function () {
+
+                    $(this).filter(function () {
+
+                        // We only want this to apply if there's not
+                        // something actually entered
+                        return $(this).val() == ""
+
+                    }).addClass("watermarkOn").val(hinttext);
+
+                });
+
+            });
+        }
+        puthint("#groupname", "Enter Group Name");
+</script>
