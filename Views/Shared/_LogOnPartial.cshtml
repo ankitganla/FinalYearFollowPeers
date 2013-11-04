@@ -17,18 +17,22 @@ else
         @Html.PasswordFor(m => m.Password, new { @class = "span2", @type = "password", @placeholder = "Password" })
 
         <button type="submit" class="btn" cursor="pointer">Sign in</button> 
+         <div class="checkbox" style="display:inline-block">
+        @Html.CheckBoxFor(m => m.RememberMe)
+        @Html.LabelFor(m => m.RememberMe)
+             <a href="." style="display:inline-block; float:left; font-size:xx-small;color:white">Forgot Password?</a>
+        </div>
 
+         <div class="forgotpassword" >
+        
+        </div>
+        
         
     </nav>
     
-    <div class="checkbox" style="display:inline-block">
-    @Html.CheckBoxFor(m => m.RememberMe)
-    @Html.LabelFor(m => m.RememberMe)
-    </div>
+   
     
-   <div class="forgotpassword" style="display:inline-block; float:right; font-size:xx-small">
-        <a href="." style ="color:white">Forgot Password?</a>
-   </div>
+  
 
      
         
