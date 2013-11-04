@@ -278,7 +278,7 @@ div#title {
 /* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error {
-    color: red;
+    color:  #ff0000;
 }
 
 .field-validation-valid {
@@ -286,7 +286,7 @@ div#title {
 }
 
 .input-validation-error {
-    border: 1px solid red;
+    border: 1px solid #ff0000;
     background-color: #ffeeee;
 }
 
