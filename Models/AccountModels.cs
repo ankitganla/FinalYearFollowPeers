@@ -76,6 +76,7 @@ namespace FollowPeers.Models
         [Required]
         public string LastName { get; set; }
         [Required]
+        [Compare("--Select Account Type--", ErrorMessage = "Please select an account type")]
         public string Profession { get; set; }
     }
 }
