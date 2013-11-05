@@ -21,9 +21,9 @@ namespace FollowPeers.Controllers
         FollowPeersDBEntities followPeersDB = new FollowPeersDBEntities();
 
 
-        public ActionResult ForgotPassword()
+        public ActionResult ForgotPassword(ForgotPasswordModel model)
         {
-            return View();
+            return View(model);
         }
         
         
