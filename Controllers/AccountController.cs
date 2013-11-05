@@ -262,7 +262,7 @@ namespace FollowPeers.Controllers
                     return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
 
                 case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
+                    return "The password provided is invalid. Passwords must be at least 6 characters in length and contain at least one non-alphanumeric character (e.g. johndoe1)";
 
                 case MembershipCreateStatus.InvalidEmail:
                     return "The e-mail address provided is invalid. Please check the value and try again.";
