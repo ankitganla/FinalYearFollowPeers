@@ -79,8 +79,8 @@
 
 
 
-              
-             
+
+
                 @{
                     if (Model.UserProfileId == myprofile.UserProfileId)
                     {
@@ -154,53 +154,53 @@
                          
                     <div class="well">
 
-                     
-                            @if(posts.Count() == 0)
-                            {
+
+                        @if (posts.Count() == 0)
+                        {
                             <h3>No posts in the categories you have joined!</h3> 
                             <h4>Start a conversation by choosing from the below categories</h4>
                             
                             <ul>
-                            @foreach (var interest in userInterests)
-                            {
-                            <li><a href="@Url.Content("~/Forum/CategoryDetail/?Category=" + @interest.Field)" style="font-size:12px">@interest.Field</a></li>         
-                            }
-                                
-                        </ul>
+                                @foreach (var interest in userInterests)
+                                {
+                                    <li><a href="@Url.Content("~/Forum/CategoryDetail/?Category=" + @interest.Field)" style="font-size:12px">@interest.Field</a></li>         
+                                }
+
+                            </ul>
                         
                         }
                         else
                         {
-                            <h2 style=" padding-left:130px"> Featured Post </h2>
-                                <br />
+                            <h2 style="padding-left: 130px">Featured Post </h2>
+                            <br />
                                 
-                                     <p>@posts[posts.Count()-1].PostMessage</p>
-                            <b style="color:#2fa4e7">Posted by: </b><b><a style="color:#555555" href="@Url.Content("~/Profile/Index/?id=" + @posts[posts.Count()-1].Postedby.UserProfileId)">@posts[posts.Count()-1].Postedby.FirstName  @posts[posts.Count() - 1].Postedby.LastName</a></b>
-                                <br />
+                            <p>@posts[posts.Count() - 1].PostMessage</p>
+                            <b style="color: #2fa4e7">Posted by: </b><b><a style="color:#555555" href="@Url.Content("~/Profile/Index/?id=" + @posts[posts.Count() - 1].Postedby.UserProfileId)">@posts[posts.Count() - 1].Postedby.FirstName  @posts[posts.Count() - 1].Postedby.LastName</a></b>
+                            <br />
                           
 
                            
-                                   <b style="color:#2fa4e7">Topic: </b>
-                                   <b> @temptopic[temptopic.Count()-1].Name</b>
-                                    <br />
+                            <b style="color: #2fa4e7">Topic: </b>
+                            <b>@temptopic[temptopic.Count() - 1].Name</b>
+                            <br />
 
-                                    <b style="color:#2fa4e7">Forum: </b>
-                                    <b>@temptopic[temptopic.Count()-1].Category</b>
+                            <b style="color: #2fa4e7">Forum: </b>
+                            <b>@temptopic[temptopic.Count() - 1].Category</b>
                                 
                 
                                    
                             
-                                <h4>
+                            <h4>
                                 <a href="@Url.Content("~/Forum/TopicDetail/?id=" + @temptopic[0].ForumTopicId)" style="font-size:12px">Respond to the post
                                 </a>
                             </h4>
                         }
 
                     </div>
-                    }
+                        }
 
-                    else
-                    {
+                        else
+                        {
                     <div class="well">
 
 
@@ -210,9 +210,9 @@
 
                     </div>
       
+                        }
+
                     }
-                    
-                }
                 }
 
 
@@ -222,21 +222,10 @@
 
                 @{
                     int count = 0;
+                    //if  this is your own profile, you can post from it
                     if (myprofile.UserProfileId == Model.UserProfileId)
-                    {
-                     <form action="/Profile/UpdateStatus" method="post">
-                        <div>
-                            <div class="input-append">
-                                <input id="appendedInputButton" name="message" type="text" value="" style="width: 78%;" />
-                                 
-                                <input class="btn" type="submit" value="Post" />
-                                <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a> <br /><br />
-                              <label type="checkbox">  <span class="label label-info" style="padding:5px">Broadcast this post?</span> <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left:100px"/> </label>
-                                  <input type="hidden" name="Ischecked" value="false"/>
-                            </div>
-                        </div>
-                    </form>
-            
+                    { 
+                    @Html.Partial("MultiInputBox")
                     }
                     else
                     {
@@ -314,7 +303,7 @@
                                 <text>Wrote: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
                               <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
                             }
-                             else if (currentUpdate.type == 9) 
+                            else if (currentUpdate.type == 9)
                             {
                                 <span class="label label-info">Broadcast</span> <br /> @currentUpdate.message
                             }
@@ -356,7 +345,7 @@
                                       
                                                   if (user.UserProfileId == myprofile.UserProfileId)
                                                   {<div id="mydiv" style="float: right; margin-right: 5px; color: #888; font-size: 15px; cursor: pointer;">@Html.ActionLink("x", "DeleteComment", "Notice", new { id = cmt.NoticeCommentId, redirect = Model.UserProfileId }, null)
-                                              </div>}
+                                                  </div>}
                                                   <div style="clear: both;">
                                                   </div>
                                               }

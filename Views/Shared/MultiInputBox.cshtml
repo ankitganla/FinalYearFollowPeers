@@ -1,0 +1,16 @@
+﻿<form action="/Profile/UpdateStatus" method="post">
+    <div>
+        <div class="input-append">
+            <input id="appendedInputButton" name="message" type="text" value="" style="width: 78%;" />
+
+            <input class="btn" type="submit" value="Post" />
+            <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a>
+            <br />
+            <br />
+            <label type="checkbox"><span class="label label-info" style="padding: 5px">Broadcast this post?</span>
+                <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
+            </label>
+            <input type="hidden" name="Ischecked" value="false" />
+        </div>
+    </div>
+</form>

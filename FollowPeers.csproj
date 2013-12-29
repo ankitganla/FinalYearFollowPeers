@@ -3178,6 +3178,7 @@
     <Content Include="Views\Message\Reply.cshtml" />
     <Content Include="Views\Profile\EditEmployment.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Shared\MultiInputBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\TempImages\" />
