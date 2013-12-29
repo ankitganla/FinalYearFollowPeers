@@ -70,9 +70,9 @@
 <div id="Tabs">
     <ul>
         <li id="li_tab1" onclick="tab('tab1')"><a>Status</a></li>
-        <li id="li_tab2" onclick="tab('tab2')"><a>Publication</a></li>
-        <li id="li_tab2" onclick="tab('tab2')"><a>Job Posting</a></li>
-        <li id="li_tab2" onclick="tab('tab2')"><a>Courses</a></li>
+        <li id="li_tab2" onclick="tab('tab2')"><a>Publications</a></li>
+        <li id="li_tab3" onclick="tab('tab2')"><a>Job Posting</a></li>
+        <li id="li_tab4" onclick="tab('tab2')"><a>Courses</a></li>
 
     </ul>
     <div id="Content_Area">
@@ -82,11 +82,12 @@
                     <div class="input-append">
 
 
-                        <input id="appendedInputButton" name="message" type="text" value="" style="width: 78%;" />
-
+                        <textarea id="appendedInputButton" name="message" style="width: 100%;" placeholder="Share your thoughts..."></textarea>
+                      
+                        <div>
                         <input class="btn" type="submit" value="Post" />
                         <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a>
-                        <br />
+                        </div>
                         <br />
                         <label type="checkbox">
                             <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
@@ -99,7 +100,21 @@
         </div>
 
         <div id="tab2" style="display: none;">
-            <p>This is the text for tab 2.</p>
+            <form action="/Profile/UpdateStatus" method="post">
+                <div>
+                    <div class="input-append">
+                        <textarea name="publication_abstract" rows="3" cols="300" style="width: 100%;" placeholder="Add a brief abstract (optional)..."></textarea>
+
+
+                        @*<input id="publish_new" name="publication_abstract" type="text" value="" style="width: 78%;" placeholder="Add a brief abstract (optional)..." />*@
+                        <div>
+                            <input class="btn" type="submit" value="Publish" />
+                            <a class="btn" href="/Profile/UploadFile" title="Upload File"><i class="icon-upload"></i></a>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
