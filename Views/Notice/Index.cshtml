@@ -225,8 +225,9 @@
                     //if  this is your own profile, you can post from it
                     if (myprofile.UserProfileId == Model.UserProfileId)
                     { 
-                    @Html.Partial("MultiInputBox")
+                     @Html.Partial("MultiInputBox")
                     }
+                    //not your profile
                     else
                     {
 
@@ -244,7 +245,7 @@
 
                             }
                         }
-                        //else (meaning public view.. so check tier 1)
+                        //else public view.. so check tier 1
                         else
                         {
                             FollowPeers.Models.Tier temp = Model.Tiers.SingleOrDefault(p => p.Level == 1);
