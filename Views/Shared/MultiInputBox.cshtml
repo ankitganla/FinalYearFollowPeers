@@ -2,7 +2,7 @@
     <title>MultiInputBox</title>
 
     <style media="screen" type="text/css">
-        #Tabs ul
+        #multi_input_tabs ul
         {
             padding: 0px;
             margin: 0px;
@@ -10,7 +10,7 @@
             list-style-type: none;
         }
 
-            #Tabs ul li
+            #multi_input_tabs ul li
             {
                 display: inline-block;
                 clear: none;
@@ -18,39 +18,41 @@
                 height: auto;
             }
 
-                #Tabs ul li a
+                #multi_input_tabs ul li a
                 {
                     position: relative;
-                    margin-top: 16px;
                     display: block;
                     margin-left: 0px;
                     line-height: 24px;
                     padding-left: 10px;
                     padding-right: 10px;
-                    background: #f6f6f6;
-                    z-index: 9999;
-                    border: 1px solid #ccc;
-                    border-bottom: 0px;
-                    /* The following four lines are to make the top left and top right corners of each tab rounded. */
-                    -moz-border-radius-topleft: 4px;
-                    border-top-left-radius: 4px;
-                    -moz-border-radius-topright: 4px;
-                    border-top-right-radius: 4px;
-                    /* end of rounded borders */
-                    width:auto;
+                    background: none;
+                    border-right: 1px solid #ccc;
+                    width: auto;
                     color: #000000;
                     text-decoration: none;
                     font-weight: bold;
                 }
 
-                    #Tabs ul li a:hover
+                    #multi_input_tabs ul li a:hover
                     {
                         text-decoration: underline;
                     }
 
-        #Tabs #Content_Area
+        #Content_Area
         {
-            padding: 0 15px;
+            border: 1px solid #ccc;
+            /* The following four lines are to make the top left and top right corners of the content area rounded. */
+            -moz-border-radius-topleft: 4px;
+            border-top-left-radius: 4px;
+            -moz-border-radius-topright: 4px;
+            border-top-right-radius: 4px;
+            -moz-border-radius-bottomleft: 4px;
+            border-bottom-left-radius: 4px;
+            -moz-border-radius-bottomright: 4px;
+            border-bottom-right-radius: 4px;
+            /* end of rounded borders */
+            /*padding: 0 15px;*/
             clear: both;
             overflow: hidden;
             line-height: 19px;
@@ -60,30 +62,63 @@
             height: auto;
             overflow: hidden;
         }
-
-        p
-        {
-            padding-left: 15px;
-        }
     </style>
 </head>
 
 
-<div id="Tabs">
-
-    
-
-    <div id="Content_Area">
-        <div>
-        <input id="initialtextbox" type="text" placeholder="Click to share..." onclick="showtabs()" style="width: 100%;"/>
+<div id="Content_Area">
+    <div id="initialtextbox">
+        <input type="text" placeholder="Click to share..." onclick="showtabs()" style="width: 100%; border: none;" />
     </div>
+    <div id="Form_Area" style="display: none;">
+
+        <form action="/Profile/UpdateStatus" method="post">
+            <div id="status_form" style="display: none;">
+                <textarea id="statustext" name="message" style="width: 100%; resize: none; border: none;" placeholder="Share your thoughts..."></textarea>
+            </div>
+
+            <div id="publication_form" style="display: none;">
+                <textarea name="publication_abstract" rows="3" cols="300" style="width: 100%;" placeholder="Add a brief abstract (optional)..."></textarea>
+            </div>
+
+            <div id="job_form" style="display: none;">
+                <div id="job_role_select">
+                    @{List<string> employment_role = new List<string>();
+                      employment_role.Add("--Select Role--");
+                      employment_role.Add("Prospective Employer");
+                      employment_role.Add("Prospective Employee");
+                    }
+                    @Html.DropDownList("Employment Role", new SelectList(employment_role))
+                </div>
+                <div id="job_title">
+                    <input name="jobtitle" type="text" value="" style="width: 75%;" placeholder="Title" />
+                </div>
+                <div id="job_description">
+                    <textarea name="jobdescription" rows="3" cols="300" style="width: 100%;" placeholder="Description"></textarea>
+                </div>
+            </div>
+
+            <div id="course_form" style="display: none;">
+            </div>
+
+            <div id="post_button">
+                <input class="btn" type="submit" value="Post" />
+
+            </div>
+
+            <div id="upload_button">
+                <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a>
+            </div>
+
+        </form>
+
 
         <div id="tab1" style="display: none;">
             <div>
                 <form action="/Profile/UpdateStatus" method="post">
                     <div class="input-append">
 
-                        <textarea id="appendedInputButton" name="message" style="width: 100%; resize:none;" placeholder="Share your thoughts..."></textarea>
+                        <textarea id="appendedInputButton" name="message" style="width: 100%; resize: none; border: none;" placeholder="Share your thoughts..."></textarea>
 
                         <div>
                             <input class="btn" type="submit" value="Post" />
@@ -152,21 +187,23 @@
             </form>
         </div>
 
-    <div id="multi_input_tabs" style="display: none;">
-            <ul>
-                <li id="li_tab1" onclick="tab('tab1')"><a>Status</a></li>
-                <li id="li_tab2" onclick="tab('tab2')"><a>Publications</a></li>
-                <li id="li_tab3" onclick="tab('tab3')"><a>Job Posting</a></li>
-                <li id="li_tab4" onclick="tab('tab4')"><a>Courses</a></li>
-
-            </ul>
-
-     </div>
-        
     </div>
-    
-    
+    <!--form area div ends-->
+    <div id="multi_input_tabs" style="display: none;">
+        <ul>
+            <li id="li_tab1" onclick="tab('tab1')"><a>Status</a></li>
+            <li id="li_tab2" onclick="tab('tab2')"><a>Publications</a></li>
+            <li id="li_tab3" onclick="tab('tab3')"><a>Job Posting</a></li>
+            <li id="li_tab4" onclick="tab('tab4')"><a>Courses</a></li>
+
+        </ul>
+
+    </div>
+
+
 </div>
+<!-- content area div ends-->
+
 
 
 
@@ -175,6 +212,13 @@
 
 <script type="text/javascript">
     function tab(tab) {
+        document.getElementById('Form_Area').style.display = 'none'; //hide all forms
+
+
+        if (tab == 'tab1') {
+
+        }
+
         document.getElementById('initialtextbox').style.display = 'none';
         document.getElementById('tab1').style.display = 'none';
         document.getElementById('tab2').style.display = 'none';
@@ -190,6 +234,10 @@
 
     function showtabs() {
         document.getElementById('multi_input_tabs').style.display = 'block';
+        document.getElementById('initialtextbox').style.display = 'none';
+        document.getElementById('tab1').style.display = 'block';
+        document.getElementById('li_tab1').setAttribute("class", "active");
+
     }
 
     function hideinputtabs() {
