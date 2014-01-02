@@ -1,11 +1,12 @@
 ﻿<head>
     <title>MultiInputBox</title>
+
     <style media="screen" type="text/css">
         #Tabs ul
         {
             padding: 0px;
             margin: 0px;
-            margin-left: 10px;
+            margin-left: 0px;
             list-style-type: none;
         }
 
@@ -14,7 +15,7 @@
                 display: inline-block;
                 clear: none;
                 float: left;
-                height: 24px;
+                height: auto;
             }
 
                 #Tabs ul li a
@@ -22,9 +23,10 @@
                     position: relative;
                     margin-top: 16px;
                     display: block;
-                    margin-left: 6px;
+                    margin-left: 0px;
                     line-height: 24px;
                     padding-left: 10px;
+                    padding-right: 10px;
                     background: #f6f6f6;
                     z-index: 9999;
                     border: 1px solid #ccc;
@@ -35,7 +37,7 @@
                     -moz-border-radius-topright: 4px;
                     border-top-right-radius: 4px;
                     /* end of rounded borders */
-                    width: 100px;
+                    width:auto;
                     color: #000000;
                     text-decoration: none;
                     font-weight: bold;
@@ -55,7 +57,7 @@
             position: relative;
             top: 20px;
             z-index: 5;
-            height: 150px;
+            height: auto;
             overflow: hidden;
         }
 
@@ -68,21 +70,20 @@
 
 
 <div id="Tabs">
-    <ul>
-        <li id="li_tab1" onclick="tab('tab1')"><a>Status</a></li>
-        <li id="li_tab2" onclick="tab('tab2')"><a>Publications</a></li>
-        <li id="li_tab3" onclick="tab('tab3')"><a>Job Posting</a></li>
-        <li id="li_tab4" onclick="tab('tab4')"><a>Courses</a></li>
 
-    </ul>
+    
+
     <div id="Content_Area">
-        <div id="tab1">
-            <form action="/Profile/UpdateStatus" method="post">
-                <div>
+        <div>
+        <input id="initialtextbox" type="text" placeholder="Click to share..." onclick="showtabs()" style="width: 100%;"/>
+    </div>
+
+        <div id="tab1" style="display: none;">
+            <div>
+                <form action="/Profile/UpdateStatus" method="post">
                     <div class="input-append">
 
-
-                        <textarea id="appendedInputButton" name="message" style="width: 100%;" placeholder="Share your thoughts..."></textarea>
+                        <textarea id="appendedInputButton" name="message" style="width: 100%; resize:none;" placeholder="Share your thoughts..."></textarea>
 
                         <div>
                             <input class="btn" type="submit" value="Post" />
@@ -95,8 +96,9 @@
                         </label>
                         <input type="hidden" name="Ischecked" value="false" />
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
+
         </div>
 
         <div id="tab2" style="display: none;">
@@ -150,16 +152,30 @@
             </form>
         </div>
 
+    <div id="multi_input_tabs" style="display: none;">
+            <ul>
+                <li id="li_tab1" onclick="tab('tab1')"><a>Status</a></li>
+                <li id="li_tab2" onclick="tab('tab2')"><a>Publications</a></li>
+                <li id="li_tab3" onclick="tab('tab3')"><a>Job Posting</a></li>
+                <li id="li_tab4" onclick="tab('tab4')"><a>Courses</a></li>
 
+            </ul>
 
+     </div>
+        
     </div>
+    
+    
 </div>
+
+
 
 
 
 
 <script type="text/javascript">
     function tab(tab) {
+        document.getElementById('initialtextbox').style.display = 'none';
         document.getElementById('tab1').style.display = 'none';
         document.getElementById('tab2').style.display = 'none';
         document.getElementById('tab3').style.display = 'none';
@@ -170,6 +186,14 @@
         //document.getElementById('li_tab4').setAttribute("class", "");
         document.getElementById(tab).style.display = 'block';
         document.getElementById('li_' + tab).setAttribute("class", "active");
+    }
+
+    function showtabs() {
+        document.getElementById('multi_input_tabs').style.display = 'block';
+    }
+
+    function hideinputtabs() {
+        document.getElementById('multi_input_tabs').style.display = 'none';
     }
 </script>
 
