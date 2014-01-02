@@ -70,7 +70,7 @@
     <div id="initialtextbox">
         <input type="text" placeholder="Click to share..." onclick="showtabs()" style="width: 100%; border: none;" />
     </div>
-    <div id="Form_Area" style="display: none;">
+    <div id="Form_Area">
 
         <form action="/Profile/UpdateStatus" method="post">
             <div id="status_form" style="display: none;">
@@ -101,142 +101,85 @@
             <div id="course_form" style="display: none;">
             </div>
 
-            <div id="post_button">
+            <div id="post_button" style="display: none;">
                 <input class="btn" type="submit" value="Post" />
 
             </div>
 
-            <div id="upload_button">
+            <div id="upload_button" style="display: none;">
                 <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a>
             </div>
 
-        </form>
-
-
-        <div id="tab1" style="display: none;">
-            <div>
-                <form action="/Profile/UpdateStatus" method="post">
-                    <div class="input-append">
-
-                        <textarea id="appendedInputButton" name="message" style="width: 100%; resize: none; border: none;" placeholder="Share your thoughts..."></textarea>
-
-                        <div>
-                            <input class="btn" type="submit" value="Post" />
-                            <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a>
-                        </div>
-                        <br />
-                        <label type="checkbox">
-                            <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
-                            <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
-                        </label>
-                        <input type="hidden" name="Ischecked" value="false" />
-                    </div>
-                </form>
+            <div id="broadcast_check" style="display: none;">
+                <label type="checkbox">
+                    <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
+                    <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
+                </label>
+                <input type="hidden" name="Ischecked" value="false" />
             </div>
 
-        </div>
-
-        <div id="tab2" style="display: none;">
-            <form action="/Profile/UpdateStatus" method="post">
-                <div>
-                    <div class="input-append">
-                        <textarea name="publication_abstract" rows="3" cols="300" style="width: 100%;" placeholder="Add a brief abstract (optional)..."></textarea>
-
-
-                        @*<input id="publish_new" name="publication_abstract" type="text" value="" style="width: 78%;" placeholder="Add a brief abstract (optional)..." />*@
-                        <div>
-                            <input class="btn" type="submit" value="Publish" />
-                            <a class="btn" href="/Profile/UploadFile" title="Upload File"><i class="icon-upload"></i></a>
-
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-        <div id="tab3" style="display: none;">
-            <form action="/Profile/UpdateStatus" method="post">
-                <div>
-                    <div class="input-append">
-
-                        <div>
-                            @{List<string> employment_role = new List<string>();
-                              employment_role.Add("--Select Role--");
-                              employment_role.Add("Prospective Employer");
-                              employment_role.Add("Prospective Employee");
-                            }
-                            @Html.DropDownList("Employment Role", new SelectList(employment_role))
-                        </div>
-
-                        <div>
-                            <input id="job_title" name="jobtitle" type="text" value="" style="width: 75%;" placeholder="Title" />
-                        </div>
-
-
-                        <div>
-                            <textarea name="job_description" rows="3" cols="300" style="width: 100%;" placeholder="Description"></textarea>
-                        </div>
-
-                        <div>
-                            <input class="btn" type="submit" value="Post Job" />
-                            <a class="btn" href="/Profile/UploadFile" title="Attach File"><i class="icon-upload"></i></a>
-
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+        </form>
 
     </div>
     <!--form area div ends-->
     <div id="multi_input_tabs" style="display: none;">
         <ul>
-            <li id="li_tab1" onclick="tab('tab1')"><a>Status</a></li>
-            <li id="li_tab2" onclick="tab('tab2')"><a>Publications</a></li>
-            <li id="li_tab3" onclick="tab('tab3')"><a>Job Posting</a></li>
-            <li id="li_tab4" onclick="tab('tab4')"><a>Courses</a></li>
-
+            <li id="li_status" onclick="tab('status')"><a>Status</a></li>
+            <li id="li_publications" onclick="tab('publications')"><a>Publications</a></li>
+            <li id="li_jobs" onclick="tab('jobs')"><a>Job Posting</a></li>
+            <li id="li_courses" onclick="tab('courses')"><a>Courses</a></li>
         </ul>
 
     </div>
-
 
 </div>
 <!-- content area div ends-->
 
 
-
-
-
-
-
 <script type="text/javascript">
     function tab(tab) {
-        document.getElementById('Form_Area').style.display = 'none'; //hide all forms
+        //document.getElementById('Form_Area').style.display = 'none'; //hide all forms
+        document.getElementById('status_form').style.display = 'none';
+        document.getElementById('publication_form').style.display = 'none';
+        document.getElementById('job_form').style.display = 'none';
+        document.getElementById('course_form').style.display = 'none';
 
+        document.getElementById('li_status').setAttribute("class", "");
+        document.getElementById('li_publications').setAttribute("class", "");
+        document.getElementById('li_jobs').setAttribute("class", "");
+        document.getElementById('li_courses').setAttribute("class", "");
 
-        if (tab == 'tab1') {
+        if (tab == 'status') {
 
+            document.getElementById('status_form').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
         }
 
-        document.getElementById('initialtextbox').style.display = 'none';
-        document.getElementById('tab1').style.display = 'none';
-        document.getElementById('tab2').style.display = 'none';
-        document.getElementById('tab3').style.display = 'none';
-        //document.getElementById('tab4').style.display = 'none';
-        document.getElementById('li_tab1').setAttribute("class", "");
-        document.getElementById('li_tab2').setAttribute("class", "");
-        document.getElementById('li_tab3').setAttribute("class", "");
-        //document.getElementById('li_tab4').setAttribute("class", "");
-        document.getElementById(tab).style.display = 'block';
-        document.getElementById('li_' + tab).setAttribute("class", "active");
+        if (tab == 'publications') {
+            document.getElementById('publication_form').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+        }
+
+        if (tab == 'jobs') {
+            document.getElementById('job_form').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+        }
+
+        if (tab == 'courses') {
+            document.getElementById('course_form').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+        }
+
+        else {
+            return;
+        }
     }
 
     function showtabs() {
         document.getElementById('multi_input_tabs').style.display = 'block';
         document.getElementById('initialtextbox').style.display = 'none';
-        document.getElementById('tab1').style.display = 'block';
-        document.getElementById('li_tab1').setAttribute("class", "active");
+        document.getElementById('status_form').style.display = 'block';
+        document.getElementById('li_status').setAttribute("class", "active");
 
     }
 
