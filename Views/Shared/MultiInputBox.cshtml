@@ -143,6 +143,8 @@
         document.getElementById('publication_form').style.display = 'none';
         document.getElementById('job_form').style.display = 'none';
         document.getElementById('course_form').style.display = 'none';
+        document.getElementById('post_button').style.display = 'none';
+        document.getElementById('upload_button').style.display = 'none';
 
         document.getElementById('li_status').setAttribute("class", "");
         document.getElementById('li_publications').setAttribute("class", "");
@@ -153,16 +155,21 @@
 
             document.getElementById('status_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('post_button').style.display = 'block';
+            document.getElementById('upload_button').style.display = 'block';
         }
 
         if (tab == 'publications') {
             document.getElementById('publication_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('post_button').style.display = 'block';
+            document.getElementById('upload_button').style.display = 'block';
         }
 
         if (tab == 'jobs') {
             document.getElementById('job_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('post_button').style.display = 'block';
         }
 
         if (tab == 'courses') {
