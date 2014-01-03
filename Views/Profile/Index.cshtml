@@ -99,39 +99,12 @@
             <div class="box">
                 @if (Model.activated == true)
                 {
-            
+                    
                     <div>
-                        <div style="width: 80%; float: left;">
-                            <h2>@Model.FirstName @Model.LastName</h2>
-                            <p>@Model.Profession</p>
-                            <div><a href="/Profile/Search?department=@Model.Departments">@Model.Departments</a>   <a href="/Profile/Search?organization=@Model.Organization">@Model.Organization</a></div>
-                            <div>@Model.Country</div>
-                            <br />
-                        </div>
-                        <div id="BasicInfo" style="float: right; width: 100px;">
-                            @if (Membership.GetUser().UserName != Model.UserName)
-                            {
-                                if (ViewBag.Alreadyfollowed == 1)
-                                {
-                                    using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                                    {
-                                <input type="hidden" name="username" value="@Model.UserName" />
-                                <input type="submit" value="UnFollow" style="padding: 8px 20px; float: right; cursor: pointer; width: 90px; font-weight: bold;" />
-                                    }
-                                }
-                                else
-                                {
-                                    using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                                    {
-                                <input type="hidden" name="username" value="@Model.UserName" />
-                                <input type="submit" value="Follow" style="padding: 8px 20px; float: right; cursor: pointer; width: 90px; font-weight: bold;" />
-                                    }
-                                }
-                            }
-                        </div>
-                        <div style="clear: both;">
-                        </div>
+                         @Html.Partial("MultiInputBox")
                     </div>
+            
+                    
 
                     <div>
 
@@ -216,17 +189,18 @@
                                     Employment
                                 </div>
                                 <table>
-                              @{
+                                    @{
                             foreach (var E in Model.Employments)
                             {
                                         <tr>
-                                             <td style="width: 90px">@E.startYear - @E.endYear 
+                                            <td style="width: 90px">@E.startYear - @E.endYear
                                             </td>
-                                            <td>   @E.Role at <a href="/Profile/Search?organization=@E.EmployerName">@E.EmployerName</a> <br /> 
-                                               
+                                            <td>@E.Role at <a href="/Profile/Search?organization=@E.EmployerName">@E.EmployerName</a>
+                                                <br />
+
                                                 @E.Description
                                             </td>
-                                           
+
                                         </tr>
                             }
                     
@@ -344,11 +318,11 @@
                                     }
                                     @if (Model.Contact.Website != null)
                                     {<tr>
-                                            <td>Website
-                                            </td>
-                                            <td><a href="http://@Model.Contact.Website" target="_blank">@Model.Contact.Website</a>
-                                            </td>
-                                        </tr>
+                                        <td>Website
+                                        </td>
+                                        <td><a href="http://@Model.Contact.Website" target="_blank">@Model.Contact.Website</a>
+                                        </td>
+                                    </tr>
                                     }
                                 </table>
                             </div>
@@ -357,80 +331,80 @@
                         }
                         @{if ((toCheck == false || ((toCheck == true) && (showPublication == true))) && (Model.Publication.Count() != 0))
                           {<div id="Publications" style="">
-                                  <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
-                                      Publication
-                                  </div>
-                                  <table>
-                                      @{var pubList = Model.Publication.OrderBy(x => x.title).ToList();}
-                                      @foreach (var E in pubList)
-                                      {
-                                          <tr>
-                                              <td style="width: 90px">Type : @E.type<br />
-                                                  Year : @E.year
-                                              </td>
-                                              <td>
-                                                  <b>Title : @E.title</b><br />
-                                                  <i>Authour(s) : @E.author</i><br />
-                                                  <u>Status : @E.status</u>
-                                              </td>
-                                          </tr> 
-                                      }
-                                  </table>
+                              <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
+                                  Publication
                               </div>
+                              <table>
+                                  @{var pubList = Model.Publication.OrderBy(x => x.title).ToList();}
+                                  @foreach (var E in pubList)
+                                  {
+                                      <tr>
+                                          <td style="width: 90px">Type : @E.type<br />
+                                              Year : @E.year
+                                          </td>
+                                          <td>
+                                              <b>Title : @E.title</b><br />
+                                              <i>Authour(s) : @E.author</i><br />
+                                              <u>Status : @E.status</u>
+                                          </td>
+                                      </tr> 
+                                  }
+                              </table>
+                          </div>
                           }
                         }@{if ((toCheck == false || ((toCheck == true) && (showPatent == true))) && (Model.Patent.Count() != 0))
                            { <div id="Patents" style="">
-                                   <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
-                                       Patent
-                                   </div>
-                                   <table>
-                                       @{var patList = Model.Patent.OrderBy(x => x.Title).ToList();}
-                                       @foreach (var E in patList)
-                                       {
-                                           <tr>
-                                               <td style="width: 150px">Apply Year : @E.ApplyYear<br />
-                                                   Approve Year : @E.AproveYear
-                                               </td>
-                                               <td>
-                                                   <b>Title : @E.Title</b><br />
-                                                   <i>Reference No. : @E.RefNo</i><br />
-                                               </td>
-                                           </tr> 
-                                       }
-                                   </table>
+                               <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
+                                   Patent
                                </div>
+                               <table>
+                                   @{var patList = Model.Patent.OrderBy(x => x.Title).ToList();}
+                                   @foreach (var E in patList)
+                                   {
+                                       <tr>
+                                           <td style="width: 150px">Apply Year : @E.ApplyYear<br />
+                                               Approve Year : @E.AproveYear
+                                           </td>
+                                           <td>
+                                               <b>Title : @E.Title</b><br />
+                                               <i>Reference No. : @E.RefNo</i><br />
+                                           </td>
+                                       </tr> 
+                                   }
+                               </table>
+                           </div>
                            }
                         }
                         @{if (Model.Courses.Count() != 0)
                           {<div id="Courses" style="">
-                                  <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
-                                      Courses
-                                  </div>
-                                  <table>
-                                      @{var courseList = Model.Courses.OrderBy(c => c.CourseName).ToList();}
-                                      @foreach (var c in courseList)
-                                      {
-                                          <tr>
-                                              <td style="width: 90px">Name
-                                           <br />
-                                                  Description
-                                           <br />
-                                                  Start Date
-                                           <br />
-                                                  End Date  
-                                           <br />
-                                              </td>
-                                              <td>
-                                                  <b>@c.CourseName</b><br />
-                                                  @c.CourseDescription<br />
-                                                  <i>@c.StartDate</i><br />
-                                                  <i>@c.EndDate</i><br />
-
-                                              </td>
-                                          </tr> 
-                                      }
-                                  </table>
+                              <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
+                                  Courses
                               </div>
+                              <table>
+                                  @{var courseList = Model.Courses.OrderBy(c => c.CourseName).ToList();}
+                                  @foreach (var c in courseList)
+                                  {
+                                      <tr>
+                                          <td style="width: 90px">Name
+                                           <br />
+                                              Description
+                                           <br />
+                                              Start Date
+                                           <br />
+                                              End Date  
+                                           <br />
+                                          </td>
+                                          <td>
+                                              <b>@c.CourseName</b><br />
+                                              @c.CourseDescription<br />
+                                              <i>@c.StartDate</i><br />
+                                              <i>@c.EndDate</i><br />
+
+                                          </td>
+                                      </tr> 
+                                  }
+                              </table>
+                          </div>
                           }
                         }
 
@@ -563,15 +537,15 @@
                                                         <img src="../../Content/images/icons/16x16/thumb_up.png" />
                                                     </span></td>
                                                 }
-                                                 @if (@Ach.Link.Trim() != "NA" && @Ach.Link.Trim() != null)
-                                                 {
+                                                @if (@Ach.Link.Trim() != "NA" && @Ach.Link.Trim() != null)
+                                                {
                                                     <td><a href="@Ach.Link"><span class="label label-info">
                                                         <img src="../../Content/images/icons/16x16/download.png" /></span></a></td>
-                                                 }
-                                                 else
-                                                 {
+                                                }
+                                                else
+                                                {
                                                     <td></td>
-                                                 }
+                                                }
 
                                             </tr>
                                      
