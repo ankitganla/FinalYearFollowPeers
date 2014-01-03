@@ -27,6 +27,7 @@
  
             }
         }
+
         @*Center Container*@
         <div class="span7 main-content">
             <div class="box" style="overflow: auto; min-height: 200px; height: auto;">
@@ -81,9 +82,10 @@
 
 
 
-                @{
+                @*@{
                     if (Model.UserProfileId == myprofile.UserProfileId)
                     {
+                        //if this is your own profile page
                         List<FollowPeers.Models.Specialization> userInterests = Model.Specializations.ToList();
                         int countInterests = userInterests.Count;
                         int randnum, spID;
@@ -105,7 +107,7 @@
                                 List<FollowPeers.Models.Specialization> fieldids = followPeersDB.Specializations.Where(p => p.Field == spField).ToList(); //list of sub-category ids under same category
                                 List<FollowPeers.Models.Forum> forums = new List<FollowPeers.Models.Forum>();
                                 foreach (var fieldid in fieldids)
-                                {
+                                {   
                                     List<FollowPeers.Models.Forum> tempforums = followPeersDB.Forums.Where(p => p.ForumId == fieldid.SpecializationId).ToList();
 
                                     foreach (var tempforum in tempforums)
@@ -213,7 +215,7 @@
                         }
 
                     }
-                }
+                }*@
 
 
 
