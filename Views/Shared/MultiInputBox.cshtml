@@ -8,6 +8,7 @@
             margin: 0px;
             margin-left: 0px;
             list-style-type: none;
+            padding-right: 100px;
         }
 
             #multi_input_tabs ul li
@@ -16,6 +17,16 @@
                 clear: none;
                 float: left;
                 height: auto;
+                /* The following four lines are to make the top left and top right corners of the content area rounded. */
+                -moz-border-radius-topleft: 4px;
+                border-top-left-radius: 4px;
+                -moz-border-radius-topright: 4px;
+                border-top-right-radius: 4px;
+                -moz-border-radius-bottomleft: 4px;
+                border-bottom-left-radius: 4px;
+                -moz-border-radius-bottomright: 4px;
+                border-bottom-right-radius: 4px;
+                /* end of rounded borders */
             }
 
                 #multi_input_tabs ul li a
@@ -27,12 +38,27 @@
                     padding-left: 10px;
                     padding-right: 10px;
                     background: none;
-                    border-right: 1px solid #ccc;
                     width: auto;
-                    color: #000000;
+                    color: #45aeea;
                     text-decoration: none;
                     font-weight: bold;
                 }
+
+                    #multi_input_tabs ul li a:enabled
+                    {
+                        position: relative;
+                        display: block;
+                        margin-left: 0px;
+                        line-height: 24px;
+                        padding-left: 10px;
+                        padding-right: 10px;
+                        background: none;
+                        width: auto;
+                        color: red;
+                        text-decoration: none;
+                        font-weight: bold;
+                    }
+
 
                     #multi_input_tabs ul li a:hover
                     {
@@ -62,6 +88,37 @@
             height: auto;
             overflow: hidden;
         }
+
+        .btn
+        {
+            background-color: #45aeea;
+            color: white;
+            /* The following four lines are to make the top left and top right corners of the content area rounded. */
+            -moz-border-radius-topleft: 4px;
+            border-top-left-radius: 4px;
+            -moz-border-radius-topright: 4px;
+            border-top-right-radius: 4px;
+            -moz-border-radius-bottomleft: 4px;
+            border-bottom-left-radius: 4px;
+            -moz-border-radius-bottomright: 4px;
+            border-bottom-right-radius: 4px;
+            /* end of rounded borders */
+        }
+
+        #job_role_dropdown
+        {
+            border-color: #45aeea;
+            /* The following four lines are to make the top left and top right corners of the content area rounded. */
+            -moz-border-radius-topleft: 4px;
+            border-top-left-radius: 4px;
+            -moz-border-radius-topright: 4px;
+            border-top-right-radius: 4px;
+            -moz-border-radius-bottomleft: 4px;
+            border-bottom-left-radius: 4px;
+            -moz-border-radius-bottomright: 4px;
+            border-bottom-right-radius: 4px;
+            /* end of rounded borders */
+        }
     </style>
 </head>
 
@@ -70,35 +127,57 @@
     <div id="initialtextbox">
         <input type="text" placeholder="Click to share..." onclick="showtabs()" style="width: 100%; border: none;" />
     </div>
-    <div id="Form_Area">
 
+    <div id="multi_input_tabs" style="display: none;">
+        <ul>
+            <li id="li_status" onclick="tab('status')"><a>Status</a></li>
+            <li id="li_publications" onclick="tab('publications')"><a>Publications</a></li>
+            <li id="li_jobs" onclick="tab('jobs')"><a>Job Posting</a></li>
+            <li id="li_courses" onclick="tab('courses')"><a>Courses</a></li>
+        </ul>
+        <br />
+        <hr />
+
+    </div>
+
+
+    <div id="Form_Area">
         <form action="/Profile/UpdateStatus" method="post">
             <div id="status_form" style="display: none;">
-                <textarea id="statustext" name="message" style="width: 100%; resize: none; border: none;" placeholder="Share your thoughts..."></textarea>
+                <textarea name="message" style="width: 100%; resize: none; border: none;" placeholder="Share your thoughts..."></textarea>
             </div>
 
             <div id="publication_form" style="display: none;">
-                <textarea name="publication_abstract" rows="3" cols="300" style="width: 100%;" placeholder="Add a brief abstract (optional)..."></textarea>
+                <textarea name="publication_abstract" rows="3" cols="300" style="width: 100%; resize: none; border: none;" placeholder="Add a brief abstract (optional)..."></textarea>
             </div>
 
             <div id="job_form" style="display: none;">
                 <div id="job_role_select">
-                    @{List<string> employment_role = new List<string>();
-                      employment_role.Add("--Select Role--");
-                      employment_role.Add("Prospective Employer");
-                      employment_role.Add("Prospective Employee");
-                    }
-                    @Html.DropDownList("Employment Role", new SelectList(employment_role))
+                    <select id="job_role_dropdown">
+                        <option selected value="initial_show" disabled>--Select Job Role--</option>
+                        <option value="jobrole_employer">Employer</option>
+                        <option value="jobrole_employee">Employee</option>
+                    </select>
                 </div>
+
                 <div id="job_title">
-                    <input name="jobtitle" type="text" value="" style="width: 75%;" placeholder="Title" />
+                    <input name="jobtitle" type="text" value="" style="width: 75%; border: none; padding: 2px;" placeholder="Title" />
                 </div>
+
+
                 <div id="job_description">
-                    <textarea name="jobdescription" rows="3" cols="300" style="width: 100%;" placeholder="Description"></textarea>
+                    <textarea name="jobdescription" rows="3" cols="300" style="width: 100%; resize: none; border: none;" placeholder="Description"></textarea>
                 </div>
             </div>
 
             <div id="course_form" style="display: none;">
+                <div id="course_title">
+                    <input name="coursetitle" type="text" value="" style="width: 75%; border: none; padding: 2px;" placeholder="Course Title" />
+                </div>
+
+                <div id="course_description">
+                    <textarea name="coursedescription" rows="3" cols="300" style="width: 100%; resize: none; border: none;" placeholder="Description"></textarea>
+                </div>
             </div>
 
             <div id="post_button" style="display: none;">
@@ -119,18 +198,9 @@
             </div>
 
         </form>
-
     </div>
     <!--form area div ends-->
-    <div id="multi_input_tabs" style="display: none;">
-        <ul>
-            <li id="li_status" onclick="tab('status')"><a>Status</a></li>
-            <li id="li_publications" onclick="tab('publications')"><a>Publications</a></li>
-            <li id="li_jobs" onclick="tab('jobs')"><a>Job Posting</a></li>
-            <li id="li_courses" onclick="tab('courses')"><a>Courses</a></li>
-        </ul>
 
-    </div>
 
 </div>
 <!-- content area div ends-->
@@ -155,6 +225,7 @@
 
             document.getElementById('status_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "enabled");
             document.getElementById('post_button').style.display = 'block';
             document.getElementById('upload_button').style.display = 'block';
         }
@@ -170,11 +241,14 @@
             document.getElementById('job_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('post_button').style.display = 'block';
+            document.getElementById('upload_button').style.display = 'block';
         }
 
         if (tab == 'courses') {
             document.getElementById('course_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('post_button').style.display = 'block';
+            document.getElementById('upload_button').style.display = 'block';
         }
 
         else {
@@ -182,12 +256,12 @@
         }
     }
 
-    function showtabs() {
-        document.getElementById('multi_input_tabs').style.display = 'block';
-        document.getElementById('initialtextbox').style.display = 'none';
-        document.getElementById('status_form').style.display = 'block';
-        document.getElementById('li_status').setAttribute("class", "active");
 
+
+    function showtabs() {
+        document.getElementById('initialtextbox').style.display = 'none';
+        document.getElementById('multi_input_tabs').style.display = 'block';
+        tab('status');
     }
 
     function hideinputtabs() {
