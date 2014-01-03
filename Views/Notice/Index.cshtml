@@ -220,17 +220,17 @@
 
 
 
-                
+
 
                 @{
                     int count = 0;
                     //if  this is your own profile, you can post from it
                     if (myprofile.UserProfileId == Model.UserProfileId)
                     { 
-                     @Html.Partial("MultiInputBox")
+                    @Html.Partial("MultiInputBox")
                     }
                     //not your profile
-                   @* else
+@* else
                     {
 
                         bool allowPostonWall = false;
@@ -279,7 +279,7 @@
                         {
 
                             UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.owner);
-                    <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-bottom: 5px;">
+                    <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-top: 15px; padding-bottom: 5px;">
                         <div style="float: left; height: 50px; overflow: hidden;">
                             <a href="../../Profile/Index/@userprofile.UserProfileId">
                                 <img src="@Html.Encode(userprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:50px;"/></a>
