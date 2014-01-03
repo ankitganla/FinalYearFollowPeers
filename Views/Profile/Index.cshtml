@@ -22,6 +22,7 @@
     toCheck = false; //if you are viewing your own profile, no need to check privacy
 }
 @{
+    //tocheck true means this is not your profile
     if (toCheck == true)
     {
         string membername = Membership.GetUser().UserName;
@@ -45,6 +46,7 @@
                 if (temp.Employment == 1) { showEmployment = true; }
             }
         }
+        
         //else (meaning public view.. so check tier 1)
         else
         {
