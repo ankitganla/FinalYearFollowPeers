@@ -222,7 +222,7 @@
 
                 
 
-                @*@{
+                @{
                     int count = 0;
                     //if  this is your own profile, you can post from it
                     if (myprofile.UserProfileId == Model.UserProfileId)
@@ -230,7 +230,7 @@
                      @Html.Partial("MultiInputBox")
                     }
                     //not your profile
-                    else
+                   @* else
                     {
 
                         bool allowPostonWall = false;
