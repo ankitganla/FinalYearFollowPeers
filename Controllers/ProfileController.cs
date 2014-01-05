@@ -503,6 +503,7 @@ namespace FollowPeers.Controllers
                     Console.WriteLine("New path", new_path);
 
                     System.IO.File.AppendAllText(new_path + "uploadedList.txt", filename + "\r\n");
+                   
                     postedFile.SaveAs(new_path + postedFile.FileName);
 
                 }
