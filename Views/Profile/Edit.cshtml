@@ -110,7 +110,7 @@
                         <div class="editor-field" style="">
                             <textarea id="TextArea" rows="3" cols="120" name="AboutMe" class="rte-zone" style="width: 350px;">@Model.AboutMe</textarea>
                         </div>
-
+                        <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
                     </fieldset>
                     
                     <fieldset>
@@ -183,6 +183,7 @@
                             @Html.TextBoxFor(model => model.Contact.Website, new { style = "width: 200px;margin-left: 2px;" })
                             @Html.ValidationMessageFor(model => model.Contact.Website)
                         </div>
+                        <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
                     </fieldset>
                     
                     <fieldset>
@@ -367,14 +368,17 @@
 
 
                         </div>
-                        <input class="btn btn-primary" type="submit" value="Save" style="float:right;"/>
+                        <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
                     </fieldset>
                     
-                    <input class="btn btn-primary" type="submit" value="Save" style=""/>
+                    <input class="btn btn-primary" type="submit" value="Save" style="" />
                     
                 }
             </div>
+
         </div>
+
+
     </div>
 
     <div class="row">
