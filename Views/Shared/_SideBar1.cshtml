@@ -25,7 +25,8 @@
             <a href=""../../Profile/Index/@profilename"">
                 <img src="@Html.Encode(photourl)" class="img" alt=""/></a>
             <h4>@name</h4>
-            <a style="font-size:x-small;"href="/Profile/Edit">[edit]</a>
+            @if (myself == 1)
+            {<a style="font-size:x-small;"href="/Profile/Edit">[edit]</a>}
         </div>
         
         @{
