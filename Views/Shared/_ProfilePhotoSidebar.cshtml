@@ -1,0 +1,14 @@
+﻿@{
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+    <div class="span2" style="">
+        <div class="thumbnail" style="text-align: center;">
+            <a href="profile.html">
+                <img src="@Html.Encode(myprofile.PhotoUrl)" class="img" alt=""/></a>
+            <h4>@myprofile.FirstName @myprofile.LastName</h4>
+            <a style="font-size: x-small;" href="/Profile/UploadPhoto">[Change Picture]</a>
+        </div>
+
+    </div>
+}
