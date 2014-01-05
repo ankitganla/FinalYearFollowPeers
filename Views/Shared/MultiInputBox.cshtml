@@ -51,25 +51,12 @@
             width: 100%;
             overflow: hidden;
             height: auto;
-            padding-bottom: 10px;
+            padding: 0;
+            margin:0;
 
         }
 
-        .btn
-        {
-            background-color: #45aeea;
-            color: red;
-            /* The following four lines are to make the top left and top right corners of the content area rounded. */
-            -moz-border-radius-topleft: 4px;
-            border-top-left-radius: 4px;
-            -moz-border-radius-topright: 4px;
-            border-top-right-radius: 4px;
-            -moz-border-radius-bottomleft: 4px;
-            border-bottom-left-radius: 4px;
-            -moz-border-radius-bottomright: 4px;
-            border-bottom-right-radius: 4px;
-            /* end of rounded borders */
-        }
+       
 
         #job_role_dropdown
         {
@@ -157,12 +144,9 @@
             </div>
 
             <div id="post_button" style="display: none;">
-                <input class="btn" type="submit" value="Post" />
+                <input class="post_buttons" type="submit" style="background-color: #45aeea;color:white;" value="Post" />
+                <a class="post_buttons" style="background-color: white;" href="/Profile/UploadFile"><i class="icon-upload"></i></a>
 
-            </div>
-
-            <div id="upload_button" style="display: none;">
-                <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a>
             </div>
 
             <div id="broadcast_check" style="display: none;">
@@ -190,7 +174,7 @@
         document.getElementById('job_form').style.display = 'none';
         document.getElementById('course_form').style.display = 'none';
         document.getElementById('post_button').style.display = 'none';
-        document.getElementById('upload_button').style.display = 'none';
+        
 
         document.getElementById('li_status').setAttribute("class", "");
         document.getElementById('li_publications').setAttribute("class", "");
@@ -203,28 +187,28 @@
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "enabled");
             document.getElementById('post_button').style.display = 'block';
-            document.getElementById('upload_button').style.display = 'block';
+            
         }
 
         if (tab == 'publications') {
             document.getElementById('publication_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('post_button').style.display = 'block';
-            document.getElementById('upload_button').style.display = 'block';
+           
         }
 
         if (tab == 'jobs') {
             document.getElementById('job_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('post_button').style.display = 'block';
-            document.getElementById('upload_button').style.display = 'block';
+           
         }
 
         if (tab == 'courses') {
             document.getElementById('course_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('post_button').style.display = 'block';
-            document.getElementById('upload_button').style.display = 'block';
+            
         }
 
         else {
