@@ -248,6 +248,7 @@
         @*Main Content*@
         <div class="span9 main-content">
             <div class="box">
+                <a id="pagetop"></a>
                 <h2>Update Your Profile</h2>
                 @if (Model.firsttime == true)
                 {
@@ -264,6 +265,14 @@
                     </div>
                 </div>
                 @{var message = ViewData["message"];}
+                
+                <ul style="margin:0;">
+                    
+                    <a href="#personal_section" style="border-right: solid">Personal </a>
+                     <a href="#contact_section" style="border-right: solid"> Contact </a>
+                     <a href="#education_section" style="border-right: solid"> Eduaction </a>
+                     <a href="#professional_section"> Professional</a>
+                </ul>
 
                 @using (Html.BeginForm())
                 {
@@ -273,6 +282,7 @@
                     }
                     @Html.ValidationSummary(true)
                     <fieldset>
+                        <a id="personal_section"></a>
                         <legend>Personal</legend>
                         @Html.HiddenFor(model => model.UserProfileId)
                         @Html.HiddenFor(model => model.UserName)
@@ -335,9 +345,13 @@
                             <textarea id="TextArea" rows="3" cols="120" name="AboutMe" class="rte-zone" style="width: 350px;">@Model.AboutMe</textarea>
                         </div>
                         <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
+                        
+                        
                     </fieldset>
+                    <a href="#pagetop" style="font-size: x-small; float:right;">[back to top]</a>
                     
                     <fieldset>
+                        <a id="contact_section"></a>
                         <legend>Contact Information</legend>
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Contact.Street1, "Address Line1")
@@ -409,6 +423,7 @@
                         </div>
                         <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
                     </fieldset>
+                    <a href="#pagetop" style="font-size: x-small; float:right;">[back to top]</a>
                     
                     
                               int i = 0;
@@ -423,6 +438,7 @@
                             string TempData4 = "Country" + i.ToString();
                             <div id=@TempData>
                                 <fieldset>
+                                    <a id="education_section"></a>
                                     <legend>Education History</legend>
                                     <div id=@TempData2  style="float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;" title="Click to delete this record.">
                                         x
@@ -459,6 +475,7 @@
                                         <input type="text" name="endYear" value="@Model.Educations.ElementAt(i).endYear" />
                                     </div>
                                 </fieldset>
+                                
                             </div>
             
                             i = i + 1;
@@ -467,10 +484,11 @@
                             <a class="btn" id="Add" style="" title="Click to add another record."><i class="icon-plus"></i></a>
                             <input type="submit" value="Save" class="btn btn-primary" style="float: right;">
                         </p>
-
+                        <a href="#pagetop" style="font-size: x-small; float:right;">[back to top]</a>
                     </div>
                     
                     <fieldset>
+                        <a id="professional_section"></a>
                         <legend>Professional</legend>
 
                         <div class="editor-label">
@@ -522,6 +540,7 @@
                         </div>
                         <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
                     </fieldset>
+                    <a href="#pagetop" style="font-size: x-small; float:right;">[back to top]</a>
                   
                     
                 }
