@@ -15,13 +15,12 @@
         @*Main Content*@
         <div class="span9 main-content">
             <div class="box">
-                <h2>Update Your Profile
-                </h2>
+                <h2>Update Your Profile</h2>
                 @if (Model.firsttime == true)
                 {
                     <div class="alert">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <strong>Warning!</strong> Save your profile before proceeding to view.    
+                        <strong>Complete Your Profile!</strong>
                     </div>
                 }
                 <div>
@@ -112,10 +111,79 @@
                             <textarea id="TextArea" rows="3" cols="120" name="AboutMe" class="rte-zone" style="width: 350px;">@Model.AboutMe</textarea>
                         </div>
 
-
-
                     </fieldset>
                     
+                    <fieldset>
+                        <legend>Contact Information</legend>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Contact.Street1, "Address Line1")
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Contact.Street1, new { style = "width: 200px; margin-left: 2px;" })
+                            @Html.ValidationMessageFor(model => model.Contact.Street1)
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Contact.Street2, "Address Line2")
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Contact.Street2, new { style = "width: 200px;margin-left: 2px;" })
+                            @Html.ValidationMessageFor(model => model.Contact.Street2)
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Contact.City)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Contact.City)
+                            @Html.ValidationMessageFor(model => model.Contact.City)
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Contact.Country)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Contact.Country)
+                            @Html.ValidationMessageFor(model => model.Contact.Country)
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Contact.Mobile)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Contact.Mobile)
+                            @Html.ValidationMessageFor(model => model.Contact.Mobile)
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Contact.Phone)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Contact.Phone)
+                            @Html.ValidationMessageFor(model => model.Contact.Phone)
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Contact.Fax)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Contact.Fax)
+                            @Html.ValidationMessageFor(model => model.Contact.Fax)
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Contact.Email)
+                        </div>
+                        <div class="editor-field">
+                            @{
+                              string prompt = "";
+                              if (Model.Contact.Email == null) { prompt = Model.UserName; }
+                              else { prompt = Model.Contact.Email; }
+                            }
+                            <input id="Contact_Email" name="Contact.Email" style="width: 200px;margin-left: 2px;" type="text" value="@prompt" class="valid">
+                            @Html.ValidationMessageFor(model => model.Contact.Email)
+                        </div>
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Contact.Website)
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBoxFor(model => model.Contact.Website, new { style = "width: 200px;margin-left: 2px;" })
+                            @Html.ValidationMessageFor(model => model.Contact.Website)
+                        </div>
+                    </fieldset>
                     
                     <fieldset>
                         <legend>Professional</legend>
@@ -299,11 +367,11 @@
 
 
                         </div>
+                        <input class="btn btn-primary" type="submit" value="Save" style="float:right;"/>
                     </fieldset>
-                        
-                    <p>
-                        <input class="btn btn-primary" type="submit" value="Save" style="">
-                    </p>
+                    
+                    <input class="btn btn-primary" type="submit" value="Save" style=""/>
+                    
                 }
             </div>
         </div>
