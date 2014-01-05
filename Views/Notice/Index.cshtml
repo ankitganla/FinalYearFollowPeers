@@ -276,14 +276,14 @@
                         //need to display only own's updates
                         if (currentUpdate.Own == true)
                         {
-
+                                
                             UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.owner);
-                    <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-top: 15px; padding-bottom: 5px;">
+                    <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-top: 15px; padding-bottom: 5px; width:100%">
                         <div style="float: left; height: 50px; overflow: hidden;">
                             <a href="../../Profile/Index/@userprofile.UserProfileId">
                                 <img src="@Html.Encode(userprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:50px;"/></a>
                         </div>
-                        <div style="margin-left: 8px; float: left; width: 88%;">
+                        <div style="margin-left: 8px; float: left; width: 88%; word-wrap: break-word">
                             <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
                             @if (currentUpdate.type == 3)
                             {
