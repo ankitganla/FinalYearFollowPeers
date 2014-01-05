@@ -98,7 +98,7 @@
                         <div class="editor-field">
                             <input id="EventDate" class="small" type="date" name ="EventDate" value= "@Model.Birthday" data-datepicker="datepicker">
                         </div>
-                         <div class="editor-label">
+                        <div class="editor-label">
                             @Html.LabelFor(model => model.Country, "Country")
                         </div>
                         <div class="editor-field">
@@ -111,6 +111,15 @@
                         <div class="editor-field" style="">
                             <textarea id="TextArea" rows="3" cols="120" name="AboutMe" class="rte-zone" style="width: 350px;">@Model.AboutMe</textarea>
                         </div>
+
+
+
+                    </fieldset>
+                    
+                    
+                    <fieldset>
+                        <legend>Professional</legend>
+
                         <div class="editor-label">
                             @Html.LabelFor(model => model.Organization, "Organization")
                         </div>
@@ -257,66 +266,41 @@
                         <div class="editor-field">
                             <input type="text" id="Departments" name="Departments" style="margin-left:2px;width:350px" value="@Model.Departments" />
                         </div>
-
-                       
-                    </fieldset>
-                    
-                    
-                    <fieldset style="display: none">
-                        <legend>Research Interest</legend>
-                        <div id="notification" style="display: none; height: 22px;"></div>
+                        <div id="Specialization" style="display: none; height: 22px;"></div>
                         <div class="editor-label">
-                            @Html.LabelFor(model => model.Specializations, "Add your research interest")
+                            @Html.LabelFor(model => model.Specializations, "Primary Field of Research")
                         </div>
                         <div class="editor-field" style="float: left; width: auto">
-                            <input type="text" name="SpecializationId" id="SpecializationId" style="width: 200px" value="" />
+                            <select multiple="multiple" name="Specialization" style="width: 300px; height: 150px">
+                                @{ 
+                            
+                              FollowPeers.Models.FollowPeersDBEntities db = new FollowPeers.Models.FollowPeersDBEntities();
+
+                              IQueryable<string> Query = (from entry in db.Specializations
+                                                          orderby entry.Field
+                                                          select entry.Field).Distinct();
+                              int i = 0;
+                              foreach (string entry in Query)
+                              {
+                                  IQueryable<FollowPeers.Models.Specialization> Query2 = from specialization in db.Specializations orderby specialization.Field where specialization.Field == entry select specialization;
+                                  if (Model.Specializations.Where(p => p.Field == @entry).Count() == 0)
+                                  {
+                                    <option value="@i">@entry</option>
+                                  }
+                                  else
+                                  {
+                                    <option value="@i" selected="selected">@entry</option>
+                                  }
+                                  i = i + Query2.Count();
+                              }
+                                }
+
+                            </select>
+
 
                         </div>
-                        <br />
-                        <br />
-                        <div id="interest">
-
-                            @{
-                              if (Model.Specializations.Count() > 0)
-                              {  
-                                <div id="interest1" style="width: 100%;">
-                                    <div class="editor-label">
-                                        <label>Interest</label>
-                                    </div>
-                                    <div class="editor-field" style="height: 20px; border-bottom: 1px solid #CCC; width: 50%; float: left">@Model.Specializations.ElementAt(0).SpecializationName</div>
-                                    <div id="delete1" style="color: #666; cursor: pointer;">x</div>
-                                    <div style="clear: both"></div>
-                                    <input id="Specialization1.Specializationid" name="Specialization" type="hidden" value="@Model.Specializations.ElementAt(0).SpecializationId">
-                                </div>
-                              }
-                              if (Model.Specializations.Count() > 1)
-                              {  
-                                <div id="interest2" style="width: 100%;">
-                                    <div class="editor-label">
-                                        <label>Interest</label>
-                                    </div>
-                                    <div class="editor-field" style="height: 20px; border-bottom: 1px solid #CCC; width: 50%; float: left">@Model.Specializations.ElementAt(1).SpecializationName</div>
-                                    <div id="delete2" style="color: #666; cursor: pointer;">x</div>
-                                    <div style="clear: both"></div>
-                                    <input id="Specialization2.Specializationid" name="Specialization" type="hidden" value="@Model.Specializations.ElementAt(1).SpecializationId">
-                                </div>
-                              }
-                              if (Model.Specializations.Count() > 2)
-                              {  
-                                <div id="interest3" style="width: 100%;">
-                                    <div class="editor-label">
-                                        <label>Interest</label>
-                                    </div>
-                                    <div class="editor-field" style="height: 20px; border-bottom: 1px solid #CCC; width: 50%; float: left">@Model.Specializations.ElementAt(2).SpecializationName</div>
-                                    <div id="delete3" style="color: #666; cursor: pointer;">x</div>
-                                    <div style="clear: both"></div>
-                                    <input id="Specialization3.Specializationid" name="Specialization" type="hidden" value="@Model.Specializations.ElementAt(2).SpecializationId">
-                                </div>
-                              } 
-                            }
-                        </div>
-
-                    </fieldset>      
+                    </fieldset>
+                        
                     <p>
                         <input class="btn btn-primary" type="submit" value="Save" style="">
                     </p>
