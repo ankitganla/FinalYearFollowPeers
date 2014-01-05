@@ -3179,8 +3179,6 @@
     <Content Include="Views\Profile\EditEmployment.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Shared\MultiInputBox.cshtml" />
-    <Content Include="Views\Shared\_MultiInputBox.cshtml" />
-    <Content Include="Views\Shared\ViewPage1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\TempImages\" />
