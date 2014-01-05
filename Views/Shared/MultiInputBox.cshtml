@@ -7,63 +7,33 @@
             padding: 0px;
             margin: 0px;
             margin-left: 0px;
-            list-style-type: none;
             padding-right: 100px;
         }
 
             #multi_input_tabs ul li
             {
                 display: inline-block;
-                clear: none;
-                float: left;
                 height: auto;
-                /* The following four lines are to make the top left and top right corners of the content area rounded. */
-                -moz-border-radius-topleft: 4px;
-                border-top-left-radius: 4px;
-                -moz-border-radius-topright: 4px;
-                border-top-right-radius: 4px;
-                -moz-border-radius-bottomleft: 4px;
-                border-bottom-left-radius: 4px;
-                -moz-border-radius-bottomright: 4px;
-                border-bottom-right-radius: 4px;
-                /* end of rounded borders */
             }
 
                 #multi_input_tabs ul li a
                 {
-                    position: relative;
-                    display: block;
+                    
+                    
                     margin-left: 0px;
-                    line-height: 24px;
+                    
                     padding-left: 10px;
                     padding-right: 10px;
                     background: none;
                     width: auto;
                     color: #45aeea;
-                    text-decoration: none;
                     font-weight: bold;
                 }
 
-                    #multi_input_tabs ul li a:enabled
-                    {
-                        position: relative;
-                        display: block;
-                        margin-left: 0px;
-                        line-height: 24px;
-                        padding-left: 10px;
-                        padding-right: 10px;
-                        background: none;
-                        width: auto;
-                        color: red;
-                        text-decoration: none;
-                        font-weight: bold;
-                    }
-
-
-                    #multi_input_tabs ul li a:hover
-                    {
-                        text-decoration: underline;
-                    }
+                #multi_input_tabs ul li a:hover
+                {
+                    text-decoration: underline;
+                }
 
         #Content_Area
         {
@@ -78,23 +48,17 @@
             -moz-border-radius-bottomright: 4px;
             border-bottom-right-radius: 4px;
             /* end of rounded borders */
-            /*padding: 0 15px;*/
-            clear: both;
+            width: 100%;
             overflow: hidden;
-            line-height: 19px;
-            position: relative;
-            top: 20px;
-            z-index: 5;
             height: auto;
-            overflow: hidden;
             padding-bottom: 10px;
-                
+
         }
 
         .btn
         {
             background-color: #45aeea;
-            color: white;
+            color: red;
             /* The following four lines are to make the top left and top right corners of the content area rounded. */
             -moz-border-radius-topleft: 4px;
             border-top-left-radius: 4px;
@@ -121,6 +85,17 @@
             border-bottom-right-radius: 4px;
             /* end of rounded borders */
         }
+        textarea
+        {
+            width: 100%; 
+            resize: none; 
+            border: none; 
+            outline: none;
+            margin-left: 0;
+            margin-right:0;
+            padding: 0;
+                
+        }
     </style>
 </head>
 
@@ -130,27 +105,26 @@
         <input type="text" placeholder="Click to share..." onclick="showtabs()" style="width: 100%; border: none;" />
     </div>
 
-    <div id="multi_input_tabs" style="display: none;">
+    <div id="multi_input_tabs" style="display: none; border:none;">
         <ul>
             <li id="li_status" onclick="tab('status')"><a>Status</a></li>
             <li id="li_publications" onclick="tab('publications')"><a>Publications</a></li>
             <li id="li_jobs" onclick="tab('jobs')"><a>Job Posting</a></li>
             <li id="li_courses" onclick="tab('courses')"><a>Courses</a></li>
         </ul>
-        <br />
-        <hr />
+        
 
     </div>
 
 
-    <div id="Form_Area">
+    <div id="Form_Area" style="border:none;">
         <form action="/Profile/UpdateStatus" method="post">
             <div id="status_form" style="display: none;">
-                <textarea name="message" style="width: 100%; resize: none; border: none;" placeholder="Share your thoughts..."></textarea>
+                <textarea name="message" placeholder="Share your thoughts..."></textarea>
             </div>
 
             <div id="publication_form" style="display: none;">
-                <textarea name="publication_abstract" rows="3" cols="300" style="width: 100%; resize: none; border: none;" placeholder="Add a brief abstract (optional)..."></textarea>
+                <textarea name="publication_abstract" rows="3" cols="300" placeholder="Add a brief abstract (optional)..."></textarea>
             </div>
 
             <div id="job_form" style="display: none;">
@@ -168,7 +142,7 @@
 
 
                 <div id="job_description">
-                    <textarea name="jobdescription" rows="3" cols="300" style="width: 100%; resize: none; border: none;" placeholder="Description"></textarea>
+                    <textarea name="jobdescription" rows="3" cols="300" placeholder="Description"></textarea>
                 </div>
             </div>
 
@@ -178,7 +152,7 @@
                 </div>
 
                 <div id="course_description">
-                    <textarea name="coursedescription" rows="3" cols="300" style="width: 100%; resize: none; border: none;" placeholder="Description"></textarea>
+                    <textarea name="coursedescription" rows="3" cols="300" placeholder="Description"></textarea>
                 </div>
             </div>
 

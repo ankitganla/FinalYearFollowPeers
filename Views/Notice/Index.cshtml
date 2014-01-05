@@ -10,7 +10,6 @@
 
     @*rows within container*@
     <div class="row">
-
         @*Left Sidebar*@
         @{
             ViewBag.Title = Model.FirstName + " " + Model.LastName + "'s Notice Board";
@@ -24,14 +23,13 @@
             else
             {
             @Html.Partial("_SideBar1", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
- 
             }
         }
 
         @*Center Container*@
         <div class="span7">
             
-                <script type="text/javascript" language="javascript">
+               @* <script type="text/javascript" language="javascript">
                     function puthint(divname, hinttext) {
                         $(document).ready(function () {
 
@@ -76,7 +74,7 @@
                     puthint("#message", "Update your status message...");
                     puthint("#posttonotice", "Write something on the @Model.FirstName @Model.LastName's Noticeboard...");
         
-                </script>
+                </script>*@
 
 
 
@@ -150,7 +148,7 @@
                                 if (i == countInterests) { i = 0; break; }
                                 i++;
                             } while (posts.Count <= 0);
-                        
+                            
                       
                       
                          
@@ -227,10 +225,11 @@
                     //if  this is your own profile, you can post from it
                     if (myprofile.UserProfileId == Model.UserProfileId)
                     { 
+                    
                     @Html.Partial("MultiInputBox")
                     }
                     //not your profile
-@* else
+                    @* else
                     {
 
                         bool allowPostonWall = false;
@@ -386,6 +385,7 @@
         </div>
 
     </div>
+
     <div class="row">
         @Html.Partial("_Footer")
     </div>
