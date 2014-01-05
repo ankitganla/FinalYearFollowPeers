@@ -482,6 +482,10 @@ namespace FollowPeers.Controllers
             if (uploadFile.Count > 0)
             {
                 HttpPostedFileBase postedFile = uploadFile[0];
+                if (postedFile.FileName == "")
+                {
+                    return RedirectToAction("UploadFile", "Profile", null);
+                }
                 System.IO.Stream inStream = postedFile.InputStream;
                 byte[] fileData = new byte[postedFile.ContentLength];
                 inStream.Read(fileData, 0, postedFile.ContentLength);
@@ -503,7 +507,6 @@ namespace FollowPeers.Controllers
                     Console.WriteLine("New path", new_path);
 
                     System.IO.File.AppendAllText(new_path + "uploadedList.txt", filename + "\r\n");
-                   
                     postedFile.SaveAs(new_path + postedFile.FileName);
 
                 }
