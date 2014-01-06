@@ -105,9 +105,23 @@
 
 
     <div id="Form_Area" style="border:none;">
-        <form action="/Profile/UpdateStatus" method="post">
+        
             <div id="status_form" style="display: none;">
+                <form action="/Profile/UpdateStatus" method="post">
                 <textarea name="message" placeholder="Share your thoughts..."></textarea>
+                <div class="box" id="post_button" style="display: none;">
+                <input class="post_buttons" type="submit" style="background-color: #45aeea;color:white;" value="Post" />
+                <i class="icon-upload"></i>
+                <input class="post_buttons" type="file" style="position: relative; left:-20px; width:30px; height:30px; opacity:0;" value="Upload" />
+                <div id="broadcast_check" style="display: none;">
+                <label type="checkbox">
+                    <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
+                    <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
+                </label>
+                <input type="hidden" name="Ischecked" value="false" />
+            </div>
+            </div>
+                </form>
             </div>
 
             <div id="publication_form" style="display: none;">
@@ -143,22 +157,11 @@
                 </div>
             </div>
 
-            <div class="box" id="post_button" style="display: none;">
-                <input class="post_buttons" type="submit" style="background-color: #45aeea;color:white;" value="Post" />
-                <i class="icon-upload"></i>
-                <input class="post_buttons" type="file" style="position: relative; left:-20px; width:30px; height:30px; opacity:0;" value="Upload" />
+            
 
-            </div>
+            
 
-            <div id="broadcast_check" style="display: none;">
-                <label type="checkbox">
-                    <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
-                    <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
-                </label>
-                <input type="hidden" name="Ischecked" value="false" />
-            </div>
-
-        </form>
+        
     </div>
     <!--form area div ends-->
 
