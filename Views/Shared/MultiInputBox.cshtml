@@ -106,7 +106,7 @@
             <form action="/Profile/NewUpdateStatus" method="post">
                 <textarea name="message" placeholder="Share your thoughts..."></textarea>
                 <div class="box" style="padding-left: 1px;">
-                    <input class="post_buttons" type="submit" style="background-color: #45aeea; color: white;" value="Post" />
+                    <input class="btn btn-primary" type="submit" value="Post" />
 
                     <div id="broadcast_check" style="display: none;">
                         <label type="checkbox">
@@ -135,9 +135,8 @@
 
         <div id="publication_form" style="display: none;">
 
-            <form>
-                <textarea name="publication_abstract" rows="3" cols="300" placeholder="Add a brief abstract (optional)..."></textarea>
-            </form>
+           <a class="btn btn-primary" href="@Url.Content("~/PublicationModel/Create/1")">
+                <i class="icon-upload icon-white"></i>Add new</a>
 
         </div>
 
