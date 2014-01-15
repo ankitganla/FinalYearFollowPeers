@@ -2326,34 +2326,66 @@ namespace FollowPeers.Controllers
                 CreateUpdates(message, "/Notice/Index/" + userprofile.UserProfileId, 9, userprofile.UserProfileId); // broadcast message type = 9 
                 PosttoNoticeBoard(message, userprofile.UserProfileId.ToString(), check);
             }
-            /*else
-                if(check == true && taggedpeers.Count > 0) //status update broadcast and peer tagging
-                {
-                    foreach (var peer in taggedpeers)
-                    {
-                        CreateUpdates(message,  peer.UserProfileId.ToString(), 8, userprofile.UserProfileId); // broadcast message type = 8 
-                    }
-                    CreateUpdates(message, "/Notice/Index/" + userprofile.UserProfileId, 9, userprofile.UserProfileId); // broadcast message type = 9 
-                    PosttoNoticeBoard(message, userprofile.UserProfileId.ToString(), check);
-                }
-            else
-                if( check == false && taggedpeers.Count() > 0) // only status update and peer tagging
-                {
-                CreateUpdates(message, "/Notice/Index/" + userprofile.UserProfileId, 2, userprofile.UserProfileId);
-                
-                    foreach(var peer in taggedpeers)
-                    {
-                    CreateUpdates(message, peer.UserProfileId.ToString() + "," + peer.FirstName + " " + peer.LastName, 8, userprofile.UserProfileId);
-                    PosttoNoticeBoard(message, peer.UserProfileId.ToString());
-                    }
-                }*/
+            
             else // only status update
             {
                 CreateUpdates(message, "/Notice/Index/" + userprofile.UserProfileId, 2, userprofile.UserProfileId);
             }
             followPeersDB.Entry(userprofile).State = EntityState.Modified;
             followPeersDB.SaveChanges();
+
+            //before returning, check for file upload
+            NewUploadFile();
             return RedirectToAction("Index", "Notice", new { id = userprofile.UserProfileId });
+        }
+
+        
+
+        public ActionResult NewUploadFile()
+        {
+            string name = Membership.GetUser().UserName;
+            string email_id = Membership.GetUser().Email;
+            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            HttpFileCollectionBase uploadFile = Request.Files;
+            if (uploadFile.Count > 0)
+            {
+                HttpPostedFileBase postedFile = uploadFile[0];
+                if (postedFile.FileName == "")
+                {
+                    return RedirectToAction("UploadFile", "Profile", null);
+                }
+                System.IO.Stream inStream = postedFile.InputStream;
+                byte[] fileData = new byte[postedFile.ContentLength];
+                inStream.Read(fileData, 0, postedFile.ContentLength);
+                string filename = postedFile.FileName;
+                string test = HttpRuntime.AppDomainAppPath;
+
+                string path = test + "\\Content\\Files\\";
+                //System.IO.File.AppendAllText(@"C:\Users\HP User\Documents\GitHub\March Latest\Content\Files\uploadedList.txt", filename + "\r\n");
+                //postedFile.SaveAs(@"C:\Users\HP User\Documents\GitHub\March Latest\Content\Files\" + postedFile.FileName);
+
+                var directoryInfo = new DirectoryInfo(path);
+
+                if (directoryInfo.Exists)
+                {
+                    Console.WriteLine("Create a directory");
+                    directoryInfo.CreateSubdirectory(email_id);
+
+                    string new_path = path + email_id + "\\";
+                    Console.WriteLine("New path", new_path);
+
+                    System.IO.File.AppendAllText(new_path + "uploadedList.txt", filename + "\r\n");
+                    postedFile.SaveAs(new_path + postedFile.FileName);
+
+                }
+
+            }
+
+            //return View("Index", new { id = userprofile.UserProfileId });
+            //return RedirectToAction("Index", "Profile");
+            return RedirectToAction("UploadFile", "Profile", null);
+            //return View(userprofile);
+
         }
 
     }

@@ -6,7 +6,7 @@
     ViewBag.UserName = name;
     FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == name);
     int publicationnumber = 1;
-    ViewBag.Title = "Add Publication";
+    ViewBag.Title = "Publication_multi_input";
 }
 @Html.Partial("_Header")
 <div class="container">

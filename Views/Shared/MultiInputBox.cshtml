@@ -1,6 +1,6 @@
-﻿<head>
+﻿
+<head>
     <title>MultiInputBox</title>
-
     <style media="screen" type="text/css">
         #multi_input_tabs ul
         {
@@ -118,14 +118,16 @@
                     </div>
                 </div>
             </form>
-            <form action="/Profile/UpdateStatus" method="post">
-                <div class="box">
-                </div>
-            </form>
         </div>
 
+
+
         <div id="publication_form" style="display: none;">
-            <textarea name="publication_abstract" rows="3" cols="300" placeholder="Add a brief abstract (optional)..."></textarea>
+            
+            <form>
+              <textarea name="publication_abstract" rows="3" cols="300" placeholder="Add a brief abstract (optional)..."></textarea>
+             </form>
+            
         </div>
 
         <div id="job_form" style="display: none;">
