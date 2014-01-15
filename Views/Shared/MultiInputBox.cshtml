@@ -1,5 +1,4 @@
-﻿
-<head>
+﻿<head>
     <title>MultiInputBox</title>
     <style media="screen" type="text/css">
         #multi_input_tabs ul
@@ -108,8 +107,7 @@
                 <textarea name="message" placeholder="Share your thoughts..."></textarea>
                 <div class="box" style="padding-left: 1px;">
                     <input class="post_buttons" type="submit" style="background-color: #45aeea; color: white;" value="Post" />
-                    <i class="icon-upload"></i>
-                    <input class="post_buttons" type="file" style="position: relative; left: -20px; width: 30px; height: 30px; opacity: 0;" value="Upload" />
+
                     <div id="broadcast_check" style="display: none;">
                         <label type="checkbox">
                             <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
@@ -122,30 +120,25 @@
         </div>
 
         <div id="upload_form" style="display: none;">
-            <form action="/Profile/UpdateStatus" method="post">
-                <textarea name="message" placeholder="Share your thoughts..."></textarea>
+
+            @using (Html.BeginForm("UploadFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
+            {
                 <div class="box" style="padding-left: 1px;">
-                    <input class="post_buttons" type="submit" style="background-color: #45aeea; color: white;" value="Post" />
+                    <input type='file' name='photo' id='photo' />
                     <i class="icon-upload"></i>
-                    <input class="post_buttons" type="file" style="position: relative; left: -20px; width: 30px; height: 30px; opacity: 0;" value="Upload" />
-                    <div id="broadcast_check" style="display: none;">
-                        <label type="checkbox">
-                            <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
-                            <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
-                        </label>
-                        <input type="hidden" name="Ischecked" value="false" />
-                    </div>
+                    <input type="submit" name="submit" value="Save" style="position: relative; left: -20px; width: 30px; height: 30px; opacity: 0;">
                 </div>
-            </form>
+          
+            }
         </div>
 
 
         <div id="publication_form" style="display: none;">
-            
+
             <form>
-              <textarea name="publication_abstract" rows="3" cols="300" placeholder="Add a brief abstract (optional)..."></textarea>
-             </form>
-            
+                <textarea name="publication_abstract" rows="3" cols="300" placeholder="Add a brief abstract (optional)..."></textarea>
+            </form>
+
         </div>
 
         <div id="job_form" style="display: none;">
@@ -194,6 +187,7 @@
     function tab(tab) {
         //document.getElementById('Form_Area').style.display = 'none'; //hide all forms
         document.getElementById('status_form').style.display = 'none';
+        document.getElementById('upload_form').style.display = 'none';
         document.getElementById('publication_form').style.display = 'none';
         document.getElementById('job_form').style.display = 'none';
         document.getElementById('course_form').style.display = 'none';
@@ -201,6 +195,7 @@
 
 
         document.getElementById('li_status').setAttribute("class", "");
+        document.getElementById('li_upload').setAttribute("class", "");
         document.getElementById('li_publications').setAttribute("class", "");
         document.getElementById('li_jobs').setAttribute("class", "");
         document.getElementById('li_courses').setAttribute("class", "");
@@ -210,6 +205,13 @@
             document.getElementById('status_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "enabled");
+            //document.getElementById('post_button').style.display = 'block';
+
+        }
+
+        if (tab == 'upload') {
+            document.getElementById('upload_form').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
             //document.getElementById('post_button').style.display = 'block';
 
         }
