@@ -91,6 +91,7 @@
     <div id="multi_input_tabs" style="display: none; border: none;">
         <ul>
             <li id="li_status" onclick="tab('status')"><a>Status</a></li>
+            <li id="li_upload" onclick="tab('upload')"><a>Upload</a></li>
             <li id="li_publications" onclick="tab('publications')"><a>Publications</a></li>
             <li id="li_jobs" onclick="tab('jobs')"><a>Job Posting</a></li>
             <li id="li_courses" onclick="tab('courses')"><a>Courses</a></li>
@@ -120,6 +121,23 @@
             </form>
         </div>
 
+        <div id="upload_form" style="display: none;">
+            <form action="/Profile/UpdateStatus" method="post">
+                <textarea name="message" placeholder="Share your thoughts..."></textarea>
+                <div class="box" style="padding-left: 1px;">
+                    <input class="post_buttons" type="submit" style="background-color: #45aeea; color: white;" value="Post" />
+                    <i class="icon-upload"></i>
+                    <input class="post_buttons" type="file" style="position: relative; left: -20px; width: 30px; height: 30px; opacity: 0;" value="Upload" />
+                    <div id="broadcast_check" style="display: none;">
+                        <label type="checkbox">
+                            <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
+                            <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
+                        </label>
+                        <input type="hidden" name="Ischecked" value="false" />
+                    </div>
+                </div>
+            </form>
+        </div>
 
 
         <div id="publication_form" style="display: none;">

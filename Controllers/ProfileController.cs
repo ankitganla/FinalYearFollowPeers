@@ -2291,56 +2291,6 @@ namespace FollowPeers.Controllers
         }
 
 
-        [HttpPost]
-        public ActionResult NewUpdateStatus(string message, bool Ischecked)
-        {
-            bool check = Ischecked;
-            //bool check = Convert.ToBoolean(Ischecked.Substring(0, Ischecked.IndexOf(',')));
-            string name = Membership.GetUser().UserName;
-            List<FollowPeers.Models.Relationship> followednames = followPeersDB.Relationships.Where(p => p.personAName == name).ToList();
-            List<FollowPeers.Models.UserProfile> followedpeers = followPeersDB.UserProfiles.Where(p => p.UserProfileId < 0).ToList(); // null list
-            List<FollowPeers.Models.UserProfile> taggedpeers = followPeersDB.UserProfiles.Where(p => p.UserProfileId < 0).ToList();
-            foreach (var peername in followednames)
-            {
-                followedpeers.Add(followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == peername.personBName));
-            }
-            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            userprofile.StatusMessage = message;
-            string[] token = message.Split(' '); // extracting words from sentence
-            // bool Ischecked = bool.Parse(Request.Form.GetValues("Ischecked")[0]);
-            for (int i = 0; i < token.Count(); i++)
-            {
-                for (int j = 0; j < followedpeers.Count(); j++)
-                {
-                    if (token[i].StartsWith("@") && (token[i].Skip(1).Equals(followedpeers[j].FirstName) || token[i].Skip(1).Equals(followedpeers[j].LastName)))
-                    {
-                        taggedpeers.Add(followedpeers[j]); // adding only tagges peers
-
-                    }
-                }
-
-            }
-
-            if (check == true) //only status update and broadcast
-            {
-                CreateUpdates(message, "/Notice/Index/" + userprofile.UserProfileId, 9, userprofile.UserProfileId); // broadcast message type = 9 
-                PosttoNoticeBoard(message, userprofile.UserProfileId.ToString(), check);
-            }
-            
-            else // only status update
-            {
-                CreateUpdates(message, "/Notice/Index/" + userprofile.UserProfileId, 2, userprofile.UserProfileId);
-            }
-            followPeersDB.Entry(userprofile).State = EntityState.Modified;
-            followPeersDB.SaveChanges();
-
-            //before returning, check for file upload
-            NewUploadFile();
-            return RedirectToAction("Index", "Notice", new { id = userprofile.UserProfileId });
-        }
-
-        
-
         public ActionResult NewUploadFile()
         {
             string name = Membership.GetUser().UserName;
