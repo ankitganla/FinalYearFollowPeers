@@ -143,22 +143,8 @@
         </div>
 
         <div id="job_form" style="display: none;">
-            <div id="job_role_select">
-                <select id="job_role_dropdown">
-                    <option selected value="initial_show" disabled>--Select Job Role--</option>
-                    <option value="jobrole_employer">Employer</option>
-                    <option value="jobrole_employee">Employee</option>
-                </select>
-            </div>
-
-            <div id="job_title">
-                <input name="jobtitle" type="text" value="" style="width: 75%; border: none; padding: 2px;" placeholder="Title" />
-            </div>
-
-
-            <div id="job_description">
-                <textarea name="jobdescription" rows="3" cols="300" placeholder="Description"></textarea>
-            </div>
+            <a class="btn btn-primary pull-right" href="@Url.Content("~/Jobs/Create/1")" ><i class="icon-upload icon-white"></i>Add new</a>
+            <a href="/Jobs/Index/">View Jobs</a>
         </div>
 
         <div id="course_form" style="display: none;">
