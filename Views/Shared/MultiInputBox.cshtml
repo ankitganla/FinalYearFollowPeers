@@ -90,10 +90,10 @@
     <div id="multi_input_tabs" style="border: none;">
         <ul>
             <li id="li_status" onclick="tab('status')"><a>Status</a></li>
-            <li id="li_upload" onclick="tab('upload')"><a>Upload</a></li>
+            <li id="li_upload" onclick="tab('upload')"><a>Files/Photos</a></li>
             <li id="li_publications" onclick="tab('publications')"><a>Publications</a></li>
             <li id="li_patents" onclick="tab('patents')"><a>Patents</a></li>
-            <li id="li_jobs" onclick="tab('jobs')"><a>Job Posting</a></li>
+            <li id="li_jobs" onclick="tab('jobs')"><a>Jobs</a></li>
             <li id="li_courses" onclick="tab('courses')"><a>Courses</a></li>
         </ul>
 
@@ -101,7 +101,7 @@
     </div>
 
 
-    <div id="Form_Area" style="border: none;">
+    <div id="Form_Area" style="border-top: 1px solid #ccc;">
 
         <div id="status_form" style="display: none;">
             <form action="/Profile/NewUpdateStatus" method="post">
@@ -121,31 +121,49 @@
         </div>
 
         <div id="upload_form" style="display: none;">
+            <div style="width:49%;margin: 0px; display: inline-block; height: 50px; border-right: 1px solid #ccc; float:left; text-align: center;">
+             <a style="margin-top: 20px" href="/Profile/UploadFile/">Browse Files</a>
+            </div>
+            <div style="width:50%;margin: 0px; display: inline-block; height: 50px; border-left: 1px solid #ccc; float:left;  text-align: center;">
+            <form action="/Profile/UploadFile"  ="multipart/form-data" method="post" style="margin-right:0px;">
+                <a>Browse Files</a>
+                <input type='file' name='photo' id='photo' style="position: relative; left: -90px; width: 80px; height: 30px; opacity: 0;" />
+                <div>
+                    <input class="btn btn-primary" type="submit" name="submit" value="Save" />
+                </div>
+                
+            </form>
+            </div>
 
-            @using (Html.BeginForm("UploadFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
+            @*@using (Html.BeginForm("UploadFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
             {
-                <div class="box" style="padding-left: 1px;">
-                    <input type='file' name='photo' id='photo' />
+                <div style="width: 50%; margin: 0; border: none; padding: 0;">
+                    <a>Browse Files</a>
+                    <input type='file' name='photo' id='photo' style="position: relative; left: -20px; width: 30px; height: 30px; opacity: 0;" />
+                </div>
+                <div style="width: 50%; margin: 0 0 0 0; border: none; padding: 0 0 0 0;">
+                    <a href="/Profile/UploadFile/">Browse Files</a>
+                </div>
+<div style="width:100%;">  
                     <i class="icon-upload"></i>
                     <input type="submit" name="submit" value="Save" style="position: relative; left: -20px; width: 30px; height: 30px; opacity: 0;">
-                </div>
-          
-            }
-            <a href="/Profile/UploadFile/">View Uploaded</a>
+                </div> 
+                
+            }*@
         </div>
 
 
         <div id="publication_form" style="display: none;">
 
-           <a class="btn btn-primary" href="@Url.Content("~/PublicationModel/Create/1")">
+            <a class="btn btn-primary" href="@Url.Content("~/PublicationModel/Create/1")">
                 <i class="icon-upload icon-white"></i>Add new</a>
-           <a href="/PublicationModel/Index/">View Publications</a>
+            <a href="/PublicationModel/Index/">View Publications</a>
 
         </div>
 
         <div id="patent_form" style="display: none;">
 
-           <a class="btn btn-primary" href="/PatentModel/Create/1">Add Patent</a>
+            <a class="btn btn-primary" href="/PatentModel/Create/1">Add Patent</a>
 
         </div>
 
@@ -155,7 +173,7 @@
         </div>
 
         <div id="course_form" style="display: none;">
-             <a href="/Course/Create/">Create New</a>
+            <a href="/Course/Create/">Create New</a>
             <a href="/Course/Index/">View Courses</a>
         </div>
 
