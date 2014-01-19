@@ -6,7 +6,7 @@
             padding: 0px;
             margin: 0px;
             margin-left: 0px;
-            padding-right: 100px;
+            padding-right: 10px;
         }
 
             #multi_input_tabs ul li
@@ -92,6 +92,7 @@
             <li id="li_status" onclick="tab('status')"><a>Status</a></li>
             <li id="li_upload" onclick="tab('upload')"><a>Upload</a></li>
             <li id="li_publications" onclick="tab('publications')"><a>Publications</a></li>
+            <li id="li_patents" onclick="tab('patents')"><a>Patents</a></li>
             <li id="li_jobs" onclick="tab('jobs')"><a>Job Posting</a></li>
             <li id="li_courses" onclick="tab('courses')"><a>Courses</a></li>
         </ul>
@@ -142,6 +143,12 @@
 
         </div>
 
+        <div id="patent_form" style="display: none;">
+
+           <a class="btn btn-primary" href="/PatentModel/Create/1">Add Patent</a>
+
+        </div>
+
         <div id="job_form" style="display: none;">
             <a class="btn btn-primary pull-right" href="@Url.Content("~/Jobs/Create/1")" ><i class="icon-upload icon-white"></i>Add new</a>
             <a href="/Jobs/Index/">View Jobs</a>
@@ -171,6 +178,7 @@
         document.getElementById('status_form').style.display = 'none';
         document.getElementById('upload_form').style.display = 'none';
         document.getElementById('publication_form').style.display = 'none';
+        document.getElementById('patent_form').style.display = 'none';
         document.getElementById('job_form').style.display = 'none';
         document.getElementById('course_form').style.display = 'none';
         //document.getElementById('post_button').style.display = 'none';
@@ -179,6 +187,7 @@
         document.getElementById('li_status').setAttribute("class", "");
         document.getElementById('li_upload').setAttribute("class", "");
         document.getElementById('li_publications').setAttribute("class", "");
+        document.getElementById('li_patents').setAttribute("class", "");
         document.getElementById('li_jobs').setAttribute("class", "");
         document.getElementById('li_courses').setAttribute("class", "");
 
@@ -200,6 +209,13 @@
 
         if (tab == 'publications') {
             document.getElementById('publication_form').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            //document.getElementById('post_button').style.display = 'block';
+
+        }
+
+        if (tab == 'patents') {
+            document.getElementById('patent_form').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             //document.getElementById('post_button').style.display = 'block';
 
