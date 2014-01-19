@@ -122,14 +122,14 @@
 
         <div id="upload_form" style="display: none;">
             <div style="width:49%;margin: 0px; display: inline-block; height: 50px; border-right: 1px solid #ccc; float:left; text-align: center;">
-             <a style="margin-top: 20px" href="/Profile/UploadFile/">Browse Files</a>
+             <a style=" position: relative; left: 0px; top: 12px;" href="/Profile/UploadFile/">View Uploaded</a>
             </div>
             <div style="width:50%;margin: 0px; display: inline-block; height: 50px; border-left: 1px solid #ccc; float:left;  text-align: center;">
             <form action="/Profile/UploadFile"  ="multipart/form-data" method="post" style="margin-right:0px;">
-                <a>Browse Files</a>
-                <input type='file' name='photo' id='photo' style="position: relative; left: -90px; width: 80px; height: 30px; opacity: 0;" />
+                <a style=" position: relative; left: 50px; top: 12px;">Browse Files</a>
+                <input type='file' name='photo' id='photo' style="position: relative; left: -40px; top:12px; width: 80px; height: 30px; opacity: 0;" />
                 <div>
-                    <input class="btn btn-primary" type="submit" name="submit" value="Save" />
+                    <input class="btn btn-primary" type="submit" name="submit" value="Upload" style="float:right;"/>
                 </div>
                 
             </form>
