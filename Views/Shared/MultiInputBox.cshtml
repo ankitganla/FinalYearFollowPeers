@@ -125,31 +125,16 @@
              <a style=" position: relative; left: 0px; top: 12px;" href="/Profile/UploadFile/">View Uploaded</a>
             </div>
             <div style="width:50%;margin: 0px; display: inline-block; height: 50px; border-left: 1px solid #ccc; float:left;  text-align: center;">
-            <form action="/Profile/UploadFile"  ="multipart/form-data" method="post" style="margin-right:0px;">
-                <a style=" position: relative; left: 50px; top: 12px;">Browse Files</a>
-                <input type='file' name='photo' id='photo' style="position: relative; left: -40px; top:12px; width: 80px; height: 30px; opacity: 0;" />
+            @using (Html.BeginForm("UploadFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
+            {
+                <a style=" position: relative; left: 50px; top: 10px;">Browse Files</a>
+                <input type='file' name='photo' id='photo' style="position: relative; left: -40px; top:10px; width: 80px; height: 30px; opacity: 0;" />
                 <div>
                     <input class="btn btn-primary" type="submit" name="submit" value="Upload" style="float:right;"/>
                 </div>
                 
-            </form>
+            }
             </div>
-
-            @*@using (Html.BeginForm("UploadFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
-            {
-                <div style="width: 50%; margin: 0; border: none; padding: 0;">
-                    <a>Browse Files</a>
-                    <input type='file' name='photo' id='photo' style="position: relative; left: -20px; width: 30px; height: 30px; opacity: 0;" />
-                </div>
-                <div style="width: 50%; margin: 0 0 0 0; border: none; padding: 0 0 0 0;">
-                    <a href="/Profile/UploadFile/">Browse Files</a>
-                </div>
-<div style="width:100%;">  
-                    <i class="icon-upload"></i>
-                    <input type="submit" name="submit" value="Save" style="position: relative; left: -20px; width: 30px; height: 30px; opacity: 0;">
-                </div> 
-                
-            }*@
         </div>
 
 
