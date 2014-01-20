@@ -125,7 +125,7 @@
              <a style=" position: relative; left: 0px; top: 12px;" href="/Profile/UploadFile/">View Uploaded</a>
             </div>
             <div style="width:50%;margin: 0px; display: inline-block; height: 50px; border-left: 1px solid #ccc; float:left;  text-align: center;">
-            @using (Html.BeginForm("UploadFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
+            @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
             {
                 <a style=" position: relative; left: 50px; top: 10px;">Browse Files</a>
                 <input type='file' name='photo' id='photo' style="position: relative; left: -40px; top:10px; width: 80px; height: 30px; opacity: 0;" />

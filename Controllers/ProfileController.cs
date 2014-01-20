@@ -2291,7 +2291,7 @@ namespace FollowPeers.Controllers
         }
 
 
-        public ActionResult NewUploadFile()
+        public ActionResult UploadPhotoFile()
         {
             string name = Membership.GetUser().UserName;
             string email_id = Membership.GetUser().Email;
@@ -2304,6 +2304,24 @@ namespace FollowPeers.Controllers
                 {
                     return RedirectToAction("UploadFile", "Profile", null);
                 }
+
+                var splitstring = postedFile.FileName.Split('.');
+                var ext = splitstring[splitstring.Length - 1];
+                ext = ext.ToLower();
+
+                switch (ext)
+                {
+                    case "jpg":
+                        break;
+                    case "png":
+                        break;
+                    case "jpeg":
+                        break;
+                    default:
+                        return RedirectToAction("UploadFile", "Profile", null);
+                }
+
+
                 System.IO.Stream inStream = postedFile.InputStream;
                 byte[] fileData = new byte[postedFile.ContentLength];
                 inStream.Read(fileData, 0, postedFile.ContentLength);
