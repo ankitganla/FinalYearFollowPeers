@@ -4,9 +4,9 @@
 }
 @Html.Partial("_Header")
 <div class="container">
-@Html.Partial("_SideBar1")
-<div class="upload_file span9 main-content">
-      @using (Html.BeginForm("UploadFile","Profile",FormMethod.Post,new {@encType = "multipart/form-data"}))
+    @Html.Partial("_SideBar1")
+    <div class="upload_file span9 main-content">
+        @using (Html.BeginForm("UploadFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
         {
             @Html.ValidationSummary(true)
             @Html.HiddenFor(model => model.UserProfileId)
@@ -14,62 +14,60 @@
             @Html.HiddenFor(model => model.activated)
  
    
-          <p>
-           <table id="myDataTable" class="table table-hover" style="float: right; padding: 3px 8px; cursor: pointer;">
-                <thead>
-                    <tr>
-                        <th>
-                            Files Uploaded
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    @{
-                        string path = HttpRuntime.AppDomainAppPath;
-                        string newpath = path + "\\Content\\Files\\";
-                        var directoryInfo = new DirectoryInfo(newpath + Model.UserName + "\\");
-                        if (directoryInfo.Exists)
-                        {
-                            string[] readtext = File.ReadAllLines(newpath + Model.UserName + "\\uploadedList.txt");
-                            if (readtext == null || readtext.Length == 0)
-                            {
+            <p>
+                <table id="myDataTable" class="table table-hover" style="float: right; padding: 3px 8px; cursor: pointer;">
+                    <thead>
+                        <tr>
+                            <th>Photos
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @{
+            string path = HttpRuntime.AppDomainAppPath;
+            string newpath = path + "\\Content\\Files\\";
+            string userpath = newpath + Model.UserName + "\\";
+            var directoryInfo = new DirectoryInfo(userpath);
+            if (directoryInfo.Exists)
+            {
+                string[] photoFiles = Directory.GetFiles(userpath);
+                if (photoFiles == null || photoFiles.Length == 0)
+                {
                                 
-                               <p>There are no uploaded files</p>
+                            <p>There are no uploaded files</p>
                                     
-                            }
+                }
+
+                else
+                {
+                    foreach (string fileName in photoFiles)
+                    {
                             
-                            else
-                            {
-                                foreach (var fileName in readtext)
-                                {
-                                    <tr>
-                                        <td>
-                                            <p><a href="#">@fileName</a></p>
-                                        </td>
-                                        <td>
-                                                @Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName }) 
-          
-                                        </td>
-                                        <td>
-                                                @Html.ActionLink("Delete", "Delete_File", new { delPath = newpath + Model.UserName + "\\" + fileName }) 
-          
-                                        </td>                           
-                                    </tr>
-                                }
-                            }
-                        }
-                        
-                        else{
-                                <p>There are no uploaded files</p> 
-                            }
+                                <div class="span2">
+                                    <p><a href="">
+                                        <img src="filename" style="width: 200px; height: 200px;" /></a></p>
+                                    <p>
+                                        @Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName })
+                                        @Html.ActionLink("Delete", "Delete_File", new { delPath = newpath + Model.UserName + "\\" + fileName })
+                                    </p>
+                                </div>
+                            
                     }
-                </tbody>
-            </table>
-        </p>
+                }
+            }
+
+            else
+            {
+                            <p>There are no uploaded files</p> 
+            }
+                        }
+                    </tbody>
+                </table>
+            </p>
         }
-       
-</div>   
+
+    </div>
 </div>
 
 
