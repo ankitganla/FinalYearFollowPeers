@@ -128,9 +128,7 @@
             @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
             {
                 <a style=" position: relative; left: 50px; top: 10px;">Browse Files</a>
-                <input type='file' multiple name='photo' id='photo' onchange="this.form.submit()" style="position: relative; left: -40px; top:10px; width: 80px; height: 30px; opacity: 0;" />
-               
-                
+                <input type='file' multiple name='photo' id='photo' onchange="this.form.submit()" style="position: relative; left: -40px; top:10px; width: 80px; height: 30px; opacity: 0;" />   
             }
             </div>
         </div>

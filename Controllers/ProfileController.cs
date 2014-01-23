@@ -2290,7 +2290,7 @@ namespace FollowPeers.Controllers
             return RedirectToAction("Index", "News", new { reader = "Yahoo" });
         }
 
-
+        [HttpPost]
         public ActionResult UploadPhotoFile()
         {
             string name = Membership.GetUser().UserName;
@@ -2299,6 +2299,12 @@ namespace FollowPeers.Controllers
             HttpFileCollectionBase uploadFile = Request.Files;
             if (uploadFile.Count > 0)
             {
+                int filesToUpload = uploadFile.Count;
+                //while (filesToUpload > 0)
+                //{
+
+                //}
+
                 HttpPostedFileBase postedFile = uploadFile[0];
                 if (postedFile.FileName == "")
                 {
@@ -2355,6 +2361,7 @@ namespace FollowPeers.Controllers
             //return View(userprofile);
 
         }
+
 
     }
 }

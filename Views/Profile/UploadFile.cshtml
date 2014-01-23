@@ -55,17 +55,19 @@
                 {
                     foreach (string fileName in photoFiles)
                     {
-                            
+                        string[] justFiles = fileName.Split('\\');
+                        string displayName = justFiles[justFiles.Length - 1];
                     <div class="span2">
                         <p>
                             <a href="">
                                 <img src="filename" style="width: 200px; height: 200px;" /></a>
                         </p>
                         <p>
+                            @Html.Raw(displayName)
                             @Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName })
-                            @Html.ActionLink("Delete", "Delete_File", new { delPath = newpath + Model.UserName + "\\" + fileName })
+                            @Html.ActionLink("Delete", "Delete_File", new { delPath = fileName })
                         </p>
-                    </div>
+                    </div>;
                             
                     }
                 }
