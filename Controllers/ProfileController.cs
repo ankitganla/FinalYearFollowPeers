@@ -445,27 +445,28 @@ namespace FollowPeers.Controllers
 
             string directory = Path.GetDirectoryName(delPath);
 
-            if (new DirectoryInfo(directory).Exists)
-            {
-                string list_path = directory + "\\uploadedList.txt";
+            //if (new DirectoryInfo(directory).Exists)
+            //{
 
-                string[] lines = System.IO.File.ReadAllLines(list_path);
-                List<string> lines_list = lines.ToList();
-                List<string> lines_list_2 = lines.ToList();
+            //    string list_path = directory + "\\uploadedList.txt";
 
-                foreach (string line in lines_list)
-                {
-                    if (line.Equals(filename))
-                        lines_list_2.Remove(line);
-                }
+            //    string[] lines = System.IO.File.ReadAllLines(list_path);
+            //    List<string> lines_list = lines.ToList();
+            //    List<string> lines_list_2 = lines.ToList();
 
-                string[] newLines = lines_list_2.ToArray();
+            //    foreach (string line in lines_list)
+            //    {
+            //        if (line.Equals(filename))
+            //            lines_list_2.Remove(line);
+            //    }
 
-                if (newLines != null)
-                    System.IO.File.WriteAllLines(list_path, newLines);
-                else
-                    System.IO.File.WriteAllText(list_path, "");
-            }
+            //    string[] newLines = lines_list_2.ToArray();
+
+            //    if (newLines != null)
+            //        System.IO.File.WriteAllLines(list_path, newLines);
+            //    else
+            //        System.IO.File.WriteAllText(list_path, "");
+            //}
 
             System.IO.File.Delete(delPath);
 
@@ -2345,11 +2346,18 @@ namespace FollowPeers.Controllers
                     Console.WriteLine("Create a directory");
                     directoryInfo.CreateSubdirectory(email_id);
 
-                    string new_path = path + email_id + "\\";
-                    Console.WriteLine("New path", new_path);
+                   
 
-                    System.IO.File.AppendAllText(new_path + "uploadedList.txt", filename + "\r\n");
-                    postedFile.SaveAs(new_path + postedFile.FileName);
+                    string toSave_path = path + email_id + "\\Photos\\";
+                    Console.WriteLine("toSave path", toSave_path);
+
+                    var checkPhotoDir = new DirectoryInfo(toSave_path);
+                    if (!checkPhotoDir.Exists) {
+                        System.IO.Directory.CreateDirectory(toSave_path);
+                    }
+
+                    //System.IO.File.AppendAllText(toSave_path + "uploadedList.txt", filename + "\r\n");
+                    postedFile.SaveAs(toSave_path + postedFile.FileName);
 
                 }
 
