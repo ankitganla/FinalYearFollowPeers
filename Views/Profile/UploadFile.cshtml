@@ -14,17 +14,29 @@
             @Html.HiddenFor(model => model.activated)
  
    
-            <p>
-                <table id="myDataTable" class="table table-hover" style="float: right; padding: 3px 8px; cursor: pointer;">
-                    <thead>
-                        <tr>
-                            <th>Photos
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @{
+            <div>
+                <Div>
+                   @{
+            string name = Model.FirstName;
+                   }
+                    Photos
+                    <div style="float:right;">
+                         @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
+                    
+            {
+                <a style=" position: relative; left: 50px; top: 10px;">Browse Files</a>
+                <input type='file' name='photo' id='photo' style="position: relative; left: -40px; top:10px; width: 80px; height: 30px; opacity: 0;" />
+                
+                    <input class="btn btn-primary" type="submit" name="submit" value="Upload" style="float:right;"/>
+                
+                
+            }
+                    </div>
+                   
+                </Div>
+                <hr />
+                
+                @{
             string path = HttpRuntime.AppDomainAppPath;
             string newpath = path + "\\Content\\Files\\";
             string userpath = newpath + Model.UserName + "\\";
@@ -35,7 +47,7 @@
                 if (photoFiles == null || photoFiles.Length == 0)
                 {
                                 
-                            <p>There are no uploaded files</p>
+                    <p>There are no uploaded files</p>
                                     
                 }
 
@@ -44,14 +56,16 @@
                     foreach (string fileName in photoFiles)
                     {
                             
-                                <div class="span2">
-                                    <p><a href="">
-                                        <img src="filename" style="width: 200px; height: 200px;" /></a></p>
-                                    <p>
-                                        @Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName })
-                                        @Html.ActionLink("Delete", "Delete_File", new { delPath = newpath + Model.UserName + "\\" + fileName })
-                                    </p>
-                                </div>
+                    <div class="span2">
+                        <p>
+                            <a href="">
+                                <img src="filename" style="width: 200px; height: 200px;" /></a>
+                        </p>
+                        <p>
+                            @Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName })
+                            @Html.ActionLink("Delete", "Delete_File", new { delPath = newpath + Model.UserName + "\\" + fileName })
+                        </p>
+                    </div>
                             
                     }
                 }
@@ -59,12 +73,10 @@
 
             else
             {
-                            <p>There are no uploaded files</p> 
+                    <p>There are no uploaded files</p> 
             }
-                        }
-                    </tbody>
-                </table>
-            </p>
+                }
+            </div>
         }
 
     </div>
