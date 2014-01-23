@@ -125,10 +125,10 @@
              <a style=" position: relative; left: 0px; top: 12px;" href="/Profile/UploadFile/">View Uploaded</a>
             </div>
             <div style="width:50%;margin: 0px; display: inline-block; height: 50px; border-left: 1px solid #ccc; float:left;  text-align: center;">
-            @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
+            @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
             {
                 <a style=" position: relative; left: 50px; top: 10px;">Browse Files</a>
-                <input type='file' multiple name='photo' id='photo' onchange="this.form.submit()" style="position: relative; left: -40px; top:10px; width: 80px; height: 30px; opacity: 0;" />   
+                <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -40px; top:10px; width: 80px; height: 30px; opacity: 0;" />   
             }
             </div>
         </div>

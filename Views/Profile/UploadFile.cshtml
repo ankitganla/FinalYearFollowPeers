@@ -21,7 +21,7 @@
                    }
                     Photos
                     <div style="float:right;">
-                         @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
+                         @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files"}))
                     
             {
                 <a style=" position: relative; left: 50px; top: 10px;">Browse Files</a>
