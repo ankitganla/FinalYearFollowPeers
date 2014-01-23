@@ -14,49 +14,52 @@
             @Html.HiddenFor(model => model.activated)
  
    
-            <div>
-                <Div>
-                   @{
-            string name = Model.FirstName;
-                   }
-                    Photos
-                    <div style="float:right;">
-                         @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files"}))
-                    
-            {
-                <a style=" position: relative; left: 50px; top: 10px;">Browse Files</a>
-                <input type='file' name='photo' id='photo' style="position: relative; left: -40px; top:10px; width: 80px; height: 30px; opacity: 0;" />
-                
-                    <input class="btn btn-primary" type="submit" name="submit" value="Upload" style="float:right;"/>
-                
-                
-            }
-                    </div>
-                   
-                </Div>
-                <hr />
-                
+            
+            <div style="display: inline-block;">
+
                 @{
-            string path = HttpRuntime.AppDomainAppPath;
-            string newpath = path + "\\Content\\Files\\";
-            string userpath = newpath + Model.UserName + "\\Photos\\";
-            var directoryInfo = new DirectoryInfo(userpath);
-            if (directoryInfo.Exists)
-            {
-                string[] photoFiles = Directory.GetFiles(userpath);
-                if (photoFiles == null || photoFiles.Length == 0)
+                    <p>
+                        <h4>@Html.Raw(Model.FirstName)'s Photos</h4>
+                    </p>
+                }
+            </div>
+
+            <div style="float: right; display: inline-block;">
+                @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
                 {
+                    <a class="btn btn-primary" style="position: relative; left: 50px; top: 10px;">Add New</a>
+                    <input type='file' multiple name='files' id='files' style="position: relative; left: -40px; top: 10px; width: 80px; height: 30px; opacity: 0;" />
+                }
+            </div>
+            <div>
+                <hr />
+            </div>
+            
+
+            <div>
+
+
+                @{
+                string path = HttpRuntime.AppDomainAppPath;
+                string newpath = path + "\\Content\\Files\\";
+                string userpath = newpath + Model.UserName + "\\Photos\\";
+                var directoryInfo = new DirectoryInfo(userpath);
+                if (directoryInfo.Exists)
+                {
+                    string[] photoFiles = Directory.GetFiles(userpath);
+                    if (photoFiles == null || photoFiles.Length == 0)
+                    {
                                 
                     <p>There are no uploaded files</p>
                                     
-                }
+                    }
 
-                else
-                {
-                    foreach (string fileName in photoFiles)
+                    else
                     {
-                        string[] justFiles = fileName.Split('\\');
-                        string displayName = justFiles[justFiles.Length - 1];
+                        foreach (string fileName in photoFiles)
+                        {
+                            string[] justFiles = fileName.Split('\\');
+                            string displayName = justFiles[justFiles.Length - 1];
                          
                     <div class="span2">
                         <p>
@@ -69,18 +72,20 @@
                             @Html.ActionLink("Delete", "Delete_File", new { delPath = fileName })
                         </p>
                     </div>;
-                            
+
+                        }
                     }
                 }
-            }
 
-            else
-            {
+                else
+                {
                     <p>There are no uploaded files</p> 
-            }
+                }
                 }
             </div>
+    
         }
+
 
     </div>
 </div>
