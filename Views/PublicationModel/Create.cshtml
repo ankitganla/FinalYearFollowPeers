@@ -27,90 +27,107 @@
         @Script("jquery-ui-1.8.11.js")
         @Script("jquery.tools.min.js")
         @Script("jquery.rte.js")
-        <div style="margin-left: 10px" class="span7">
-            @using (Html.BeginForm("UploadFile", "PublicationModel", FormMethod.Post, new { @encType = "multipart/form-data" }))
-            {
-                @Html.ValidationSummary(true)
-                @Html.HiddenFor(model => myprofile.UserProfileId)
-                @Html.HiddenFor(model => myprofile.UserName)
-                @Html.HiddenFor(model => myprofile.activated)
-            }
+        <div style="margin-left: 10px; padding-bottom: 10px;" class="span7">
 
-            @using (Html.BeginForm("UploadFile", "PublicationModel", FormMethod.Post, new { @encType = "multipart/form-data" }))
-            {
-                @Html.ValidationSummary(true)
-                @Html.HiddenFor(model => myprofile.UserProfileId)
-                @Html.HiddenFor(model => myprofile.UserName)
-                @Html.HiddenFor(model => myprofile.activated)
-                if (ViewData["Upload"].ToString() != "1" && ViewData["Upload"].ToString() != "2" && ViewData["Upload"].ToString() != "4")
-                {
-                <fieldset>
-                    <legend>Upload Publication</legend>
+            <h4>Add New Publication</h4>
+            <hr />
 
-                    <input type='file' name='photo' id='photo' />
-                </fieldset>
-            
-            
-                <p>
-                    <input type="submit" name="submit" value="Save" style="float: right; padding: 3px 8px; cursor: pointer;">
-                </p>
-                }
-            }
 
-            @using (Html.BeginForm("UploadPhoto", "PublicationModel", FormMethod.Post, new { @encType = "multipart/form-data" }))
-            {
-                @Html.ValidationSummary(true)
-                @Html.HiddenFor(model => myprofile.UserProfileId)
-                @Html.HiddenFor(model => myprofile.UserName)
-                @Html.HiddenFor(model => myprofile.activated)
-                if (ViewData["Upload"].ToString() != "2" && ViewData["Upload"].ToString() != "3" && ViewData["Upload"].ToString() != "1")
-                {
-                <fieldset>
-                    <legend>Upload Image</legend>
-
-                    <input type='file' name='photo' id='photo' />
-                </fieldset>
-            
-            
-                <p>
-                    <input type="submit" name="submit" value="Save" style="float: right; padding: 3px 8px; cursor: pointer;">
-                </p>
-                }
-            }
             @using (Html.BeginForm())
             {
                 @Html.ValidationSummary(true)
            
-                <legend>Enter Publication Details!</legend>
+                
 @*-----------OwnerId-----------*@
                 <input id="OwnerId" name="OwnerId" type="hidden" value="@ViewBag.userID" />
 @*-----------ViewCount-----------*@
                 <input id="ViewCount" name="ViewCount" type="hidden" value="0" />              
                 
 @*-----------Title-----------*@
+                
+
                 <div class="editor-label" id="title_l">
                     @Html.LabelFor(model => model.title, "Title ")
                 </div>
                 <div class="editor-field" id="title_f">
-                    @Html.TextBoxFor(model => model.title, new { size = 78 })
+                    @Html.TextBoxFor(model => model.title, new { size = 78, style = "width:500px" })
                     @Html.ValidationMessageFor(model => model.title)
                 </div>
-@*-----------Status-----------*@
-                <div class="editor-label" id="status_l">
-                    @Html.LabelFor(model => model.status, "Status ")
+            
+
+                
+@*-----------Author-----------*@
+                <div>
+                    <div class="editor-label" id="author_l">
+                        @Html.LabelFor(model => model.author, "Author(s) ")
+                    </div>
+
+                    <div class="editor-field" id="author_f" style="width: 250px;">
+                        @Html.TextBoxFor(model => model.author, new { size = 78, style = "width:500px" })
+                        @Html.ValidationMessageFor(model => model.author)
+                    </div>
                 </div>
-                <div class="editor-field" id="status_f">
-                    @{
+                
+                
+@*-----------Keywords-----------*@
+                <div class="editor-label" id="keyword_l">
+                    @Html.LabelFor(model => model.keyword, "Keywords(separated by ;)")
+                </div>
+                <div class="editor-field" id="keyword_f">
+                    @Html.TextBoxFor(model => model.keyword, new { size = 78, style = "width:500px" })
+                    @Html.ValidationMessageFor(model => model.keyword)
+                </div>
+@*-----------Description-----------*@
+                <div class="editor-label" id="description_l">
+                    @Html.LabelFor(model => model.description, "Abstract ")
+                </div>
+                <div class="editor-field" id="description_f">
+                    @Html.TextAreaFor(model => model.description, new { cols = "49", rows = "8", style = "resize:none; width: 500px;" })
+                    @Html.ValidationMessageFor(model => model.description)
+                </div>
+                
+                using (Html.BeginForm("UploadFile", "PublicationModel", FormMethod.Post, new { @encType = "multipart/form-data" }))
+                {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => myprofile.UserProfileId)
+                @Html.HiddenFor(model => myprofile.UserName)
+                @Html.HiddenFor(model => myprofile.activated)
+                    if (ViewData["Upload"].ToString() != "1" && ViewData["Upload"].ToString() != "2" && ViewData["Upload"].ToString() != "4")
+                    {
+                <fieldset>
+                    <legend>Attach File</legend>
+
+                    <input type='file' name='photo' id='photo' />
+                    <input type="submit" name="submit" value="Attach" style="float: right; padding: 3px 8px; cursor: pointer;" class="btn btn-primary">
+                </fieldset>
+                    }
+                }   
+                
+                
+                <fieldset>
+                    <legend>Additional Information</legend>
+                </fieldset>
+
+@*-----------Status-----------*@
+                <div style="width: 50%; display: inline-block;">
+
+                    <div class="editor-label" id="status_l">
+                        @Html.LabelFor(model => model.status, "Status ")
+                    </div>
+                    <div class="editor-field" id="status_f">
+                        @{
                 List<string> publicationstatus = new List<string>();
                 publicationstatus.Add("In Preparation");
                 publicationstatus.Add("In Review");
                 publicationstatus.Add("In Press");
                 publicationstatus.Add("Published");
                 publicationstatus.Add("N.A.");
-                    }
-                    @Html.DropDownList("Status", new SelectList(publicationstatus))
-                    @Html.ValidationMessageFor(model => model.status)
-                </div>
+                        }
+                        @Html.DropDownList("Status", new SelectList(publicationstatus))
+                        @Html.ValidationMessageFor(model => model.status)
+                    </div>
+                </div>                
+                
 @*-----------Specialisations-----------*@
                 <div class="editor-label" id="author_l">
                     @Html.LabelFor(model => model.author, "Specialisation(s) ")
@@ -126,15 +143,6 @@
                         @Html.DropDownList("Specialisation", new SelectList(specialisations))
                         @Html.ValidationMessageFor(model => model.specialisation)
                     }
-                </div>
-@*-----------Author-----------*@
-                <div class="editor-label" id="author_l">
-                    @Html.LabelFor(model => model.author, "Author(s) ")
-                </div>
-               
-                <div class="editor-field" id="author_f">
-                    @Html.TextBoxFor(model => model.author, new { size = 78 })
-                    @Html.ValidationMessageFor(model => model.author)
                 </div>
 @*-----------Type-----------*@
                 <div class="editor-label" id="type_l">
@@ -157,28 +165,28 @@
                     @Html.LabelFor(model => model.journal, "Journal")
                 </div>
                 <div class="editor-field" id="journal_f">
-                    <input id="journal" name="journal" type="text" style="margin-left: 0px; width: 250px" />
+                    <input id="journal" name="journal" type="text" style="margin-left: 0px;" />
                 </div>
 @*-----------Publisher-----------*@
                 <div class="editor-label" id="publisher_l">
                     @Html.LabelFor(model => model.publisher, "Publisher")
                 </div>
                 <div class="editor-field" id="publisher_f">
-                    <input id="publisher" name="publisher" type="text" style="margin-left: 0px; width: 250px" />
+                    <input id="publisher" name="publisher" type="text" style="margin-left: 0px;" />
                 </div>
 @*-----------Conference-----------*@
                 <div class="editor-label" id="conference_l">
                     @Html.LabelFor(model => model.conference, "Conference")
                 </div>
                 <div class="editor-field" id="conference_f">
-                    <input id="conference" name="conference" type="text" style="margin-left: 0px; width: 250px" />
+                    <input id="conference" name="conference" type="text" style="margin-left: 0px;" />
                 </div>
 @*-----------University-----------*@
                 <div class="editor-label" id="university_l">
                     @Html.LabelFor(model => model.university, "University ")
                 </div>
                 <div class="editor-field" id="university_f">
-                    <input id="university" name="university" type="text" style="margin-left: 0px; width: 250px" />
+                    <input id="university" name="university" type="text" style="margin-left: 0px;" />
                 </div>
 @*-----------Year-----------*@
                 <div class="editor-label" id="year_l">
@@ -217,30 +225,19 @@
                     @Html.LabelFor(model => model.referenceID, "Location ")
                 </div>
                 <div class="editor-field" id="location_f">
-                    <input id="location" name="location" type="text" style="margin-left: 0px; width: 250px" />
+                    <input id="location" name="location" type="text" style="margin-left: 0px;" />
                 </div>
-@*-----------Keywords-----------*@
-                <div class="editor-label" id="keyword_l">
-                    @Html.LabelFor(model => model.keyword, "Keywords(separated by ;)")
+                
+@*-----------Form Submission Button-----------*@
+                <div>
+                    <input type="submit" value="Submit New Publication" style="float:right; padding: 3px 8px;" class="btn btn-primary" />
                 </div>
-                <div class="editor-field" id="keyword_f">
-                    @Html.TextBoxFor(model => model.keyword, new { size = 78 })
-                    @Html.ValidationMessageFor(model => model.keyword)
-                </div>
-@*-----------Description-----------*@
-                <div class="editor-label" id="description_l">
-                    @Html.LabelFor(model => model.description, "Abstract ")
-                </div>
-                <div class="editor-field" id="description_f">
-                    @Html.TextAreaFor(model => model.description, new { cols = "49", rows = "5" })
-                    @Html.ValidationMessageFor(model => model.description)
-                </div>
-                <p>
-                    <input type="submit" value="Create" style="float: right; padding: 3px 8px;" class="btn btn-primary" />
-                </p>
+                    
+                
         
              
             }
+
         </div>
     </div>
 </div>
@@ -317,6 +314,7 @@
         if ($('#university').length) {
             AutoCompleteUniversity();
         }
+
         //        if ($('#location').length) {
         //            AutoCompleteUniversity();
         //        }
@@ -479,28 +477,12 @@
         }
         if (typeval == "Other") {
             HideOnPageLoad();
-            $("#journal_l").show();
-            $("#journal_f").show();
-            $("#publisher_l").show();
-            $("#publisher_f").show();
-            $("#conference_l").show();
-            $("#conference_f").show();
-            $("#year_l").show();
-            $("#year_f").show();
-            $("#issue_l").show();
-            $("#issue_f").show();
-            $("#volume_l").show();
-            $("#volume_f").show();
-            $("#page_l").show();
-            $("#page_f").show();
-            $("#location_l").show();
-            $("#location_f").show();
+
             $("#keyword_l").show();
             $("#keyword_f").show();
             $("#description_l").show();
             $("#description_f").show();
-            $("#university_l").show();
-            $("#university_f").show();
+
         }
 
     }
