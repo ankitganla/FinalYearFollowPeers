@@ -113,7 +113,7 @@
             <li id="li_tab1" class="active" onclick="tab('tab1')"><a>All</a></li>
             <li id="li_tab3" onclick="tab('tab3')"><a>Favourites</a></li>
             <li id="li_tab4" onclick="tab('tab4')"><a>Peer Recommendations</a></li>
-            <li id="li_tab2" onclick="tab('tab2')"><a>Uploaded</a></li>
+            
         </ul>
         <div class="tab-content">
             <div id="tab3" style="display: none;" class="tab-pane">
@@ -267,63 +267,7 @@
                     }
                 }
             </div>
-            <div id="tab2" style="display: none;" class="tab-pane">
-
-                @{
-            
-                    <span class="label label-info">Number of publications uploaded: @UploadedPub.Count()</span>
-                    <a class="btn btn-primary pull-right" href="@Url.Content("~/PublicationModel/Create/1")">
-                        <i class="icon-upload icon-white"></i>Add new</a> 
-                    if (UploadedPub.Count() != 0)
-                    {               
-                    <table class="span7">
-                        @foreach (var item in UploadedPub)
-                        {
-                            <tr>
-                                <td>
-
-                                    <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
-                                        <div style="float: left;" id="Image" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#@item.publicationID">
-                                            @if (item.imagename != "" && item.imagename != null)
-                                            {
-                                                <img class="mouseover" src="../../Content/Files/@item.UserProfile.UserName/Publications/@item.imagename" alt="" style="margin-left: auto; margin-right: auto;width: 50px;"/>
-                                            }
-                                            else
-                                            {
-                                                <img src="../../Content/images/Pub1.png" alt="" style="margin-left: auto; margin-right: auto; width: 50px;" />
-                                            }
-
-                                        </div>
-                                        <div style="margin-left: 8px; float: left;">
-                                            <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
-                                            <div id="Author">Author(s) : @item.author</div>
-                                            <div id="Year">Year of Publication : @item.year</div>
-                                            <div id="@item.publicationID" class="accordion-body collapse" >
-                                                @{if (@item.keyword != null)
-                                                  {<div class="hidden" id="Keyword">Keyword(s) : @item.keyword</div>}}
-                                                @{if (@item.journal != null)
-                                                  {<div class="hidden" id="Journal">Journal : @item.journal</div>}}
-                                                @{if (@item.conference != null)
-                                                  {<div class="hidden" id="Conference">Conference : @item.conference</div>}}
-                                                @{if (@item.university != null)
-                                                  {<div class="hidden" id="University">University : @item.university</div>}}
-                                            </div>
-                                        </div>
-                                        <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
-                                            | @Html.DisplayFor(modelItem => item.status)  |
-                    <div style="float: right; font-size: 15px; margin-left: 5px;">
-                        @Html.ActionLink("More>>", "Details", new { id = item.publicationID })
-                    </div>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                </td>
-                            </tr>
-                        }
-                    </table>
-                    }
-                }
-            </div>
+           
         </div>
     </div>
 
@@ -421,11 +365,11 @@
         document.getElementById('tab1').style.display = 'none';
         document.getElementById('tab3').style.display = 'none';
         document.getElementById('tab4').style.display = 'none';
-        document.getElementById('tab2').style.display = 'none';
+        
         document.getElementById('li_tab1').setAttribute("class", "");
         document.getElementById('li_tab3').setAttribute("class", "");
         document.getElementById('li_tab4').setAttribute("class", "");
-        document.getElementById('li_tab2').setAttribute("class", "");
+        
         document.getElementById(tab).style.display = 'block';
         document.getElementById('li_' + tab).setAttribute("class", "active");
     }
