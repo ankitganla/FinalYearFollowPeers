@@ -40,10 +40,42 @@
         <div class="span9 ">
             <div id="myCarousel" class="carousel slide" style="height: 270px">
                 <div class="carousel-inner span8" style="height: 270px; margin-left: 100px; margin-right: 100px">
-                    <div class="active item" style="height: 250px;">
+
+                    @foreach (var i in Model)
+                    {
+                        <div class="item" style="height: 250px;">
+                            <div class="span6" style="height: 250px">
+                                <div class="thumbnail" style="height: 250px">
+                                    @if (i.imagename != "" && i.imagename != null)
+                                    {
+                                        <img src="../../Content/Files/@i.UserProfile.UserName/Publications/@i.imagename" style="height:150px; width:170px;" alt=""/>
+                                    }
+                                    else
+                                    {
+                                        <img src="../../Content/images/Pub1.png" style="height: 150px; width: 170px;" alt="" />
+                                    }
+                                    <div class="caption" style="text-align: center">
+                                        <a href="/PublicationModel/Details/@i.publicationID"><b>@i.title</b></a>
+                                        <p>by @i.author</p>
+                                        @for (int j = 0; j < i.Rank; j++)
+                                        {
+                                            <i class="icon-star"></i>
+                                        }
+                                        @for (int j = 0; j < (5 - i.Rank); j++)
+                                        {
+                                            <i class="icon-star-empty"></i>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                    @*<div class="active item" style="height: 250px;">
                         @foreach (var i in Model)
                         {
-                            if (publicationnumber <= 3)
+                            if (publicationnumber <= 2)
                             {
                             <div class="span3" style="height: 250px">
                                 <div class="thumbnail" style="height: 250px">
@@ -57,18 +89,22 @@
                                     }
                                     <div class="caption" style="text-align: center">
                                         <a href="/PublicationModel/Details/@i.publicationID"><b>@i.title</b></a>
-                                        <p>Author: @i.author</p>
+                                        <p>by @i.author</p>
                                     </div>
                                 </div>
                             </div>
                             }
                             publicationnumber++;
+                            if (publicationnumber > 2)
+                            {
+                                publicationnumber = 1;
+                            }
                         }
                     </div>
                     <div class="item" style="height: 270px">
                         @foreach (var j in RankedPub)
                         {
-                            if (publicationnumber2 <= 3)
+                            if (publicationnumber2 <= 2)
                             {
                         
                             <div class="span3" style="height: 250px">
@@ -99,7 +135,7 @@
                             }
                             publicationnumber2++;
                         }
-                    </div>
+                    </div>*@
                 </div>
                 <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
                 <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
@@ -110,10 +146,10 @@
     <div class="span8">
         <br />
         <ul class="nav nav-tabs" id="myTab">
-            <li id="li_tab1" class="active" onclick="tab('tab1')"><a>All</a></li>
+            <li id="li_tab1" class="active" onclick="tab('tab1')"><a>Uploaded Publications</a></li>
             <li id="li_tab3" onclick="tab('tab3')"><a>Favourites</a></li>
-            <li id="li_tab4" onclick="tab('tab4')"><a>Peer Recommendations</a></li>
-            
+            <li id="li_tab4" onclick="tab('tab4')"><a>Recommended Publications</a></li>
+
         </ul>
         <div class="tab-content">
             <div id="tab3" style="display: none;" class="tab-pane">
@@ -186,10 +222,8 @@
                                             </div>
                                         </div>
                                         <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
-                                            | @Html.DisplayFor(modelItem => item.status)  |
-                    <div style="float: right; font-size: 15px; margin-left: 5px;">
-                        @Html.ActionLink("More>>", "Details", new { id = item.publicationID })
-                    </div>
+                                            | @Html.DisplayFor(modelItem => item.status)
+
                                         </div>
                                     </div>
                                     <hr />
@@ -267,18 +301,18 @@
                     }
                 }
             </div>
-           
+
         </div>
     </div>
 
-    
+
 
     <div class="span4" style="position: relative">
-       <div>
-        <a class="btn btn-primary" href="/PublicationModel/Index/">New Publication</a>
-    </div>
-        
-         <div class="pull-left">
+        <div>
+            <a class="btn btn-primary" href="/PublicationModel/Create/1">New Publication</a>
+        </div>
+
+        <div class="pull-left">
             <h5>Recent Publications</h5>
             <!--<div class=""><div class="hero-unit"></div></div>-->
             <div class="accordion" id="accordion2">
@@ -365,11 +399,11 @@
         document.getElementById('tab1').style.display = 'none';
         document.getElementById('tab3').style.display = 'none';
         document.getElementById('tab4').style.display = 'none';
-        
+
         document.getElementById('li_tab1').setAttribute("class", "");
         document.getElementById('li_tab3').setAttribute("class", "");
         document.getElementById('li_tab4').setAttribute("class", "");
-        
+
         document.getElementById(tab).style.display = 'block';
         document.getElementById('li_' + tab).setAttribute("class", "active");
     }
