@@ -309,7 +309,7 @@ namespace FollowPeers.Controllers
         // POST: /PublicationModel/Create
 
         [HttpPost]
-        public ActionResult Create(PublicationModel publicationmodel, string[] keywordsId, string keyword)
+        public ActionResult Create(PublicationModel publicationmodel, string[] keywordsId, string keyword, FormCollection formCollection)
         {
             if (ModelState.IsValid)
             {

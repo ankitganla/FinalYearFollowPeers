@@ -33,7 +33,7 @@
             <hr />
 
 
-            @using (Html.BeginForm())
+            @using (Html.BeginForm("Create", "PublicationModel", FormMethod.Post, new { @encType = "multipart/form-data" }))
             {
                 @Html.ValidationSummary(true)
            
@@ -86,22 +86,7 @@
                     @Html.ValidationMessageFor(model => model.description)
                 </div>
                 
-                using (Html.BeginForm("UploadFile", "PublicationModel", FormMethod.Post, new { @encType = "multipart/form-data" }))
-                {
-                @Html.ValidationSummary(true)
-                @Html.HiddenFor(model => myprofile.UserProfileId)
-                @Html.HiddenFor(model => myprofile.UserName)
-                @Html.HiddenFor(model => myprofile.activated)
-                    if (ViewData["Upload"].ToString() != "1" && ViewData["Upload"].ToString() != "2" && ViewData["Upload"].ToString() != "4")
-                    {
-                <fieldset>
-                    <legend>Attach File</legend>
-
-                    <input type='file' name='photo' id='photo' />
-                    <input type="submit" name="submit" value="Attach" style="float: right; padding: 3px 8px; cursor: pointer;" class="btn btn-primary">
-                </fieldset>
-                    }
-                }   
+              
                 
                 
                 <fieldset>
@@ -129,8 +114,8 @@
                 </div>                
                 
 @*-----------Specialisations-----------*@
-                <div class="editor-label" id="author_l">
-                    @Html.LabelFor(model => model.author, "Specialisation(s) ")
+                <div class="editor-label" id="specialisation_l">
+                    @Html.LabelFor(model => model.specialisation, "Specialisation(s) ")
                 </div>
                 <div>
                     @{
@@ -229,12 +214,31 @@
                 </div>
                 
 @*-----------Form Submission Button-----------*@
-                <div>
-                    <input type="submit" value="Submit New Publication" style="float:right; padding: 3px 8px;" class="btn btn-primary" />
-                </div>
-                    
+                 @* using (Html.BeginForm("UploadFile", "PublicationModel", FormMethod.Post, new { @encType = "multipart/form-data" }))
+                {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => myprofile.UserProfileId)
+                @Html.HiddenFor(model => myprofile.UserName)
+                @Html.HiddenFor(model => myprofile.activated)
+                    if (ViewData["Upload"].ToString() != "1" && ViewData["Upload"].ToString() != "2" && ViewData["Upload"].ToString() != "4")
+                    {
+                <fieldset>
+                    <legend>Attach File</legend>
+
+                    <input type='file' name='photo' id='photo' />
+                    <input type="submit" name="submit" value="Attach" style="float: right; padding: 3px 8px; cursor: pointer;" class="btn btn-primary">
+                </fieldset>
+                    }
+                }  *@ 
                 
-        
+                <fieldset>
+                    <legend>Attach a File</legend>
+                    <input type='file' name='photo' id='photo' />
+                </fieldset>
+                
+                <div>
+                    <input type="submit" value="Submit New Publication" style="float: right; padding: 3px 8px;" class="btn btn-primary" />
+                </div>
              
             }
 
@@ -482,6 +486,9 @@
             $("#keyword_f").show();
             $("#description_l").show();
             $("#description_f").show();
+            $("#year_l").show();
+            $("#year_f").show();
+
 
         }
 

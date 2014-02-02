@@ -39,7 +39,7 @@ namespace FollowPeers.Models
         public string volume { get; set; }
         public string page { get; set; }
 
-        [Required(ErrorMessage = "Keyword is required.")]
+        [Required(ErrorMessage = "Please enter at least 1 keyword.")]
         public string keyword { get; set; }
         [Required(ErrorMessage = "Description is required.")]
         public string description { get; set; }
@@ -56,9 +56,9 @@ namespace FollowPeers.Models
         public PublicationModel()
         {
             title = " ";
-            status = "Published";
+            status = " ";
             author = " ";
-            type = "Book";
+            type = " ";
             journal = "N.A.";
             publisher = "N.A.";
             conference = "N.A.";
