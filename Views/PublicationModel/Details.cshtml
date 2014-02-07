@@ -23,8 +23,10 @@
         <link href="../../Content/css/jquery-ui.css" rel="stylesheet" type="text/css" />
         <div class="span7">
             <h3>@Html.DisplayFor(model => model.title)</h3>
-            <div class="display-field">By @Html.DisplayFor(model => model.author)</div>
-            <hr />
+            <div>
+                <h4>By @Html.DisplayFor(model => model.author)</h4>
+            </div>
+
             <div>
                 <fieldset><legend>Abstract</legend></fieldset>
                 @Html.DisplayFor(model => model.description)
@@ -34,6 +36,10 @@
                     <tr>
                         <td style="font-weight: bold">Type:</td>
                         <td>@Html.DisplayFor(model => model.type)</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold">Field:</td>
+                        <td>@Html.DisplayFor(model => model.specialisation)</td>
                     </tr>
                     <tr>
                         <td style="font-weight: bold">Year:</td>
@@ -123,181 +129,142 @@
                     <p>No pdf/doc version of this publication available.</p>
                 }
             </div>
-            <hr />
 
+            <div style="width:100%">
+<fieldset><legend>Comments</legend></fieldset>
+            @{
+                
+                
+               <div>@{Html.RenderAction("Index", "Comment", new { ParentType = "PublicationModel", ParentId = Model.publicationID, });}</div>
+                
+                    
+                <div>
+                    @using (Html.BeginForm("Create", "Comment", FormMethod.Post, new { ParentType = "PublicationModel", ParentId = Model.publicationID, SubmittedBy = Membership.GetUser().UserName, TimeSent = DateTime.Now, Flagged = false, Starred = false }))
+                    {
+                                
+                        <input type="hidden" name="ParentType" value="PublicationModel" />
+                        <input type="hidden" name="ParentId" value="@Model.publicationID" />
+                        <input type="hidden" name="SubmittedBy" value="@ViewBag.UserName" />
 
-            <input id="publicationIdAJAX" style="display:none" type="text" value="@Model.publicationID" >
-            <ul class="nav nav-tabs" id="myTab">
-                <li id="li_tab1" class="active" onclick="tab('tab1')"><a>Comments</a></li>
-                <li id="li_tab2" onclick="tab('tab2')"><a>Discussions</a></li>
-            </ul>
-            <div class="tab-content">
-                <div id="tab1" style="display: none;" class="tab-pane active">
-                    @{
-                        Html.RenderAction("Index", "Comment", new { ParentType = "PublicationModel", ParentId = Model.publicationID });
-                        <p>
-                            @using (Html.BeginForm("Create", "Comment", FormMethod.Post, new { ParentType = "PublicationModel", ParentId = Model.publicationID, SubmittedBy = Membership.GetUser().UserName, TimeSent = DateTime.Now, Flagged = false, Starred = false }))
-                            {
-                                <fieldset>
-                                    <input type="hidden" name="ParentType" value="PublicationModel" />
-                                    <input type="hidden" name="ParentId" value="@Model.publicationID" />
-                                    <input type="hidden" name="SubmittedBy" value="@ViewBag.UserName" />
+                        
+                        <div style="width:100%;">
+                            <textarea name="CommentBody" rows="2" style="width:100%; resize:none;"></textarea>
 
-                                    <div class="editor-label">
-                                        <label>Add Comment</label>
-                                        @*@Html.LabelFor(model => model.CommentBody, " Add Comment:")*@
-                                    </div>
-                                    <div class="editor-field">
-                                        <textarea name="CommentBody" cols="100" rows="2"></textarea>
-                                        @* @Html.TextAreaFor(model => model)
-                            @Html.ValidationMessageFor(model => model.CommentBody)*@
-                                    </div>
-                                    <input type="submit" value="Submit" />
-                                </fieldset>
-                            }
-                        </p>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Post Comment" />
+                                
                     }
                 </div>
-                <div id="tab2" style="display: none;" class="tab-pane">
-                    @if (Model.ownerID == myprofile.UserProfileId)
+            }
+
+            </div>
+            
+            <input id="publicationIdAJAX" style="display:none" type="text" value="@Model.publicationID" >
+        </div>
+        <div class="span3">
+            <div class="scrollspy" data-spy="scroll" data-target=".navlist" style="margin-left: 5px">
+
+                @{
+                    if (myprofile.UserProfileId == Model.ownerID)
                     {
-                        <button id="Topic" class="btn btn-primary">Add Discussion</button>
-                        foreach (var forums in followPeersDB.Forums)
-                        {
-                            //var currentForumTopic = followPeersDB.ForumTopics.SingleOrDefault(t => t. == currentuser);
-                            List<ForumTopic> topics = forums.Topics.ToList();
-                            foreach (var topic in topics)
-                            {
-                                //if ((((group != null && group.Members.Contains(currentuser) && group2 != null && !group2.Members.Contains(currentuser)) || (group != null && !group.Members.Contains(currentuser) && group2 != null && group2.Members.Contains(currentuser))) && topic.createdUser != null && topic.createdUser != currentuser) || (topic.createdUser != null && topic.createdUser == currentuser && topic.groupId == Model.GroupId.ToString()))
-                                if (topic.groupId == Model.publicationID.ToString())
-                                {
-                                                
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.publicationID }) <text>|</text>
+                    @Html.ActionLink("Delete", "Delete", new { id = Model.publicationID })
+                    <br />
+                    <br />
+                    <text>Recommend Publication:</text>
+                    <div class="editor-field" id="RecommendList">
+                        <input type="text" id="Recommend" name="Recommend" style="width: 150px" />&nbsp;<a id="Click1" style="height: 50px;" class="icon-hand-right"></a>
+                    </div>         
+                    <text>View Count: @Model.viewCount </text> 
+                    <br />                                     
+                    @Html.ActionLink("Back to Publication Db", "Index");
+
+                    }
+                    else
+                    {   
+                    <br />
+                    <table>
                         <tr>
-                            <td>
-                                <div class="MessageContainer">
-                                    <div class="messageDetails" style="width: 73%; float: left;">
-                                        <div class="messageName">
-                                            <h4><a href="/Forum/TopicDetail/?id=@topic.ForumTopicId">@topic.Name</a></h4>
-                                        </div>
-                                        <div class="messageSubject">@topic.Description</div>
-                                        <div class="messageName"><a>Posts: </a>@topic.Posts.Count</div>
+                            @Html.ActionLink("Mark As Favourite", "FavouritePub", new { id = Model.publicationID, Pubname = Model.title })
+                            @if (@Model.Likes != 0)
+                            {
+                                <td>
+                                    <span class="label label-default">@Model.Likes
+                                        <img src="../../Content/images/icons/16x16/thumb_up.png" />
+                                    </span></td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <span class="label label-default">0 
+                                                        <img src="../../Content/images/icons/16x16/thumb_up.png" />
+                                    </span></td>
+                            }
+                            @if (@achmodel == null)
+                            {
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-mini" style="width: 50px">
+                                            <img id="Likepub" src="../../Content/images/icons/16x16/thumb_up.png" />
+                                        </button>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="hidden" id="achid" value="@achmodel.AchievementlikeId" />
+                                    <div class="btn-group">
+                                        <button class="btn btn-mini" style="width: 50px">
+
+                                            <img id="Unlikepub" src="../../Content/images/icons/16x16/thumb_down.png" />
+
+                                        </button>
+                                    </div>
+                                </td>
+                            }
                         </tr>
+                    </table>
+                    <br />
+                    <br />
+                    <text>Recommend Publication: </text> 
+                    <div class="editor-field" id="RecommendList2">
+                        <input type="text" id="Recommend2" name="Recommend2" style="width: 150px" />&nbsp;<a id="Click2" style="height: 50px;" class="icon-hand-right"></a>
+                    </div> 
+                            List<int> ranks = new List<int>();
+
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                ranks.Add(i);
+                            }
+                    
+                    <text>Select Rank: </text> @Html.DropDownList("Ranks", new SelectList(ranks), new { style = "width:45px" })
+                    
+                    <br />
+                  
+                            if (@Model.filename != null)
+                            {
+                                string path = HttpRuntime.AppDomainAppPath;
+                                string newpath = path + "\\Content\\Files\\";
+                                var directoryInfo = new DirectoryInfo(newpath + Model.UserProfile.UserName + "\\Publications\\");
+                                if (directoryInfo.Exists)
+                                {
+                                    string downloadPath = newpath + Model.UserProfile.UserName + "\\Publications\\" + @Model.filename;
+                    <button class="btn btn-success">
+                        <i class="icon-download"></i>@Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserProfile.UserName + "\\" + Model.filename })
+                    </button> 
                                 }
                             }
-                        }
-
-
+                    <br />
+                    <br />
+                    @Html.ActionLink("Back to Publication Db", "Index");
                     }
-                </div>
+                }
             </div>
+            <hr />
+            @Html.Partial("_PubModelSideBar");
         </div>
-    <div class="span3">
-        <div class="scrollspy" data-spy="scroll" data-target=".navlist" style="margin-left: 5px">
-
-            @{
-                if (myprofile.UserProfileId == Model.ownerID)
-                {
-                @Html.ActionLink("Edit", "Edit", new { id = Model.publicationID }) <text>|</text>
-                @Html.ActionLink("Delete", "Delete", new { id = Model.publicationID })
-                <br />
-                <br />
-                <text>Recommend Publication:</text>
-                <div class="editor-field" id="RecommendList">
-                    <input type="text" id="Recommend" name="Recommend" style="width: 150px" />&nbsp;<a id="Click1" style="height: 50px;" class="icon-hand-right"></a>
-                </div>         
-                <text>View Count: @Model.viewCount </text> 
-                <br />                                     
-                @Html.ActionLink("Back to Publication Db", "Index");
-
-                }
-                else
-                {   
-                <br />
-                <table>
-                    <tr>
-                        @Html.ActionLink("Mark As Favourite", "FavouritePub", new { id = Model.publicationID, Pubname = Model.title })
-                        @if (@Model.Likes != 0)
-                        {
-                            <td>
-                                <span class="label label-default">@Model.Likes
-                                    <img src="../../Content/images/icons/16x16/thumb_up.png" />
-                                </span></td>
-                        }
-                        else
-                        {
-                            <td>
-                                <span class="label label-default">0 
-                                                        <img src="../../Content/images/icons/16x16/thumb_up.png" />
-                                </span></td>
-                        }
-                        @if (@achmodel == null)
-                        {
-                            <td>
-                                <div class="btn-group">
-                                    <button class="btn btn-mini" style="width: 50px">
-                                        <img id="Likepub" src="../../Content/images/icons/16x16/thumb_up.png" />
-                                    </button>
-                                </div>
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-                                <input type="hidden" id="achid" value="@achmodel.AchievementlikeId" />
-                                <div class="btn-group">
-                                    <button class="btn btn-mini" style="width: 50px">
-
-                                        <img id="Unlikepub" src="../../Content/images/icons/16x16/thumb_down.png" />
-
-                                    </button>
-                                </div>
-                            </td>
-                        }
-                    </tr>
-                </table>
-                <br />
-                <br />
-                <text>Recommend Publication: </text> 
-                <div class="editor-field" id="RecommendList2">
-                    <input type="text" id="Recommend2" name="Recommend2" style="width: 150px" />&nbsp;<a id="Click2" style="height: 50px;" class="icon-hand-right"></a>
-                </div> 
-                        List<int> ranks = new List<int>();
-
-                        for (int i = 1; i <= 5; i++)
-                        {
-                            ranks.Add(i);
-                        }
-                    
-                <text>Select Rank: </text> @Html.DropDownList("Ranks", new SelectList(ranks), new { style = "width:45px" })
-                    
-                <br />
-                  
-                        if (@Model.filename != null)
-                        {
-                            string path = HttpRuntime.AppDomainAppPath;
-                            string newpath = path + "\\Content\\Files\\";
-                            var directoryInfo = new DirectoryInfo(newpath + Model.UserProfile.UserName + "\\Publications\\");
-                            if (directoryInfo.Exists)
-                            {
-                                string downloadPath = newpath + Model.UserProfile.UserName + "\\Publications\\" + @Model.filename;
-                <button class="btn btn-success">
-                    <i class="icon-download"></i>@Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserProfile.UserName + "\\" + Model.filename })
-                </button> 
-                            }
-                        }
-                <br />
-                <br />
-                @Html.ActionLink("Back to Publication Db", "Index");
-                }
-            }
-        </div>
-        <hr />
-        @Html.Partial("_PubModelSideBar");
     </div>
-</div>
 </div>
 @Html.Partial("_Footer")
 @helper Script(string scriptName)
