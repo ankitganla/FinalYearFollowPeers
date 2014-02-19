@@ -1,5 +1,7 @@
 ﻿@model FollowPeers.Models.UserProfile
+@using FollowPeers.Models;
 @{
+    //at first, assume must check credentials, and assume all show is false.
     ViewBag.Title = ViewBag.Name;
     bool toCheck = true;
     bool showEmail = false;
@@ -12,9 +14,9 @@
     bool showAboutMe = false;
     bool showCourse = false;
     bool showEmployment = false;
+    bool showNoticeBoard = false;
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
     List<FollowPeers.Models.Achievement> myAchievements = followPeersDB.Achievements.Where(p => p.UserProfileId == Model.UserProfileId).ToList();
-      
 }
 
 @if (Membership.GetUser().UserName == Model.UserName)
@@ -30,8 +32,10 @@
 
         IQueryable<int> custQuery = from cust in followPeersDB.Relationships where cust.personAName == membername && cust.personBName == Model.UserName select cust.tier;
 
+        //if such a member exists in the relationships, we can proceed to check access
         if (custQuery.Count() != 0)
         {
+            //check if the user has tier1 access for the information of the profile
             foreach (int tier in custQuery)
             {
                 FollowPeers.Models.Tier temp = Model.Tiers.SingleOrDefault(p => p.Level == tier);
@@ -44,10 +48,12 @@
                 if (temp.Patent == 1) { showPatent = true; }
                 if (temp.AboutMe == 1) { showAboutMe = true; }
                 if (temp.Employment == 1) { showEmployment = true; }
+                if (temp.Noticeboard == 1) { showNoticeBoard = true; }
             }
         }
-        
-        //else (meaning public view.. so check tier 1)
+
+        //else (meaning public view.. so check if the user has declared the information as public, or tier1. tier1 means must have access to see)
+        //notice board will not be visible to someone not in the peers
         else
         {
             FollowPeers.Models.Tier temp = Model.Tiers.SingleOrDefault(p => p.Level == 1);
@@ -64,6 +70,58 @@
         }
     } 
 }
+
+<head>
+    <title>Profile</title>
+    <style media="screen" type="text/css">
+        #profilepagetabs ul
+        {
+            padding: 0px;
+            margin: 0px;
+            margin-left: 0px;
+            padding-right: 10px;
+        }
+
+            #profilepagetabs ul li
+            {
+                display: inline-block;
+                height: auto;
+            }
+
+                #profilepagetabs ul li a
+                {
+                    /* The following four lines are to make the top left and top right corners of the content area rounded. */
+                    -moz-border-radius-topleft: 4px;
+                    border-top-left-radius: 4px;
+                    -moz-border-radius-topright: 4px;
+                    border-top-right-radius: 4px;
+                    -moz-border-radius-bottomleft: 4px;
+                    border-bottom-left-radius: 4px;
+                    -moz-border-radius-bottomright: 4px;
+                    border-bottom-right-radius: 4px;
+                    margin-left: 0px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    width: auto;
+                    color: black;
+                    background: #ccc;
+                    font-weight: bold;
+                }
+
+                    #profilepagetabs ul li a:hover
+                    {
+                        text-decoration: underline;
+                    }
+
+
+        #profilepagetabs li.current a
+        {
+            background-color: #45aeea;
+            color: white;
+        }
+    </style>
+</head>
+
 <script type="text/javascript">
 
     function setswitch(sel) {
@@ -107,8 +165,132 @@
                     </div>
                     <br />
                     
+                    <div id="profilepagetabs">
+                        <ul>
+                            <li class="current" id="li_noticeboard" onclick="tab('noticeboard')"><a>NoticeBoard</a></li>
+                            <li id="li_about" onclick="tab('about')"><a>About</a></li>
+                        </ul>
+                    </div>
+                    
+                    
+                    
+                    <div id="about" style="display: none;">
+                        <fieldset>
 
-                    <div>
+                            <legend>Personal</legend>
+
+                            <div class="editor-label">
+                                <p>Gender: @Html.Label(Model.Gender)</p>
+                            </div>
+
+                            <div class="editor-label">
+                                <p>Marital Status: @Html.Label(Model.Status)</p>
+                            </div>
+
+                            @*<div class="editor-label">
+                                @Html.Label(Model.Birthday)
+                            </div>*@
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Country)
+                            </div>
+
+
+                            <div class="editor-label" style="width: 100%;">
+                                <label for="AboutMe">About Me</label>
+                            </div>
+                            <div class="editor-field" style="">
+                                <p>@Model.AboutMe</p>
+                            </div>
+                        </fieldset>
+
+                        @*<fieldset>
+
+                            <legend>Contact Information</legend>
+                            <div class="editor-label">
+                                @Html.Label(Model.Contact.Street1)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Contact.Street2)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Contact.City)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Contact.Country)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Contact.Mobile)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Contact.Phone)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Contact.Fax)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Contact.Email)
+                            </div>
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Contact.Website)
+                            </div>
+
+
+                        </fieldset>*@
+
+
+
+
+                        @*<div id="EducationFields">
+                            <fieldset>
+                                <legend>Education History</legend>
+
+                                @foreach (var E in Model.Educations)
+                                {
+                                    <div style="font-variant-caps: all-small-caps;">
+                                        @Html.Label(E.UniversityName)
+                                    </div>
+                           
+                                    <div>
+                                        @Html.Label(E.Degree)
+                                    </div>
+                            
+                            
+
+                           
+                                }
+                            </fieldset>
+
+                        </div>*@
+
+                        @*<fieldset>
+
+                            <legend>Professional</legend>
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Organization)
+                            </div>
+
+
+                            <div class="editor-label">
+                                @Html.Label(Model.Departments)
+                            </div>
+
+                            <div id="Specialization" style="display: none; height: 22px;"></div>
+                            <div class="editor-label">
+                                @Html.Label(Model.Specializations)
+                            </div>
+
+
+                        </fieldset>*@
 
                         @if (Model.Specializations.Count() != 0)
                         {
@@ -130,7 +312,8 @@
                             </div>
                         }
 
-                        @if (Model.Profession == "Investor" && Model.Portfolios.Count() != 0)
+                        //for premium, will deal with later
+@*@if (Model.Profession == "Investor" && Model.Portfolios.Count() != 0)
                         {
                             <div id="Portfolio" style="">
                                 <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
@@ -153,7 +336,7 @@
                                     }
                                 </table>
                             </div>
-                        }
+                        }*@
 
 
                         @{
@@ -558,9 +741,141 @@
                             </table>
                         }
 
-                    </div>          
+
+                    </div>
+                    
+                    <div id="noticeboard">
+                        @{
+                        int count = 0;
+                        if (toCheck == false || showNoticeBoard == true )
+                        {
+                            if (Model.Updates != null)
+                            {
+                                var newList = Model.Updates.OrderByDescending(x => x.Time).ToList();
+
+                                foreach (var currentUpdate in newList)
+                                {
+                                    //need to display only own's updates
+                                    if (currentUpdate.Own == true)
+                                    {
+
+                                        UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.owner);
+                            <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-top: 15px; padding-bottom: 5px; width: 100%">
+                                <div style="float: left; height: 50px; overflow: hidden;">
+                                    <a href="../../Profile/Index/@userprofile.UserProfileId">
+                                        <img src="@Html.Encode(userprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:50px;"/></a>
+                                </div>
+                                <div style="margin-left: 8px; float: left; width: 88%; word-wrap: break-word">
+                                    <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
+                                    @if (currentUpdate.type == 3)
+                                    {
+                                        //  <text>@currentUpdate.message @currentUpdate.UpdateId @Model.UserProfileId </text>
+                                        NoticeComment tempcomment = followPeersDB.NoticeComments.SingleOrDefault(p => p.commenterId == Model.UserProfileId && p.message == currentUpdate.message);
+                                        <text>@tempcomment.message</text>
+                                        Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.UpdateId == tempcomment.update.UpdateId);
+                                        // UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempupdate.owner);
+                                        UserProfile tempprofile = tempupdate.UserProfiles.ElementAt(0);
+                                        <text>Commented: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
+                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
+                                    }
+                                    else if (currentUpdate.type == 4)
+                                    {
+                                        Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.message == currentUpdate.message && p.type == 5);
+                                        int tempuserprofileID = tempupdate.UserProfiles.ElementAt(0).UserProfileId;
+                                        UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempuserprofileID);
+                              
+                                        <text>Wrote: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
+                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
+                                    }
+                                    else if (currentUpdate.type == 9)
+                                    {
+                                        <span class="label label-info">Broadcast</span> <br /> @currentUpdate.message
+                                    }
+                                    else
+                                    {@currentUpdate.message}
+                                    <br />
+
+                                    @{
+                                    string id1 = "comment1" + @count;
+                                    string time = "";
+                                    TimeSpan temp = DateTime.Now - currentUpdate.Time;
+                                    if (temp.Days > 1) { time += temp.Days.ToString() + " days ago"; }
+                                    else if (temp.Hours > 1) { time += temp.Hours.ToString() + " hrs ago"; }
+                                    else { time += temp.Minutes.ToString() + " mins ago"; }
+                                    }
+                                    <text style="color: #777">@time </text>
+
+                                    @{                      
+                                    //if it is a comment on other people's wall, dont allow commenting
+                                    if (currentUpdate.type != 3 && currentUpdate.type != 4)
+                                    {
+                                        <div style="background: #eee; padding: 5px 3px; margin-bottom: 5px;">
+                                            @{var commentslist = followPeersDB.NoticeComments.OrderBy(x => x.time);
+                                            }
+                                            @{foreach (NoticeComment cmt in commentslist)
+                                              {
+                                                  if (cmt.update.UpdateId == currentUpdate.UpdateId)
+                                                  {   <div style="border-bottom: 1px solid #ddd;">
+                                          @{
+                                                      IQueryable<UserProfile> custQuery2 = from cust in followPeersDB.UserProfiles where cust.UserProfileId == cmt.commenterId select cust;
+                                                      foreach (UserProfile user in custQuery2)
+                                                      {
+                                              <div style="float: left; margin: 3px; height: 30px; overflow: hidden;">
+                                                  <img src="@Html.Encode(user.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:30px;"/>
+                                              </div>
+                                              <div style="margin-left: 8px; float: left;">
+                                                  <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
+                                              </div>
+                                      
+                                                          if (user.UserProfileId == myprofile.UserProfileId)
+                                                          {<div id="mydiv" style="float: right; margin-right: 5px; color: #888; font-size: 15px; cursor: pointer;">@Html.ActionLink("x", "DeleteComment", "Notice", new { id = cmt.NoticeCommentId, redirect = Model.UserProfileId }, null)
+                                              </div>}
+                                              <div style="clear: both;">
+                                              </div>
+                                                      }
+                                          }
+                                      </div>
+                                                  } //end of if
+                                              }
+                                            }
+                                            <form action="/Profile/AddComment" method="post" style="margin-bottom: 0px;">
+                                                <input type="hidden" name="commentid" value="@currentUpdate.UpdateId" />
+                                                <input type="hidden" name="redirect" value="@Model.UserProfileId" />
+                                                @{string id = "comment" + @count;}
+                                                <input id="@id" type="text" name="message" value="" style="width:97%;" />
+                                            </form>
+                                            <script type="text/javascript" language="javascript"> puthint("#@id", "Write a comment...");</script>
+                                            @{count++;}
+                                        </div>}
+                                    }
+                                </div>
+                                <div style="clear: both;">
+                                </div>
+                            </div>
+                                    }
+
+
+                                }
+                            }
+
+
+
+
+                        }
+                        }
+
+                    </div>   
+                    
+                    <div id="publications">
+
+                    </div>       
            
                 }
+                
+                
+                
+                
+                
                 else
                 {
                     <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
@@ -630,3 +945,40 @@
     });
 
 </script>
+
+
+<script type="text/javascript">
+    //scripts for the tabs on profile page
+    function tab(tab) {
+        //document.getElementById('Form_Area').style.display = 'none'; //hide all forms
+        document.getElementById('noticeboard').style.display = 'none';
+        document.getElementById('about').style.display = 'none';
+        document.getElementById('li_noticeboard').setAttribute("class", "");
+        document.getElementById('li_about').setAttribute("class", "");
+
+
+        if (tab == 'noticeboard') {
+
+            document.getElementById('noticeboard').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+
+
+        }
+
+        if (tab == 'about') {
+            document.getElementById('about').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+
+
+        }
+
+
+
+        else {
+            return;
+        }
+    }
+</script>
+

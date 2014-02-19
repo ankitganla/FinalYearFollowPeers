@@ -222,13 +222,13 @@
 
                 @{
                     int count = 0;
-                    //if  this is your own profile, you can post from it
+                    //if  this is your own profile, you can post from it. if not do not show multi input box
                     if (myprofile.UserProfileId == Model.UserProfileId)
                     { 
                     
                     @Html.Partial("MultiInputBox")
                     }
-                    //not your profile
+                    
                     @* else
                     {
 
