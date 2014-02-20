@@ -106,6 +106,8 @@
                     color: black;
                     background: #ccc;
                     font-weight: bold;
+                    
+                   
                 }
 
                     #profilepagetabs ul li a:hover
@@ -157,23 +159,152 @@
                 @if (Model.activated == true)
                 {
                     
-                    <div>
-                        @Html.Partial("MultiInputBox")
-                    </div>
-                    <br />
+                        @*<div>
+                            @Html.Partial("MultiInputBox")
+                        </div>*@
+                    
                     
                     <div id="profilepagetabs">
                         <ul>
-                            <li class="current" id="li_noticeboard" onclick="tab('noticeboard')"><a>NoticeBoard</a></li>
-                            <li id="li_photos" onclick="tab('photos')"><a>Photos</a></li>
-                            <li id="li_publications" onclick="tab('publications')"><a>Publications</a></li>
-                            <li id="li_jobs" onclick="tab('jobs')"><a>Jobs</a></li>
-                            <li id="li_courses" onclick="tab('courses')"><a>Courses</a></li>
-                            <li id="li_about" onclick="tab('about')"><a>About</a></li>
+                            <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
+                            @*<li id="li_photos" onclick="tab('photos')"><a>Photos</a></li>*@
+                            <li id="li_publications" onclick="tabresponse('publications')"><a>PUBLICATIONS</a></li>
+                            @*<li id="li_jobs" onclick="tab('jobs')"><a>Jobs</a></li>
+                            <li id="li_courses" onclick="tab('courses')"><a>Courses</a></li>*@
+                            <li id="li_about" onclick="tabresponse('about')"><a>ABOUT</a></li>
                         </ul>
                     </div>
                     
                     
+                    
+                    
+                    
+                    <div id="noticeboard" style="display:block;">
+                        @{
+                    int count = 0;
+                    if (toCheck == false || showNoticeBoard == true)
+                    {
+                        if (Model.Updates != null)
+                        {
+                            var newList = Model.Updates.OrderByDescending(x => x.Time).ToList();
+
+                            foreach (var currentUpdate in newList)
+                            {
+                                //need to display only own's updates
+                                if (currentUpdate.Own == true)
+                                {
+
+                                    UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.owner);
+                            <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-top: 15px; padding-bottom: 5px; width: 100%">
+                                <div style="float: left; height: 50px; overflow: hidden;">
+                                    <a href="../../Profile/Index/@userprofile.UserProfileId">
+                                        <img src="@Html.Encode(userprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:50px;"/></a>
+                                </div>
+                                <div style="margin-left: 8px; float: left; width: 88%; word-wrap: break-word">
+                                    <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
+                                    @if (currentUpdate.type == 3)
+                                    {
+                                        //  <text>@currentUpdate.message @currentUpdate.UpdateId @Model.UserProfileId </text>
+                                        NoticeComment tempcomment = followPeersDB.NoticeComments.SingleOrDefault(p => p.commenterId == Model.UserProfileId && p.message == currentUpdate.message);
+                                        <text>@tempcomment.message</text>
+                                        Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.UpdateId == tempcomment.update.UpdateId);
+                                        // UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempupdate.owner);
+                                        UserProfile tempprofile = tempupdate.UserProfiles.ElementAt(0);
+                                        <text>Commented: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
+                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
+                                    }
+                                    else if (currentUpdate.type == 4)
+                                    {
+                                        Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.message == currentUpdate.message && p.type == 5);
+                                        int tempuserprofileID = tempupdate.UserProfiles.ElementAt(0).UserProfileId;
+                                        UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempuserprofileID);
+                              
+                                        <text>Wrote: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
+                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
+                                    }
+                                    else if (currentUpdate.type == 9)
+                                    {
+                                        <span class="label label-info">Broadcast</span> <br /> @currentUpdate.message
+                                    }
+                                    else
+                                    {@currentUpdate.message}
+                                    <br />
+
+                                    @{
+                                    string id1 = "comment1" + @count;
+                                    string time = "";
+                                    TimeSpan temp = DateTime.Now - currentUpdate.Time;
+                                    if (temp.Days > 1) { time += temp.Days.ToString() + " days ago"; }
+                                    else if (temp.Hours > 1) { time += temp.Hours.ToString() + " hrs ago"; }
+                                    else { time += temp.Minutes.ToString() + " mins ago"; }
+                                    }
+                                    <text style="color: #777">@time </text>
+
+                                    @{                      
+                                    //if it is a comment on other people's wall, dont allow commenting
+                                    if (currentUpdate.type != 3 && currentUpdate.type != 4)
+                                    {
+                                        <div style="background: #eee; padding: 5px 3px; margin-bottom: 5px;">
+                                            @{var commentslist = followPeersDB.NoticeComments.OrderBy(x => x.time);
+                                            }
+                                            @{foreach (NoticeComment cmt in commentslist)
+                                              {
+                                                  if (cmt.update.UpdateId == currentUpdate.UpdateId)
+                                                  {   <div style="border-bottom: 1px solid #ddd;">
+                                                      @{
+                                                      IQueryable<UserProfile> custQuery2 = from cust in followPeersDB.UserProfiles where cust.UserProfileId == cmt.commenterId select cust;
+                                                      foreach (UserProfile user in custQuery2)
+                                                      {
+                                                          <div style="float: left; margin: 3px; height: 30px; overflow: hidden;">
+                                                              <img src="@Html.Encode(user.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:30px;"/>
+                                                          </div>
+                                                          <div style="margin-left: 8px; float: left;">
+                                                              <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
+                                                          </div>
+                                      
+                                                          if (user.UserProfileId == myprofile.UserProfileId)
+                                                          {<div id="mydiv" style="float: right; margin-right: 5px; color: #888; font-size: 15px; cursor: pointer;">@Html.ActionLink("x", "DeleteComment", "Notice", new { id = cmt.NoticeCommentId, redirect = Model.UserProfileId }, null)
+                                                          </div>}
+                                                          <div style="clear: both;">
+                                                          </div>
+                                                      }
+                                                      }
+                                                  </div>
+                                                  } //end of if
+                                              }
+                                            }
+                                            <form action="/Profile/AddComment" method="post" style="margin-bottom: 0px;">
+                                                <input type="hidden" name="commentid" value="@currentUpdate.UpdateId" />
+                                                <input type="hidden" name="redirect" value="@Model.UserProfileId" />
+                                                @{string id = "comment" + @count;}
+                                                <input id="@id" type="text" name="message" value="" style="width:97%;" />
+                                            </form>
+                                            <script type="text/javascript" language="javascript"> puthint("#@id", "Write a comment...");</script>
+                                            @{count++;}
+                                        </div>}
+                                    }
+                                </div>
+                                <div style="clear: both;">
+                                </div>
+                            </div>
+                                }
+
+
+                            }
+                        }
+
+
+
+
+                    }
+                        }
+
+                    </div>   
+                    
+                    <div id="publications" style="display:none;">
+                        <br />
+                       @Html.Partial("PublicationView", Model.Publication)
+                    </div>
                     
                     <div id="about" style="display: none;">
                         <fieldset>
@@ -743,138 +874,9 @@
                         }
 
 
-                    </div>
-                    
-                    <div id="noticeboard">
-                        @{
-                        int count = 0;
-                        if (toCheck == false || showNoticeBoard == true)
-                        {
-                            if (Model.Updates != null)
-                            {
-                                var newList = Model.Updates.OrderByDescending(x => x.Time).ToList();
-
-                                foreach (var currentUpdate in newList)
-                                {
-                                    //need to display only own's updates
-                                    if (currentUpdate.Own == true)
-                                    {
-
-                                        UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.owner);
-                            <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-top: 15px; padding-bottom: 5px; width: 100%">
-                                <div style="float: left; height: 50px; overflow: hidden;">
-                                    <a href="../../Profile/Index/@userprofile.UserProfileId">
-                                        <img src="@Html.Encode(userprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:50px;"/></a>
-                                </div>
-                                <div style="margin-left: 8px; float: left; width: 88%; word-wrap: break-word">
-                                    <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
-                                    @if (currentUpdate.type == 3)
-                                    {
-                                        //  <text>@currentUpdate.message @currentUpdate.UpdateId @Model.UserProfileId </text>
-                                        NoticeComment tempcomment = followPeersDB.NoticeComments.SingleOrDefault(p => p.commenterId == Model.UserProfileId && p.message == currentUpdate.message);
-                                        <text>@tempcomment.message</text>
-                                        Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.UpdateId == tempcomment.update.UpdateId);
-                                        // UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempupdate.owner);
-                                        UserProfile tempprofile = tempupdate.UserProfiles.ElementAt(0);
-                                        <text>Commented: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
-                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
-                                    }
-                                    else if (currentUpdate.type == 4)
-                                    {
-                                        Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.message == currentUpdate.message && p.type == 5);
-                                        int tempuserprofileID = tempupdate.UserProfiles.ElementAt(0).UserProfileId;
-                                        UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempuserprofileID);
-                              
-                                        <text>Wrote: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
-                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
-                                    }
-                                    else if (currentUpdate.type == 9)
-                                    {
-                                        <span class="label label-info">Broadcast</span> <br /> @currentUpdate.message
-                                    }
-                                    else
-                                    {@currentUpdate.message}
-                                    <br />
-
-                                    @{
-                                    string id1 = "comment1" + @count;
-                                    string time = "";
-                                    TimeSpan temp = DateTime.Now - currentUpdate.Time;
-                                    if (temp.Days > 1) { time += temp.Days.ToString() + " days ago"; }
-                                    else if (temp.Hours > 1) { time += temp.Hours.ToString() + " hrs ago"; }
-                                    else { time += temp.Minutes.ToString() + " mins ago"; }
-                                    }
-                                    <text style="color: #777">@time </text>
-
-                                    @{                      
-                                    //if it is a comment on other people's wall, dont allow commenting
-                                    if (currentUpdate.type != 3 && currentUpdate.type != 4)
-                                    {
-                                        <div style="background: #eee; padding: 5px 3px; margin-bottom: 5px;">
-                                            @{var commentslist = followPeersDB.NoticeComments.OrderBy(x => x.time);
-                                            }
-                                            @{foreach (NoticeComment cmt in commentslist)
-                                              {
-                                                  if (cmt.update.UpdateId == currentUpdate.UpdateId)
-                                                  {   <div style="border-bottom: 1px solid #ddd;">
-                                                      @{
-                                                      IQueryable<UserProfile> custQuery2 = from cust in followPeersDB.UserProfiles where cust.UserProfileId == cmt.commenterId select cust;
-                                                      foreach (UserProfile user in custQuery2)
-                                                      {
-                                                          <div style="float: left; margin: 3px; height: 30px; overflow: hidden;">
-                                                              <img src="@Html.Encode(user.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:30px;"/>
-                                                          </div>
-                                                          <div style="margin-left: 8px; float: left;">
-                                                              <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
-                                                          </div>
-                                      
-                                                          if (user.UserProfileId == myprofile.UserProfileId)
-                                                          {<div id="mydiv" style="float: right; margin-right: 5px; color: #888; font-size: 15px; cursor: pointer;">@Html.ActionLink("x", "DeleteComment", "Notice", new { id = cmt.NoticeCommentId, redirect = Model.UserProfileId }, null)
-                                                          </div>}
-                                                          <div style="clear: both;">
-                                                          </div>
-                                                      }
-                                                      }
-                                                  </div>
-                                                  } //end of if
-                                              }
-                                            }
-                                            <form action="/Profile/AddComment" method="post" style="margin-bottom: 0px;">
-                                                <input type="hidden" name="commentid" value="@currentUpdate.UpdateId" />
-                                                <input type="hidden" name="redirect" value="@Model.UserProfileId" />
-                                                @{string id = "comment" + @count;}
-                                                <input id="@id" type="text" name="message" value="" style="width:97%;" />
-                                            </form>
-                                            <script type="text/javascript" language="javascript"> puthint("#@id", "Write a comment...");</script>
-                                            @{count++;}
-                                        </div>}
-                                    }
-                                </div>
-                                <div style="clear: both;">
-                                </div>
-                            </div>
-                                    }
-
-
-                                }
-                            }
-
-
-
-
-                        }
-                        }
-
                     </div>   
-                    
-                    <div id="publications">
-                      
-                    </div>       
            
                 }
-
-
-
 
                 else
                 {
@@ -949,12 +951,14 @@
 
 <script type="text/javascript">
     //scripts for the tabs on profile page
-    function tab(tab) {
+    function tabresponse(tab) {
         //document.getElementById('Form_Area').style.display = 'none'; //hide all forms
         document.getElementById('noticeboard').style.display = 'none';
         document.getElementById('about').style.display = 'none';
+        document.getElementById('publications').style.display = 'none';
         document.getElementById('li_noticeboard').setAttribute("class", "");
         document.getElementById('li_about').setAttribute("class", "");
+        document.getElementById('li_publications').setAttribute("class", "");
 
 
         if (tab == 'noticeboard') {
@@ -972,6 +976,13 @@
             document.getElementById('li_' + tab).setAttribute("class", "current");
 
 
+        }
+
+        if (tab == 'publications') {
+            document.getElementById('publications').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+    
         }
 
 
