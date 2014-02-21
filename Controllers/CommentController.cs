@@ -86,7 +86,7 @@ namespace FollowPeers.Controllers
             Comment comment = db.Comments.Find(id);
             comment.Flagged = !comment.Flagged;
             db.SaveChanges();
-
+           
             return RedirectToAction("Details", "PublicationModel", new { id= PublicationId });
         }
         

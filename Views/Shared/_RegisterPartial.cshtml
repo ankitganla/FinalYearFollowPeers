@@ -4,74 +4,80 @@
 
 @using (Html.BeginForm("Register", "Account"))
 {
-            
-            @*<p class="notice">Sign up Now! It's Free...</p>*@
-         <!--   <p>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName) 
-            </p> -->
-            <input type="hidden" name="UserName" id="UserName" value="0" />
-           <div class="controls">
-                @*@Html.LabelFor(m => m.FirstName,"First Name")*@
-                @Html.TextBoxFor(m => m.FirstName, new { @placeholder="First Name", @class="input-xlarge" })
-                @Html.ValidationMessageFor(m => m.FirstName)
-            </div>
-            <div class="controls">
-                @*@Html.LabelFor(m => m.LastName,"Last Name")*@
-                @Html.TextBoxFor(m => m.LastName, new { @placeholder="Last Name", @class="input-xlarge" })
-                @Html.ValidationMessageFor(m => m.LastName)
-            </div>
+    @Html.ValidationSummary(true, "Account creation was unsuccessful. Please correct the errors and try again.")
+           
+    <div class="controls">
 
-            <div class="controls">
-               @* @Html.LabelFor(m => m.Email)*@
-                @Html.TextBoxFor(m => m.Email, new { @placeholder="Email", @class="input-xlarge" })
-                @*<input length="0" data-val="true" data-val-required="The Email address field is required." id="Email" name="Email" type="text" value="" placeholder="Email" class="input-xlarge">*@
-                @Html.ValidationMessageFor(m => m.Email)
-            </div>
+        <!--   <p>
+            @Html.LabelFor(m => m.UserName)
+            @Html.TextBoxFor(m => m.UserName)
+            @Html.ValidationMessageFor(m => m.UserName) 
+         </p> -->
+        <input type="hidden" name="UserName" id="UserName" value="0" />
 
-            <div class="controls">
-               @* @Html.LabelFor(m => m.Password)*@
-                @Html.PasswordFor(m => m.Password, new { @placeholder="Create Password - Min 6 characters", @class="input-xlarge"})
-                @Html.ValidationMessageFor(m => m.Password)
-            </div>
+        <p>
+            @*@Html.LabelFor(m => m.FirstName,"First Name")*@
+            @Html.TextBoxFor(m => m.FirstName, new { @placeholder = "First Name", @class = "input-xlarge" })
+            @Html.ValidationMessageFor(m => m.FirstName)
+        </p>
 
-            <div class="controls">
-               @* @Html.LabelFor(m => m.ConfirmPassword)*@
-                @Html.PasswordFor(m => m.ConfirmPassword, new { @placeholder="Confirm Password", @class="input-xlarge"})
-                @Html.ValidationMessageFor(m => m.ConfirmPassword)
-            </div>
+        <p>
+            @*@Html.LabelFor(m => m.LastName,"Last Name")*@
+            @Html.TextBoxFor(m => m.LastName, new { @placeholder = "Last Name", @class = "input-xlarge" })
+            @Html.ValidationMessageFor(m => m.LastName)
+        </p>
+
+
+        <p>
+            @* @Html.LabelFor(m => m.Email)*@
+            @Html.TextBoxFor(m => m.Email, new { @placeholder = "Email", @class = "input-xlarge" })
+            @*<input length="0" data-val="true" data-val-required="The Email address field is required." id="Email" name="Email" type="text" value="" placeholder="Email" class="input-xlarge">*@
+            @Html.ValidationMessageFor(m => m.Email)
+
+        </p>
+
+
+        <p>
+            @* @Html.LabelFor(m => m.Password)*@
+            @Html.PasswordFor(m => m.Password, new { @placeholder = "Create Password*", @class = "input-xlarge" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </p>
+
+
+        <p>
+            @* @Html.LabelFor(m => m.ConfirmPassword)*@
+            @Html.PasswordFor(m => m.ConfirmPassword, new { @placeholder = "Confirm Password", @class = "input-xlarge" })
+            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+        </p>
+
+        <p style="font-size: x-small">
+            *Min 6 characters, at least 1 non-alphanumeric character
+        </p>
+
+
+        <p>
+            @{List<string> profession = new List<string>();
+              profession.Add("--Select Account Type--");
+              profession.Add("Free");
+              profession.Add("Premium");
+            }
+            @Html.DropDownList("Profession", new SelectList(profession))
+        </p>
+
+        <p>
+            <input class="btn btn-primary" type="submit" value="Sign up" />
+        </p>
+
+
+
+
+
+
+    </div>
     
-            <div class="controls" style="margin-bottom:10px;">
             
-                   @* @Html.LabelFor(model => model.Profession)*@
-                   <p>Select Account Type</p>
-                
-                    @{List<string> profession = new List<string>();
-                      profession.Add("Individual");
-                      profession.Add("Corporate");
-                    }
-                    @Html.DropDownList("Profession", new SelectList(profession), new { @class = "btn", @style = "width:47%;" })
-
-                     @*{
-                      var db = Database.Open("FollowPeersDB");
-                      List<string> interest = new List<string>();
-                      foreach (var row in db.Query("Select Distinct(Field) from Specializations"))
-                      {
-                          interest.Add(row.Field);
-                      }
-                     
-                    }
-                    @Html.DropDownList("Specialisation", new SelectList(interest), new { @class = "btn", @style = "width:47%;" })*@
-                
-            </div>
-
-            <div class="controls">
-                <input class="btn btn-primary" type="submit" value="Sign up"/>
-            </div>
-            
-      @Html.ValidationSummary(true, "Account creation was unsuccessful. Please correct the errors and try again.")
-     @* <fieldset class="login">
+    
+@* <fieldset class="login">
             <legend>Social Sign On</legend>
             <p class="notice">or, user your existing social identities...</p>
             <p>Login via facebook, twitter, linkedIn, Google coming soon...</p>

@@ -278,7 +278,7 @@ div#title {
 /* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error {
-    color: #ff0000;
+    color:  #ff0000;
 }
 
 .field-validation-valid {
@@ -322,3 +322,7 @@ div#title {
 .tri-state {
     width: 6em;
 }
+
+/* Styles for tabs
+----------------------------------------------------------*/
+

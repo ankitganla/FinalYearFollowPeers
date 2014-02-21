@@ -23,7 +23,9 @@
 			          <li class="divider-vertical"></li>
 			          <li class=""> <a href="@Url.Content("~/Profile/Index/?id=" + @myprofile.UserProfileId)">Profile</a></li>
 			          <li class="divider-vertical"></li>
-		          	  <li class=""> <a href="@Url.Content("~/Profile/FollowedByList/?name=" + Session["username"])" title="Your Peer List">Peers</a></li>                
+		          	  <li class=""> <a href="@Url.Content("~/Profile/FollowedByList/?name=" + Session["username"])" title="Your Peer List">Peers</a></li>
+                       <li class="divider-vertical"></li>
+                        <li class=""> <a href="/Chat/Index" title="Your Peer List">Chat</a></li>                
 					  <li class="divider-vertical"></li>
                        <li>
                         <a id="Notification" title="Notifications"><img src="../../Content/images/icons/16x16/newspaper.png" /><span style="color:orange;" id="newCount"></span></a>

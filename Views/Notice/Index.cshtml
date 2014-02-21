@@ -5,7 +5,6 @@
 @Html.Partial("_Header")
 
 
-
 @*Container*@
 <div class="container">
 
@@ -26,7 +25,7 @@
             {
             @Html.Partial("_SideBar1", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
  
-            }
+            } 
         }
         @*Center Container*@
         <div class="span7 main-content">
@@ -79,161 +78,35 @@
                 </script>
 
 
-
+                <!--ul class="nav nav-tabs">
+                            <li><h5><i class="icon-file"></i> Update Status</h5></li>
+                            <li><h5><span class="icon-upload" href="/Profile/UploadFile"></span> Upload File</h5></li>
               
-             
-                @{
-                    if (Model.UserProfileId == myprofile.UserProfileId)
-                    {
-                        List<FollowPeers.Models.Specialization> userInterests = Model.Specializations.ToList();
-                        int countInterests = userInterests.Count;
-                        int randnum, spID;
-                        int topicid;
-                        string spField;
-                        List<FollowPeers.Models.ForumPost> posts = new List<ForumPost>();
-                        List<FollowPeers.Models.ForumTopic> temptopic = new List<ForumTopic>();
+                        </!--ul-->
 
+                <h5><i class="icon-file"></i>Update Status</h5>
 
-                        int i = 0;
-                        if (countInterests != 0)
-                        {
-                            do
-                            {
-                                Random rand = new Random();
-                                randnum = (int)rand.Next(0, countInterests);
-                                spID = userInterests[randnum].SpecializationId;
-                                spField = userInterests[randnum].Field;
-                                List<FollowPeers.Models.Specialization> fieldids = followPeersDB.Specializations.Where(p => p.Field == spField).ToList(); //list of sub-category ids under same category
-                                List<FollowPeers.Models.Forum> forums = new List<FollowPeers.Models.Forum>();
-                                foreach (var fieldid in fieldids)
-                                {
-                                    List<FollowPeers.Models.Forum> tempforums = followPeersDB.Forums.Where(p => p.ForumId == fieldid.SpecializationId).ToList();
-
-                                    foreach (var tempforum in tempforums)
-                                    {
-                                        forums.Add(tempforum); // adding all forums which are linked to spField
-                                    }
-                                }
-
-                                for (int c = forums.Count() - 1; c >= 0; c--)
-                                {
-
-                                    temptopic = forums[c].Topics.ToList();
-                                    topicid = temptopic[temptopic.Count() - 1].ForumTopicId;
-                                    temptopic.RemoveAt(0); // removing all the default topics
-                                    if (temptopic.Count() > 0)
-                                    {
-
-                                        foreach (var post in temptopic[temptopic.Count() - 1].Posts)
-                                        {
-
-                                            posts.Add(post);
-
-
-                                        }
-                                        if (posts.Count() > 0) { break; }
-                                    }
-                                }
-
-                                /* List<FollowPeers.Models.Forum> forum = followPeersDB.Forums.Where(p => p.ForumId == spID).ToList();
-                                 lastindex = forum.Count();
-
-                                 lastpostindex = forum[lastindex - 1].Topics.ToList().Count();
-                                 do
-                                 {
-                                     post = forum[lastindex - 1].Topics.ToList()[lastpostindex - 1].Posts.OrderByDescending(t => t.TimeStamp < System.DateTime.Now).ToList();
-                                     topicid = forum[lastindex - 1].Topics.ToList()[lastpostindex - 1].ForumTopicId;
-                                     if (post.Count == 0) { lastpostindex--; }
-                                 } while (post.Count <= 0 && lastpostindex != 0);*/
-
-                                if (i == countInterests) { i = 0; break; }
-                                i++;
-                            } while (posts.Count <= 0);
-                        
-                      
-                      
-                         
-                    <div class="well">
-
-                     
-                            @if(posts.Count() == 0)
-                            {
-                            <h3>No posts in the categories you have joined!</h3> 
-                            <h4>Start a conversation by choosing from the below categories</h4>
-                            
-                            <ul>
-                            @foreach (var interest in userInterests)
-                            {
-                            <li><a href="@Url.Content("~/Forum/CategoryDetail/?Category=" + @interest.Field)" style="font-size:12px">@interest.Field</a></li>         
-                            }
-                                
-                        </ul>
-                        
-                        }
-                        else
-                        {
-                            <h2 style=" padding-left:130px"> Featured Post </h2>
-                                <br />
-                                
-                                     <p>@posts[posts.Count()-1].PostMessage</p>
-                            <b style="color:#2fa4e7">Posted by: </b><b><a style="color:#555555" href="@Url.Content("~/Profile/Index/?id=" + @posts[posts.Count()-1].Postedby.UserProfileId)">@posts[posts.Count()-1].Postedby.FirstName  @posts[posts.Count() - 1].Postedby.LastName</a></b>
-                                <br />
-                          
-
-                           
-                                   <b style="color:#2fa4e7">Topic: </b>
-                                   <b> @temptopic[temptopic.Count()-1].Name</b>
-                                    <br />
-
-                                    <b style="color:#2fa4e7">Forum: </b>
-                                    <b>@temptopic[temptopic.Count()-1].Category</b>
-                                
-                
-                                   
-                            
-                                <h4>
-                                <a href="@Url.Content("~/Forum/TopicDetail/?id=" + @temptopic[0].ForumTopicId)" style="font-size:12px">Respond to the post
-                                </a>
-                            </h4>
-                        }
-
-                    </div>
-                    }
-
-                    else
-                    {
-                    <div class="well">
-
-
-                        <h3>No categoies joined. Update Research interest to join a category</h3>
-                        <h4>Click to <a href="@Url.Content("~/Profile/Edit/?id=" + @myprofile.UserProfileId)">update</a></h4>
-
-
-                    </div>
-      
-                    }
-                    
-                }
-                }
-
-
-
-
-                <h2>@Model.FirstName @Model.LastName's Notice Board</h2>
 
                 @{
                     int count = 0;
+
+                    //post status form
                     if (myprofile.UserProfileId == Model.UserProfileId)
                     {
-                     <form action="/Profile/UpdateStatus" method="post">
+                    <form action="/Profile/UpdateStatus" method="post">
                         <div>
                             <div class="input-append">
                                 <input id="appendedInputButton" name="message" type="text" value="" style="width: 78%;" />
-                                 
+
                                 <input class="btn" type="submit" value="Post" />
-                                <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a> <br /><br />
-                              <label type="checkbox">  <span class="label label-info" style="padding:5px">Broadcast this post?</span> <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left:100px"/> </label>
-                                  <input type="hidden" name="Ischecked" value="false"/>
+                                <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a>
+                                <br />
+                                <br />
+                                <!--label type="checkbox">
+                                            <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
+                                            <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
+                                        </!--label-->
+                                <input type="hidden" name="Ischecked" value="false" />
                             </div>
                         </div>
                     </form>
@@ -270,24 +143,81 @@
                             style="width: 100%;"></textarea>
                         <input type="hidden" name="redirect" value="@Model.UserProfileId" />
                         <input type="submit" title="Write something on @Model.FirstName's Notice Board..." style="cursor: pointer; float: right;
-                            padding: 2px 5px;" value="Post">
+                                        padding: 2px 5px;" value="Post">
                     </form>
                         }
                     }
                 }
 
 
-                @if (Model.Updates != null)
-                {
-                    var newList = Model.Updates.OrderByDescending(x => x.Time).ToList();
 
-                    foreach (var currentUpdate in newList)
+
+
+                @* 02/07 version: recent updates *@
+                @{
+                    //L: updates from people you are following.
+
+                    FollowPeers.Models.Update peerupdates;
+                    List<FollowPeers.Models.Relationship> following = followPeersDB.Relationships.Where(p => p.personAName == Model.UserName && p.tier == 2).ToList();
+                    //List<FollowPeers.Models.UserProfile> peerprofile = new List<FollowPeers.Models.UserProfile>();
+
+                    if (Model.UserProfileId == myprofile.UserProfileId)
                     {
-                        //need to display only own's updates
-                        if (currentUpdate.Own == true)
+                    <h5>Recent Updates</h5>
+                    
+                    
+                    
+                                                       
+                  
+       
+                    DateTime curr = System.DateTime.Now;
+                    int i = 0;
+
+                        <!-- Nav tabs -->
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#all" data-toggle="tab">All</a></li>
+                        <li><a href="#status" data-toggle="tab">Status</a></li>
+                        <li><a href="#publication" data-toggle="tab">Publications</a></li>
+                        <li><a href="#course" data-toggle="tab">Courses</a></li>
+                        <li><a href="#job" data-toggle="tab">Jobs</a></li>
+                        <li><a href="#favourite" data-toggle="tab">Favourite</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+
+
+                        @* updates of all updates *@
+                        <div class="tab-pane active" id="all">                                          
+                        @{do
                         {
 
-                            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.owner);
+                            int countupdate = followPeersDB.Updates.Where(p => p.owner != Model.UserProfileId && p.Time.CompareTo(curr) < 0).Count();
+                            if (countupdate > 0)
+                            {
+                                peerupdates = followPeersDB.Updates.Where(p => p.owner != Model.UserProfileId).OrderByDescending(o => o.Time).First(t => t.Time.CompareTo(curr) < 0);
+                                curr = peerupdates.Time;
+                            }
+                            else
+                            {
+                                if (i == 0)
+                                {
+                    <br />
+                                }
+                                break;
+                            }
+
+                            //L: identify the owner of updates.
+                            FollowPeers.Models.UserProfile OwnerProfile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
+                            foreach (var peer in following)
+                            {
+                                if (peer.personBName == OwnerProfile.UserName)
+                                {
+                                    //L: display all updates except type 3(comments)
+                                    if (peerupdates.Own == true && peerupdates.type != 3)
+                                    {
+
+                                        UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
                     <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-bottom: 5px;">
                         <div style="float: left; height: 50px; overflow: hidden;">
                             <a href="../../Profile/Index/@userprofile.UserProfileId">
@@ -295,38 +225,27 @@
                         </div>
                         <div style="margin-left: 8px; float: left; width: 88%;">
                             <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
-                            @if (currentUpdate.type == 3)
+                            @if (peerupdates.type == 4)
                             {
-                                //  <text>@currentUpdate.message @currentUpdate.UpdateId @Model.UserProfileId </text>
-                                NoticeComment tempcomment = followPeersDB.NoticeComments.SingleOrDefault(p => p.commenterId == Model.UserProfileId && p.message == currentUpdate.message);
-                                <text>@tempcomment.message</text>
-                                Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.UpdateId == tempcomment.update.UpdateId);
-                                // UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempupdate.owner);
-                                UserProfile tempprofile = tempupdate.UserProfiles.ElementAt(0);
-                                <text>Commented: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
-                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
-                            }
-                            else if (currentUpdate.type == 4)
-                            {
-                                Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.message == currentUpdate.message && p.type == 5);
+                                Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.message == peerupdates.message && p.type == 5);
                                 int tempuserprofileID = tempupdate.UserProfiles.ElementAt(0).UserProfileId;
                                 UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempuserprofileID);
                               
-                                <text>Wrote: </text>@currentUpdate.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
-                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
+                                <text>Wrote: </text>@peerupdates.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
+                                          <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
                             }
-                             else if (currentUpdate.type == 9) 
+                            else if (peerupdates.type == 9)
                             {
-                                <span class="label label-info">Broadcast</span> <br /> @currentUpdate.message
+                                <span class="label label-info">Broadcast</span> <br /> @peerupdates.message
                             }
                             else
-                            {@currentUpdate.message}
+                            {@peerupdates.message}
                             <br />
 
                             @{
                             string id1 = "comment1" + @count;
                             string time = "";
-                            TimeSpan temp = DateTime.Now - currentUpdate.Time;
+                            TimeSpan temp = DateTime.Now - peerupdates.Time;
                             if (temp.Days > 1) { time += temp.Days.ToString() + " days ago"; }
                             else if (temp.Hours > 1) { time += temp.Hours.ToString() + " hrs ago"; }
                             else { time += temp.Minutes.ToString() + " mins ago"; }
@@ -335,39 +254,39 @@
 
                             @{                      
                             //if it is a comment on other people's wall, dont allow commenting
-                            if (currentUpdate.type != 3 && currentUpdate.type != 4)
+                            if (peerupdates.type != 3 && peerupdates.type != 4)
                             {
                                 <div style="background: #eee; padding: 5px 3px; margin-bottom: 5px;">
                                     @{var commentslist = followPeersDB.NoticeComments.OrderBy(x => x.time);
                                     }
                                     @{foreach (NoticeComment cmt in commentslist)
                                       {
-                                          if (cmt.update.UpdateId == currentUpdate.UpdateId)
+                                          if (cmt.update.UpdateId == peerupdates.UpdateId)
                                           {   <div style="border-bottom: 1px solid #ddd;">
-                                              @{
+                                                  @{
                                               IQueryable<UserProfile> custQuery2 = from cust in followPeersDB.UserProfiles where cust.UserProfileId == cmt.commenterId select cust;
                                               foreach (UserProfile user in custQuery2)
                                               {
-                                                  <div style="float: left; margin: 3px; height: 30px; overflow: hidden;">
-                                                      <img src="@Html.Encode(user.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:30px;"/>
-                                                  </div>
-                                                  <div style="margin-left: 8px; float: left;">
-                                                      <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
-                                                  </div>
+                                                      <div style="float: left; margin: 3px; height: 30px; overflow: hidden;">
+                                                          <img src="@Html.Encode(user.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:30px;"/>
+                                                      </div>
+                                                      <div style="margin-left: 8px; float: left;">
+                                                          <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
+                                                      </div>
                                       
                                                   if (user.UserProfileId == myprofile.UserProfileId)
                                                   {<div id="mydiv" style="float: right; margin-right: 5px; color: #888; font-size: 15px; cursor: pointer;">@Html.ActionLink("x", "DeleteComment", "Notice", new { id = cmt.NoticeCommentId, redirect = Model.UserProfileId }, null)
-                                              </div>}
-                                                  <div style="clear: both;">
-                                                  </div>
+                                                      </div>}
+                                                      <div style="clear: both;">
+                                                      </div>
                                               }
-                                              }
-                                          </div>
+                                                  }
+                                              </div>
                                           } //end of if
                                       }
                                     }
                                     <form action="/Profile/AddComment" method="post" style="margin-bottom: 0px;">
-                                        <input type="hidden" name="commentid" value="@currentUpdate.UpdateId" />
+                                        <input type="hidden" name="commentid" value="@peerupdates.UpdateId" />
                                         <input type="hidden" name="redirect" value="@Model.UserProfileId" />
                                         @{string id = "comment" + @count;}
                                         <input id="@id" type="text" name="message" value="" style="width:97%;" />
@@ -380,26 +299,104 @@
                         <div style="clear: both;">
                         </div>
                     </div>
-                        }
 
+                            
+                                    }
+                                }
+                            }
 
-                    }
+                        } while (peerupdates.Time < System.DateTime.Now);
                 }
+                </div>
 
+
+                @* updates of ststus *@
+                <div class="tab-pane" id="status">
+                    
+                </div>
+
+
+                @* updates of publication *@
+                <div class="tab-pane" id="publication">
+
+     
+                </div>
+
+
+                @* updates of course *@
+                <div class="tab-pane" id="course">
+
+
+                </div>
+
+
+                @* updates of job *@
+                <div class="tab-pane" id="job">
+
+
+                </div>
+
+
+                @* updates of favourite peers*@
+                <div class="tab-pane" id="favourite">
+
+
+                </div>    
+
+            </div> 
+            }
+            }
             </div>
+
         </div>
 
-        @*Right Sidebar*@
-        <div class="span2 right-sideabr">
-            @Html.Partial("_HomepageRightSidebar")
+        @*Right Sidebar: peer list on right side bar*@
+        <div class="peerlist" style="width: auto; float: right">
+
+
+            @{
+                Boolean click_flag = false;
+
+                foreach (var peer in following)
+                {
+                    DateTime curr1 = System.DateTime.Now;
+                    int peerupdate_count = 0;
+                    FollowPeers.Models.UserProfile peerprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == peer.personBName);
+
+                    if (!click_flag)
+                    {
+                        peerupdate_count = followPeersDB.Updates.Where(p => p.owner == peerprofile.UserProfileId && p.Time.CompareTo(curr1) < 0).Count();
+                    }
+                              
+                <a href="/Profile/Index/@peerprofile.UserProfileId" style="text-decoration:none;">
+                    <div style=" padding: 2px 6px 2px 10px; line-height: 40px; height: 60px; background: #FFF; vertical-align: top; clear: both; _padding-right: 0px;">
+                        <span class="label label-warning pull-left">@peerupdate_count</span>
+                        <img src="@Html.Encode(peerprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:35px; height:35px;" class="img-circle" />                                <b>&nbsp;@peerprofile.FirstName @peerprofile.LastName</b>  
+                    </div>
+                </a>
+       
+                
+                }
+               }
+
+
         </div>
+
+
+
+
+
+
+
+
+
 
     </div>
     <div class="row">
         @Html.Partial("_Footer")
     </div>
-
 </div>
+
 
 @*Scripts*@
 <script src="scripts/jquery.js"></script>
@@ -416,4 +413,3 @@
 
     $('.fileupload').fileupload()
 </script>
-

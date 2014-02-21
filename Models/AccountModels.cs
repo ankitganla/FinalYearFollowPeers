@@ -8,6 +8,13 @@ using System.Web.Security;
 namespace FollowPeers.Models
 {
 
+    public class ForgotPasswordModel
+    {
+        [Required]
+        [Display(Name = "Email Address")]
+        public string UserName { get; set; }
+    }
+
     public class ChangePasswordModel
     {
         [Required]
@@ -38,7 +45,7 @@ namespace FollowPeers.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }
     }
 
@@ -54,7 +61,7 @@ namespace FollowPeers.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -68,7 +75,11 @@ namespace FollowPeers.Models
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
+
         [Required]
+        [Display(Name = "Select Account")]
         public string Profession { get; set; }
+        
+        
     }
 }

@@ -20,6 +20,13 @@ namespace FollowPeers.Controllers
     {
         FollowPeersDBEntities followPeersDB = new FollowPeersDBEntities();
 
+
+        public ActionResult ForgotPassword(ForgotPasswordModel model)
+        {
+            return View(model);
+        }
+        
+        
         //
         // GET: /Account/LogOn
 
@@ -123,65 +130,79 @@ namespace FollowPeers.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Attempt to register the user
-                MembershipCreateStatus createStatus;
-                //changed from model.UserName to model.Email of parameter 1
-                Membership.CreateUser(model.Email, model.Password, model.Email, "question", "answer", true, null, out createStatus);
-
-                if (createStatus == MembershipCreateStatus.Success)
+                if (model.Profession != "Free")
                 {
-                    FormsAuthentication.SetAuthCookie(model.Email, false /* createPersistentCookie */);
-                    string authorizationCode = CalculateMD5Hash(model.Email + "followpeers");
-                    string messagetosend = "<a href='http://localhost:9832/Account/Verify?code=" + authorizationCode + "&email=" + model.Email + "'>Click to verify your account</a>";
-
-                    /*     MailMessage message = new MailMessage("followpeers@isp.c0m", "ppp@nus.edu.sg", "Testing", messagetosend);
-                         SmtpClient smtpClient = new SmtpClient();
-                         smtpClient.UseDefaultCredentials = false;
-                         smtpClient.Host = "smtp.gmail.com";
-                         smtpClient.Port = 587;
-                         smtpClient.Credentials = new NetworkCredential("followpeers@gmail.com", "followpeers123!");
-                         smtpClient.EnableSsl = true;
-                         smtpClient.Send(message);
-                     * */
-                    //System.Data.Entity.Database.SetInitializer(new SampleData());
-                    CultureInfo provider = CultureInfo.InvariantCulture;
-                    UserProfile myprofile = new UserProfile
+                    if (model.Profession != "Premium")
                     {
-                        UserName = model.Email.Trim(),
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Profession = model.Profession,
-                        activated = true,
-                        firsttime = true,
-                        Default = 2,
-                        PhotoUrl = "/Content/TempImages/default.jpg",
-                        Specializations = new List<Specialization>(),
-                        Tiers = new List<Tier>(),
-                        Keywords = new List<Keyword>(),
-                        Contact = new Contact()
+                        ModelState.AddModelError("", "Please select an account type");
+                        return View(model);
+                    }
 
-                    };
-                    //myprofile.UserName = model.Email;
-                    //   myprofile.UserName.Replace(" ", string.Empty);
-                    myprofile.UserName.Trim();
-                    myprofile.Tiers.Add(new Tier { Level = 1, Email = 1, Phone = 0, Mobile = 0, Address = 0, Education = 1, Publication = 1, Patent = 1, Noticeboard = 0, AboutMe = 0 });
-                    myprofile.Tiers.Add(new Tier { Level = 2, Email = 1, Phone = 1, Mobile = 0, Address = 0, Education = 1, Publication = 1, Patent = 1, Noticeboard = 1, AboutMe = 1 });
-                    myprofile.Tiers.Add(new Tier { Level = 3, Email = 1, Phone = 1, Mobile = 1, Address = 1, Education = 1, Publication = 1, Patent = 1, Noticeboard = 1, AboutMe = 1 });
-                    followPeersDB.UserProfiles.Add(myprofile);
-                    followPeersDB.SaveChanges();
-
-
-                    return RedirectToAction("Index", "Profile", new { id = myprofile.UserProfileId });
-                    //return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
-                }
+
+
+                    // Attempt to register the user
+                    MembershipCreateStatus createStatus;
+                    //changed from model.UserName to model.Email of parameter 1
+                    Membership.CreateUser(model.Email, model.Password, model.Email, "question", "answer", true, null, out createStatus);
+
+                    if (createStatus == MembershipCreateStatus.Success)
+                    {
+                        FormsAuthentication.SetAuthCookie(model.Email, false /* createPersistentCookie */);
+                        string authorizationCode = CalculateMD5Hash(model.Email + "followpeers");
+                        string messagetosend = "<a href='http://localhost:9832/Account/Verify?code=" + authorizationCode + "&email=" + model.Email + "'>Click to verify your account</a>";
+
+                        /*     MailMessage message = new MailMessage("followpeers@isp.c0m", "ppp@nus.edu.sg", "Testing", messagetosend);
+                             SmtpClient smtpClient = new SmtpClient();
+                             smtpClient.UseDefaultCredentials = false;
+                             smtpClient.Host = "smtp.gmail.com";
+                             smtpClient.Port = 587;
+                             smtpClient.Credentials = new NetworkCredential("followpeers@gmail.com", "followpeers123!");
+                             smtpClient.EnableSsl = true;
+                             smtpClient.Send(message);
+                         * */
+                        //System.Data.Entity.Database.SetInitializer(new SampleData());
+                        CultureInfo provider = CultureInfo.InvariantCulture;
+                        UserProfile myprofile = new UserProfile
+                        {
+                            UserName = model.Email.Trim(),
+                            FirstName = model.FirstName,
+                            LastName = model.LastName,
+                            Profession = model.Profession,
+                            activated = true,
+                            firsttime = true,
+                            Default = 2,
+                            PhotoUrl = "/Content/TempImages/default.jpg",
+                            Specializations = new List<Specialization>(),
+                            Tiers = new List<Tier>(),
+                            Keywords = new List<Keyword>(),
+                            Contact = new Contact()
+
+                        };
+                        //myprofile.UserName = model.Email;
+                        //   myprofile.UserName.Replace(" ", string.Empty);
+                        myprofile.UserName.Trim();
+                        myprofile.Tiers.Add(new Tier { Level = 1, Email = 1, Phone = 0, Mobile = 0, Address = 0, Education = 1, Publication = 1, Patent = 1, Noticeboard = 0, AboutMe = 0 });
+                        myprofile.Tiers.Add(new Tier { Level = 2, Email = 1, Phone = 1, Mobile = 0, Address = 0, Education = 1, Publication = 1, Patent = 1, Noticeboard = 1, AboutMe = 1 });
+                        myprofile.Tiers.Add(new Tier { Level = 3, Email = 1, Phone = 1, Mobile = 1, Address = 1, Education = 1, Publication = 1, Patent = 1, Noticeboard = 1, AboutMe = 1 });
+                        followPeersDB.UserProfiles.Add(myprofile);
+                        followPeersDB.SaveChanges();
+
+
+                        return RedirectToAction("Index", "Profile", new { id = myprofile.UserProfileId });
+                        //return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                    }
+                
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
+            
+ 
         }
 
         //
@@ -252,7 +273,7 @@ namespace FollowPeers.Controllers
                     return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
 
                 case MembershipCreateStatus.InvalidPassword:
-                    return "The password provided is invalid. Please enter a valid password value.";
+                    return "The password provided is invalid. Passwords must be at least 6 characters in length and contain at least one non-alphanumeric character (e.g. john5doe!)";
 
                 case MembershipCreateStatus.InvalidEmail:
                     return "The e-mail address provided is invalid. Please check the value and try again.";

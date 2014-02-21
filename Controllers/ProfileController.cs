@@ -445,27 +445,28 @@ namespace FollowPeers.Controllers
 
             string directory = Path.GetDirectoryName(delPath);
 
-            if (new DirectoryInfo(directory).Exists)
-            {
-                string list_path = directory + "\\uploadedList.txt";
+            //if (new DirectoryInfo(directory).Exists)
+            //{
 
-                string[] lines = System.IO.File.ReadAllLines(list_path);
-                List<string> lines_list = lines.ToList();
-                List<string> lines_list_2 = lines.ToList();
+            //    string list_path = directory + "\\uploadedList.txt";
 
-                foreach (string line in lines_list)
-                {
-                    if (line.Equals(filename))
-                        lines_list_2.Remove(line);
-                }
+            //    string[] lines = System.IO.File.ReadAllLines(list_path);
+            //    List<string> lines_list = lines.ToList();
+            //    List<string> lines_list_2 = lines.ToList();
 
-                string[] newLines = lines_list_2.ToArray();
+            //    foreach (string line in lines_list)
+            //    {
+            //        if (line.Equals(filename))
+            //            lines_list_2.Remove(line);
+            //    }
 
-                if (newLines != null)
-                    System.IO.File.WriteAllLines(list_path, newLines);
-                else
-                    System.IO.File.WriteAllText(list_path, "");
-            }
+            //    string[] newLines = lines_list_2.ToArray();
+
+            //    if (newLines != null)
+            //        System.IO.File.WriteAllLines(list_path, newLines);
+            //    else
+            //        System.IO.File.WriteAllText(list_path, "");
+            //}
 
             System.IO.File.Delete(delPath);
 
@@ -482,6 +483,10 @@ namespace FollowPeers.Controllers
             if (uploadFile.Count > 0)
             {
                 HttpPostedFileBase postedFile = uploadFile[0];
+                if (postedFile.FileName == "")
+                {
+                    return RedirectToAction("UploadFile", "Profile", null);
+                }
                 System.IO.Stream inStream = postedFile.InputStream;
                 byte[] fileData = new byte[postedFile.ContentLength];
                 inStream.Read(fileData, 0, postedFile.ContentLength);
@@ -662,7 +667,7 @@ namespace FollowPeers.Controllers
 
                 userprofile.firsttime = false;
                 if (userprofile.SignUpProgress + 0.2F <= 1.1F) userprofile.SignUpProgress += 0.20F;
-                 userprofile.SignUpProgress = 1.0F;
+                userprofile.SignUpProgress = 1.0F;
                 if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
                 {
                     CreateUpdates("Education updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
@@ -777,7 +782,7 @@ namespace FollowPeers.Controllers
                     if (EmployerName != null)
                     {
                         string tempEmployer = EmployerName.ElementAt(i);
-                       
+
                         string tempStart = startYear.ElementAt(i);
                         string tempEnd = endYear.ElementAt(i);
                         string tempDesc = Description.ElementAt(i);
@@ -786,7 +791,7 @@ namespace FollowPeers.Controllers
                         Employment tempEmp = new Employment
                         {
                             EmployerName = tempEmployer,
-                          
+
                             startYear = Convert.ToInt16(tempStart),
                             endYear = Convert.ToInt16(tempEnd),
                             Role = tempRole,
@@ -810,29 +815,29 @@ namespace FollowPeers.Controllers
 
             if (TryUpdateModel(userprofile, "", null, new string[] { "Organization", "Specializations", "FirstName", "LastName", "Profession", "Gender", "Status" }))
             {
-                
-                    UpdateAchievement(Title, Description, startYear, endYear, Keyword, link, userprofile);
 
-                    userprofile.firsttime = false;
-                    if (userprofile.SignUpProgress + 0.1F < 1.0F) userprofile.SignUpProgress += 0.10F;
-                    //userprofile.SignUpProgress = 1.0F;
-                    if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
-                    {
-                        CreateUpdates("Achievements updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
-                    }
-                    followPeersDB.Entry(userprofile).State = EntityState.Modified;
-                    followPeersDB.SaveChanges();
-                    if (myprofile.Contact == null) return RedirectToAction("EditContact", "Profile");
+                UpdateAchievement(Title, Description, startYear, endYear, Keyword, link, userprofile);
 
-                    return RedirectToAction("EditContact", "Profile", new { message = "Successfully Updated" });
-                }
-                else
+                userprofile.firsttime = false;
+                if (userprofile.SignUpProgress + 0.1F < 1.0F) userprofile.SignUpProgress += 0.10F;
+                //userprofile.SignUpProgress = 1.0F;
+                if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
                 {
-                    return RedirectToAction("EditAchievement", "Profile", new { message = "Achievements not updated" });
+                    CreateUpdates("Achievements updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
                 }
-            }
+                followPeersDB.Entry(userprofile).State = EntityState.Modified;
+                followPeersDB.SaveChanges();
+                if (myprofile.Contact == null) return RedirectToAction("EditContact", "Profile");
 
-           
+                return RedirectToAction("EditContact", "Profile", new { message = "Successfully Updated" });
+            }
+            else
+            {
+                return RedirectToAction("EditAchievement", "Profile", new { message = "Achievements not updated" });
+            }
+        }
+
+
 
         private void UpdateAchievement(string[] Title, string[] Description, string[] startYear, string[] endYear, string[] Keyword, string[] link, UserProfile userprofile)
         {
@@ -1106,7 +1111,7 @@ namespace FollowPeers.Controllers
             return View(j);
         }
 
-        
+
         [HttpGet]
         public string searchajax(string val)
         {
@@ -1674,7 +1679,7 @@ namespace FollowPeers.Controllers
 
         [HttpPost]
         public void like(string username, int achievementid, string url)
-        { 
+        {
 
 
             string name = Membership.GetUser().UserName;
@@ -2285,6 +2290,92 @@ namespace FollowPeers.Controllers
             followPeersDB.SaveChanges();
             return RedirectToAction("Index", "News", new { reader = "Yahoo" });
         }
+
+        [HttpPost]
+        public ActionResult UploadPhotoFile(IEnumerable<HttpPostedFileBase> files)
+        {
+            string name = Membership.GetUser().UserName;
+            string email_id = Membership.GetUser().Email;
+            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            //HttpFileCollectionBase uploadFile = Request.Files;
+
+            if (files != null && files.Count() > 0)
+            {
+                foreach (var uploadFile in files)
+                {
+
+                    //int filesToUpload = uploadFile.Count;
+                    //while (filesToUpload > 0)
+                    //{
+
+                    //}
+
+                    HttpPostedFileBase postedFile = uploadFile;
+                    if (postedFile.FileName == "")
+                    {
+                        return RedirectToAction("UploadFile", "Profile", null);
+                    }
+
+                    var splitstring = postedFile.FileName.Split('.');
+                    var ext = splitstring[splitstring.Length - 1];
+                    ext = ext.ToLower();
+
+                    switch (ext)
+                    {
+                        case "jpg":
+                            break;
+                        case "png":
+                            break;
+                        case "jpeg":
+                            break;
+                        default:
+                            return RedirectToAction("UploadFile", "Profile", null);
+                    }
+
+
+                    System.IO.Stream inStream = postedFile.InputStream;
+                    byte[] fileData = new byte[postedFile.ContentLength];
+                    inStream.Read(fileData, 0, postedFile.ContentLength);
+                    string filename = postedFile.FileName;
+                    string test = HttpRuntime.AppDomainAppPath;
+
+                    string path = test + "\\Content\\Files\\";
+                    //System.IO.File.AppendAllText(@"C:\Users\HP User\Documents\GitHub\March Latest\Content\Files\uploadedList.txt", filename + "\r\n");
+                    //postedFile.SaveAs(@"C:\Users\HP User\Documents\GitHub\March Latest\Content\Files\" + postedFile.FileName);
+
+                    var directoryInfo = new DirectoryInfo(path);
+
+                    if (directoryInfo.Exists)
+                    {
+                        Console.WriteLine("Create a directory");
+                        directoryInfo.CreateSubdirectory(email_id);
+
+
+
+                        string toSave_path = path + email_id + "\\Photos\\";
+                        Console.WriteLine("toSave path", toSave_path);
+
+                        var checkPhotoDir = new DirectoryInfo(toSave_path);
+                        if (!checkPhotoDir.Exists)
+                        {
+                            System.IO.Directory.CreateDirectory(toSave_path);
+                        }
+
+                        //System.IO.File.AppendAllText(toSave_path + "uploadedList.txt", filename + "\r\n");
+                        postedFile.SaveAs(toSave_path + postedFile.FileName);
+
+                    }
+                }
+
+            }
+
+            //return View("Index", new { id = userprofile.UserProfileId });
+            //return RedirectToAction("Index", "Profile");
+            return RedirectToAction("UploadFile", "Profile", null);
+            //return View(userprofile);
+
+        }
+
 
     }
 }
