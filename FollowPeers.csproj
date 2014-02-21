@@ -3182,8 +3182,9 @@
     <Content Include="Views\Shared\_ProfilePhotoSidebar.cshtml" />
     <Content Include="Views\Shared\Publication_multi_input.cshtml" />
     <Content Include="Views\Profile\NewProfileView.cshtml" />
-    <Content Include="Views\Shared\PublicationView.cshtml" />
+    <Content Include="Views\Shared\ProfilePublicationTabView.cshtml" />
     <Content Include="Views\Profile\ProfilePage.cshtml" />
+    <Content Include="Views\Shared\SimplePostBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\TempImages\" />

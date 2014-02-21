@@ -79,13 +79,18 @@
             padding: 0px;
             margin: 0px;
             margin-left: 0px;
-            padding-right: 10px;
+            width: 180px;
         }
 
             #profilepagetabs ul li
             {
                 display: inline-block;
                 height: auto;
+                width:180px;
+                border: solid;
+                    border-width: 1px;
+                    border-color: #45aeea;
+
             }
 
                 #profilepagetabs ul li a
@@ -102,10 +107,12 @@
                     margin-left: 0px;
                     padding-left: 10px;
                     padding-right: 10px;
-                    width: auto;
-                    color: black;
-                    background: #ccc;
+                    
+                    border: solid;
+                    border-width: 1px;
+                    border-color: #45aeea;
                     font-weight: bold;
+                    color: #45aeea;
                 }
 
                     #profilepagetabs ul li a:hover
@@ -135,34 +142,23 @@
 
     @*rows within container*@
     <div class="row">
+
+        <div class="span2">
         @*Left Sidebar*@
         @{
             string name = Membership.GetUser().UserName;
             FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
             if (Model.UserProfileId == myprofile.UserProfileId)
             {
-            @Html.Partial("_SideBar1", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
+            @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
             }
             else
             {
-            @Html.Partial("_SideBar1", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
+            @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
  
             }
             
-            
-        }
-
-        <div class="span9 main-content">
-            <div class="box">
-                @if (Model.activated == true)
-                {
-                    
-@*<div>
-                            @Html.Partial("MultiInputBox")
-                        </div>*@
-                    
-                    
-                    <div id="profilepagetabs">
+            <div id="profilepagetabs" style="border: none;">
                         <ul>
                             <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
                             <li id="li_photos" onclick="tab('photos')"><a>PHOTOS</a></li>
@@ -172,6 +168,20 @@
                             <li id="li_about" onclick="tabresponse('about')"><a>ABOUT</a></li>
                         </ul>
                     </div>
+        } 
+            </div>
+
+        <div class="span9 main-content">
+            <div class="box">
+                @if (Model.activated == true)
+                {
+                    
+                    <div>
+                        @Html.Partial("SimplePostBar")
+                    </div>
+                    
+                    
+                    
                     
                     
                     
@@ -301,7 +311,7 @@
                     
                     <div id="publications" style="display: none;">
                         <br />
-                        @Html.Partial("PublicationView", Model.Publication)
+                        @Html.Partial("ProfilePublicationTabView", Model.Publication)
                     </div>
                     
                     <div id="about" style="display: none;">
@@ -646,25 +656,25 @@
                         }
                         @{if ((toCheck == false || ((toCheck == true) && (showPatent == true))) && (Model.Patent.Count() != 0))
                           { <div id="Patents" style="">
-                               <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
-                                   Patent
-                               </div>
-                               <table>
-                                   @{var patList = Model.Patent.OrderBy(x => x.Title).ToList();}
-                                   @foreach (var E in patList)
-                                   {
-                                       <tr>
-                                           <td style="width: 150px">Apply Year : @E.ApplyYear<br />
-                                               Approve Year : @E.AproveYear
-                                           </td>
-                                           <td>
-                                               <b>Title : @E.Title</b><br />
-                                               <i>Reference No. : @E.RefNo</i><br />
-                                           </td>
-                                       </tr> 
-                                   }
-                               </table>
-                           </div>
+                              <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
+                                  Patent
+                              </div>
+                              <table>
+                                  @{var patList = Model.Patent.OrderBy(x => x.Title).ToList();}
+                                  @foreach (var E in patList)
+                                  {
+                                      <tr>
+                                          <td style="width: 150px">Apply Year : @E.ApplyYear<br />
+                                              Approve Year : @E.AproveYear
+                                          </td>
+                                          <td>
+                                              <b>Title : @E.Title</b><br />
+                                              <i>Reference No. : @E.RefNo</i><br />
+                                          </td>
+                                      </tr> 
+                                  }
+                              </table>
+                          </div>
                           }
                         }
                         @{if (Model.Courses.Count() != 0)
