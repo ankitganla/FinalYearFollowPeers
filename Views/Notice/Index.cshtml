@@ -273,9 +273,8 @@
                                                       <div style="margin-left: 8px; float: left;">
                                                           <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
                                                       </div>
-                            
-                                                                
-                                                  if (user.UserProfileId == myprofile.UserProfileId)
+                                                      
+                                           if (user.UserProfileId == myprofile.UserProfileId)
                                                   {<div id="mydiv" style="float: right; margin-right: 5px; color: #888; font-size: 15px; cursor: pointer;">@Html.ActionLink("x", "DeleteComment", "Notice", new { id = cmt.NoticeCommentId, redirect = Model.UserProfileId }, null)
                                                       </div>}
                                                       <div style="clear: both;">
