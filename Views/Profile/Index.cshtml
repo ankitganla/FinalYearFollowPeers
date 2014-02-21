@@ -106,8 +106,6 @@
                     color: black;
                     background: #ccc;
                     font-weight: bold;
-                    
-                   
                 }
 
                     #profilepagetabs ul li a:hover
@@ -154,12 +152,12 @@
             
         }
 
-        <div class="span7 main-content">
+        <div class="span9 main-content">
             <div class="box">
                 @if (Model.activated == true)
                 {
                     
-                        @*<div>
+@*<div>
                             @Html.Partial("MultiInputBox")
                         </div>*@
                     
@@ -167,10 +165,10 @@
                     <div id="profilepagetabs">
                         <ul>
                             <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
-                            @*<li id="li_photos" onclick="tab('photos')"><a>Photos</a></li>*@
+                            <li id="li_photos" onclick="tab('photos')"><a>PHOTOS</a></li>
                             <li id="li_publications" onclick="tabresponse('publications')"><a>PUBLICATIONS</a></li>
-                            @*<li id="li_jobs" onclick="tab('jobs')"><a>Jobs</a></li>
-                            <li id="li_courses" onclick="tab('courses')"><a>Courses</a></li>*@
+                            <li id="li_jobs" onclick="tab('jobs')"><a>JOBS</a></li>
+                            <li id="li_courses" onclick="tab('courses')"><a>COURSES</a></li>
                             <li id="li_about" onclick="tabresponse('about')"><a>ABOUT</a></li>
                         </ul>
                     </div>
@@ -179,7 +177,7 @@
                     
                     
                     
-                    <div id="noticeboard" style="display:block;">
+                    <div id="noticeboard" style="display: block;">
                         @{
                     int count = 0;
                     if (toCheck == false || showNoticeBoard == true)
@@ -301,9 +299,9 @@
 
                     </div>   
                     
-                    <div id="publications" style="display:none;">
+                    <div id="publications" style="display: none;">
                         <br />
-                       @Html.Partial("PublicationView", Model.Publication)
+                        @Html.Partial("PublicationView", Model.Publication)
                     </div>
                     
                     <div id="about" style="display: none;">
@@ -646,31 +644,8 @@
                         }
  
                         }
-                        @{if ((toCheck == false || ((toCheck == true) && (showPublication == true))) && (Model.Publication.Count() != 0))
-                          {<div id="Publications" style="">
-                              <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
-                                  Publication
-                              </div>
-                              <table>
-                                  @{var pubList = Model.Publication.OrderBy(x => x.title).ToList();}
-                                  @foreach (var E in pubList)
-                                  {
-                                      <tr>
-                                          <td style="width: 90px">Type : @E.type<br />
-                                              Year : @E.year
-                                          </td>
-                                          <td>
-                                              <b>Title : @E.title</b><br />
-                                              <i>Authour(s) : @E.author</i><br />
-                                              <u>Status : @E.status</u>
-                                          </td>
-                                      </tr> 
-                                  }
-                              </table>
-                          </div>
-                          }
-                        }@{if ((toCheck == false || ((toCheck == true) && (showPatent == true))) && (Model.Patent.Count() != 0))
-                           { <div id="Patents" style="">
+                        @{if ((toCheck == false || ((toCheck == true) && (showPatent == true))) && (Model.Patent.Count() != 0))
+                          { <div id="Patents" style="">
                                <div style="font-weight: bold; border-radius: 4px; border: 1px solid #ccc; padding: 4px 10px; color: dimGray; background: #eee; margin-bottom: 5px; margin-bottom: 5px;">
                                    Patent
                                </div>
@@ -690,7 +665,7 @@
                                    }
                                </table>
                            </div>
-                           }
+                          }
                         }
                         @{if (Model.Courses.Count() != 0)
                           {<div id="Courses" style="">
@@ -982,7 +957,7 @@
             document.getElementById('publications').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "current");
-    
+
         }
 
 
