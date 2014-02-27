@@ -150,6 +150,28 @@
  
                 }
             
+                <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+                        @if (Membership.GetUser().UserName != Model.UserName)
+                        {
+                            if (ViewBag.Alreadyfollowed == 1)
+                            {
+                                using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                                {
+                            <input type="hidden" name="username" value="@Model.UserName" />
+                            <input class="btn btn-primary" type="submit" value="UnFollow" />
+                                }
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                                {
+                            <input type="hidden" name="username" value="@Model.UserName" />
+                            <input class="btn btn-primary" type="submit" value="Follow" />
+                                }
+                            }
+                        }
+                    </div>
+                
                 <div id="profilepagetabs" style="border: none;">
                     <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
                         <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
@@ -172,27 +194,7 @@
                         @Html.Partial("SimplePostBar")
                     </div>
                     
-                    <div id="BasicInfo" style="float: right; width: 100px;">
-                        @if (Membership.GetUser().UserName != Model.UserName)
-                        {
-                            if (ViewBag.Alreadyfollowed == 1)
-                            {
-                                using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                                {
-                            <input type="hidden" name="username" value="@Model.UserName" />
-                            <input type="submit" value="UnFollow" style="padding: 8px 20px; float: right; cursor: pointer; width: 90px; font-weight: bold;" />
-                                }
-                            }
-                            else
-                            {
-                                using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                                {
-                            <input type="hidden" name="username" value="@Model.UserName" />
-                            <input type="submit" value="Follow" style="padding: 8px 20px; float: right; cursor: pointer; width: 90px; font-weight: bold;" />
-                                }
-                            }
-                        }
-                    </div>
+                    
                     
                     <div id="noticeboard">
                         <br />
@@ -216,7 +218,7 @@
                             @Html.Partial("ProfileAboutTabView")
                         }
                         <br />
-                        
+
                     </div>
                      
            
