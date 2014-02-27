@@ -205,8 +205,17 @@
                     </div>
                     
                     <div id="about">
+                        @*if user, then edit privileges*@
+                        @if (Membership.GetUser().UserName == Model.UserName)
+                        {
+                            @Html.Partial("ProfileAboutTabViewWithEdit")
+                        }
+                        else
+                        {
+                            @Html.Partial("ProfileAboutTabView")
+                        }
                         <br />
-                        @Html.Partial("ProfileAboutTabView")
+                        
                     </div>
                      
            
