@@ -84,13 +84,12 @@
 
             #profilepagetabs ul li
             {
-                display: inline-block;
+                display: block;
                 height: auto;
-                width:180px;
-                border: solid;
-                    border-width: 1px;
-                    border-color: #45aeea;
-
+                width: 180px;
+                text-align: center;
+                padding-top: 2px;
+                padding-bottom: 2px;
             }
 
                 #profilepagetabs ul li a
@@ -107,7 +106,6 @@
                     margin-left: 0px;
                     padding-left: 10px;
                     padding-right: 10px;
-                    
                     border: solid;
                     border-width: 1px;
                     border-color: #45aeea;
@@ -144,32 +142,32 @@
     <div class="row">
 
         <div class="span2">
-        @*Left Sidebar*@
-        @{
-            string name = Membership.GetUser().UserName;
-            FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            if (Model.UserProfileId == myprofile.UserProfileId)
-            {
-            @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
-            }
-            else
-            {
-            @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
+            @*Left Sidebar*@
+            @{
+                string name = Membership.GetUser().UserName;
+                FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+                if (Model.UserProfileId == myprofile.UserProfileId)
+                {
+                @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
+                }
+                else
+                {
+                @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
  
-            }
+                }
             
-            <div id="profilepagetabs" style="border: none;">
-                        <ul>
-                            <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
-                            <li id="li_photos" onclick="tab('photos')"><a>PHOTOS</a></li>
-                            <li id="li_publications" onclick="tabresponse('publications')"><a>PUBLICATIONS</a></li>
-                            <li id="li_jobs" onclick="tab('jobs')"><a>JOBS</a></li>
-                            <li id="li_courses" onclick="tab('courses')"><a>COURSES</a></li>
-                            <li id="li_about" onclick="tabresponse('about')"><a>ABOUT</a></li>
-                        </ul>
-                    </div>
-        } 
-            </div>
+                <div id="profilepagetabs" style="border: none;">
+                    <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+                        <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
+                        <li id="li_photos" onclick="tab('photos')"><a>PHOTOS</a></li>
+                        <li id="li_publications" onclick="tabresponse('publications')"><a>PUBLICATIONS</a></li>
+                        <li id="li_jobs" onclick="tab('jobs')"><a>JOBS</a></li>
+                        <li id="li_courses" onclick="tab('courses')"><a>COURSES</a></li>
+                        <li id="li_about" onclick="tabresponse('about')"><a>ABOUT</a></li>
+                    </ul>
+                </div>
+            }
+        </div>
 
         <div class="span9 main-content">
             <div class="box">
@@ -181,44 +179,44 @@
                     </div>
                     
                     <div id="BasicInfo" style="float: right; width: 100px;">
-                            @if (Membership.GetUser().UserName != Model.UserName)
+                        @if (Membership.GetUser().UserName != Model.UserName)
+                        {
+                            if (ViewBag.Alreadyfollowed == 1)
                             {
-                                if (ViewBag.Alreadyfollowed == 1)
+                                using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                                 {
-                                    using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                                    {
-                                <input type="hidden" name="username" value="@Model.UserName" />
-                                <input type="submit" value="UnFollow" style="padding: 8px 20px; float: right; cursor: pointer; width: 90px; font-weight: bold;" />
-                                    }
-                                }
-                                else
-                                {
-                                    using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                                    {
-                                <input type="hidden" name="username" value="@Model.UserName" />
-                                <input type="submit" value="Follow" style="padding: 8px 20px; float: right; cursor: pointer; width: 90px; font-weight: bold;" />
-                                    }
+                            <input type="hidden" name="username" value="@Model.UserName" />
+                            <input type="submit" value="UnFollow" style="padding: 8px 20px; float: right; cursor: pointer; width: 90px; font-weight: bold;" />
                                 }
                             }
-                        </div>
+                            else
+                            {
+                                using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                                {
+                            <input type="hidden" name="username" value="@Model.UserName" />
+                            <input type="submit" value="Follow" style="padding: 8px 20px; float: right; cursor: pointer; width: 90px; font-weight: bold;" />
+                                }
+                            }
+                        }
+                    </div>
                     
                     
                     <div id="noticeboard" style="display: block;">
                         @{
-                            int count = 0;
-                            if (toCheck == false || showNoticeBoard == true)
+                        int count = 0;
+                        if (toCheck == false || showNoticeBoard == true)
+                        {
+                            if (Model.Updates != null)
                             {
-                                if (Model.Updates != null)
+                                var newList = Model.Updates.OrderByDescending(x => x.Time).ToList();
+
+                                foreach (var currentUpdate in newList)
                                 {
-                                    var newList = Model.Updates.OrderByDescending(x => x.Time).ToList();
-
-                                    foreach (var currentUpdate in newList)
+                                    //need to display only own's updates
+                                    if (currentUpdate.Own == true)
                                     {
-                                        //need to display only own's updates
-                                        if (currentUpdate.Own == true)
-                                        {
 
-                                            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.owner);
+                                        UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.owner);
                             <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-top: 15px; padding-bottom: 5px; width: 100%">
                                 <div style="float: left; height: 50px; overflow: hidden;">
                                     <a href="../../Profile/Index/@userprofile.UserProfileId">
@@ -311,16 +309,16 @@
                                 <div style="clear: both;">
                                 </div>
                             </div>
-                                        }
-
-
                                     }
+
+
                                 }
-
-
-
-
                             }
+
+
+
+
+                        }
                         }
 
                     </div>   
