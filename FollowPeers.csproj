@@ -3186,6 +3186,7 @@
     <Content Include="Views\Profile\ProfilePage.cshtml" />
     <Content Include="Views\Shared\SimplePostBar.cshtml" />
     <Content Include="Views\Shared\ProfileNoticeBoardTabView.cshtml" />
+    <Content Include="Views\Shared\ProfileAboutTabView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\TempImages\" />
