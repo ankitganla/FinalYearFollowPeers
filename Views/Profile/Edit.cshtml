@@ -246,6 +246,37 @@
             width: 300px;
             padding-left: 5px;
         }
+
+        .same-page-links ul
+        {
+            padding-left: 0px;
+            padding-right: 10px;
+            margin: 0px;
+
+        }
+
+        .same-page-links ul a
+        {
+            /* The following four lines are to make the top left and top right corners of the content area rounded. */
+                    -moz-border-radius-topleft: 4px;
+                    border-top-left-radius: 4px;
+                    -moz-border-radius-topright: 4px;
+                    border-top-right-radius: 4px;
+                    -moz-border-radius-bottomleft: 4px;
+                    border-bottom-left-radius: 4px;
+                    -moz-border-radius-bottomright: 4px;
+                    border-bottom-right-radius: 4px;
+                    margin-left: 0px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    border: solid;
+                    border-width: 1px;
+                    border-color: #45aeea;
+                    font-weight: bold;
+                    color: #45aeea;
+                    margin-right: 5px;
+        }
+
     </style>
 </head>
 
@@ -280,13 +311,15 @@
                 </div>
                 @{var message = ViewData["message"];}
 
-                <ul style="margin: 0;">
-
-                    <a href="#personal_section" style="border-right: solid">Personal </a>
-                    <a href="#contact_section" style="border-right: solid">Contact </a>
-                    <a href="#education_section" style="border-right: solid">Education </a>
+                <div class="same-page-links">
+                    <ul>
+                    <a href="#personal_section">Personal </a>
+                    <a href="#contact_section">Contact </a>
+                    <a href="#education_section">Education </a>
                     <a href="#professional_section">Professional</a>
                 </ul>
+                </div>
+                
 
                 @using (Html.BeginForm())
                 {
