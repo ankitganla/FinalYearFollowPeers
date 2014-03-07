@@ -176,9 +176,9 @@
                         <input type="hidden" name="username" value="@Model.UserName" />
                         <input class="btn btn-primary" type="submit" value="UnFollow" style="" />
                             }
-
+                            showOnlyAbout = false;
                         }
-                        showOnlyAbout = false;
+                        
 
                     }
                     else
@@ -190,12 +190,10 @@
                 <div class="profilepagetabs" style="border: none;">
                     @if (showOnlyAbout == true)
                     {
-                        <div class="profilepagetabs" style="border: none;">
+                        
                             <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
                                 <li class="current"><a>ABOUT</a></li>
                             </ul>
-
-                        </div>
                     }
                     else
                     {
@@ -233,7 +231,7 @@
                         @Html.Partial("ProfilePublicationTabView", Model.Publication)
                     </div>
                     
-                    <div id="about">
+                    <div id="about" style="display: none;">
                         @*if user, then edit privileges*@
                         @if (Membership.GetUser().UserName == Model.UserName)
                         {
