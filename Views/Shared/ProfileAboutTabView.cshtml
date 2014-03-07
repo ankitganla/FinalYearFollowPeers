@@ -336,9 +336,13 @@
                                     @Html.LabelFor(model => model.Status, "Marital Status")
                                 </div>
                                 <div class="editor-field">
-                                    @if (Model.Status != "")
+
+                                    @if (Model.Status == null)
                                     {
-                                        @Html.Label(Model.Status)
+                                        @Html.Label("NA")
+                                    }
+                                    else {
+                                       @Html.Label(Model.Status) 
                                     }
                                 </div>
                             </td>

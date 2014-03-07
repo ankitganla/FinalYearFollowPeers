@@ -1,75 +1,42 @@
 ﻿@model FollowPeers.Models.UserProfile
 @using FollowPeers.Models;
 @{
-    //at first, assume must check credentials, and assume all show is false.
+    
     ViewBag.Title = ViewBag.Name;
-    bool showOnlyAbout = true; //deafault value
-    bool toCheck = true;
-    bool showEmail = false;
-    bool showPhone = false;
-    bool showMobile = false;
-    bool showAddress = false;
-    bool showEducation = false;
-    bool showPublication = false;
-    bool showPatent = false;
-    bool showAboutMe = false;
-    bool showCourse = false;
-    bool showEmployment = false;
-    bool showNoticeBoard = false;
+    bool ownProfile = false; //assume this is not your own profile
+    bool confirmedPeer = false; //assume you are not a peer of the user either
+
+
+    //bool showOnlyAbout = true; //deafault value
+    //bool toCheck = true;
+
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
-    List<FollowPeers.Models.Achievement> myAchievements = followPeersDB.Achievements.Where(p => p.UserProfileId == Model.UserProfileId).ToList();
-}
+    //List<FollowPeers.Models.Achievement> myAchievements = followPeersDB.Achievements.Where(p => p.UserProfileId == Model.UserProfileId).ToList();
 
-@if (Membership.GetUser().UserName == Model.UserName)
-{
-    toCheck = false; //if you are viewing your own profile, no need to check privacy
-}
-@{
-    //tocheck true means this is not your profile
-    if (toCheck == true)
+    string name = Membership.GetUser().UserName;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+    if (Model.UserProfileId == myprofile.UserProfileId)
     {
-        string membername = Membership.GetUser().UserName;
+        //this is your own profile
+        ownProfile = true;
+    }
 
-
-        IQueryable<int> custQuery = from cust in followPeersDB.Relationships where cust.personAName == membername && cust.personBName == Model.UserName select cust.tier;
-
-        //if such a member exists in the relationships, we can proceed to check access
-        if (custQuery.Count() != 0)
+    else
+    {
+        //not your own profile
+        if (ViewBag.Alreadyfollowed == 1)
         {
-            //check if the user has tier1 access for the information of the profile
-            foreach (int tier in custQuery)
-            {
-                FollowPeers.Models.Tier temp = Model.Tiers.SingleOrDefault(p => p.Level == tier);
-                if (temp.Email == 1) { showEmail = true; }
-                if (temp.Phone == 1) { showPhone = true; }
-                if (temp.Mobile == 1) { showMobile = true; }
-                if (temp.Address == 1) { showAddress = true; }
-                if (temp.Education == 1) { showEducation = true; }
-                if (temp.Publication == 1) { showPublication = true; }
-                if (temp.Patent == 1) { showPatent = true; }
-                if (temp.AboutMe == 1) { showAboutMe = true; }
-                if (temp.Employment == 1) { showEmployment = true; }
-                if (temp.Noticeboard == 1) { showNoticeBoard = true; }
-            }
+            //you follow this person
+            confirmedPeer = true;
         }
-
-        //else (meaning public view.. so check if the user has declared the information as public, or tier1. tier1 means must have access to see)
-        //notice board will not be visible to someone not in the peers
         else
         {
-            FollowPeers.Models.Tier temp = Model.Tiers.SingleOrDefault(p => p.Level == 1);
-            if (temp.Email == 1) { showEmail = true; }
-            if (temp.Phone == 1) { showPhone = true; }
-            if (temp.Mobile == 1) { showMobile = true; }
-            if (temp.Address == 1) { showAddress = true; }
-            if (temp.Education == 1) { showEducation = true; }
-            if (temp.Publication == 1) { showPublication = true; }
-            if (temp.Patent == 1) { showPatent = true; }
-            if (temp.AboutMe == 1) { showAboutMe = true; }
-            if (temp.Employment == 1) { showEmployment = true; }
-
+            // you do not follow this person
+            confirmedPeer = false;
         }
-    } 
+
+    }
+
 }
 
 <head>
@@ -138,65 +105,53 @@
 
         <div class="span2">
             @*Left Sidebar*@
-            @{
-                string name = Membership.GetUser().UserName;
-                FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-                if (Model.UserProfileId == myprofile.UserProfileId)
-                {
-                @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
-                }
-                else
-                {
-                @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
- 
-                }
-            
-                <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
-                    @if (Membership.GetUser().UserName != Model.UserName)
-                    {
-                        if (ViewBag.Alreadyfollowed != 1)
-                        {
-                            //not followed
-                            using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                            {
-                        <input type="hidden" name="username" value="@Model.UserName" />
-                        <input class="btn btn-primary" type="submit" value="Follow" />
-                            }
-
-
-                            showOnlyAbout = true;
-
-                        }
-
-                        else if (ViewBag.Alreadyfollowed == 1)
-                        {
-                            //already a peer
-                            using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                            {
-                        <input type="hidden" name="username" value="@Model.UserName" />
-                        <input class="btn btn-primary" type="submit" value="UnFollow" style="" />
-                            }
-                            showOnlyAbout = false;
-                        }
-                        
-
-                    }
-                    else
-                    {
-                        showOnlyAbout = false;
-                    }
-                </div>
+            <div id="profile_photo">
+                @{
                 
-                <div class="profilepagetabs" style="border: none;">
-                    @if (showOnlyAbout == true)
+                    if (ownProfile == true)
                     {
-                        
-                            <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
-                                <li class="current"><a>ABOUT</a></li>
-                            </ul>
+                    @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
+
                     }
                     else
                     {
+                    @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
+ 
+                    }
+                }
+            </div>
+
+            <div id="follow_button">
+                @{
+                    if (confirmedPeer == true)
+                    {
+                        using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                        {
+                    <input type="hidden" name="username" value="@Model.UserName" />
+                    <input class="btn btn-primary" type="submit" value="UnFollow" style="" />
+                        }
+                    }
+
+                    else
+                    {
+                        using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                        {
+                    <input type="hidden" name="username" value="@Model.UserName" />
+                    <input class="btn btn-primary" type="submit" value="Follow" />
+                        }
+                    }
+                    
+                }
+            </div>
+
+            <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+                @{
+                    
+                    if (ownProfile == true || confirmedPeer == true)
+                    {
+                        //this is either your profile or someone you follow
+                    
+                    <div class="profilepagetabs" style="border: none;">
                         <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
                             <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
                             <li id="li_photos" onclick="tab('photos')"><a>PHOTOS</a></li>
@@ -205,10 +160,23 @@
                             <li id="li_courses" onclick="tab('courses')"><a>COURSES</a></li>
                             <li id="li_about" onclick="tabresponse('about')"><a>ABOUT</a></li>
                         </ul>
+                    </div>
                     }
-                </div>
-            }
+                    else
+                    {
+                        //stranger
+                    <div class="profilepagetabs" style="border: none;">
+                        <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+                            <li class="current"><a>ABOUT</a></li>
+                        </ul>
+                    </div>
+                    }
+                    
+                }
+            </div>
+
         </div>
+
 
         <div class="span9 main-content">
             <div class="box">
@@ -263,9 +231,9 @@
             @Html.Partial("_ProfilepageRightSidebar")
         </div>*@
     </div>
-    <div class="row">
-        @Html.Partial("_Footer")
-    </div>
+<div class="row">
+    @Html.Partial("_Footer")
+</div>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
