@@ -120,15 +120,19 @@
                     }
                 }
             </div>
-
-            <div id="follow_button">
+            <br />
+            <div id="follow_button" style="margin:0px">
                 @{
-                    if (confirmedPeer == true)
+                    if(ownProfile == true){
+                        
+                    }
+                    
+                    else if (confirmedPeer == true)
                     {
                         using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                         {
                     <input type="hidden" name="username" value="@Model.UserName" />
-                    <input class="btn btn-primary" type="submit" value="UnFollow" style="" />
+                    <input class="btn btn-primary" type="submit" value="UnFollow" style="margin-top:15px;" />
                         }
                     }
 
