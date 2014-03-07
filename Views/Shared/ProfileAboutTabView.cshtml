@@ -388,10 +388,11 @@
                         {
                             @Html.Label("NA")
                         }
-                        else{
+                        else
+                        {
                             @Html.Label(Model.AboutMe)
                         }
-                        
+
                     </div>
                 </fieldset>
 
@@ -406,8 +407,15 @@
                                     @Html.LabelFor(model => model.Contact.Street1, "Address Line1")
                                 </div>
                                 <div class="editor-field">
-                                    @Html.TextBoxFor(model => model.Contact.Street1, new { style = "width: 200px; margin-left: 2px;" })
-                                    @Html.ValidationMessageFor(model => model.Contact.Street1)
+                                    @if (Model.Contact.Street1 == null)
+                                    {
+                                        @Html.Label("NA")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label(Model.Contact.Street1)
+                                    }
+
                                 </div>
                             </td>
                             <td class="right-col">
@@ -415,8 +423,15 @@
                                     @Html.LabelFor(model => model.Contact.Street2, "Address Line2")
                                 </div>
                                 <div class="editor-field">
-                                    @Html.TextBoxFor(model => model.Contact.Street2, new { style = "width: 200px;margin-left: 2px;" })
-                                    @Html.ValidationMessageFor(model => model.Contact.Street2)
+                                    @if (Model.Contact.Street2 == null)
+                                    {
+                                        @Html.Label("NA")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label(Model.Contact.Street2)
+                                    }
+
                                 </div>
                             </td>
                         </tr>
@@ -427,8 +442,15 @@
                                     @Html.LabelFor(model => model.Contact.City)
                                 </div>
                                 <div class="editor-field">
-                                    @Html.EditorFor(model => model.Contact.City)
-                                    @Html.ValidationMessageFor(model => model.Contact.City)
+                                    @if (Model.Contact.City == null)
+                                    {
+                                        @Html.Label("NA")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label(Model.Contact.City)
+                                    }
+
                                 </div>
                             </td>
                             <td class="right-col">
@@ -436,8 +458,16 @@
                                     @Html.LabelFor(model => model.Contact.Country)
                                 </div>
                                 <div class="editor-field">
-                                    @Html.EditorFor(model => model.Contact.Country)
-                                    @Html.ValidationMessageFor(model => model.Contact.Country)
+                                    @if (Model.Contact.Country == null)
+                                    {
+                                        @Html.Label("NA")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label(Model.Contact.Country)
+                                    }
+
+
                                 </div>
                             </td>
                         </tr>
@@ -449,8 +479,15 @@
                                     @Html.LabelFor(model => model.Contact.Mobile)
                                 </div>
                                 <div class="editor-field">
-                                    @Html.EditorFor(model => model.Contact.Mobile)
-                                    @Html.ValidationMessageFor(model => model.Contact.Mobile)
+                                    @if (Model.Contact.Mobile == null)
+                                    {
+                                        @Html.Label("NA")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label(Model.Contact.Mobile)
+                                    }
+
                                 </div>
                             </td>
                             <td class="right-col">
@@ -458,8 +495,15 @@
                                     @Html.LabelFor(model => model.Contact.Phone)
                                 </div>
                                 <div class="editor-field">
-                                    @Html.EditorFor(model => model.Contact.Phone)
-                                    @Html.ValidationMessageFor(model => model.Contact.Phone)
+                                    @if (Model.Contact.Phone == null)
+                                    {
+                                        @Html.Label("NA")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label(Model.Contact.Phone)
+                                    }
+
                                 </div>
                             </td>
                         </tr>
@@ -470,8 +514,15 @@
                                     @Html.LabelFor(model => model.Contact.Fax)
                                 </div>
                                 <div class="editor-field">
-                                    @Html.EditorFor(model => model.Contact.Fax)
-                                    @Html.ValidationMessageFor(model => model.Contact.Fax)
+                                    @if (Model.Contact.Fax == null)
+                                    {
+                                        @Html.Label("NA")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label(Model.Contact.Fax)
+                                    }
+
                                 </div>
                             </td>
                             <td class="right-col">
@@ -479,13 +530,15 @@
                                     @Html.LabelFor(model => model.Contact.Email)
                                 </div>
                                 <div class="editor-field">
-                                    @{
-                                        string prompt = "";
-                                        if (Model.Contact.Email == null) { prompt = Model.UserName; }
-                                        else { prompt = Model.Contact.Email; }
+                                    @if (Model.Contact.Email == null)
+                                    {
+                                        @Html.Label("NA")
                                     }
-                                    <input id="Contact_Email" name="Contact.Email" style="width: 200px;margin-left: 2px;" type="text" value="@prompt" class="valid">
-                                    @Html.ValidationMessageFor(model => model.Contact.Email)
+                                    else
+                                    {
+                                        @Html.Label(Model.Contact.Email)
+                                    }
+
                                 </div>
                             </td>
                         </tr>
@@ -501,8 +554,15 @@
                                     @Html.LabelFor(model => model.Contact.Website)
                                 </div>
                                 <div class="editor-field">
-                                    @Html.TextBoxFor(model => model.Contact.Website, new { style = "width: 200px;margin-left: 2px;" })
-                                    @Html.ValidationMessageFor(model => model.Contact.Website)
+                                    @if (Model.Contact.Website == null)
+                                    {
+                                        @Html.Label("NA")
+                                    }
+                                    else
+                                    {
+                                        @Html.Label(Model.Contact.Website)
+                                    }
+
                                 </div>
                             </td>
                             <td class="right-col"></td>
@@ -513,66 +573,101 @@
 
                 </fieldset>
 
+                <fieldset>
 
-                <div id="EducationFields">
+                    <legend>Educational History</legend>
 
                     @{
-                    
-                        int i = 0;
-                        foreach (var E in Model.Educations)
+                        int numOfInstitutions = Model.Educations.Count;
+                        if (numOfInstitutions <= 0)
                         {
+                        @Html.Label("No records to display");
+                        }
 
-                            string TempData = "Edu" + i.ToString();
-                            string TempData2 = "Delete" + i.ToString();
-                            string TempData3 = "Organization" + i.ToString();
-                            string TempData4 = "Country" + i.ToString();
-                        <div id=@TempData>
-                            <fieldset>
-                                <a id="education_section"></a>
-                                <legend>Education History</legend>
-                                <div id=@TempData2  style="float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;" title="Click to delete this record.">
-                                    x
-                                </div>
-                                <div class="editor-label">
-                                    @Html.LabelFor(model => model.Organization, "Institution")
-                                </div>
-                                <div class="editor-field">
-                                    <input type="text" id="@TempData3" name="Organization" style="margin-left:2px;width:210px" value="@Model.Educations.ElementAt(i).UniversityName" />
-                                </div>
-                                <div class="editor-label">
-                                    Country
-                                </div>
-                                <div class="editor-field">
-                                    <input type="text" name="Country" id="@TempData4" style="margin-left:2px;width:210px" value="@Html.Encode(Model.Educations.ElementAt(i).country)" />
-                                </div>
-                                <div class="editor-label">
-                                    Degree
-                                </div>
-                                <div class="editor-field">
-                                    <input type="text" name="Degree" value="@Model.Educations.ElementAt(i).Degree" />
-                                </div>
+                        else
+                        {
+                            foreach (var E in Model.Educations)
+                            {
+                               
+                       
 
-                                <div class="editor-label">
-                                    Start Year (yyyy)
-                                </div>
-                                <div class="editor-field">
-                                    <input type="text" name="startYear" value="@Model.Educations.ElementAt(i).startYear" />
-                                </div>
-                                <div class="editor-label">
-                                    End Year (yyyy)
-                                </div>
-                                <div class="editor-field">
-                                    <input type="text" name="endYear" value="@Model.Educations.ElementAt(i).endYear" />
-                                </div>
-                            </fieldset>
+                        <div class="editor-label">
+                            Institution
+                        </div>
+                        <div class="editor-field">
+
+                            @if (E.UniversityName == null)
+                            {
+                                @Html.Label("NA")
+                            }
+                            else
+                            {
+                                @Html.Label(E.UniversityName)
+                            }
 
                         </div>
+                        <div class="editor-label">
+                            Country
+                        </div>
+                        <div class="editor-field">
+
+                            @if (E.country == null)
+                            {
+                                @Html.Label("NA")
+                            }
+                            else
+                            {
+                                @Html.Label(E.country)
+                            }
+                        </div>
+                        <div class="editor-label">
+                            Degree
+                        </div>
+                        <div class="editor-field">
+                            @if (E.Degree == null)
+                            {
+                                @Html.Label("NA")
+                            }
+                            else
+                            {
+                                @Html.Label(E.Degree)
+                            }
+                        </div>
+
+                        <div class="editor-label">
+                            Start Year (yyyy)
+                        </div>
+                        <div class="editor-field">
+                            @if (E.startYear == null)
+                            {
+                                @Html.Label("NA")
+                            }
+                            else
+                            {
+                                @Html.Label(E.startYear.ToString())
+                            }
+                        </div>
+                        <div class="editor-label">
+                            End Year (yyyy)
+                        </div>
+                        <div class="editor-field">
+                            @if (E.endYear == null)
+                            {
+                                @Html.Label("NA")
+                            }
+                            else
+                            {
+                                @Html.Label(E.endYear.ToString())
+                            }
+                        </div>
+                           
             
-                            i = i + 1;
+                                
+                            }
                         }
                     }
 
-                </div>
+                </fieldset>
 
                 <fieldset>
                     <a id="professional_section"></a>
@@ -582,47 +677,45 @@
                         @Html.LabelFor(model => model.Organization, "Organization")
                     </div>
                     <div class="editor-field">
-                        <input type="text" id="Organization" name="Organization" style="margin-left:2px;width:350px" value="@Model.Organization" />
-
+                        @if (Model.Organization == null)
+                        {
+                            @Html.Label("NA")
+                        }
+                        else
+                        {
+                            @Html.Label(Model.Organization)
+                        }
                     </div>
 
                     <div class="editor-label">
                         @Html.LabelFor(model => model.Departments, "Department")
                     </div>
                     <div class="editor-field">
-                        <input type="text" id="Departments" name="Departments" style="margin-left:2px;width:350px" value="@Model.Departments" />
+                        @if (Model.Departments == null)
+                        {
+                            @Html.Label("NA")
+                        }
+                        else
+                        {
+                            @Html.Label(Model.Departments)
+                        }
                     </div>
-                    <div id="Specialization" style="display: none; height: 22px;"></div>
+
                     <div class="editor-label">
-                        @Html.LabelFor(model => model.Specializations, "Primary Field of Research")
+                        @Html.LabelFor(model => model.Specializations, "Field(s) of Interest")
                     </div>
                     <div class="editor-field" style="float: left; width: auto">
-                        <select multiple="multiple" name="Specialization" style="width: 300px; height: 150px">
-                            @{ 
-                            
-                                FollowPeers.Models.FollowPeersDBEntities db = new FollowPeers.Models.FollowPeersDBEntities();
+                        @{
+                            if (Model.Specializations.Count <= 0) {
+                            @Html.Label("None")
+                        }
+                        else {
 
-                                IQueryable<string> Query = (from entry in db.Specializations
-                                                            orderby entry.Field
-                                                            select entry.Field).Distinct();
-                                int j = 0;
-                                foreach (string entry in Query)
-                                {
-                                    IQueryable<FollowPeers.Models.Specialization> Query2 = from specialization in db.Specializations orderby specialization.Field where specialization.Field == entry select specialization;
-                                    if (Model.Specializations.Where(p => p.Field == @entry).Count() == 0)
-                                    {
-                                <option value="@j">@entry</option>
-                                    }
-                                    else
-                                    {
-                                <option value="@i" selected="selected">@entry</option>
-                                    }
-                                    j = j + Query2.Count();
-                                }
+                            foreach (var F in Model.Specializations) {
+                                @Html.Label(F.SpecializationName)
                             }
-
-                        </select>
-
+                        }
+                        }
 
                     </div>
 
@@ -632,7 +725,6 @@
 
 
             </div>
-
         </div>
 
 
