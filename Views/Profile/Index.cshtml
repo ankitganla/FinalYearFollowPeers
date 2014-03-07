@@ -3,6 +3,7 @@
 @{
     //at first, assume must check credentials, and assume all show is false.
     ViewBag.Title = ViewBag.Name;
+    bool showOnlyAbout = true; //deafault value
     bool toCheck = true;
     bool showEmail = false;
     bool showPhone = false;
@@ -74,7 +75,7 @@
 <head>
     <title>Profile</title>
     <style media="screen" type="text/css">
-        #profilepagetabs ul
+        .profilepagetabs ul
         {
             padding: 0px;
             margin: 0px;
@@ -82,7 +83,7 @@
             width: 180px;
         }
 
-            #profilepagetabs ul li
+            .profilepagetabs ul li
             {
                 display: block;
                 height: auto;
@@ -92,7 +93,7 @@
                 padding-bottom: 2px;
             }
 
-                #profilepagetabs ul li a
+                .profilepagetabs ul li a
                 {
                     /* The following four lines are to make the top left and top right corners of the content area rounded. */
                     -moz-border-radius-topleft: 4px;
@@ -113,13 +114,13 @@
                     color: #45aeea;
                 }
 
-                    #profilepagetabs ul li a:hover
+                    .profilepagetabs ul li a:hover
                     {
                         text-decoration: underline;
                     }
 
 
-        #profilepagetabs li.current a
+        .profilepagetabs li.current a
         {
             background-color: #45aeea;
             color: white;
@@ -153,38 +154,60 @@
                 <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
                     @if (Membership.GetUser().UserName != Model.UserName)
                     {
-                        if (ViewBag.Alreadyfollowed == 1)
+                        if (ViewBag.Alreadyfollowed != 1)
                         {
+                            //not followed
+                            using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                            {
+                        <input type="hidden" name="username" value="@Model.UserName" />
+                        <input class="btn btn-primary" type="submit" value="Follow" />
+                            }
+
+
+                            showOnlyAbout = true;
+
+                        }
+
+                        else if (ViewBag.Alreadyfollowed == 1)
+                        {
+                            //already a peer
                             using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                             {
                         <input type="hidden" name="username" value="@Model.UserName" />
                         <input class="btn btn-primary" type="submit" value="UnFollow" style="" />
                             }
 
+                        }
+                        showOnlyAbout = false;
 
-                        }
-                        else
-                        {
-                            using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                            {
-                        <input type="hidden" name="username" value="@Model.UserName" />
-                        <input class="btn btn-primary" type="submit" value="Follow" />
-                            }
-                     
-                        }
+                    }
+                    else
+                    {
+                        showOnlyAbout = false;
                     }
                 </div>
                 
-                <div id="profilepagetabs" style="border: none;">
-                    <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
-                       
-                        <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
-                        <li id="li_photos" onclick="tab('photos')"><a>PHOTOS</a></li>
-                        <li id="li_publications" onclick="tabresponse('publications')"><a>PUBLICATIONS</a></li>
-                        <li id="li_jobs" onclick="tab('jobs')"><a>JOBS</a></li>
-                        <li id="li_courses" onclick="tab('courses')"><a>COURSES</a></li>
-                        <li id="li_about" onclick="tabresponse('about')"><a>ABOUT</a></li>
-                    </ul>
+                <div class="profilepagetabs" style="border: none;">
+                    @if (showOnlyAbout == true)
+                    {
+                        <div class="profilepagetabs" style="border: none;">
+                            <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+                                <li class="current"><a>ABOUT</a></li>
+                            </ul>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+                            <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
+                            <li id="li_photos" onclick="tab('photos')"><a>PHOTOS</a></li>
+                            <li id="li_publications" onclick="tabresponse('publications')"><a>PUBLICATIONS</a></li>
+                            <li id="li_jobs" onclick="tab('jobs')"><a>JOBS</a></li>
+                            <li id="li_courses" onclick="tab('courses')"><a>COURSES</a></li>
+                            <li id="li_about" onclick="tabresponse('about')"><a>ABOUT</a></li>
+                        </ul>
+                    }
                 </div>
             }
         </div>
