@@ -4,33 +4,37 @@
 }
 @Html.Partial("_Header")
 <div class="container">
-    
+
     <div class="upload_file span9 main-content">
-        <h3>@Html.Raw(Model.FirstName)'s Photos</h3>
-        @using (Html.BeginForm("UploadFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
-        {
-            @Html.ValidationSummary(true)
-            @Html.HiddenFor(model => model.UserProfileId)
-            @Html.HiddenFor(model => model.UserName)
-            @Html.HiddenFor(model => model.activated)
+
+        <div class="row">
+            @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
+            {
+                <h3 style="display:inline-block;">@Html.Raw(Model.FirstName)'s Photos</h3>
+                <div style="display:inline-block; float:right;">
+                <a class="btn btn-primary" style="position: relative; top: 10px;">Add New</a>
+                <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -85px; top: 10px; width: 80px; height: 30px; opacity: 0;" />   
+            </div>
+                    }
+        </div>
+
+        <div class="row">
+
+            @using (Html.BeginForm("UploadFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.UserProfileId)
+                @Html.HiddenFor(model => model.UserName)
+                @Html.HiddenFor(model => model.activated)
 
 
-            <div style="float: right; display: inline-block;">
-                @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
-                {
-                    <a class="btn btn-primary" style="position: relative; left: 50px; top: 10px;">Add New</a>
-                    <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -40px; top: 10px; width: 80px; height: 30px; opacity: 0;" />   
-                }
-            </div>
-            <div>
-                <hr />
-            </div>
+           
             
 
-            <div>
+                <div>
 
 
-                @{
+                    @{
                 string path = HttpRuntime.AppDomainAppPath;
                 string newpath = path + "\\Content\\Files\\";
                 string userpath = newpath + Model.UserName + "\\Photos\\";
@@ -41,7 +45,7 @@
                     if (photoFiles == null || photoFiles.Length == 0)
                     {
                                 
-                    <p>There are no uploaded files</p>
+                        <p>There are no uploaded files</p>
                                     
                     }
 
@@ -52,17 +56,17 @@
                             string[] justFiles = fileName.Split('\\');
                             string displayName = justFiles[justFiles.Length - 1];
                          
-                    <div class="span2">
-                        <p>
-                            <a href="">
-                                <img src="filename" style="width: 200px; height: 200px;" /></a>
-                        </p>
-                        <p>
-                            @Html.Raw(displayName)
-                            @Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName })
-                            @Html.ActionLink("Delete", "Delete_File", new { delPath = fileName })
-                        </p>
-                    </div>;
+                        <div class="span2">
+                            <p>
+                                <a href="">
+                                    <img src="filename" style="width: 200px; height: 200px;" /></a>
+                            </p>
+                            <p>
+                                @Html.Raw(displayName)
+                                @Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName })
+                                @Html.ActionLink("Delete", "Delete_File", new { delPath = fileName })
+                            </p>
+                        </div>;
 
                         }
                     }
@@ -70,14 +74,13 @@
 
                 else
                 {
-                    <p>There are no uploaded files</p> 
+                        <p>There are no uploaded files</p> 
                 }
-                }
-            </div>
+                    }
+                </div>
     
-        }
-
-
+            }
+        </div>
     </div>
 </div>
 
