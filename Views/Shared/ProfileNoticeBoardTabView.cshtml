@@ -74,8 +74,13 @@
 
 <div id="noticeboard" style="display: block;">
     @{
+        
         string name = Membership.GetUser().UserName;
         FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+        string firstName = Model.FirstName;
+        
+        <h3>Updates from @Html.Raw(firstName)</h3>
+        
         int count = 0;
         if (toCheck == false || showNoticeBoard == true)
         {
