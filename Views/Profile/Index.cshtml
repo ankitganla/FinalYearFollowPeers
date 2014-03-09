@@ -133,10 +133,10 @@
                     <div class="profilepagetabs" style="border: none;">
                         <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
                             <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
-                            <li id="li_photos" onclick="tab('photos')"><a>PHOTOS</a></li>
+                            <li id="li_photos" onclick="tabresponse('photos')"><a>PHOTOS</a></li>
                             <li id="li_publications" onclick="tabresponse('publications')"><a>PUBLICATIONS</a></li>
-                            <li id="li_jobs" onclick="tab('jobs')"><a>JOBS</a></li>
-                            <li id="li_courses" onclick="tab('courses')"><a>COURSES</a></li>
+                            <li id="li_jobs" onclick="tabresponse('jobs')"><a>JOBS</a></li>
+                            <li id="li_courses" onclick="tabresponse('courses')"><a>COURSES</a></li>
                             <li id="li_about" onclick="tabresponse('about')"><a>ABOUT</a></li>
                         </ul>
                     </div>
@@ -171,6 +171,11 @@
                     <div id="noticeboard">
                         
                         @Html.Partial("ProfileNoticeBoardTabView")
+                    </div>
+                    
+                    <div id="photos" style="display: none;">
+                        @Html.Partial("ProfilePhotoTabView")
+                        
                     </div>
                     
                     <div id="publications" style="display: none;">
@@ -298,9 +303,11 @@
     function tabresponse(tab) {
         //document.getElementById('Form_Area').style.display = 'none'; //hide all forms
         document.getElementById('noticeboard').style.display = 'none';
+        document.getElementById('photos').style.display = 'none';
         document.getElementById('about').style.display = 'none';
         document.getElementById('publications').style.display = 'none';
         document.getElementById('li_noticeboard').setAttribute("class", "");
+        document.getElementById('li_photos').setAttribute("class", "");
         document.getElementById('li_about').setAttribute("class", "");
         document.getElementById('li_publications').setAttribute("class", "");
 
@@ -310,23 +317,24 @@
             document.getElementById('noticeboard').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "current");
+        }
 
-
+        if (tab == 'photos') {
+            document.getElementById('photos').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
         }
 
         if (tab == 'about') {
             document.getElementById('about').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "current");
-
-
         }
 
         if (tab == 'publications') {
             document.getElementById('publications').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "current");
-
         }
 
 

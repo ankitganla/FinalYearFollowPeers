@@ -79,7 +79,7 @@
         FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
         string firstName = Model.FirstName;
         
-        <h5>Updates from @Html.Raw(firstName)</h5>
+        <h3>Updates from @Html.Raw(firstName)</h3>
         
         int count = 0;
         if (toCheck == false || showNoticeBoard == true)
