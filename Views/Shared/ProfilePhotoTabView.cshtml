@@ -10,12 +10,12 @@
         <div class="row">
             @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
             {
-                <h3 style="display:inline-block;">@Html.Raw(Model.FirstName)'s Photos</h3>
-                <div style="display:inline-block; float:right;">
-                <a class="btn btn-primary" style="position: relative; top: 10px;">Add New</a>
-                <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -85px; top: 10px; width: 80px; height: 30px; opacity: 0;" />   
-            </div>
-                    }
+                <h3 style="display: inline-block;">@Html.Raw(Model.FirstName)'s Photos</h3>
+                <div style="display: inline-block; float: right;">
+                    <a class="btn btn-primary" style="position: relative; top: 10px;">Add New</a>
+                    <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -85px; top: 10px; width: 80px; height: 30px; opacity: 0;" />
+                </div>
+            }
         </div>
 
         <div class="row">
@@ -26,14 +26,8 @@
                 @Html.HiddenFor(model => model.UserProfileId)
                 @Html.HiddenFor(model => model.UserName)
                 @Html.HiddenFor(model => model.activated)
-
-
-           
-            
-
+               
                 <div>
-
-
                     @{
                 string path = HttpRuntime.AppDomainAppPath;
                 string newpath = path + "\\Content\\Files\\";
