@@ -65,17 +65,16 @@
 
 <div id="status_form" style="display: block;">
     <form action="/Profile/UpdateStatus" method="post">
-        <textarea name="message" placeholder="Share your thoughts..."></textarea>
+        <textarea name="message" placeholder="Share your thoughts..." style="margin-bottom:1px;"></textarea>
         <div class="box" style="padding-left: 1px;">
-            <input class="btn btn-primary" type="submit" value="Post" />
-
-            <div id="broadcast_check" style="display: none;">
-                <label type="checkbox">
-                    <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
-                    <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
-                </label>
-                <input type="hidden" name="Ischecked" value="false" />
-            </div>
+            <input class="btn btn-primary" type="submit" value="Share"/>
+        </div>
+        <div id="broadcast_check" style="display: none;">
+            <label type="checkbox">
+                <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
+                <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
+            </label>
+            <input type="hidden" name="Ischecked" value="false" />
         </div>
     </form>
 </div>

@@ -1,6 +1,6 @@
 ﻿@model FollowPeers.Models.UserProfile 
 @{
-    ViewBag.Title = @Model.FirstName + " " + @Model.LastName + " Update Your Profile";
+    ViewBag.Title = "Edit Profile";
 }
 
 <head>
@@ -277,56 +277,39 @@
                     margin-right: 5px;
         }
 
+        .editor-label
+        {
+            color: #45aeea;
+        }
+
+
     </style>
 </head>
 
-@*Header*@
-@Html.Partial("_Header")
 @*Container*@
 <div class="container">
 
     @*rows within container*@
     <div class="row">
-        @*Left Sidebar*@
-        @Html.Partial("_ProfilePhotoSidebar")
+       
 
         @*Main Content*@
         <div class="span9 main-content">
             <div class="box">
                 <a id="pagetop"></a>
-                <h2>Update Your Profile</h2>
-                @if (Model.firsttime == true)
-                {
-                    <div class="alert">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <strong>Complete Your Profile!</strong>
-                    </div>
-                }
-                <div>
 
-                    <div class="box">
-                        @{Html.RenderAction("ProgressTracker", "Profile");}
-
-                    </div>
-                </div>
-                @{var message = ViewData["message"];}
-
-                <div class="same-page-links">
+                @*<div class="same-page-links">
                     <ul>
                     <a href="#personal_section">Personal </a>
                     <a href="#contact_section">Contact </a>
                     <a href="#education_section">Education </a>
                     <a href="#professional_section">Professional</a>
                 </ul>
-                </div>
+                </div>*@
                 
 
                 @using (Html.BeginForm())
                 {
-                    if (message != null)
-                    {
-                    <div style="background: #eee; padding: 5px; color: green;">@message</div>
-                    }
                     @Html.ValidationSummary(true)
                     <fieldset>
                         <a id="personal_section"></a>
@@ -410,7 +393,7 @@
                         </table>
 
                         <div class="editor-label" style="width: 100%;">
-                            <label for="AboutMe">About Me (Say something about yourself)</label>
+                            <label for="AboutMe">About Me</label>
                         </div>
                         <div class="editor-field" style="">
                             <textarea id="TextArea" rows="3" cols="120" name="AboutMe" class="rte-zone" style="width: 600px; resize: none;">@Model.AboutMe</textarea>
@@ -667,10 +650,6 @@
         </div>
 
 
-    </div>
-
-    <div class="row">
-        @Html.Partial("_Footer")
     </div>
 
 </div>
