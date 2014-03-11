@@ -164,9 +164,6 @@
 
         <div class="span9 main-content">
             <div class="box">
-                
-                
-            <div id="follow_button" style="margin: 0px">
                 @{
                     if (ownProfile == true)
                     {
@@ -175,27 +172,31 @@
 
                     else if (confirmedPeer == true)
                     {
-                        using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                    <div style="margin: 0px">
+                        @using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                         {
-                    <input type="hidden" name="username" value="@Model.UserName" />
-                    <input class="btn btn-primary" type="submit" value="UnFollow" style="margin-top: 15px;" />
+                            <input type="hidden" name="username" value="@Model.UserName" />
+                            <input class="btn btn-primary" type="submit" value="UnFollow" style="margin-top: 15px;" />
                         }
+                    </div>
                     }
 
                     else
                     {
+                    <div style="margin: 0px">
                         using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                         {
                     <input type="hidden" name="username" value="@Model.UserName" />
-                    <input class="btn btn-primary" type="submit" value="Follow" />
+                        <input class="btn btn-primary" type="submit" value="Follow" />
                         }
+                    </div>
                     }
                     
                 }
-            </div>
-        
-                
-                
+
+
+
+
                 @if (Model.activated == true)
                 {
                     
@@ -279,13 +280,13 @@
             
                 }
             </div>
-        </div>
+    </div>
 
-        
-    </div>
-    <div class="row">
-        @Html.Partial("_Footer")
-    </div>
+
+</div>
+<div class="row">
+    @Html.Partial("_Footer")
+</div>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
