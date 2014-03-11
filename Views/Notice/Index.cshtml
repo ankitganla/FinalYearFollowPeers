@@ -86,10 +86,12 @@
 
                 <h5><i class="icon-pencil"></i> Update Status</h5>
 
-
+                
                 @{
                     int count = 0;
+                    @Html.Partial("MultiInputBox")
 
+                    @*
                     //post status form
                     if (myprofile.UserProfileId == Model.UserProfileId)
                     {
@@ -145,10 +147,11 @@
                                         padding: 2px 5px;" value="Post">
                     </form>
                         }
-                    }
+                    } *@
+
                 }
-
-
+               
+               
 
 
 
