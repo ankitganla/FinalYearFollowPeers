@@ -164,37 +164,86 @@
 
         <div class="span9 main-content">
             <div class="box">
+                
+                
+            <div id="follow_button" style="margin: 0px">
+                @{
+                    if (ownProfile == true)
+                    {
+
+                    }
+
+                    else if (confirmedPeer == true)
+                    {
+                        using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                        {
+                    <input type="hidden" name="username" value="@Model.UserName" />
+                    <input class="btn btn-primary" type="submit" value="UnFollow" style="margin-top: 15px;" />
+                        }
+                    }
+
+                    else
+                    {
+                        using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                        {
+                    <input type="hidden" name="username" value="@Model.UserName" />
+                    <input class="btn btn-primary" type="submit" value="Follow" />
+                        }
+                    }
+                    
+                }
+            </div>
+        
+                
+                
                 @if (Model.activated == true)
                 {
                     
                     <div>
-                        @Html.Partial("SimplePostBar")
-                    </div>
-                    <hr />
-                    
-                    
-                    
-                    <div id="noticeboard">
+                        @if (Membership.GetUser().UserName == Model.UserName)
+                        {
+                            @Html.Partial("SimplePostBar")
+                            <hr />
 
+                        }
+                    </div>
+
+                    <div id="noticeboard">
+                        <h3>Updates from @Html.Raw(firstName)</h3>
                         @Html.Partial("ProfileNoticeBoardTabView")
                     </div>
                     
                     <div id="photos" style="display: none;">
+
+                        @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
+                        {
+                            <h3 style="display: inline-block;">@Html.Raw(Model.FirstName)'s Photos</h3>
+                            <div style="display: inline-block; float: right;">
+                                <a class="btn btn-primary" style="position: relative; top: 10px;">Add New</a>
+                                <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -85px; top: 10px; width: 80px; height: 30px; opacity: 0;" />
+                            </div>
+                        }
+
                         @Html.Partial("ProfilePhotoTabView")
 
                     </div>
                     
                     <div id="publications" style="display: none;">
-                        
-                            <h3 style="display: inline-block;">@Html.Raw(firstName)'s Publications</h3>
-                            <div style="display: inline-block; float: right;">
-                                <a class="btn btn-primary" href="/PublicationModel/Create/1">New Publication</a>
-                            </div>
-                        
+
+                        <h3 style="display: inline-block;">@Html.Raw(firstName)'s Publications</h3>
+                        <div style="display: inline-block; float: right;">
+                            <a class="btn btn-primary" href="/PublicationModel/Create/1">New Publication</a>
+                        </div>
+
                         @Html.Partial("ProfilePublicationTabView", Model.Publication)
                     </div>
                     
                     <div id="jobs" style="display: none;">
+
+                        <h3 style="display: inline-block;">@Html.Raw(firstName)'s Jobs</h3>
+                        <div style="display: inline-block; float: right;">
+                            <a class="btn btn-primary" href="@Url.Content("~/Jobs/Create/1")">Post New Job</a>
+                        </div>
 
                         @Html.Partial("ProfileJobsTabView", Model.Jobs)
                     </div>
@@ -232,35 +281,7 @@
             </div>
         </div>
 
-        <div class="span1">
-            <div id="follow_button" style="margin: 0px">
-                @{
-                    if (ownProfile == true)
-                    {
-
-                    }
-
-                    else if (confirmedPeer == true)
-                    {
-                        using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                        {
-                    <input type="hidden" name="username" value="@Model.UserName" />
-                    <input class="btn btn-primary" type="submit" value="UnFollow" style="margin-top: 15px;" />
-                        }
-                    }
-
-                    else
-                    {
-                        using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                        {
-                    <input type="hidden" name="username" value="@Model.UserName" />
-                    <input class="btn btn-primary" type="submit" value="Follow" />
-                        }
-                    }
-                    
-                }
-            </div>
-        </div>
+        
     </div>
     <div class="row">
         @Html.Partial("_Footer")
