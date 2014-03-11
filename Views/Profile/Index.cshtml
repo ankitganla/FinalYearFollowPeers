@@ -2,7 +2,7 @@
 @using FollowPeers.Models;
 @{
     
-    ViewBag.Title = ViewBag.Name;
+   
     bool ownProfile = false; //assume this is not your own profile
     bool confirmedPeer = false; //assume you are not a peer of the user either
 
@@ -15,6 +15,11 @@
 
     string name = Membership.GetUser().UserName;
     FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+
+    string firstName = Model.FirstName;
+    string lastName = Model.LastName;
+    ViewBag.Title = firstName + " " + lastName + "'s Profile";
+
     if (Model.UserProfileId == myprofile.UserProfileId)
     {
         //this is your own profile
@@ -121,7 +126,7 @@
                 }
             </div>
             <br />
-            
+
 
             <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
                 @{
@@ -165,31 +170,37 @@
                     <div>
                         @Html.Partial("SimplePostBar")
                     </div>
+                    <hr />
                     
                     
                     
                     <div id="noticeboard">
-                        
+
                         @Html.Partial("ProfileNoticeBoardTabView")
                     </div>
                     
                     <div id="photos" style="display: none;">
                         @Html.Partial("ProfilePhotoTabView")
-                        
+
                     </div>
                     
                     <div id="publications" style="display: none;">
+                        
+                            <h3 style="display: inline-block;">@Html.Raw(firstName)'s Publications</h3>
+                            <div style="display: inline-block; float: right;">
+                                <a class="btn btn-primary" href="/PublicationModel/Create/1">New Publication</a>
+                            </div>
                         
                         @Html.Partial("ProfilePublicationTabView", Model.Publication)
                     </div>
                     
                     <div id="jobs" style="display: none;">
-                        
+
                         @Html.Partial("ProfileJobsTabView", Model.Jobs)
                     </div>
                         
                     <div id="courses" style="display: none;">
-                        
+
                         @Html.Partial("ProfileCoursesTabView", Model.Courses)
                     </div>
                     
@@ -221,7 +232,7 @@
             </div>
         </div>
 
-       <div class="span1">
+        <div class="span1">
             <div id="follow_button" style="margin: 0px">
                 @{
                     if (ownProfile == true)
@@ -356,7 +367,7 @@
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "current");
         }
-        
+
         if (tab == 'courses') {
             document.getElementById('courses').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");

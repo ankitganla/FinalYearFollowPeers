@@ -7,6 +7,7 @@
     string name = Membership.GetUser().UserName;
     ViewBag.UserName = name;
     FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == name);
+    string firstName = myprofile.FirstName;
     List<FollowPeers.Models.Jobs> UploadedJob = new List<FollowPeers.Models.Jobs>();
     UploadedJob = followPeersDB.Jobs.Where(p => p.ownerID == myprofile.UserProfileId).ToList();
     List<Jobs> Appliedjobs = new List<FollowPeers.Models.Jobs>();
@@ -15,8 +16,16 @@
     Savedjobs = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 4).ToList();   
 }
 <div class="container" id="main">
-    <div class="row">
-        <div class="span8">
+    <div class="span8 main-content">
+
+
+        <div class="row">
+            <h3 style="display: inline-block;">@Html.Raw(firstName)'s Jobs</h3>
+            <div style="display: inline-block; float: right;">
+                <a class="btn btn-primary" href="@Url.Content("~/Jobs/Create/1")">Post New Job</a>
+            </div>
+        </div>
+        <div class="row">
             <ul class="nav nav-tabs" id="myTab">
                 <li id="li_tab1" class="active" onclick="tab('tab1')"><a>Jobs Home</a></li>
                 <li id="li_tab2" onclick="tab('tab2')"><a>Applied Jobs</a></li>
@@ -264,7 +273,7 @@
                 var link = "@Url.Action("AdvanceSearch", "Jobs", null)";
                 window.location.href = link;
             }
-            });
+        });
     });
 
 </script>

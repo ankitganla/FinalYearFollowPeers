@@ -7,7 +7,6 @@
     string name = Membership.GetUser().UserName;
     ViewBag.UserName = name;
     FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == name);
-    string firstName = myprofile.FirstName;
 
     var Fields = (from u in followPeersDB.Specializations
                   select u.Field).Distinct();
@@ -36,13 +35,8 @@
 
 
 <div class="container" style="padding: 0;">
-    <div class="span9 main-content" >
-        <div class="row">
-            <h3 style="display: inline-block;">@Html.Raw(firstName)'s Publications</h3>
-            <div style="display: inline-block; float: right;">
-                <a class="btn btn-primary" href="/PublicationModel/Create/1">New Publication</a>
-            </div>
-        </div>
+    <div class="span8 main-content" >
+        
         <ul class="nav nav-tabs" id="myTab">
             <li id="li_tab1" class="active" onclick="tab('tab1')"><a>Uploaded Publications</a></li>
             <li id="li_tab3" onclick="tab('tab3')"><a>Favourites</a></li>
