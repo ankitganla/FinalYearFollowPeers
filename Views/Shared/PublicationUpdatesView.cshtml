@@ -51,8 +51,8 @@
                                     {
                                         if (peer.personBName == OwnerProfile.UserName)
                                         {
-                                            //L: display all updates except type 3(comments)
-                                            if (peerupdates.Own == true && peerupdates.type == 1)
+                                            //L: display other types of updates and contain publication
+                                            if (peerupdates.Own == true && peerupdates.type != 1 && peerupdates.type != 2 && peerupdates.type != 3 && peerupdates.message.Contains("publication"))
                                             {
 
                                                 UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
@@ -64,7 +64,7 @@
                         <div style="margin-left: 8px; float: left; width: 88%;">
                             <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
                             
-                            @peerupdates.message
+                            @peerupdates.message<a href="/PublicationModel/Index/"><i class="icon-search" style="float:right;"></i></a>
                             <br />
 
                             @{

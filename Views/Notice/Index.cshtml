@@ -91,7 +91,7 @@
                 <li id="li_publication" onclick="tabresponse('publication')"><a><i class="icon-file" style="float:left;"></i>Publication</a></li>
                 <li id="li_job" onclick="tabresponse('job')"><a><i class="icon-tag" style="float:left;"></i>Job</a></li>
                 <!--li id="li_group" onclick="tabresponse('group')"><a><i class="icon-user" style="float:left;"></i>Group</a></!--li-->
-                <li id="li_favourite" onclick="tabresponse('favourite')"><a><i class="icon-heart" style="float:left;"></i>Favourite</a></li>
+                <!--li id="li_favourite" onclick="tabresponse('favourite')"><a><i class="icon-heart" style="float:left;"></i>Favourite</a></!--li-->
             </ul>
         </div>
     </div> 
@@ -137,9 +137,9 @@
                 @Html.Partial("JobUpdatesView")                          
             </div>
             
-            <div id="favourite" style="display: none;">
+            @*<div id="favourite" style="display: none;">
                 @Html.Partial("FavouriteUpdatesView")     
-            </div>
+            </div>*@
         </div>
     </div>
 
@@ -209,7 +209,7 @@
         document.getElementById('publication').style.display = 'none';
         document.getElementById('job').style.display = 'none';
         //document.getElementById('group').style.display = 'none';
-        document.getElementById('favourite').style.display = 'none';
+        //document.getElementById('favourite').style.display = 'none';
         document.getElementById('li_all').setAttribute("class", "");
         document.getElementById('li_status').setAttribute("class", "");
         document.getElementById('li_photo').setAttribute("class", "");
@@ -217,7 +217,7 @@
         document.getElementById('li_publication').setAttribute("class", "");
         document.getElementById('li_job').setAttribute("class", "");
         //document.getElementById('li_group').setAttribute("class", "");
-        document.getElementById('li_favourite').setAttribute("class", "");
+        //document.getElementById('li_favourite').setAttribute("class", "");
 
 
 
@@ -262,13 +262,13 @@
             document.getElementById('group').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "current");
-        }*@
+        }
 
         if (tab == 'favourite') {
             document.getElementById('favourite').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "current");
-        }
+        }*@
 
         else {
             return;
