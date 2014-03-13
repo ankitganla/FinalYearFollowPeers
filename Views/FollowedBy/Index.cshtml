@@ -50,16 +50,16 @@
             {
                 <div class="thumbnail" style="height:70px;width:80%">
                         <div style="overflow:hidden; height:70px; width:70px;float:left;">
-                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive" />                      
-                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a><br />&nbsp; @item.Organization
+                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive  img-circle" />                      
+                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a>
                         <div style="overflow:hidden;">
                              @{string myname = Membership.GetUser().UserName; }
                              @if (item.UserName != myname)
                              {
                                  using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                                  {
-                            <input type="hidden" name="username" value="@item.UserName" />
-                            <input style="display:block;" class="btn btn-primary pull-right" type="submit" value="UnFollow" style="width:70px;" />
+                            <input type="hidden" name="username" value="@item.UserName" /><br/>
+                            <input style="display:block;" class="btn btn-danger pull-right" type="submit" value="UnFollow" style="width:70px;" />
                                  }
 
                              }
@@ -82,8 +82,8 @@
             {
                <div class="thumbnail" style="height:70px;width:80%">
                         <div style="overflow:hidden; height:70px; width:70px;float:left;">
-                            <a href="/Profile/Index/@item2.UserProfileId"><img src="@Html.Encode(item2.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive"/>                      
-                        </a></div><a href="/Profile/Index/@item2.UserProfileId">&nbsp; @item2.FirstName @item2.LastName</a><br />&nbsp; @item2.Organization
+                            <a href="/Profile/Index/@item2.UserProfileId"><img src="@Html.Encode(item2.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive img-circle"/>                      
+                        </a></div><a href="/Profile/Index/@item2.UserProfileId">&nbsp; @item2.FirstName @item2.LastName</a>
                         <div style="overflow:hidden;">
                              @{string myname = Membership.GetUser().UserName; }
                              @if (item2.UserName != myname)
@@ -92,8 +92,8 @@
                                  {
                                      using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                                      {
-                            <input type="hidden" name="username" value="@item2.UserName" />
-                            <input class="btn btn-primary pull-right" type="submit" value="Follow" style="width:70px;" />
+                            <input type="hidden" name="username" value="@item2.UserName" /><br/>
+                            <input class="btn btn-primary pull-right pull-down" type="submit" value="Follow" style="width:70px; margin-bottom: 1px;" />
                                      }
                                  }
                              }
@@ -125,16 +125,16 @@
         {
                     <div class="thumbnail" style="height:70px;width:80%">
                         <div style="overflow:hidden; height:70px; width:70px;float:left;">
-                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive"/>                      
-                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a><br />&nbsp; @item.Organization
+                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive img-circle"/>                      
+                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a>
                         <div style="overflow:hidden;">
                              @{string myname = Membership.GetUser().UserName; }
                              @if (item.UserName != myname)
                              {
                                  using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                                  {
-                                 <input type="hidden" name="username" value="@item.UserName" />
-                                 <input style="display:block;" type="submit" class="btn btn-primary pull-right" value="UnFollow" style="width:70px;" />
+                                 <input type="hidden" name="username" value="@item.UserName" /><br/>
+                                 <input style="display:block;" type="submit" class="btn btn-danger pull-right" value="UnFollow" style="width:70px;" />
                                  }
                              }
                         </div>
@@ -155,8 +155,8 @@
             {
                        <div class="thumbnail" style="height:70px;width:80%">
                         <div style="overflow:hidden; height:70px; width:70px;float:left;">
-                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive" />                      
-                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a><br />&nbsp; @item.Organization
+                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive img-circle" />                      
+                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a>
                         <div style="overflow:hidden;">
                              @{string myname = Membership.GetUser().UserName; }
                              @if (item.UserName != myname)
@@ -165,7 +165,7 @@
                                  {
                                      using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                                      {
-                                 <input type="hidden" name="username" value="@item.UserName" />
+                                 <input type="hidden" name="username" value="@item.UserName" /><br/>
                                  <input type="submit" class="btn btn-primary pull-right" value="Follow" style="width:70px;" />
                                      }
                                  }
@@ -199,16 +199,16 @@
             {
                        <div class="thumbnail" style="height:70px;width:80%">
                         <div style="overflow:hidden; height:70px; width:70px;float:left;">
-                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive"/>                      
-                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a><br />&nbsp; @item.Organization
+                            <a href="/Profile/Index/@item.UserProfileId"><img src="@Html.Encode(item.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive img-circle"/>                      
+                        </a></div><a href="/Profile/Index/@item.UserProfileId">&nbsp; @item.FirstName @item.LastName</a>
                         <div style="overflow:hidden;">
                              @{string myname = Membership.GetUser().UserName; }
                              @if (item.UserName != myname)
                              {
                                  using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                                  {
-                                 <input type="hidden" name="username" value="@item.UserName" />
-                                 <input style="display:block;" type="submit" class="btn btn-primary pull-right" value="UnFollow" style="width:70px;" />
+                                 <input type="hidden" name="username" value="@item.UserName" /><br/>
+                                 <input style="display:block;" type="submit" class="btn btn-danger pull-right" value="UnFollow" style="width:70px;" />
                                  }
                              }
                         </div>
@@ -230,8 +230,8 @@
             {
                         <div class="thumbnail" style="height:70px;width:80%">
                         <div style="overflow:hidden; height:70px; width:70px;float:left;">
-                            <a href="/Profile/Index/@item2.UserProfileId"><img src="@Html.Encode(item2.PhotoUrl)" style="height:70px;width:70px;" />                      
-                        </a></div><a href="/Profile/Index/@item2.UserProfileId">&nbsp; @item2.FirstName @item2.LastName</a><br />&nbsp; @item2.Organization
+                            <a href="/Profile/Index/@item2.UserProfileId"><img src="@Html.Encode(item2.PhotoUrl)" style="height:70px;width:70px;" class="img-responsive img-circle"/>                      
+                        </a></div><a href="/Profile/Index/@item2.UserProfileId">&nbsp; @item2.FirstName @item2.LastName</a>
                         <div style="overflow:hidden;">
                              @{string myname = Membership.GetUser().UserName; }
                              @if (item2.UserName != myname)
@@ -240,7 +240,7 @@
                                  {
                                      using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                                      {
-                                 <input type="hidden" name="username" value="@item2.UserName" />
+                                 <input type="hidden" name="username" value="@item2.UserName" /><br/>
                                  <input type="submit" class="btn btn-primary pull-right" value="Follow" style="width:70px" />
                                      }
                                  }
@@ -258,9 +258,10 @@
     </div>
 </div>   
 </div>
+     @Html.Partial("_Footer")
 </div>
 
-        @Html.Partial("_Footer")
+       
     
 <script type="text/javascript">
     function setswitch(sel) 

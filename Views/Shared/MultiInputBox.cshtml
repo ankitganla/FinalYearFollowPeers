@@ -3,6 +3,7 @@
     <style media="screen" type="text/css">
         #multi_input_tabs ul
         {
+
             padding: 0px;
             margin: 0px;
             margin-left: 0px;
@@ -89,8 +90,8 @@
 
     <div id="multi_input_tabs" style="border: none;">
         <ul>
-            <li id="li_status" onclick="tab('status')"><a><i class="icon-pencil"></i> Status</a></li>
-            <li id="li_upload" onclick="tab('upload')"><a>Files/Photos</a></li>
+            <li id="li_status" onclick="tab('status')"><a><i class="icon-edit"></i>&nbsp;&nbsp;Status</a></li>
+            <li id="li_upload" onclick="tab('upload')"><a>Photos</a></li>
             <li id="li_publications" onclick="tab('publications')"><a>Publications</a></li>
             <li id="li_patents" onclick="tab('patents')"><a>Patents</a></li>
             <li id="li_jobs" onclick="tab('jobs')"><a>Jobs</a></li>
@@ -105,9 +106,9 @@
 
         <div id="status_form" style="display: none;">
             <form action="/Profile/UpdateStatus" method="post">
-                <textarea name="message" placeholder="Share your thoughts..."></textarea>
+                <textarea name="message" placeholder=" Share your thoughts..."></textarea>
                 <div class="box" style="padding-left: 1px;">
-                    <input class="btn btn-primary" type="submit" value="Post" />
+                    <input class="btn btn-primary btn-small" type="submit" value="Post" style="float:right; margin-right:3px; margin-bottom:2px;"/>
 
                     <div id="broadcast_check" style="display: none;">
                         <label type="checkbox">
