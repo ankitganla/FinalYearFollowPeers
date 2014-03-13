@@ -41,6 +41,7 @@
         }
 
     }
+    
 
 }
 
@@ -126,7 +127,7 @@
                 }
             </div>
             <br />
-
+            
 
             <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
                 @{
@@ -148,12 +149,16 @@
                     }
                     else
                     {
+                        
                         //stranger
+                        
                     <div class="profilepagetabs" style="border: none;">
+                        
                         <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
-                            <li class="current"><a>ABOUT</a></li>
+                            <li class="current" onclick="tabresponse('about')"><a>ABOUT</a></li>
                         </ul>
                     </div>
+                    
                     }
                     
                 }
@@ -184,10 +189,10 @@
                     else
                     {
                     <div style="margin: 0px">
-                        using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
-                        {
-                    <input type="hidden" name="username" value="@Model.UserName" />
-                        <input class="btn btn-primary" type="submit" value="Follow" />
+                        @using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
+                        {  
+                            <input type="hidden" name="username" value="@Model.UserName" />
+                            <input class="btn btn-primary" type="submit" value="Follow" />
                         }
                     </div>
                     }
@@ -209,7 +214,7 @@
                         }
                     </div>
 
-                    <div id="noticeboard">
+                    <div runat="server" id="noticeboard">
                         <h3>Updates from @Html.Raw(firstName)</h3>
                         @Html.Partial("ProfileNoticeBoardTabView")
                     </div>
@@ -280,13 +285,13 @@
             
                 }
             </div>
+        </div>
+
+
     </div>
-
-
-</div>
-<div class="row">
-    @Html.Partial("_Footer")
-</div>
+    <div class="row">
+        @Html.Partial("_Footer")
+    </div>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -335,6 +340,8 @@
             }
             return [];
         }
+
+        
 
     });
 
@@ -400,6 +407,8 @@
             return;
         }
     }
+
+    
 </script>
 
 
