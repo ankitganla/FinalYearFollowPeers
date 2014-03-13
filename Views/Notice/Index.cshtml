@@ -4,515 +4,180 @@
 @*Page Header*@
 @Html.Partial("_Header")
 
+  <style media="screen" type="text/css">
+        .profilepagetabs ul
+        {
+            padding: 0px;
+            margin: 0px;
+            margin-left: 0px;
+            width: 180px;
+        }
+
+            .profilepagetabs ul li
+            {
+                display: block;
+                height: auto;
+                width: 180px;
+                text-align: center;
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+
+                .profilepagetabs ul li a
+                {
+                    /* The following four lines are to make the top left and top right corners of the content area rounded. */
+                    -moz-border-radius-topleft: 4px;
+                    border-top-left-radius: 4px;
+                    -moz-border-radius-topright: 4px;
+                    border-top-right-radius: 4px;
+                    -moz-border-radius-bottomleft: 4px;
+                    border-bottom-left-radius: 4px;
+                    -moz-border-radius-bottomright: 4px;
+                    border-bottom-right-radius: 4px;
+                    margin-left: 0px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    border: solid;
+                    border-width: 1px;
+                    border-color: #45aeea;
+                    font-weight: bold;
+                    color: #45aeea;
+                }
+
+                    .profilepagetabs ul li a:hover
+                    {
+                        text-decoration: underline;
+                    }
+
+
+        .profilepagetabs li.current a
+        {
+            background-color: #45aeea;
+            color: white;
+        }
+    </style>
 
 @*Container*@
 <div class="container">
 
     @*rows within container*@
-    <div class="row">
+    <div class="row">     
 
         @*Left Sidebar*@
-        @{
-            ViewBag.Title = Model.FirstName + " " + Model.LastName + "'s Notice Board";
-            FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
-            string name = Membership.GetUser().UserName;
-            FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            if (Model.UserProfileId == myprofile.UserProfileId)
-            {
-            @Html.Partial("_SideBar1", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
-            }
-            else
-            {
-            @Html.Partial("_SideBar1", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
- 
-            } 
+        <div class="span2">
+    @{
+        ViewBag.Title = Model.FirstName + " " + Model.LastName + "'s Notice Board";
+        FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+        string name = Membership.GetUser().UserName;
+        FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+        if (Model.UserProfileId == myprofile.UserProfileId)
+        {
+        @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
         }
-        @*Center Container*@
+        else
+        {
+        @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
+        }             
+    }
+
+    <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+        <div class="profilepagetabs" style="border: none;">
+            <!-- Nav tabs -->
+            <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">           
+                <li class="current" id="li_all" onclick="tabresponse('all')"><a><i class="icon-home" style="float:left;"></i>All Updates</a></li>
+                <li id="li_status" onclick="tabresponse('status')"><a><i class="icon-pencil" style="float:left;"></i>Status</a></li>
+                <li id="li_photo" onclick="tabresponse('photo')"><a><i class="icon-picture" style="float:left;"></i>Photo</a></li>
+                <li id="li_course" onclick="tabresponse('course')"><a><i class="icon-book" style="float:left;"></i>Course</a></li>                           
+                <li id="li_publication" onclick="tabresponse('publication')"><a><i class="icon-file" style="float:left;"></i>Publication</a></li>
+                <li id="li_job" onclick="tabresponse('job')"><a><i class="icon-tag" style="float:left;"></i>Job</a></li>
+                <!--li id="li_group" onclick="tabresponse('group')"><a><i class="icon-user" style="float:left;"></i>Group</a></!--li-->
+                <li id="li_favourite" onclick="tabresponse('favourite')"><a><i class="icon-heart" style="float:left;"></i>Favourite</a></li>
+            </ul>
+        </div>
+    </div> 
+    </div>
+    
+        @*center div*@
         <div class="span7 main-content">
-            <div class="box" style="overflow: auto; min-height: 200px; height: auto;">
-                <script type="text/javascript" language="javascript">
-                    function puthint(divname, hinttext) {
-                        $(document).ready(function () {
+          
+        @{
+            //L: updates from people you are following.
+            DateTime curr = System.DateTime.Now;
+            //FollowPeers.Models.Update peerupdates;
+            List<FollowPeers.Models.Relationship> following = followPeersDB.Relationships.Where(p => p.personAName == Model.UserName && p.tier == 2).ToList();     
+        }
+    <!-- Tab panes -->
+        <div class="box" style="min-height: 200px; height: auto;">
 
-                            // Define what happens when the textbox comes under focus
-                            // Remove the watermark class and clear the box
-                            $(divname).focus(function () {
-
-                                $(this).filter(function () {
-
-                                    // We only want this to apply if there's not 
-                                    // something actually entered
-                                    return $(this).val() == "" || $(this).val() == hinttext
-
-                                }).removeClass("watermarkOn").val("");
-
-                            });
-
-                            // Define what happens when the textbox loses focus
-                            // Add the watermark class and default text
-                            $(divname).filter(function () {
-
-                                // We only want this to apply if there's not
-                                // something actually entered
-                                return $(this).val() == ""
-
-                            }).addClass("watermarkOn").val(hinttext);
-
-                            $(divname).blur(function () {
-
-                                $(this).filter(function () {
-
-                                    // We only want this to apply if there's not
-                                    // something actually entered
-                                    return $(this).val() == ""
-
-                                }).addClass("watermarkOn").val(hinttext);
-
-                            });
-
-                        });
-                    }
-                    puthint("#message", "Update your status message...");
-                   
-        
-                </script>
-
-
-                <!--ul class="nav nav-tabs">
-                            <li><h5><i class="icon-file"></i> Update Status</h5></li>
-                            <li><h5><span class="icon-upload" href="/Profile/UploadFile"></span> Upload File</h5></li>
-              
-                        </!--ul-->
-
-             
-
-                
-                @{
-                    int count = 0;
-                    @Html.Partial("MultiInputBox")
-
-                    @*
-                    //post status form
-                    if (myprofile.UserProfileId == Model.UserProfileId)
-                    {
-                    <form action="/Profile/UpdateStatus" method="post">
-                        <div>
-                            <div class="input-append">
-                                <input id="appendedInputButton" name="message" type="text" value="" style="width: 78%;" />
-
-                                <input class="btn" type="submit" value="Post" />
-                                <a class="btn" href="/Profile/UploadFile"><i class="icon-upload"></i></a>
-                                <br />
-                                <!--label type="checkbox">
-                                            <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
-                                            <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
-                                        </!--label-->
-                                <input type="hidden" name="Ischecked" value="false" />
-                            </div>
-                        </div>
-                    </form>
-            
-                    }
-                    else
-                    {
-
-                        bool allowPostonWall = false;
-
-                        string membername = Membership.GetUser().UserName;
-
-                        IQueryable<int> custQuery = from cust in followPeersDB.Relationships where cust.personAName == membername && cust.personBName == Model.UserName select cust.tier;
-                        if (custQuery.Count() != 0)
-                        {
-                            foreach (int tier in custQuery)
-                            {
-                                FollowPeers.Models.Tier temp = Model.Tiers.SingleOrDefault(p => p.Level == tier);
-                                if (temp.Noticeboard == 1) { allowPostonWall = true; }
-
-                            }
-                        }
-                        //else (meaning public view.. so check tier 1)
-                        else
-                        {
-                            FollowPeers.Models.Tier temp = Model.Tiers.SingleOrDefault(p => p.Level == 1);
-                            if (temp.Noticeboard == 1) { allowPostonWall = true; }
-
-                        }
-                        if (allowPostonWall == true)
-                        {
-                    <form action="/Profile/PosttoNoticeBoard" method="post">
-                        <textarea rows="2" cols="120" id="posttonotice" name="message" type="text" value=""
-                            style="width: 100%;"></textarea>
-                        <input type="hidden" name="redirect" value="@Model.UserProfileId" />
-                        <input type="submit" title="Write something on @Model.FirstName's Notice Board..." style="cursor: pointer; float: right;
-                                        padding: 2px 5px;" value="Post">
-                    </form>
-                        }
-                    } *@
-
-                }
+            @Html.Partial("MultiInputBox")
+            <br/>
+            <!--h5><i class="icon-file"></i> Recent Updates</!--h5-->
                
-               
-
-
-
-                @* 02/07 version: recent updates *@
-                <br/><br/>
-                <h5><i class="icon-file"></i> Recent Updates</h5>
-
-                @{
-                    //L: updates from people you are following.
-                    DateTime curr = System.DateTime.Now;
-                    FollowPeers.Models.Update peerupdates;
-                    List<FollowPeers.Models.Relationship> following = followPeersDB.Relationships.Where(p => p.personAName == Model.UserName && p.tier == 2).ToList();
-                    int i = 0;
-               
-                        <!-- Nav tabs -->
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#all" data-toggle="tab">All</a></li>
-                        <li><a href="#status" data-toggle="tab">Status</a></li>
-                        <li><a href="#publication" data-toggle="tab">Publications</a></li>
-                        <li><a href="#course" data-toggle="tab">Courses</a></li>
-                        <li><a href="#job" data-toggle="tab">Jobs</a></li>
-                        <li><a href="#favourite" data-toggle="tab">Favourite</a></li>
-                    </ul>
-
-                    <!-- Tab panes -->
-                    <div class="tab-content">
-
-                        @* updates of all updates *@
-                        <div class="tab-pane active" id="all">                                          
-                        @{                                                               
-                            if (Model.UserProfileId == myprofile.UserProfileId)
-                            {
-                                
-                                do{
-                                    int countupdate = followPeersDB.Updates.Where(p => p.owner != Model.UserProfileId && p.Time.CompareTo(curr) < 0).Count();
-                                    if (countupdate > 0)
-                                    {
-                                        peerupdates = followPeersDB.Updates.Where(p => p.owner != Model.UserProfileId).OrderByDescending(o => o.Time).First(t => t.Time.CompareTo(curr) < 0);
-                                        curr = peerupdates.Time;
-                                    }
-                                    else
-                                    {
-                                        if (i == 0)
-                                        {
-                    <br />
-                                        }
-                                        break;
-                                    }
-
-                                    //L: identify the owner of updates.
-                                    FollowPeers.Models.UserProfile OwnerProfile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
-                                    foreach (var peer in following)
-                                    {
-                                        if (peer.personBName == OwnerProfile.UserName)
-                                        {
-                                            //L: display all updates except type 3(comments)
-                                            if (peerupdates.Own == true && peerupdates.type != 3)
-                                            {
-
-                                                UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
-                    <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-bottom: 5px;">
-                        <div style="float: left; height: 50px; overflow: hidden;">
-                            <a href="../../Profile/Index/@userprofile.UserProfileId">
-                                <img src="@Html.Encode(userprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:50px;"/></a>
-                        </div>
-                        <div style="margin-left: 8px; float: left; width: 88%;">
-                            <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
-                            @if (peerupdates.type == 4)
-                            {
-                                Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.message == peerupdates.message && p.type == 5);
-                                int tempuserprofileID = tempupdate.UserProfiles.ElementAt(0).UserProfileId;
-                                UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempuserprofileID);
-                              
-                                <text>Wrote: </text>@peerupdates.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
-                                          <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
-                            }
-                            else if (peerupdates.type == 9)
-                            {
-                                <span class="label label-info">Broadcast</span> <br /> @peerupdates.message
-                            }
-                            else
-                            {@peerupdates.message}
-                            <br />
-
-                            @{
-                            string id1 = "comment1" + @count;
-                            string time = "";
-                            TimeSpan temp = DateTime.Now - peerupdates.Time;
-                            if (temp.Days > 1) { time += temp.Days.ToString() + " days ago"; }
-                            else if (temp.Hours > 1) { time += temp.Hours.ToString() + " hrs ago"; }
-                            else { time += temp.Minutes.ToString() + " mins ago"; }
-                            }
-                            <text style="color: #777">@time </text>
-
-                            @{                      
-                            //if it is a comment on other people's wall, dont allow commenting
-                            if (peerupdates.type != 3 && peerupdates.type != 4)
-                            {
-                                <div style="background: #eee; padding: 5px 3px; margin-bottom: 5px;">
-                                    @{var commentslist = followPeersDB.NoticeComments.OrderBy(x => x.time);
-                                    }
-                                    @{foreach (NoticeComment cmt in commentslist)
-                                      {
-                                          if (cmt.update.UpdateId == peerupdates.UpdateId)
-                                          {   <div style="border-bottom: 1px solid #ddd;">
-                                                  @{
-                                              IQueryable<UserProfile> custQuery2 = from cust in followPeersDB.UserProfiles where cust.UserProfileId == cmt.commenterId select cust;
-                                              foreach (UserProfile user in custQuery2)
-                                              {
-                                                      <div style="float: left; margin: 3px; height: 30px; overflow: hidden;">
-                                                          <img src="@Html.Encode(user.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:30px;"/>
-                                                      </div>
-                                                      <div style="margin-left: 8px; float: left;">
-                                                          <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
-                                                      </div>
-                                                      
-                                                  if (user.UserProfileId == myprofile.UserProfileId)
-                                                  {<div id="mydiv" style="float: right; margin-right: 5px; color: #888; font-size: 15px; cursor: pointer;">@Html.ActionLink("x", "DeleteComment", "Notice", new { id = cmt.NoticeCommentId, redirect = Model.UserProfileId }, null)
-                                                      </div>}
-                                                      <div style="clear: both;">
-                                                      </div>
-                                              }
-                                                  }
-                                              </div>
-                                          } //end of if
-                                      }
-                                    }
-                                    <form action="/Profile/AddComment" method="post" style="margin-bottom: 0px;">
-                                        <input type="hidden" name="commentid" value="@peerupdates.UpdateId" />
-                                        <input type="hidden" name="redirect" value="@Model.UserProfileId" />
-                                        @{string id = "comment" + @count;}
-                                        <input id="@id" type="text" name="message" value="" style="width:97%;" />
-                                    </form>
-                                    <script type="text/javascript" language="javascript"> puthint("#@id", "Write a comment...");</script>
-                                    @{count++;}
-                                </div>}
-                            }
-                        </div>
-                        <div style="clear: both;">
-                        </div>
-                    </div>
-
-                            
-                                            }
-                                        }
-                                    }
-
-                                } while (peerupdates.Time < System.DateTime.Now);
-                            }}
-                </div>
-                        
-
-
-                            
-
-                        @* updates of status *@
-                        <div class="tab-pane" id="status">                                          
-                        @{                                                               
-                            if (Model.UserProfileId == myprofile.UserProfileId)
-                            {
-                               
-                                do{
-                                    int countupdate = followPeersDB.Updates.Where(p => p.owner != Model.UserProfileId && p.Time.CompareTo(curr) < 0).Count();
-                                    if (countupdate > 0)
-                                    {
-                                        peerupdates = followPeersDB.Updates.Where(p => p.owner != Model.UserProfileId).OrderByDescending(o => o.Time).First(t => t.Time.CompareTo(curr) < 0);
-                                        curr = peerupdates.Time;
-                                    }
-                                    else
-                                    {
-                                        if (i == 0)
-                                        {
-                    <br />
-                                        }
-                                        break;
-                                    }
-
-                                    //L: identify the owner of updates.
-                                    FollowPeers.Models.UserProfile OwnerProfile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
-                                    foreach (var peer in following)
-                                    {
-                                        if (peer.personBName == OwnerProfile.UserName)
-                                        {
-                                            //L: display all updates except type 3(comments)
-                                            if (peerupdates.Own == true && peerupdates.type != 3)
-                                            {
-
-                                                UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
-                    <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-bottom: 5px;">
-                        <div style="float: left; height: 50px; overflow: hidden;">
-                            <a href="../../Profile/Index/@userprofile.UserProfileId">
-                                <img src="@Html.Encode(userprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:50px;"/></a>
-                        </div>
-                        <div style="margin-left: 8px; float: left; width: 88%;">
-                            <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
-                            @if (peerupdates.type == 4)
-                            {
-                                Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.message == peerupdates.message && p.type == 5);
-                                int tempuserprofileID = tempupdate.UserProfiles.ElementAt(0).UserProfileId;
-                                UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempuserprofileID);
-                              
-                                <text>Wrote: </text>@peerupdates.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
-                                          <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
-                            }
-                            else if (peerupdates.type == 9)
-                            {
-                                <span class="label label-info">Broadcast</span> <br /> @peerupdates.message
-                            }
-                            else
-                            {@peerupdates.message}
-                            <br />
-
-                            @{
-                            string id1 = "comment1" + @count;
-                            string time = "";
-                            TimeSpan temp = DateTime.Now - peerupdates.Time;
-                            if (temp.Days > 1) { time += temp.Days.ToString() + " days ago"; }
-                            else if (temp.Hours > 1) { time += temp.Hours.ToString() + " hrs ago"; }
-                            else { time += temp.Minutes.ToString() + " mins ago"; }
-                            }
-                            <text style="color: #777">@time </text>
-
-                            @{                      
-                            //if it is a comment on other people's wall, dont allow commenting
-                            if (peerupdates.type != 3 && peerupdates.type != 4)
-                            {
-                                <div style="background: #eee; padding: 5px 3px; margin-bottom: 5px;">
-                                    @{var commentslist = followPeersDB.NoticeComments.OrderBy(x => x.time);
-                                    }
-                                    @{foreach (NoticeComment cmt in commentslist)
-                                      {
-                                          if (cmt.update.UpdateId == peerupdates.UpdateId)
-                                          {   <div style="border-bottom: 1px solid #ddd;">
-                                                  @{
-                                              IQueryable<UserProfile> custQuery2 = from cust in followPeersDB.UserProfiles where cust.UserProfileId == cmt.commenterId select cust;
-                                              foreach (UserProfile user in custQuery2)
-                                              {
-                                                      <div style="float: left; margin: 3px; height: 30px; overflow: hidden;">
-                                                          <img src="@Html.Encode(user.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:30px;"/>
-                                                      </div>
-                                                      <div style="margin-left: 8px; float: left;">
-                                                          <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
-                                                      </div>
-                                                      
-                                                  if (user.UserProfileId == myprofile.UserProfileId)
-                                                  {<div id="mydiv" style="float: right; margin-right: 5px; color: #888; font-size: 15px; cursor: pointer;">@Html.ActionLink("x", "DeleteComment", "Notice", new { id = cmt.NoticeCommentId, redirect = Model.UserProfileId }, null)
-                                                      </div>}
-                                                      <div style="clear: both;">
-                                                      </div>
-                                              }
-                                                  }
-                                              </div>
-                                          } //end of if
-                                      }
-                                    }
-                                    <form action="/Profile/AddComment" method="post" style="margin-bottom: 0px;">
-                                        <input type="hidden" name="commentid" value="@peerupdates.UpdateId" />
-                                        <input type="hidden" name="redirect" value="@Model.UserProfileId" />
-                                        @{string id = "comment" + @count;}
-                                        <input id="@id" type="text" name="message" value="" style="width:97%;" />
-                                    </form>
-                                    <script type="text/javascript" language="javascript"> puthint("#@id", "Write a comment...");</script>
-                                    @{count++;}
-                                </div>}
-                            }
-                        </div>
-                        <div style="clear: both;">
-                        </div>
-                    </div>
-
-                            
-                                            }
-                                        }
-                                    }
-
-                                } while (peerupdates.Time < System.DateTime.Now);
-                            }}
-                </div>
-                        
-
-
-                        @* updates of publication *@
-                        <div class="tab-pane" id="publication">
-
-     
-                        </div>
-
-
-                        @* updates of course *@
-                        <div class="tab-pane" id="course">
-
-
-                        </div>
-
-
-                        @* updates of job *@
-                        <div class="tab-pane" id="job">
-
-
-                        </div>
-
-
-                        @* updates of favourite peers*@
-                        <div class="tab-pane" id="favourite">
-
-
-                        </div>    
-
-                </div> 
-                    
-            }
+            <div id="all">
+                @Html.Partial("AllUpdatesView")
             </div>
 
+            <div id="status" style="display: none;">
+                @Html.Partial("StatusUpdatesView")
+            </div>
+            
+            <div id="photo" style="display: none;">
+                @Html.Partial("PhotoUpdatesView")        
+            </div>
+            
+            <div id="course" style="display: none;">
+                @Html.Partial("CourseUpdatesView")                       
+            </div>
+            
+            <div id="publication" style="display: none;">
+                @Html.Partial("PublicationUpdatesView")       
+            </div>
+            
+            <div id="job" style="display: none;">
+                @Html.Partial("JobUpdatesView")                          
+            </div>
+            
+            <div id="favourite" style="display: none;">
+                @Html.Partial("FavouriteUpdatesView")     
+            </div>
         </div>
+    </div>
 
-
-        @*changes made*@
-        @*Right Sidebar: peer list on right side bar*@
+        @*Right Sidebar*@
         <div class="peerlist" style="width: auto; float: right">
 
 
-            @{
-                Boolean click_flag = false;
+        @{
+            Boolean click_flag = false;
 
-                foreach (var peer in following)
+            foreach (var peer in following)
+            {
+                DateTime curr1 = System.DateTime.Now;
+                int peerupdate_count = 0;
+                FollowPeers.Models.UserProfile peerprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == peer.personBName);
+
+                if (!click_flag)
                 {
-                    DateTime curr1 = System.DateTime.Now;
-                    int peerupdate_count = 0;
-                    FollowPeers.Models.UserProfile peerprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == peer.personBName);
-
-                    if (!click_flag)
-                    {
-                        peerupdate_count = followPeersDB.Updates.Where(p => p.owner == peerprofile.UserProfileId && p.Time.CompareTo(curr1) < 0).Count();
-                    }
-                              
-                <a href="/Profile/Index/@peerprofile.UserProfileId" style="text-decoration:none;">
-                    <div style=" padding: 2px 6px 2px 10px; line-height: 40px; height: 60px; background: #FFF; vertical-align: top; clear: both; _padding-right: 0px;">
-                        <span class="label label-warning pull-left" style="display: block; width: 13px;">@peerupdate_count</span>
-                        
-                        <img src="@Html.Encode(peerprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:35px; height:35px;" class="img-circle" />                                <b>&nbsp;@peerprofile.FirstName @peerprofile.LastName</b>  
-                    </div>
-                </a>
+                    peerupdate_count = followPeersDB.Updates.Where(p => p.owner == peerprofile.UserProfileId && p.Time.CompareTo(curr1) < 0).Count();
                 }
-               }
-
-
-        </div>
-
-
-
-
-
-
-
-
+                              
+            <a href="/Profile/Index/@peerprofile.UserProfileId" style="text-decoration:none;">
+                <div style=" padding: 2px 6px 2px 10px; line-height: 40px; height: 60px; background: #FFF; vertical-align: top; clear: both; _padding-right: 0px;">
+                    <span class="label label-warning pull-left" style="display: block; width: 13px;">@peerupdate_count</span>
+                        
+                    <img src="@Html.Encode(peerprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:35px; height:35px;" class="img-circle" />                                <b>&nbsp;@peerprofile.FirstName @peerprofile.LastName</b>  
+                </div>
+            </a>
+            }
+            }
 
 
     </div>
-    <div class="row">
-        @Html.Partial("_Footer")
+          
     </div>
+   
+    @Html.Partial("_Footer")
+    
 </div>
 
 
@@ -531,3 +196,84 @@
 
     $('.fileupload').fileupload()
 </script>
+
+
+<script type="text/javascript">
+    //scripts for the tabs on home page
+    function tabresponse(tab) {
+        //document.getElementById('Form_Area').style.display = 'none'; //hide all forms
+        document.getElementById('all').style.display = 'none';
+        document.getElementById('status').style.display = 'none';
+        document.getElementById('photo').style.display = 'none';
+        document.getElementById('course').style.display = 'none';
+        document.getElementById('publication').style.display = 'none';
+        document.getElementById('job').style.display = 'none';
+        //document.getElementById('group').style.display = 'none';
+        document.getElementById('favourite').style.display = 'none';
+        document.getElementById('li_all').setAttribute("class", "");
+        document.getElementById('li_status').setAttribute("class", "");
+        document.getElementById('li_photo').setAttribute("class", "");
+        document.getElementById('li_course').setAttribute("class", "");
+        document.getElementById('li_publication').setAttribute("class", "");
+        document.getElementById('li_job').setAttribute("class", "");
+        //document.getElementById('li_group').setAttribute("class", "");
+        document.getElementById('li_favourite').setAttribute("class", "");
+
+
+
+        if (tab == 'all') {
+
+            document.getElementById('all').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+        }
+
+        if (tab == 'status') {
+            document.getElementById('status').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+        }
+
+        if (tab == 'photo') {
+            document.getElementById('photo').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+        }
+
+        if (tab == 'course') {
+            document.getElementById('course').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+        }
+
+        if (tab == 'publication') {
+            document.getElementById('publication').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+        }
+
+        if (tab == 'job') {
+            document.getElementById('job').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+        }
+        
+        @*if (tab == 'group') {
+            document.getElementById('group').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+        }*@
+
+        if (tab == 'favourite') {
+            document.getElementById('favourite').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+        }
+
+        else {
+            return;
+        }
+    }
+</script>
+
+
