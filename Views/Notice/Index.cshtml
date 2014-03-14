@@ -2,11 +2,12 @@
 @using FollowPeers.Models;
 
 @*Page Header*@
-
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://arrow.scrolltotop.com/arrow88.js"></script>
 
 @Html.Partial("_Header")
 
-  <style media="screen" type="text/css">
+<style media="screen" type="text/css">
         .profilepagetabs ul
         {
             padding: 0px;
@@ -57,130 +58,135 @@
             background-color: #45aeea;
             color: white;
         }
+
+    
     </style>
 
-@*Container*@
-<div class="container">
+<body>
+    @*Container*@
+    <div class="container">
 
-    @*rows within container*@
-    <div class="row">     
+        @*rows within container*@
+        <div class="row">     
 
-        @*Left Sidebar*@
-        <div class="span2">
-    @{
-        ViewBag.Title = Model.FirstName + " " + Model.LastName + "'s Notice Board";
-        FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
-        string name = Membership.GetUser().UserName;
-        FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-        if (Model.UserProfileId == myprofile.UserProfileId)
-        {
-        @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
-        }
-        else
-        {
-        @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
-        }             
-    }
-
-    <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
-        <div class="profilepagetabs" style="border: none;">
-            <!-- Nav tabs -->
-            <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">           
-                <li class="current" id="li_all" onclick="tabresponse('all')"><a><i class="icon-home" style="float:left;"></i>All Updates</a></li>
-                <li id="li_status" onclick="tabresponse('status')"><a><i class="icon-pencil" style="float:left;"></i>Status</a></li>
-                <li id="li_photo" onclick="tabresponse('photo')"><a><i class="icon-picture" style="float:left;"></i>Photo</a></li>
-                <li id="li_course" onclick="tabresponse('course')"><a><i class="icon-book" style="float:left;"></i>Course</a></li>                           
-                <li id="li_publication" onclick="tabresponse('publication')"><a><i class="icon-file" style="float:left;"></i>Publication</a></li>
-                <li id="li_job" onclick="tabresponse('job')"><a><i class="icon-tag" style="float:left;"></i>Job</a></li>
-                <!--li id="li_group" onclick="tabresponse('group')"><a><i class="icon-user" style="float:left;"></i>Group</a></!--li-->
-                <!--li id="li_favourite" onclick="tabresponse('favourite')"><a><i class="icon-heart" style="float:left;"></i>Favourite</a></!--li-->
-            </ul>
-        </div>
-    </div> 
-    </div>
-    
-        @*center div*@
-        <div class="span7 main-content">
-          
+            @*Left Sidebar*@
+            <div class="span2">
         @{
-            //L: updates from people you are following.
-            DateTime curr = System.DateTime.Now;
-            //FollowPeers.Models.Update peerupdates;
-            List<FollowPeers.Models.Relationship> following = followPeersDB.Relationships.Where(p => p.personAName == Model.UserName && p.tier == 2).ToList();     
-        }
-    <!-- Tab panes -->
-        <div class="box" style="min-height: 200px; height: auto;">
-
-            @Html.Partial("MultiInputBox")
-            <br/>
-            <!--h5><i class="icon-file"></i> Recent Updates</!--h5-->
-               
-            <div id="all">
-                @Html.Partial("AllUpdatesView")
-            </div>
-
-            <div id="status" style="display: none;">
-                @Html.Partial("StatusUpdatesView")
-            </div>
-            
-            <div id="photo" style="display: none;">
-                @Html.Partial("PhotoUpdatesView")        
-            </div>
-            
-            <div id="course" style="display: none;">
-                @Html.Partial("CourseUpdatesView")                       
-            </div>
-            
-            <div id="publication" style="display: none;">
-                @Html.Partial("PublicationUpdatesView")       
-            </div>
-            
-            <div id="job" style="display: none;">
-                @Html.Partial("JobUpdatesView")                          
-            </div>
-            
-            @*<div id="favourite" style="display: none;">
-                @Html.Partial("FavouriteUpdatesView")     
-            </div>*@
-        </div>
-    </div>
-
-        @*Right Sidebar*@
-        <div class="peerlist" style="width: auto; float: right">
-
-
-        @{
-            Boolean click_flag = false;
-
-            foreach (var peer in following)
+            ViewBag.Title = Model.FirstName + " " + Model.LastName + "'s Notice Board";
+            FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+            string name = Membership.GetUser().UserName;
+            FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            if (Model.UserProfileId == myprofile.UserProfileId)
             {
-                DateTime curr1 = System.DateTime.Now;
-                int peerupdate_count = 0;
-                FollowPeers.Models.UserProfile peerprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == peer.personBName);
-
-                if (!click_flag)
-                {
-                    peerupdate_count = followPeersDB.Updates.Where(p => p.owner == peerprofile.UserProfileId && p.Time.CompareTo(curr1) < 0).Count();
-                }
-                              
-            <a href="/Profile/Index/@peerprofile.UserProfileId" style="text-decoration:none;">
-                <div style=" padding: 2px 6px 2px 10px; line-height: 40px; height: 60px; background: #FFF; vertical-align: top; clear: both; _padding-right: 0px;">
-                    <span class="label label-warning pull-left" style="display: block; width: 13px;">@peerupdate_count</span>
-                        
-                    <img src="@Html.Encode(peerprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:35px; height:35px;" class="img-circle" />                                <b>&nbsp;@peerprofile.FirstName @peerprofile.LastName</b>  
-                </div>
-            </a>
+            @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
             }
-            }
+            else
+            {
+            @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "PhotoUrl", @Model.PhotoUrl }, { "ProfileName", @Model.UserProfileId }, { "Name", @Model.FirstName + " " + Model.LastName } })
+            }             
+        }
 
-
-    </div>
+        <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+            <div class="profilepagetabs" style="border: none;">
+                <!-- Nav tabs -->
+                <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">           
+                    <li class="current" id="li_all" onclick="tabresponse('all')"><a><i class="icon-home" style="float:left;"></i>All Updates</a></li>
+                    <li id="li_status" onclick="tabresponse('status')"><a><i class="icon-pencil" style="float:left;"></i>Status</a></li>
+                    <li id="li_photo" onclick="tabresponse('photo')"><a><i class="icon-picture" style="float:left;"></i>Photo</a></li>
+                    <li id="li_course" onclick="tabresponse('course')"><a><i class="icon-book" style="float:left;"></i>Course</a></li>                           
+                    <li id="li_publication" onclick="tabresponse('publication')"><a><i class="icon-file" style="float:left;"></i>Publication</a></li>
+                    <li id="li_job" onclick="tabresponse('job')"><a><i class="icon-tag" style="float:left;"></i>Job</a></li>
+                    <!--li id="li_group" onclick="tabresponse('group')"><a><i class="icon-user" style="float:left;"></i>Group</a></!--li-->
+                    <!--li id="li_favourite" onclick="tabresponse('favourite')"><a><i class="icon-heart" style="float:left;"></i>Favourite</a></!--li-->
+                </ul>
+            </div>
+        </div> 
+        </div>
+    
+            @*center div*@
+            <div class="span7 main-content">
           
-    </div>                          
-  
-          @Html.Partial("_Footer")
-  
-</div>
+            @{
+                //L: updates from people you are following.
+                DateTime curr = System.DateTime.Now;
+                //FollowPeers.Models.Update peerupdates;
+                List<FollowPeers.Models.Relationship> following = followPeersDB.Relationships.Where(p => p.personAName == Model.UserName && p.tier == 2).ToList();     
+            }
+        <!-- Tab panes -->
+            <div class="box" style="min-height: 200px; height: auto;">
+
+                @Html.Partial("MultiInputBox")
+                <br/>
+                <!--h5><i class="icon-file"></i> Recent Updates</!--h5-->
+               
+                <div id="all">
+                    @Html.Partial("AllUpdatesView")
+                </div>
+
+                <div id="status" style="display: none;">
+                    @Html.Partial("StatusUpdatesView")
+                </div>
+            
+                <div id="photo" style="display: none;">
+                    @Html.Partial("PhotoUpdatesView")        
+                </div>
+            
+                <div id="course" style="display: none;">
+                    @Html.Partial("CourseUpdatesView")                       
+                </div>
+            
+                <div id="publication" style="display: none;">
+                    @Html.Partial("PublicationUpdatesView")       
+                </div>
+            
+                <div id="job" style="display: none;">
+                    @Html.Partial("JobUpdatesView")                          
+                </div>
+            
+                @*<div id="favourite" style="display: none;">
+                    @Html.Partial("FavouriteUpdatesView")     
+                </div>*@
+            </div>
+        </div>
+
+            @*Right Sidebar*@
+            <div class="peerlist" style="width: auto; float: right">
+
+
+            @{
+                Boolean click_flag = false;
+
+                foreach (var peer in following)
+                {
+                    DateTime curr1 = System.DateTime.Now;
+                    int peerupdate_count = 0;
+                    FollowPeers.Models.UserProfile peerprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == peer.personBName);
+
+                    if (!click_flag)
+                    {
+                        peerupdate_count = followPeersDB.Updates.Where(p => p.owner == peerprofile.UserProfileId && p.Time.CompareTo(curr1) < 0).Count();
+                    }
+                              
+                <a href="/Profile/Index/@peerprofile.UserProfileId" style="text-decoration:none;">
+                    <div style=" padding: 2px 6px 2px 10px; line-height: 40px; height: 60px; background: #FFF; vertical-align: top; clear: both; _padding-right: 0px;">
+                        <span class="label label-warning pull-left" style="display: block; width: 13px;">@peerupdate_count</span>
+                        
+                        <img src="@Html.Encode(peerprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:35px; height:35px;" class="img-circle" />                                <b>&nbsp;@peerprofile.FirstName @peerprofile.LastName</b>  
+                    </div>
+                </a>
+                }
+                }
+
+
+        </div>
+          
+        </div>                          
+        
+        <!--Scroll back to top-->
+   
+        @Html.Partial("_Footer")  
+    </div>
+</body>
 
  
 
@@ -191,15 +197,6 @@
 <script>
     $('.dropdown-toggle').dropdown()
 </script>
-<script>
-    $('#navbar').scrollspy()
-</script>
-<script src="scripts/bootstrap-fileupload.js"></script>
-<script>
-
-    $('.fileupload').fileupload()
-</script>
-
 
 <script type="text/javascript">
     //scripts for the tabs on home page
