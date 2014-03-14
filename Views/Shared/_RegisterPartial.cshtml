@@ -39,7 +39,7 @@
 
         <p>
             @* @Html.LabelFor(m => m.Password)*@
-            @Html.PasswordFor(m => m.Password, new { @placeholder = "Create Password*", @class = "input-xlarge" })
+            @Html.PasswordFor(m => m.Password, new { @placeholder = "Password *Min 6 & at least 1 non-alphanumeric character", @class = "input-xlarge" })
             @Html.ValidationMessageFor(m => m.Password)
         </p>
 
@@ -50,28 +50,16 @@
             @Html.ValidationMessageFor(m => m.ConfirmPassword)
         </p>
 
-        <p style="font-size: x-small">
-            *Min 6 characters, at least 1 non-alphanumeric character
-        </p>
-
 
         <p>
             @{List<string> profession = new List<string>();
-              profession.Add("--Select Account Type--");
-              profession.Add("Free");
-              profession.Add("Premium");
+              profession.Add("Free Account");
+              profession.Add("Premium Account");
             }
             @Html.DropDownList("Profession", new SelectList(profession))
         </p>
-
-        <p>
-            <input class="btn btn-primary" type="submit" value="Sign up" />
-        </p>
-
-
-
-
-
+        <input class="btn btn-primary" type="submit" value="Sign Up" style="font-family:'Segoe UI';font-weight:bold;width:130px;align-content:center;"/>
+       
 
     </div>
     
