@@ -83,7 +83,7 @@
                     if (!($('#Edu0').length)) name = 0;
                     else if (!($('#Edu1').length)) name = 1;
                     else if (!($('#Edu2').length)) name = 2;
-                    $('#EducationFields').append("<div id='Edu" + name + "'><fieldset><legend>Education History</legend><div id='Delete" + name + "'  style='float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;' title='Click to delete this record.'>x</div><div class='editor-label'>Institution</div><div class='editor-field'> <input type='text' id='Organization" + name + "' name='Organization' style='margin-left:2px;width:210px'  /> </div><div class='editor-label'>Country</div><div class='editor-field'><input type='text' name='Country' id='Country" + name + "' /></div><div class='editor-label'>Degree</div><div class='editor-field'><input type='text' name='Degree'  /></div> <div class='editor-label'> Start Year (yyyy)</div><div class='editor-field'><input type='text' name='startYear'  /></div><div class='editor-label'>End Year (yyyy)</div><div class='editor-field'><input type='text' name='endYear' /> </div></fieldset></div>");
+                    $('#EducationFields').append("<div id='Edu" + name + "'><fieldset><legend>Education History</legend><div id='Delete" + name + "'  style='float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;' title='Click to delete this record.'>x</div><div class='editor-label'>Institution</div><div class='editor-field'> <input type='text' id='Organization" + name + "' name='Organization' style='margin-left:2px;width:210px'  /> </div><div class='editor-label'>Country</div><div class='editor-field'><input type='text' name='Country' id='Country" + name + "' /></div><div class='editor-label'>Degree</div><div class='editor-field'><input type='text' name='Degree'  /></div> <div class='editor-label'> Start Year (yyyy)</div><div class='editor-field'><input type='text' name='startYear'  /></div><div class='editor-label'>End Year (yyyy)</div><div class='editor-field'><input type='text' name='endYear' /></div></fieldset></div>");
                     $('#Delete' + name).click(function () { Delete(name); });
                     counter++;
                     AutoComplete(name);
@@ -290,9 +290,9 @@
     <div class="row">
 
         @*Main Content*@
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("EditProfile", "Profile"))
         {
-            <div class="span9 main-content">
+            <div class="span8 main-content">
 
                 <a id="pagetop"></a>
 
@@ -364,17 +364,12 @@
                                     @Html.LabelFor(model => model.Birthday)
                                 </div>
                                 <div class="editor-field">
-                                    <input id="EventDate" class="small" type="date" name ="EventDate" value= "@Model.Birthday" data-datepicker="datepicker">
+                                    @Html.HiddenFor(model => model.Birthday)
+                                    <input id="EventDate" class="small" type="date" name="EventDate" value= "@Model.Birthday.ToString()" data-datepicker="datepicker">
+                                @Html.ValidationMessageFor(model => model.Birthday)
                                 </div>
                             </td>
-                            <td class="right-col">
-                                <div class="editor-label">
-                                    @Html.LabelFor(model => model.Country, "Country")
-                                </div>
-                                <div class="editor-field">
-                                    <input type="text" id="Country" name="Country" style="margin-left:2px;" value="@Model.Country" />
-                                </div>
-                            </td>
+                            
                         </tr>
 
                     </table>
@@ -386,13 +381,11 @@
                         <textarea id="TextArea" rows="3" cols="120" name="AboutMe" class="rte-zone" style="width: 600px; resize: none;">@Model.AboutMe</textarea>
                     </div>
 
-                    <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
+                    
 
 
                 </fieldset>
                 <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
-
-
 
                 <fieldset>
                     <a id="contact_section"></a>
@@ -509,13 +502,13 @@
 
                     </table>
 
-                    <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
+                    
                 </fieldset>
                 <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
 
-                <fieldset>
+                
                     <a id="education_section"></a>
-                    <legend>Education History</legend>
+                    
                     @{
                                       int i = 0;
                         <div id="EducationFields">
@@ -572,13 +565,12 @@
                             }
                             <p>
                                 <a class="btn" id="Add" style="" title="Click to add another record."><i class="icon-plus"></i></a>
-                                <input type="submit" value="Save" class="btn btn-primary" style="float: right;">
+                               
                             </p>
 
                         </div>
                     }
 
-                </fieldset>
                 <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
 
                 <fieldset>
@@ -632,10 +624,14 @@
 
 
                     </div>
-                    <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
+                    
                 </fieldset>
                 <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
 
+            </div>
+            
+            <div class="span2">
+                <input class="btn btn-primary" type="submit" value="Save" />
             </div>
         }
     </div>

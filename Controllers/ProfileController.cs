@@ -529,6 +529,7 @@ namespace FollowPeers.Controllers
         {
             string name = Membership.GetUser().UserName;
             UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+
             bool toadd = false;
             if (userprofile.Organization == null) toadd = true;
             // if (ModelState.IsValid && userprofile.FirstName != null && userprofile.LastName != null)
@@ -836,9 +837,6 @@ namespace FollowPeers.Controllers
                 return RedirectToAction("EditAchievement", "Profile", new { message = "Achievements not updated" });
             }
         }
-
-
-
         private void UpdateAchievement(string[] Title, string[] Description, string[] startYear, string[] endYear, string[] Keyword, string[] link, UserProfile userprofile)
         {
             int count = userprofile.Achievements.Count();
@@ -879,8 +877,6 @@ namespace FollowPeers.Controllers
                 }
             }
         }
-
-
 
 
         [HttpPost]
@@ -966,7 +962,6 @@ namespace FollowPeers.Controllers
 
 
         }
-
         private void UpdateStudent(string[] Name, string[] Type, string[] StartYear, string[] EndYear, string[] About, string[] Link, UserProfile userprofile)
         {
             int count = userprofile.Students.Count();
@@ -2370,9 +2365,44 @@ namespace FollowPeers.Controllers
             }
 
             //return View("Index", new { id = userprofile.UserProfileId });
-            //return RedirectToAction("Index", "Profile");
-            return RedirectToAction("UploadFile", "Profile", null);
+            return RedirectToAction("Index", "Profile", new { id = userprofile.UserProfileId });
+            //return RedirectToAction("UploadPhoto", "Profile", null);
             //return View(userprofile);
+
+        }
+
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult EditProfile(FormCollection formCollection, int[] Specialization)
+        {
+            
+            string name = Membership.GetUser().UserName;
+            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+
+            userprofile.FirstName = formCollection[3];
+            userprofile.LastName = formCollection[4];
+            userprofile.Gender = formCollection[5];
+            userprofile.Status = formCollection[6];
+            
+            userprofile.Birthday = Convert.ToDateTime(formCollection[8]);
+            userprofile.AboutMe = formCollection[9];
+
+            
+           
+            CreateUpdates("Profile information updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
+            followPeersDB.Entry(userprofile).State = EntityState.Modified;
+            followPeersDB.SaveChanges();
+            return RedirectToAction("Edit", "Profile", new { message = "Successfully Updated" });
+            
+
+           
+            //if (userprofile.FirstName == null) ModelState.AddModelError("", "First Name cannot be left blank.");
+            //if (userprofile.LastName == null) ModelState.AddModelError("", "Last Name cannot be left blank.");
+            //ModelState.AddModelError("", "Update Failed");
+
+
+            //return View(userprofile);
+
 
         }
 

@@ -261,6 +261,7 @@
                     </div>
                     
                     <div id="about" style="display: none;">
+                        <h3 style="display: inline-block;">About @Html.Raw(firstName)</h3>
                         @*if user, then edit privileges*@
                         @if (Membership.GetUser().UserName == Model.UserName)
                         {

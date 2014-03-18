@@ -152,8 +152,8 @@ namespace FollowPeers.Controllers
 
             //return View("Index", new { id = userprofile.UserProfileId });
             //return RedirectToAction("Index", "Profile");
-            if(Imagename != "")
-            return RedirectToAction("Create", "PublicationModel", new { id = Sidebarnumber, upload = 1 });
+            if (Imagename != "")
+                return RedirectToAction("Create", "PublicationModel", new { id = Sidebarnumber, upload = 1 });
             else
                 return RedirectToAction("Create", "PublicationModel", new { id = Sidebarnumber, upload = 4 });
             //return View(userprofile);
@@ -176,7 +176,7 @@ namespace FollowPeers.Controllers
                 string test = HttpRuntime.AppDomainAppPath;
 
                 string path = test + "Content\\Files\\";
-               
+
                 var directoryInfo = new DirectoryInfo(path);
 
                 if (directoryInfo.Exists)
@@ -200,8 +200,8 @@ namespace FollowPeers.Controllers
 
             //return View("Index", new { id = userprofile.UserProfileId });
             //return RedirectToAction("Index", "Profile");
-            if(Pubfilename != "" && Pubfilename != null)
-            return RedirectToAction("Create", "PublicationModel", new { id = Sidebarnumber, upload = 2 });
+            if (Pubfilename != "" && Pubfilename != null)
+                return RedirectToAction("Create", "PublicationModel", new { id = Sidebarnumber, upload = 2 });
             else
                 return RedirectToAction("Create", "PublicationModel", new { id = Sidebarnumber, upload = 3 });
             //return View(userprofile);
@@ -460,15 +460,15 @@ namespace FollowPeers.Controllers
                 //followPeersDB.PublicationModels.Add(publicationmodel);
                 followPeersDB.Entry(user).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-                if (Sidebarnumber == 2)
-                {
-                    Sidebarnumber = 1;
-                    return RedirectToAction("Create", "PatentModel", new { id = 2 });
-                }
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+                //return RedirectToAction("Index");
             }
 
-            return View(publicationmodel);
+            string name2 = Membership.GetUser().UserName;
+            UserProfile user2 = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name2);
+            return RedirectToAction("Index", "Profile", new { id = user2.UserProfileId });
+            //return View(publicationmodel);
 
         }
 
