@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<FollowPeers.Models.UserProfile>
 @using FollowPeers.Models;
+<head>
+    <title>FollowMyPeer</title>
+    <link rel="shortcut icon" href="Content/images/logo.ico" type="image/x-icon" />
+</head>
 @Html.Partial("_Header")
 @{
     string name = Membership.GetUser().UserName;

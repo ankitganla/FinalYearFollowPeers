@@ -2,9 +2,12 @@
 @using FollowPeers.Models;
 
 @*Page Header*@
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript" src="http://arrow.scrolltotop.com/arrow88.js"></script>
-
+<head>
+    <title>FollowMyPeer</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://arrow.scrolltotop.com/arrow88.js"></script>
+    <link rel="shortcut icon" href="Content/images/logo.ico" type="image/x-icon" />
+</head>
 @Html.Partial("_Header")
 
 <style media="screen" type="text/css">
@@ -154,19 +157,20 @@
 
 
             @{
-                Boolean click_flag = false;
 
                 foreach (var peer in following)
                 {
+                    Boolean clickupdate_flag = false;
                     DateTime curr1 = System.DateTime.Now;
                     int peerupdate_count = 0;
                     FollowPeers.Models.UserProfile peerprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == peer.personBName);
 
-                    if (!click_flag)
+                    if (!clickupdate_flag)
                     {
                         peerupdate_count = followPeersDB.Updates.Where(p => p.owner == peerprofile.UserProfileId && p.Time.CompareTo(curr1) < 0).Count();
                     }
                               
+                @*if clicked , set the clickupdate_flag to true; reset the clickupdate_flag back to false until there is new updates from the user*@
                 <a href="/Profile/Index/@peerprofile.UserProfileId" style="text-decoration:none;">
                     <div style=" padding: 2px 6px 2px 10px; line-height: 40px; height: 60px; background: #FFF; vertical-align: top; clear: both; _padding-right: 0px;">
                         <span class="label label-warning pull-left" style="display: block; width: 13px;">@peerupdate_count</span>
