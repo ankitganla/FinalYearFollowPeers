@@ -252,37 +252,34 @@
             padding-left: 0px;
             padding-right: 10px;
             margin: 0px;
-
         }
 
-        .same-page-links ul a
-        {
-            /* The following four lines are to make the top left and top right corners of the content area rounded. */
-                    -moz-border-radius-topleft: 4px;
-                    border-top-left-radius: 4px;
-                    -moz-border-radius-topright: 4px;
-                    border-top-right-radius: 4px;
-                    -moz-border-radius-bottomleft: 4px;
-                    border-bottom-left-radius: 4px;
-                    -moz-border-radius-bottomright: 4px;
-                    border-bottom-right-radius: 4px;
-                    margin-left: 0px;
-                    padding-left: 10px;
-                    padding-right: 10px;
-                    border: solid;
-                    border-width: 1px;
-                    border-color: #45aeea;
-                    font-weight: bold;
-                    color: #45aeea;
-                    margin-right: 5px;
-        }
+            .same-page-links ul a
+            {
+                /* The following four lines are to make the top left and top right corners of the content area rounded. */
+                -moz-border-radius-topleft: 4px;
+                border-top-left-radius: 4px;
+                -moz-border-radius-topright: 4px;
+                border-top-right-radius: 4px;
+                -moz-border-radius-bottomleft: 4px;
+                border-bottom-left-radius: 4px;
+                -moz-border-radius-bottomright: 4px;
+                border-bottom-right-radius: 4px;
+                margin-left: 0px;
+                padding-left: 10px;
+                padding-right: 10px;
+                border: solid;
+                border-width: 1px;
+                border-color: #45aeea;
+                font-weight: bold;
+                color: #45aeea;
+                margin-right: 5px;
+            }
 
         .editor-label
         {
             color: #45aeea;
         }
-
-
     </style>
 </head>
 
@@ -291,256 +288,248 @@
 
     @*rows within container*@
     <div class="row">
-       
 
         @*Main Content*@
-        <div class="span9 main-content">
-            <div class="box">
+        @using (Html.BeginForm())
+        {
+            <div class="span9 main-content">
+
                 <a id="pagetop"></a>
 
-                @*<div class="same-page-links">
-                    <ul>
-                    <a href="#personal_section">Personal </a>
-                    <a href="#contact_section">Contact </a>
-                    <a href="#education_section">Education </a>
-                    <a href="#professional_section">Professional</a>
-                </ul>
-                </div>*@
-                
 
-                @using (Html.BeginForm())
-                {
-                    @Html.ValidationSummary(true)
-                    <fieldset>
-                        <a id="personal_section"></a>
-                        <legend>Personal</legend>
-                        @Html.HiddenFor(model => model.UserProfileId)
-                        @Html.HiddenFor(model => model.UserName)
-                        @Html.HiddenFor(model => model.activated)
+                @Html.ValidationSummary(true)
+                <fieldset>
+                    <a id="personal_section"></a>
+                    <legend>Personal</legend>
+                    @Html.HiddenFor(model => model.UserProfileId)
+                    @Html.HiddenFor(model => model.UserName)
+                    @Html.HiddenFor(model => model.activated)
 
-                        <table>
-                            <tr>
-                                <td class="left-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.FirstName)
-                                    </div>
-                                    <div class="editor-field">
-                                        @Html.EditorFor(model => model.FirstName)
-                                        @Html.ValidationMessageFor(model => model.FirstName)
-                                    </div>
-                                </td>
-                                <td class="right-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.LastName)
-                                    </div>
-                                    <div class="editor-field">
-                                        @Html.EditorFor(model => model.LastName)
-                                        @Html.ValidationMessageFor(model => model.LastName)
-                                    </div>
-                                </td>
-                            </tr>
+                    <table>
+                        <tr>
+                            <td class="left-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.FirstName)
+                                </div>
+                                <div class="editor-field">
+                                    @Html.EditorFor(model => model.FirstName)
+                                    @Html.ValidationMessageFor(model => model.FirstName)
+                                </div>
+                            </td>
+                            <td class="right-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.LastName)
+                                </div>
+                                <div class="editor-field">
+                                    @Html.EditorFor(model => model.LastName)
+                                    @Html.ValidationMessageFor(model => model.LastName)
+                                </div>
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <td class="left-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Gender)
-                                    </div>
-                                    <div class="editor-field">
-                                        @{List<string> list1 = new List<string>();
-                                          list1.Add("Male");
-                                          list1.Add("Female");
-                                        }
-                                        @Html.DropDownList("Gender", new SelectList(list1))
-                                        @Html.ValidationMessageFor(model => model.Gender)
-                                    </div>
-                                </td>
-                                <td class="right-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Status, "Marital Status")
-                                    </div>
-                                    <div class="editor-field">
-                                        @{List<string> list2 = new List<string>();
-                                          list2.Add("Single");
-                                          list2.Add("Married");
-                                          list2.Add("Divorced");
-                                          list2.Add("Widowed");
-                                        }
-                                        @Html.DropDownList("Status", new SelectList(list2))
-                                        @Html.ValidationMessageFor(model => model.Status)
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td class="left-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Gender)
+                                </div>
+                                <div class="editor-field">
+                                    @{List<string> list1 = new List<string>();
+                                      list1.Add("Male");
+                                      list1.Add("Female");
+                                    }
+                                    @Html.DropDownList("Gender", new SelectList(list1))
+                                    @Html.ValidationMessageFor(model => model.Gender)
+                                </div>
+                            </td>
+                            <td class="right-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Status, "Marital Status")
+                                </div>
+                                <div class="editor-field">
+                                    @{List<string> list2 = new List<string>();
+                                      list2.Add("Single");
+                                      list2.Add("Married");
+                                      list2.Add("Divorced");
+                                      list2.Add("Widowed");
+                                    }
+                                    @Html.DropDownList("Status", new SelectList(list2))
+                                    @Html.ValidationMessageFor(model => model.Status)
+                                </div>
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <td class="left-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Birthday)
-                                    </div>
-                                    <div class="editor-field">
-                                        <input id="EventDate" class="small" type="date" name ="EventDate" value= "@Model.Birthday" data-datepicker="datepicker">
-                                    </div>
-                                </td>
-                                <td class="right-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Country, "Country")
-                                    </div>
-                                    <div class="editor-field">
-                                        <input type="text" id="Country" name="Country" style="margin-left:2px;" value="@Model.Country" />
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td class="left-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Birthday)
+                                </div>
+                                <div class="editor-field">
+                                    <input id="EventDate" class="small" type="date" name ="EventDate" value= "@Model.Birthday" data-datepicker="datepicker">
+                                </div>
+                            </td>
+                            <td class="right-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Country, "Country")
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" id="Country" name="Country" style="margin-left:2px;" value="@Model.Country" />
+                                </div>
+                            </td>
+                        </tr>
 
-                        </table>
+                    </table>
 
-                        <div class="editor-label" style="width: 100%;">
-                            <label for="AboutMe">About Me</label>
-                        </div>
-                        <div class="editor-field" style="">
-                            <textarea id="TextArea" rows="3" cols="120" name="AboutMe" class="rte-zone" style="width: 600px; resize: none;">@Model.AboutMe</textarea>
-                        </div>
+                    <div class="editor-label" style="width: 100%;">
+                        <label for="AboutMe">About Me</label>
+                    </div>
+                    <div class="editor-field" style="">
+                        <textarea id="TextArea" rows="3" cols="120" name="AboutMe" class="rte-zone" style="width: 600px; resize: none;">@Model.AboutMe</textarea>
+                    </div>
 
-                        <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
+                    <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
 
 
-                    </fieldset>
-                    <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
-                    
-                    
-                    
-                    <fieldset>
-                        <a id="contact_section"></a>
-                        <legend>Contact Information</legend>
+                </fieldset>
+                <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
 
-                        <table>
-                            <tr>
-                                <td class="left-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Contact.Street1, "Address Line1")
-                                    </div>
-                                    <div class="editor-field">
-                                        @Html.TextBoxFor(model => model.Contact.Street1, new { style = "width: 200px; margin-left: 2px;" })
-                                        @Html.ValidationMessageFor(model => model.Contact.Street1)
-                                    </div>
-                                </td>
-                                <td class="right-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Contact.Street2, "Address Line2")
-                                    </div>
-                                    <div class="editor-field">
-                                        @Html.TextBoxFor(model => model.Contact.Street2, new { style = "width: 200px;margin-left: 2px;" })
-                                        @Html.ValidationMessageFor(model => model.Contact.Street2)
-                                    </div>
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <td class="left-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Contact.City)
-                                    </div>
-                                    <div class="editor-field">
-                                        @Html.EditorFor(model => model.Contact.City)
-                                        @Html.ValidationMessageFor(model => model.Contact.City)
-                                    </div>
-                                </td>
-                                <td class="right-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Contact.Country)
-                                    </div>
-                                    <div class="editor-field">
-                                        @Html.EditorFor(model => model.Contact.Country)
-                                        @Html.ValidationMessageFor(model => model.Contact.Country)
-                                    </div>
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <td class="left-col">
+                <fieldset>
+                    <a id="contact_section"></a>
+                    <legend>Contact Information</legend>
 
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Contact.Mobile)
-                                    </div>
-                                    <div class="editor-field">
-                                        @Html.EditorFor(model => model.Contact.Mobile)
-                                        @Html.ValidationMessageFor(model => model.Contact.Mobile)
-                                    </div>
-                                </td>
-                                <td class="right-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Contact.Phone)
-                                    </div>
-                                    <div class="editor-field">
-                                        @Html.EditorFor(model => model.Contact.Phone)
-                                        @Html.ValidationMessageFor(model => model.Contact.Phone)
-                                    </div>
-                                </td>
-                            </tr>
+                    <table>
+                        <tr>
+                            <td class="left-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Contact.Street1, "Address Line1")
+                                </div>
+                                <div class="editor-field">
+                                    @Html.TextBoxFor(model => model.Contact.Street1, new { style = "width: 200px; margin-left: 2px;" })
+                                    @Html.ValidationMessageFor(model => model.Contact.Street1)
+                                </div>
+                            </td>
+                            <td class="right-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Contact.Street2, "Address Line2")
+                                </div>
+                                <div class="editor-field">
+                                    @Html.TextBoxFor(model => model.Contact.Street2, new { style = "width: 200px;margin-left: 2px;" })
+                                    @Html.ValidationMessageFor(model => model.Contact.Street2)
+                                </div>
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <td class="left-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Contact.Fax)
-                                    </div>
-                                    <div class="editor-field">
-                                        @Html.EditorFor(model => model.Contact.Fax)
-                                        @Html.ValidationMessageFor(model => model.Contact.Fax)
-                                    </div>
-                                </td>
-                                <td class="right-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Contact.Email)
-                                    </div>
-                                    <div class="editor-field">
-                                        @{
-                                          string prompt = "";
-                                          if (Model.Contact.Email == null) { prompt = Model.UserName; }
-                                          else { prompt = Model.Contact.Email; }
-                                        }
-                                        <input id="Contact_Email" name="Contact.Email" style="width: 200px;margin-left: 2px;" type="text" value="@prompt" class="valid">
-                                        @Html.ValidationMessageFor(model => model.Contact.Email)
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td class="left-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Contact.City)
+                                </div>
+                                <div class="editor-field">
+                                    @Html.EditorFor(model => model.Contact.City)
+                                    @Html.ValidationMessageFor(model => model.Contact.City)
+                                </div>
+                            </td>
+                            <td class="right-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Contact.Country)
+                                </div>
+                                <div class="editor-field">
+                                    @Html.EditorFor(model => model.Contact.Country)
+                                    @Html.ValidationMessageFor(model => model.Contact.Country)
+                                </div>
+                            </td>
+                        </tr>
 
-                            <tr>
-                                <td class="left-col"></td>
-                                <td class="right-col"></td>
-                            </tr>
+                        <tr>
+                            <td class="left-col">
 
-                            <tr>
-                                <td class="left-col">
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Contact.Website)
-                                    </div>
-                                    <div class="editor-field">
-                                        @Html.TextBoxFor(model => model.Contact.Website, new { style = "width: 200px;margin-left: 2px;" })
-                                        @Html.ValidationMessageFor(model => model.Contact.Website)
-                                    </div>
-                                </td>
-                                <td class="right-col"></td>
-                            </tr>
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Contact.Mobile)
+                                </div>
+                                <div class="editor-field">
+                                    @Html.EditorFor(model => model.Contact.Mobile)
+                                    @Html.ValidationMessageFor(model => model.Contact.Mobile)
+                                </div>
+                            </td>
+                            <td class="right-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Contact.Phone)
+                                </div>
+                                <div class="editor-field">
+                                    @Html.EditorFor(model => model.Contact.Phone)
+                                    @Html.ValidationMessageFor(model => model.Contact.Phone)
+                                </div>
+                            </td>
+                        </tr>
 
-                        </table>
+                        <tr>
+                            <td class="left-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Contact.Fax)
+                                </div>
+                                <div class="editor-field">
+                                    @Html.EditorFor(model => model.Contact.Fax)
+                                    @Html.ValidationMessageFor(model => model.Contact.Fax)
+                                </div>
+                            </td>
+                            <td class="right-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Contact.Email)
+                                </div>
+                                <div class="editor-field">
+                                    @{
+                                      string prompt = "";
+                                      if (Model.Contact.Email == null) { prompt = Model.UserName; }
+                                      else { prompt = Model.Contact.Email; }
+                                    }
+                                    <input id="Contact_Email" name="Contact.Email" style="width: 200px;margin-left: 2px;" type="text" value="@prompt" class="valid">
+                                    @Html.ValidationMessageFor(model => model.Contact.Email)
+                                </div>
+                            </td>
+                        </tr>
 
-                        <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
-                    </fieldset>
-                    <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
-                    
-                    
-                                          int i = 0;
-                    <div id="EducationFields">
+                        <tr>
+                            <td class="left-col"></td>
+                            <td class="right-col"></td>
+                        </tr>
 
-                        @foreach (var E in Model.Educations)
-                        {
+                        <tr>
+                            <td class="left-col">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Contact.Website)
+                                </div>
+                                <div class="editor-field">
+                                    @Html.TextBoxFor(model => model.Contact.Website, new { style = "width: 200px;margin-left: 2px;" })
+                                    @Html.ValidationMessageFor(model => model.Contact.Website)
+                                </div>
+                            </td>
+                            <td class="right-col"></td>
+                        </tr>
 
-                            string TempData = "Edu" + i.ToString();
-                            string TempData2 = "Delete" + i.ToString();
-                            string TempData3 = "Organization" + i.ToString();
-                            string TempData4 = "Country" + i.ToString();
-                            <div id=@TempData>
-                                <fieldset>
-                                    <a id="education_section"></a>
-                                    <legend>Education History</legend>
+                    </table>
+
+                    <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
+                </fieldset>
+                <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
+
+                <fieldset>
+                    <a id="education_section"></a>
+                    <legend>Education History</legend>
+                    @{
+                                      int i = 0;
+                        <div id="EducationFields">
+
+                            @foreach (var E in Model.Educations)
+                            {
+
+                                string TempData = "Edu" + i.ToString();
+                                string TempData2 = "Delete" + i.ToString();
+                                string TempData3 = "Organization" + i.ToString();
+                                string TempData4 = "Country" + i.ToString();
+                                <div id=@TempData>
+
+
                                     <div id=@TempData2  style="float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;" title="Click to delete this record.">
                                         x
                                     </div>
@@ -575,84 +564,84 @@
                                     <div class="editor-field">
                                         <input type="text" name="endYear" value="@Model.Educations.ElementAt(i).endYear" />
                                     </div>
-                                </fieldset>
 
-                            </div>
+
+                                </div>
             
-                            i = i + 1;
-                        }
-                        <p>
-                            <a class="btn" id="Add" style="" title="Click to add another record."><i class="icon-plus"></i></a>
-                            <input type="submit" value="Save" class="btn btn-primary" style="float: right;">
-                        </p>
-                        <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
+                                i = i + 1;
+                            }
+                            <p>
+                                <a class="btn" id="Add" style="" title="Click to add another record."><i class="icon-plus"></i></a>
+                                <input type="submit" value="Save" class="btn btn-primary" style="float: right;">
+                            </p>
+
+                        </div>
+                    }
+
+                </fieldset>
+                <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
+
+                <fieldset>
+                    <a id="professional_section"></a>
+                    <legend>Professional</legend>
+
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Organization, "Organization")
                     </div>
-                    
-                    <fieldset>
-                        <a id="professional_section"></a>
-                        <legend>Professional</legend>
+                    <div class="editor-field">
+                        <input type="text" id="Organization" name="Organization" style="margin-left:2px;width:350px" value="@Model.Organization" />
 
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Organization, "Organization")
-                        </div>
-                        <div class="editor-field">
-                            <input type="text" id="Organization" name="Organization" style="margin-left:2px;width:350px" value="@Model.Organization" />
+                    </div>
 
-                        </div>
-
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Departments, "Department")
-                        </div>
-                        <div class="editor-field">
-                            <input type="text" id="Departments" name="Departments" style="margin-left:2px;width:350px" value="@Model.Departments" />
-                        </div>
-                        <div id="Specialization" style="display: none; height: 22px;"></div>
-                        <div class="editor-label">
-                            @Html.LabelFor(model => model.Specializations, "Primary Field of Research")
-                        </div>
-                        <div class="editor-field" style="float: left; width: auto">
-                            <select multiple="multiple" name="Specialization" style="width: 300px; height: 150px">
-                                @{ 
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Departments, "Department")
+                    </div>
+                    <div class="editor-field">
+                        <input type="text" id="Departments" name="Departments" style="margin-left:2px;width:350px" value="@Model.Departments" />
+                    </div>
+                    <div id="Specialization" style="display: none; height: 22px;"></div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.Specializations, "Primary Field of Research")
+                    </div>
+                    <div class="editor-field" style="float: left; width: auto">
+                        <select multiple="multiple" name="Specialization" style="width: 300px; height: 150px">
+                            @{ 
                             
-                        FollowPeers.Models.FollowPeersDBEntities db = new FollowPeers.Models.FollowPeersDBEntities();
+                            FollowPeers.Models.FollowPeersDBEntities db = new FollowPeers.Models.FollowPeersDBEntities();
 
-                        IQueryable<string> Query = (from entry in db.Specializations
-                                                    orderby entry.Field
-                                                    select entry.Field).Distinct();
-                        int j = 0;
-                        foreach (string entry in Query)
-                        {
-                            IQueryable<FollowPeers.Models.Specialization> Query2 = from specialization in db.Specializations orderby specialization.Field where specialization.Field == entry select specialization;
-                            if (Model.Specializations.Where(p => p.Field == @entry).Count() == 0)
+                            IQueryable<string> Query = (from entry in db.Specializations
+                                                        orderby entry.Field
+                                                        select entry.Field).Distinct();
+                            int j = 0;
+                            foreach (string entry in Query)
                             {
-                                    <option value="@j">@entry</option>
-                            }
-                            else
-                            {
-                                    <option value="@i" selected="selected">@entry</option>
-                            }
-                            j = j + Query2.Count();
-                        }
+                                IQueryable<FollowPeers.Models.Specialization> Query2 = from specialization in db.Specializations orderby specialization.Field where specialization.Field == entry select specialization;
+                                if (Model.Specializations.Where(p => p.Field == @entry).Count() == 0)
+                                {
+                                <option value="@j">@entry</option>
                                 }
+                                else
+                                {
+                                <option value="@i" selected="selected">@entry</option>
+                                }
+                                j = j + Query2.Count();
+                            }
+                            }
 
-                            </select>
+                        </select>
 
 
-                        </div>
-                        <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
-                    </fieldset>
-                    <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
-                  
-                    
-                }
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Save" style="float: right;" />
+                </fieldset>
+                <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
+
             </div>
-
-        </div>
-
-
+        }
     </div>
 
 </div>
+
 
 @*<ul id="SpecializationIdmenu" class="mcdropdown_menu" style="left:495px;">
 @{  
