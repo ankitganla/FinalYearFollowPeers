@@ -32,17 +32,65 @@
     }
     
 }
+<head>
+    <title>ProfilePubView</title>
+    <style media="screen" type="text/css">
+        .profilepagetabs ul
+        {
+            padding: 0px;
+            margin: 0px;
+            margin-left: 0px;
+            width: 180px;
+        }
+
+            .profilepagetabs ul li
+            {
+                display: block;
+                height: auto;
+                width: 180px;
+                text-align: center;
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+
+                .profilepagetabs ul li a
+                {
+                    /* The following four lines are to make the top left and top right corners of the content area rounded. */
+                    -moz-border-radius-topleft: 4px;
+                    border-top-left-radius: 4px;
+                    -moz-border-radius-topright: 4px;
+                    border-top-right-radius: 4px;
+                    -moz-border-radius-bottomleft: 4px;
+                    border-bottom-left-radius: 4px;
+                    -moz-border-radius-bottomright: 4px;
+                    border-bottom-right-radius: 4px;
+                    margin-left: 0px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    border: solid;
+                    border-width: 1px;
+                    border-color: #45aeea;
+                    font-weight: bold;
+                    color: #45aeea;
+                }
+
+                    .profilepagetabs ul li a:hover
+                    {
+                        text-decoration: underline;
+                    }
 
 
+        .profilepagetabs li.current a
+        {
+            background-color: #45aeea;
+            color: white;
+        }
+    </style>
+</head>
 <div class="container" style="padding: 0;">
-    <div class="span8 main-content" >
-        
-        <ul class="nav nav-tabs" id="myTab">
-            <li id="li_tab1" class="active" onclick="tab('tab1')"><a>Uploaded Publications</a></li>
-            <li id="li_tab3" onclick="tab('tab3')"><a>Favourites</a></li>
-            <li id="li_tab4" onclick="tab('tab4')"><a>Recommended Publications</a></li>
+    <div class="span8 main-content">
 
-        </ul>
+
         <div class="tab-content">
             <div id="tab1" style="display: block;" class="tab-pane active">
                 @{
@@ -198,6 +246,17 @@
         </div>
 
     </div>
+    <div class="span2 profilepagetabs">
+
+        <a class="btn btn-primary" href="/PublicationModel/Create/1">New Publication</a>
+
+        <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+            <li class="current" id="li_tab1" onclick="tab('tab1')"><a>Uploaded</a></li>
+            <li id="li_tab3" onclick="tab('tab3')"><a>Favourites</a></li>
+            <li id="li_tab4" onclick="tab('tab4')"><a>Recommended</a></li>
+
+        </ul>
+    </div>
 </div>
 
 
@@ -245,7 +304,7 @@
         document.getElementById('li_tab4').setAttribute("class", "");
 
         document.getElementById(tab).style.display = 'block';
-        document.getElementById('li_' + tab).setAttribute("class", "active");
+        document.getElementById('li_' + tab).setAttribute("class", "current");
     }
 
 </script>

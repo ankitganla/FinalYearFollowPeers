@@ -6,53 +6,67 @@
     ViewBag.Title = "Browse Courses";
 }
 
-@Html.Partial("CourseRightSideBar")
-
 @*Container*@
 <div class="container">
 
-@*rows within container*@
-<div class="row">
-    <div class="grid_9">
-        <div class="box">
-            <h2 style="height: 20px">Browse Courses</h2>
-            @Html.ActionLink("Create New", "Create")
-            <table style="margin:5px 0px 5px 0px">
+    @*rows within container*@
+    <div class="span8 main-content">
+        <div class="rpw">
+            <span class="label label-info">Number of Courses: @Model.Count()</span>
+        </div>
+        <div class="row">
             @{
-                if (Model.Any(c => c.CourseId > 0))
+                if (Model.Count() != 0)
                 {
-                    foreach (var item in Model)
-                    {
                 
-                        <tr >
+                <table class="span7">
+
+                    @foreach (var item in Model)
+                    {
+                        string mouseid1 = "#mouse" + @item.CourseId;
+                        string mouseid2 = "mouse" + @item.CourseId;
+                
+                        <tr>
                             <td>
-                                <div class="CourseContainer">
-                                    <img src="@item.PhotoUrl" style="width:10%; height:48px; padding:5px 2px 5px 2px; display:inline-block; float:left;"/>
-                                    <div class="courseDetails" style="width:73%;height:40px; float:left; padding: 5px 0px 0px 10px;">
-                                        <div class="courseName"> @Html.ActionLink(item.CourseName, "Details", new { id = item.CourseId })</div>
-                                        <div class="courseDescription">@Html.Label(item.CourseDescription)</div>
+
+                                <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
+                                    <div style="float: left;" id="mouse" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="@mouseid1" >
+                                        @*@if (item.PhotoUrl != "" && item.PhotoUrl != null)
+                                            {
+                                                <img class="mouseover" src="../../Content/Files/@item. UserProfile.UserName/Publications/@item.imagename" alt="" style="margin-left: auto; margin-right: auto;width: 50px;"/>
+                                            }
+                                            else
+                                            {*@
+                                        <img src="../../Content/images/Pub1.png" alt="" style="margin-left: auto; margin-right: auto; width: 50px;" />
+                                        @*}*@
                                     </div>
+                                    <div style="margin-left: 8px; float: left;">
+                                        <a href="/Course/Details/@item.CourseId" id="title"><b>@item.CourseName</b></a>
+                                        <div>Description: @item.CourseDescription</div>
+                                    </div>
+
                                 </div>
+                                <hr />
                             </td>
                         </tr>
+   
                     }
-
+                </table>
                 }
                 else
                 {
-                    <tr>
-                        <td>There are not courses at present. You can add a course by clicking the button below.
-                         </td>
-                    </tr> 
-                }        
+                <span class="label label-info">Number of courses: @Model.Count()</span>
+                }
             }
-            </table>
         </div>
+
     </div>
-    </div> <!--End Of Row-->
 
-<div class="row">
-@Html.Partial("_Footer")
- </div>
-
+    <div class="span2 profilepagetabs">
+        <a class="btn btn-primary" href="@Url.Content("~/Course/Create")">Post New Course</a>
+    </div>
 </div>
+
+
+
+

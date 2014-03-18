@@ -127,7 +127,7 @@
                 }
             </div>
             <br />
-            
+
 
             <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
                 @{
@@ -138,22 +138,32 @@
                     
                     <div class="profilepagetabs" style="border: none;">
                         <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
-                            <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')"><a>NOTICE BOARD</a></li>
-                            <li id="li_photos" onclick="tabresponse('photos')"><a>PHOTOS</a></li>
-                            <li id="li_publications" onclick="tabresponse('publications')"><a>PUBLICATIONS</a></li>
-                            <li id="li_jobs" onclick="tabresponse('jobs')"><a>JOBS</a></li>
-                            <li id="li_courses" onclick="tabresponse('courses')"><a>COURSES</a></li>
-                            <li id="li_about" onclick="tabresponse('about')"><a>ABOUT</a></li>
+                            <li class="current" id="li_noticeboard" onclick="tabresponse('noticeboard')">
+                                <a><i class="icon-home" style="float: left;"></i>
+                                    Notice Board
+                                </a>
+                            </li>
+                            <li id="li_photos" onclick="tabresponse('photos')"><a>
+                                <i class="icon-picture" style="float: left;"></i>Photos</a></li>
+                            <li id="li_publications" onclick="tabresponse('publications')"><a>
+                                <i class="icon-book" style="float: left;"></i>Publications</a></li>
+                            <li id="li_jobs" onclick="tabresponse('jobs')"><a>
+                                <i class="icon-file" style="float: left;"></i>Jobs</a>
+                            </li>
+                            <li id="li_courses" onclick="tabresponse('courses')"><a>
+                                <i class="icon-tag" style="float: left;"></i>Courses</a></li>
+                            <li id="li_about" onclick="tabresponse('about')"><a>
+                                <i class="icon-pencil" style="float: left;"></i>About</a></li>
                         </ul>
                     </div>
                     }
                     else
                     {
-                        
+
                         //stranger
                         
                     <div class="profilepagetabs" style="border: none;">
-                        
+
                         <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
                             <li class="current" onclick="tabresponse('about')"><a>ABOUT</a></li>
                         </ul>
@@ -221,14 +231,9 @@
                     
                     <div id="photos" style="display: none;">
 
-                        @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
-                        {
-                            <h3 style="display: inline-block;">@Html.Raw(Model.FirstName)'s Photos</h3>
-                            <div style="display: inline-block; float: right;">
-                                <a class="btn btn-primary" style="position: relative; top: 10px;">Add New</a>
-                                <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -85px; top: 10px; width: 80px; height: 30px; opacity: 0;" />
-                            </div>
-                        }
+
+                        <h3 style="display: inline-block;">@Html.Raw(Model.FirstName)'s Photos</h3>
+
 
                         @Html.Partial("ProfilePhotoTabView")
 
@@ -237,9 +242,7 @@
                     <div id="publications" style="display: none;">
 
                         <h3 style="display: inline-block;">@Html.Raw(firstName)'s Publications</h3>
-                        <div style="display: inline-block; float: right;">
-                            <a class="btn btn-primary" href="/PublicationModel/Create/1">New Publication</a>
-                        </div>
+
 
                         @Html.Partial("ProfilePublicationTabView", Model.Publication)
                     </div>
@@ -247,15 +250,13 @@
                     <div id="jobs" style="display: none;">
 
                         <h3 style="display: inline-block;">@Html.Raw(firstName)'s Jobs</h3>
-                        <div style="display: inline-block; float: right;">
-                            <a class="btn btn-primary" href="@Url.Content("~/Jobs/Create/1")">Post New Job</a>
-                        </div>
+
 
                         @Html.Partial("ProfileJobsTabView", Model.Jobs)
                     </div>
                         
                     <div id="courses" style="display: none;">
-
+                        <h3 style="display: inline-block;">@Html.Raw(firstName)'s Courses</h3>
                         @Html.Partial("ProfileCoursesTabView", Model.Courses)
                     </div>
                     
@@ -341,7 +342,7 @@
             return [];
         }
 
-        
+
 
     });
 
@@ -408,7 +409,7 @@
         }
     }
 
-    
+
 </script>
 
 
