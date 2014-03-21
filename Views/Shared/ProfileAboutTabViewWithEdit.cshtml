@@ -477,6 +477,7 @@
                                       if (Model.Contact.Email == null) { prompt = Model.UserName; }
                                       else { prompt = Model.Contact.Email; }
                                     }
+
                                     <input id="Contact_Email" name="Contact.Email" style="width: 200px;margin-left: 2px;" type="text" value="@prompt" class="valid">
                                     @Html.ValidationMessageFor(model => model.Contact.Email)
                                 </div>
