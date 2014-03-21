@@ -290,7 +290,7 @@
     <div class="row">
 
         @*Main Content*@
-        @using (Html.BeginForm("EditProfile", "Profile"))
+        @using (Html.BeginForm("EditProfile", "Profile", FormMethod.Post))
         {
             <div class="span8 main-content">
 
@@ -365,11 +365,11 @@
                                 </div>
                                 <div class="editor-field">
                                     @Html.HiddenFor(model => model.Birthday)
-                                    <input id="EventDate" class="small" type="date" name="EventDate" value= "@Model.Birthday.ToString()" data-datepicker="datepicker">
-                                @Html.ValidationMessageFor(model => model.Birthday)
+                                    <input id="EventDate" class="small" type="date" name="EventDate" value= "@Model.Birthday" data-datepicker="datepicker">
+                                    @Html.ValidationMessageFor(model => model.Birthday)
                                 </div>
                             </td>
-                            
+
                         </tr>
 
                     </table>
@@ -381,7 +381,7 @@
                         <textarea id="TextArea" rows="3" cols="120" name="AboutMe" class="rte-zone" style="width: 600px; resize: none;">@Model.AboutMe</textarea>
                     </div>
 
-                    
+
 
 
                 </fieldset>
@@ -502,74 +502,74 @@
 
                     </table>
 
-                    
+
                 </fieldset>
                 <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
 
-                
-                    <a id="education_section"></a>
-                    
-                    @{
+
+                <a id="education_section"></a>
+
+                @{
                                       int i = 0;
-                        <div id="EducationFields">
+                    <div id="EducationFields">
 
-                            @foreach (var E in Model.Educations)
-                            {
+                        @foreach (var E in Model.Educations)
+                        {
 
-                                string TempData = "Edu" + i.ToString();
-                                string TempData2 = "Delete" + i.ToString();
-                                string TempData3 = "Organization" + i.ToString();
-                                string TempData4 = "Country" + i.ToString();
-                                <div id=@TempData>
-
-
-                                    <div id=@TempData2  style="float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;" title="Click to delete this record.">
-                                        x
-                                    </div>
-                                    <div class="editor-label">
-                                        @Html.LabelFor(model => model.Organization, "Institution")
-                                    </div>
-                                    <div class="editor-field">
-                                        <input type="text" id="@TempData3" name="Organization" style="margin-left:2px;width:210px" value="@Model.Educations.ElementAt(i).UniversityName" />
-                                    </div>
-                                    <div class="editor-label">
-                                        Country
-                                    </div>
-                                    <div class="editor-field">
-                                        <input type="text" name="Country" id="@TempData4" style="margin-left:2px;width:210px" value="@Html.Encode(Model.Educations.ElementAt(i).country)" />
-                                    </div>
-                                    <div class="editor-label">
-                                        Degree
-                                    </div>
-                                    <div class="editor-field">
-                                        <input type="text" name="Degree" value="@Model.Educations.ElementAt(i).Degree" />
-                                    </div>
-
-                                    <div class="editor-label">
-                                        Start Year (yyyy)
-                                    </div>
-                                    <div class="editor-field">
-                                        <input type="text" name="startYear" value="@Model.Educations.ElementAt(i).startYear" />
-                                    </div>
-                                    <div class="editor-label">
-                                        End Year (yyyy)
-                                    </div>
-                                    <div class="editor-field">
-                                        <input type="text" name="endYear" value="@Model.Educations.ElementAt(i).endYear" />
-                                    </div>
+                            string TempData = "Edu" + i.ToString();
+                            string TempData2 = "Delete" + i.ToString();
+                            string TempData3 = "Organization" + i.ToString();
+                            string TempData4 = "Country" + i.ToString();
+                            <div id=@TempData>
 
 
+                                <div id=@TempData2  style="float: right;background: lightGrey;color: dimGray;padding: 0px 6px;cursor: pointer;" title="Click to delete this record.">
+                                    x
                                 </div>
-            
-                                i = i + 1;
-                            }
-                            <p>
-                                <a class="btn" id="Add" style="" title="Click to add another record."><i class="icon-plus"></i></a>
-                               
-                            </p>
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Organization, "Institution")
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" id="@TempData3" name="Organization" style="margin-left:2px;width:210px" value="@Model.Educations.ElementAt(i).UniversityName" />
+                                </div>
+                                <div class="editor-label">
+                                    Country
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="Country" id="@TempData4" style="margin-left:2px;width:210px" value="@Html.Encode(Model.Educations.ElementAt(i).country)" />
+                                </div>
+                                <div class="editor-label">
+                                    Degree
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="Degree" value="@Model.Educations.ElementAt(i).Degree" />
+                                </div>
 
-                        </div>
-                    }
+                                <div class="editor-label">
+                                    Start Year (yyyy)
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="startYear" value="@Model.Educations.ElementAt(i).startYear" />
+                                </div>
+                                <div class="editor-label">
+                                    End Year (yyyy)
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="endYear" value="@Model.Educations.ElementAt(i).endYear" />
+                                </div>
+
+
+                            </div>
+            
+                            i = i + 1;
+                        }
+                        <p>
+                            <a class="btn" id="Add" style="" title="Click to add another record."><i class="icon-plus"></i></a>
+
+                        </p>
+
+                    </div>
+                }
 
                 <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
 
@@ -599,32 +599,32 @@
                         <select multiple="multiple" name="Specialization" style="width: 300px; height: 150px">
                             @{ 
                             
-                            FollowPeers.Models.FollowPeersDBEntities db = new FollowPeers.Models.FollowPeersDBEntities();
+                        FollowPeers.Models.FollowPeersDBEntities db = new FollowPeers.Models.FollowPeersDBEntities();
 
-                            IQueryable<string> Query = (from entry in db.Specializations
-                                                        orderby entry.Field
-                                                        select entry.Field).Distinct();
-                            int j = 0;
-                            foreach (string entry in Query)
+                        IQueryable<string> Query = (from entry in db.Specializations
+                                                    orderby entry.Field
+                                                    select entry.Field).Distinct();
+                        int j = 0;
+                        foreach (string entry in Query)
+                        {
+                            IQueryable<FollowPeers.Models.Specialization> Query2 = from specialization in db.Specializations orderby specialization.Field where specialization.Field == entry select specialization;
+                            if (Model.Specializations.Where(p => p.Field == @entry).Count() == 0)
                             {
-                                IQueryable<FollowPeers.Models.Specialization> Query2 = from specialization in db.Specializations orderby specialization.Field where specialization.Field == entry select specialization;
-                                if (Model.Specializations.Where(p => p.Field == @entry).Count() == 0)
-                                {
                                 <option value="@j">@entry</option>
-                                }
-                                else
-                                {
-                                <option value="@i" selected="selected">@entry</option>
-                                }
-                                j = j + Query2.Count();
                             }
+                            else
+                            {
+                                <option value="@i" selected="selected">@entry</option>
+                            }
+                            j = j + Query2.Count();
+                        }
                             }
 
                         </select>
 
 
                     </div>
-                    
+
                 </fieldset>
                 <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
 

@@ -2373,7 +2373,7 @@ namespace FollowPeers.Controllers
 
 
         [HttpPost, ValidateInput(false)]
-        public ActionResult EditProfile(FormCollection formCollection, int[] Specialization)
+        public ActionResult EditProfile(FormCollection formCollection)
         {
             
             string name = Membership.GetUser().UserName;
@@ -2383,16 +2383,16 @@ namespace FollowPeers.Controllers
             userprofile.LastName = formCollection[4];
             userprofile.Gender = formCollection[5];
             userprofile.Status = formCollection[6];
-            
-            userprofile.Birthday = Convert.ToDateTime(formCollection[8]);
+            //birthday giving issues
+            //userprofile.Birthday = Convert.ToDateTime(formCollection[8]);
             userprofile.AboutMe = formCollection[9];
 
-            
+      
            
             CreateUpdates("Profile information updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
             followPeersDB.Entry(userprofile).State = EntityState.Modified;
             followPeersDB.SaveChanges();
-            return RedirectToAction("Edit", "Profile", new { message = "Successfully Updated" });
+            return RedirectToAction("Index", "Profile", new { message = "Successfully Updated", id = userprofile.UserProfileId });
             
 
            
