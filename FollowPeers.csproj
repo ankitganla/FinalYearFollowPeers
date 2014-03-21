@@ -34,6 +34,24 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="FollowPeersDBEntities-Deployment" Order="1" xmlns="">
+          <Destination Path="Data Source=tcp:ulvxpy9dec.database.windows.net,1433%3bInitial Catalog=FollowMyPeer%3bPersist Security Info=True%3bUser ID=SQLAdmin%40ulvxpy9dec%3bPassword=FollowMyPeer1" />
+          <Object Type="DbFullSql">
+            <PreSource Path="Data Source=C:\Users\Lucas\Documents\GitHub\FinalYearFollowPeers\App_Data\FollowPeersDB.sdf" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Debug\AutoScripts\FollowPeersDBEntities-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+        <ObjectGroup Name="ApplicationServices-Deployment" Order="2" xmlns="">
+          <Destination Path="Data Source=tcp:ulvxpy9dec.database.windows.net,1433%3bInitial Catalog=master%3bPersist Security Info=True%3bUser ID=SQLAdmin%40ulvxpy9dec%3bPassword=FollowMyPeer1" />
+          <Object Type="DbFullSql">
+            <PreSource Path="Data Source=%28LocalDB%29\v11.0%3bAttachDbFilename=C:\Users\Lucas\Documents\GitHub\FinalYearFollowPeers\App_Data\ASPNETDB.MDF%3bIntegrated Security=True%3bConnect Timeout=30" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Debug\AutoScripts\ApplicationServices-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,8 +62,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.2.0.0\lib\net40\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\EntityFramework.6.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>packages\EntityFramework.6.0.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -64,6 +86,12 @@
       <HintPath>..\FollowPeersShrutiOld\bin\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Data.Edm, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Data.OData.5.2.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\FollowPeersShrutiOld\bin\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
@@ -71,6 +99,18 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\FollowPeersShrutiOld\bin\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.1.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Diagnostics, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.ServiceRuntime, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\WindowsAzure.Storage.2.1.0.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,7 +125,14 @@
       <HintPath>bin\SignalR.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Services.Client" />
+    <Reference Include="System.Spatial, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\System.Spatial.5.2.0\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Providers">
+      <HintPath>packages\Microsoft.AspNet.Providers.Core.2.0.0\lib\net40\System.Web.Providers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -187,22 +234,13 @@
   <ItemGroup>
     <Content Include="App_Data\FollowPeersDB.sdf" />
     <Content Include="bin\EntityFramework.dll" />
-    <Content Include="bin\EntityFramework.xml" />
-    <Content Include="bin\FollowPeers.dll" />
-    <Content Include="bin\FollowPeers.pdb" />
     <Content Include="bin\Microsoft.AspNet.SignalR.Client.dll" />
-    <Content Include="bin\Microsoft.AspNet.SignalR.Client.xml" />
     <Content Include="bin\Microsoft.AspNet.SignalR.Core.dll" />
-    <Content Include="bin\Microsoft.AspNet.SignalR.Core.xml" />
     <Content Include="bin\Microsoft.AspNet.SignalR.Owin.dll" />
-    <Content Include="bin\Microsoft.AspNet.SignalR.Owin.xml" />
     <Content Include="bin\Microsoft.AspNet.SignalR.SystemWeb.dll" />
-    <Content Include="bin\Microsoft.AspNet.SignalR.SystemWeb.xml" />
     <Content Include="bin\Microsoft.Owin.Host.SystemWeb.dll" />
-    <Content Include="bin\Microsoft.Owin.Host.SystemWeb.xml" />
     <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
     <Content Include="bin\Newtonsoft.Json.dll" />
-    <Content Include="bin\Newtonsoft.Json.xml" />
     <Content Include="bin\Owin.dll" />
     <Content Include="bin\WebMatrix.Data.dll" />
     <Content Include="Content\css\bootstrap.css" />
@@ -214,7 +252,6 @@
     <Content Include="Content\css\images\ui-bg_glass_75_dadada_1x400.png" />
     <Content Include="Content\css\images\ui-bg_glass_75_e6e6e6_1x400.png" />
     <Content Include="Content\css\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\css\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
     <Content Include="Content\css\images\ui-icons_222222_256x240.png" />
     <Content Include="Content\css\images\ui-icons_2e83ff_256x240.png" />
     <Content Include="Content\css\images\ui-icons_454545_256x240.png" />
@@ -273,8 +310,6 @@
     <Content Include="Content\images\icons\16x16\application_form.png" />
     <Content Include="Content\images\icons\16x16\application_form_add.png" />
     <Content Include="Content\images\icons\16x16\application_form_delete.png" />
-    <Content Include="Content\images\icons\16x16\application_form_edit.png" />
-    <Content Include="Content\images\icons\16x16\application_form_magnify.png" />
     <Content Include="Content\images\icons\16x16\application_from_storage.png" />
     <Content Include="Content\images\icons\16x16\application_get.png" />
     <Content Include="Content\images\icons\16x16\application_go.png" />
@@ -291,8 +326,6 @@
     <Content Include="Content\images\icons\16x16\application_side_list.png" />
     <Content Include="Content\images\icons\16x16\application_side_tree.png" />
     <Content Include="Content\images\icons\16x16\application_split.png" />
-    <Content Include="Content\images\icons\16x16\application_tile_horizontal.png" />
-    <Content Include="Content\images\icons\16x16\application_tile_vertical.png" />
     <Content Include="Content\images\icons\16x16\application_view_columns.png" />
     <Content Include="Content\images\icons\16x16\application_view_detail.png" />
     <Content Include="Content\images\icons\16x16\application_view_gallery.png" />
@@ -315,7 +348,6 @@
     <Content Include="Content\images\icons\16x16\arrow_refresh.png" />
     <Content Include="Content\images\icons\16x16\arrow_refresh_small.png" />
     <Content Include="Content\images\icons\16x16\arrow_right.png" />
-    <Content Include="Content\images\icons\16x16\arrow_rotate_anticlockwise.png" />
     <Content Include="Content\images\icons\16x16\arrow_rotate_clockwise.png" />
     <Content Include="Content\images\icons\16x16\arrow_switch.png" />
     <Content Include="Content\images\icons\16x16\arrow_turn_left.png" />
@@ -342,7 +374,6 @@
     <Content Include="Content\images\icons\16x16\award_star_gold_3.png" />
     <Content Include="Content\images\icons\16x16\award_star_silver_1.png" />
     <Content Include="Content\images\icons\16x16\award_star_silver_2.png" />
-    <Content Include="Content\images\icons\16x16\award_star_silver_3.png" />
     <Content Include="Content\images\icons\16x16\backpack.png" />
     <Content Include="Content\images\icons\16x16\backup_manager.png" />
     <Content Include="Content\images\icons\16x16\balance.png" />
@@ -715,7 +746,6 @@
     <Content Include="Content\images\icons\16x16\control_equalizer.png" />
     <Content Include="Content\images\icons\16x16\control_equalizer_blue.png" />
     <Content Include="Content\images\icons\16x16\control_fastforward.png" />
-    <Content Include="Content\images\icons\16x16\control_fastforward_blue.png" />
     <Content Include="Content\images\icons\16x16\control_panel.png" />
     <Content Include="Content\images\icons\16x16\control_panel_access.png" />
     <Content Include="Content\images\icons\16x16\control_panel_branding.png" />
@@ -734,11 +764,9 @@
     <Content Include="Content\images\icons\16x16\control_stop_blue.png" />
     <Content Include="Content\images\icons\16x16\conversion_of_currency.png" />
     <Content Include="Content\images\icons\16x16\convert_color_to_gray.png" />
-    <Content Include="Content\images\icons\16x16\convert_gray_to_color.png" />
     <Content Include="Content\images\icons\16x16\cookies.png" />
     <Content Include="Content\images\icons\16x16\cookie_chocolate.png" />
     <Content Include="Content\images\icons\16x16\cooler.png" />
-    <Content Include="Content\images\icons\16x16\copying_and_distribution.png" />
     <Content Include="Content\images\icons\16x16\copyleft.png" />
     <Content Include="Content\images\icons\16x16\creative_commons.png" />
     <Content Include="Content\images\icons\16x16\credit.png" />
@@ -810,7 +838,6 @@
     <Content Include="Content\images\icons\16x16\discover.png" />
     <Content Include="Content\images\icons\16x16\disk.png" />
     <Content Include="Content\images\icons\16x16\disk_multiple.png" />
-    <Content Include="Content\images\icons\16x16\distribution_partnerships.png" />
     <Content Include="Content\images\icons\16x16\dns.png" />
     <Content Include="Content\images\icons\16x16\dns_setting.png" />
     <Content Include="Content\images\icons\16x16\documents_email.png" />
@@ -843,7 +870,6 @@
     <Content Include="Content\images\icons\16x16\document_mark_as_final.png" />
     <Content Include="Content\images\icons\16x16\document_move.png" />
     <Content Include="Content\images\icons\16x16\document_next.png" />
-    <Content Include="Content\images\icons\16x16\document_notes.png" />
     <Content Include="Content\images\icons\16x16\document_num.png" />
     <Content Include="Content\images\icons\16x16\document_page.png" />
     <Content Include="Content\images\icons\16x16\document_page_last.png" />
@@ -1096,7 +1122,6 @@
     <Content Include="Content\images\icons\16x16\finance.png" />
     <Content Include="Content\images\icons\16x16\find.png" />
     <Content Include="Content\images\icons\16x16\fire.png" />
-    <Content Include="Content\images\icons\16x16\firefox.png" />
     <Content Include="Content\images\icons\16x16\firewall.png" />
     <Content Include="Content\images\icons\16x16\firewall_burn.png" />
     <Content Include="Content\images\icons\16x16\fire_extinguisher.png" />
@@ -1303,7 +1328,6 @@
     <Content Include="Content\images\icons\16x16\key_w.png" />
     <Content Include="Content\images\icons\16x16\key_x.png" />
     <Content Include="Content\images\icons\16x16\key_y.png" />
-    <Content Include="Content\images\icons\16x16\key_z.png" />
     <Content Include="Content\images\icons\16x16\kids.png" />
     <Content Include="Content\images\icons\16x16\ladybird.png" />
     <Content Include="Content\images\icons\16x16\landmarks.png" />
@@ -1381,7 +1405,6 @@
     <Content Include="Content\images\icons\16x16\lock_delete.png" />
     <Content Include="Content\images\icons\16x16\lock_edit.png" />
     <Content Include="Content\images\icons\16x16\lock_go.png" />
-    <Content Include="Content\images\icons\16x16\lock_open.png" />
     <Content Include="Content\images\icons\16x16\lollipop.png" />
     <Content Include="Content\images\icons\16x16\lorry.png" />
     <Content Include="Content\images\icons\16x16\lorry_add.png" />
@@ -1519,7 +1542,6 @@
     <Content Include="Content\images\icons\16x16\page_delete.png" />
     <Content Include="Content\images\icons\16x16\page_edit.png" />
     <Content Include="Content\images\icons\16x16\page_error.png" />
-    <Content Include="Content\images\icons\16x16\page_excel.png" />
     <Content Include="Content\images\icons\16x16\page_find.png" />
     <Content Include="Content\images\icons\16x16\page_gear.png" />
     <Content Include="Content\images\icons\16x16\page_go.png" />
@@ -1572,7 +1594,6 @@
     <Content Include="Content\images\icons\16x16\page_white_php.png" />
     <Content Include="Content\images\icons\16x16\page_white_picture.png" />
     <Content Include="Content\images\icons\16x16\page_white_powerpoint.png" />
-    <Content Include="Content\images\icons\16x16\page_white_put.png" />
     <Content Include="Content\images\icons\16x16\page_white_ruby.png" />
     <Content Include="Content\images\icons\16x16\page_white_stack.png" />
     <Content Include="Content\images\icons\16x16\page_white_star.png" />
@@ -1668,7 +1689,6 @@
     <Content Include="Content\images\icons\16x16\print_size.png" />
     <Content Include="Content\images\icons\16x16\private.png" />
     <Content Include="Content\images\icons\16x16\processor.png" />
-    <Content Include="Content\images\icons\16x16\production_copyleft.png" />
     <Content Include="Content\images\icons\16x16\profiles.png" />
     <Content Include="Content\images\icons\16x16\progressbar.png" />
     <Content Include="Content\images\icons\16x16\qip_angry.png" />
@@ -1735,18 +1755,14 @@
     <Content Include="Content\images\icons\16x16\routing_forward.png" />
     <Content Include="Content\images\icons\16x16\routing_go_left.png" />
     <Content Include="Content\images\icons\16x16\routing_go_right.png" />
-    <Content Include="Content\images\icons\16x16\routing_go_straight_left.png" />
     <Content Include="Content\images\icons\16x16\routing_go_straight_right.png" />
-    <Content Include="Content\images\icons\16x16\routing_intersection_right.png" />
     <Content Include="Content\images\icons\16x16\routing_turnaround_left.png" />
     <Content Include="Content\images\icons\16x16\routing_turnaround_right.png" />
     <Content Include="Content\images\icons\16x16\routing_turning_left.png" />
     <Content Include="Content\images\icons\16x16\routing_turning_right.png" />
     <Content Include="Content\images\icons\16x16\routing_turn_arround_left.png" />
-    <Content Include="Content\images\icons\16x16\routing_turn_arround_right.png" />
     <Content Include="Content\images\icons\16x16\routing_turn_left.png" />
     <Content Include="Content\images\icons\16x16\routing_turn_left_2.png" />
-    <Content Include="Content\images\icons\16x16\routing_turn_left_crossroads.png" />
     <Content Include="Content\images\icons\16x16\routing_turn_right.png" />
     <Content Include="Content\images\icons\16x16\routing_turn_right_2.png" />
     <Content Include="Content\images\icons\16x16\routing_turn_u.png" />
@@ -1786,7 +1802,6 @@
     <Content Include="Content\images\icons\16x16\script_gear.png" />
     <Content Include="Content\images\icons\16x16\script_go.png" />
     <Content Include="Content\images\icons\16x16\script_key.png" />
-    <Content Include="Content\images\icons\16x16\script_lightning.png" />
     <Content Include="Content\images\icons\16x16\script_link.png" />
     <Content Include="Content\images\icons\16x16\script_palette.png" />
     <Content Include="Content\images\icons\16x16\script_save.png" />
@@ -2106,7 +2121,6 @@
     <Content Include="Content\images\icons\16x16\transform_crop.png" />
     <Content Include="Content\images\icons\16x16\transform_crop_resize.png" />
     <Content Include="Content\images\icons\16x16\transform_flip.png" />
-    <Content Include="Content\images\icons\16x16\transform_layer.png" />
     <Content Include="Content\images\icons\16x16\transform_move.png" />
     <Content Include="Content\images\icons\16x16\transform_path.png" />
     <Content Include="Content\images\icons\16x16\transform_perspective.png" />
@@ -2185,7 +2199,6 @@
     <Content Include="Content\images\icons\16x16\webcam_add.png" />
     <Content Include="Content\images\icons\16x16\webcam_delete.png" />
     <Content Include="Content\images\icons\16x16\webcam_error.png" />
-    <Content Include="Content\images\icons\16x16\web_concierge.png" />
     <Content Include="Content\images\icons\16x16\weight.png" />
     <Content Include="Content\images\icons\16x16\whistle.png" />
     <Content Include="Content\images\icons\16x16\widescreen.png" />
@@ -2243,7 +2256,6 @@
     <Content Include="Content\images\icons\32x32\administrator.png" />
     <Content Include="Content\images\icons\32x32\advanced_data_grid.png" />
     <Content Include="Content\images\icons\32x32\advertising.png" />
-    <Content Include="Content\images\icons\32x32\agp.png" />
     <Content Include="Content\images\icons\32x32\alarm_bell.png" />
     <Content Include="Content\images\icons\32x32\align_above.png" />
     <Content Include="Content\images\icons\32x32\align_bellow.png" />
@@ -2292,7 +2304,6 @@
     <Content Include="Content\images\icons\32x32\application_side_tree.png" />
     <Content Include="Content\images\icons\32x32\application_split.png" />
     <Content Include="Content\images\icons\32x32\application_tile_horizontal.png" />
-    <Content Include="Content\images\icons\32x32\application_tile_vertical.png" />
     <Content Include="Content\images\icons\32x32\application_view_columns.png" />
     <Content Include="Content\images\icons\32x32\application_view_detail.png" />
     <Content Include="Content\images\icons\32x32\application_view_gallery.png" />
@@ -2503,7 +2514,6 @@
     <Content Include="Content\images\icons\32x32\calendar_edit.png" />
     <Content Include="Content\images\icons\32x32\calendar_link.png" />
     <Content Include="Content\images\icons\32x32\calendar_view_day.png" />
-    <Content Include="Content\images\icons\32x32\calendar_view_month.png" />
     <Content Include="Content\images\icons\32x32\calendar_view_week.png" />
     <Content Include="Content\images\icons\32x32\camera.png" />
     <Content Include="Content\images\icons\32x32\camera_add.png" />
@@ -2586,7 +2596,6 @@
     <Content Include="Content\images\icons\32x32\chart_bar_delete.png" />
     <Content Include="Content\images\icons\32x32\chart_bar_edit.png" />
     <Content Include="Content\images\icons\32x32\chart_bar_error.png" />
-    <Content Include="Content\images\icons\32x32\chart_bar_link.png" />
     <Content Include="Content\images\icons\32x32\chart_bullseye.png" />
     <Content Include="Content\images\icons\32x32\chart_column.png" />
     <Content Include="Content\images\icons\32x32\chart_column_2.png" />
@@ -2717,7 +2726,6 @@
     <Content Include="Content\images\icons\32x32\control_fastforward.png" />
     <Content Include="Content\images\icons\32x32\control_fastforward_blue.png" />
     <Content Include="Content\images\icons\32x32\control_panel.png" />
-    <Content Include="Content\images\icons\32x32\control_panel_access.png" />
     <Content Include="Content\images\icons\32x32\control_panel_branding.png" />
     <Content Include="Content\images\icons\32x32\control_pause.png" />
     <Content Include="Content\images\icons\32x32\control_pause_blue.png" />
@@ -2967,7 +2975,6 @@
     <Content Include="Content\images\icons\32x32\events.png" />
     <Content Include="Content\images\icons\32x32\exclamation.png" />
     <Content Include="Content\images\icons\32x32\export_excel.png" />
-    <Content Include="Content\images\icons\32x32\extract_foreground_objects.png" />
     <Content Include="Content\images\icons\32x32\eye.png" />
     <Content Include="Content\images\icons\32x32\factory.png" />
     <Content Include="Content\images\icons\32x32\fatcow.png" />
@@ -3074,18 +3081,9 @@
     <Content Include="Content\images\icons\32x32\file_extension_vcd.png" />
     <Content Include="Content\images\mcdropdown\mcdd_icon_hover.gif" />
     <Content Include="Content\images\mcdropdown\mcdd_icon_normal.gif" />
-    <Content Include="Content\images\mcdropdown\mcdd_select_button_sprite.gif" />
     <Content Include="Content\images\mcdropdown\shadow.png" />
-    <Content Include="Content\images\s1.png" />
-    <Content Include="Content\images\s2.png" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\images\s1.jpg" />
+    <Content Include="Content\images\s6.jpg" />
     <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
@@ -3112,6 +3110,8 @@
     <Content Include="Scripts\jquery-1.5.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.5.1.js" />
     <Content Include="Scripts\jquery-1.5.1.min.js" />
+    <None Include="Properties\PublishProfiles\followmypeer.pubxml" />
+    <None Include="Properties\PublishProfiles\followmypeertest.pubxml" />
     <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
     <Content Include="Scripts\jquery-1.6.4.js" />
     <Content Include="Scripts\jquery-1.6.4.min.js" />
@@ -3380,14 +3380,11 @@
     <Content Include="Views\PublicationModel\Edit.cshtml" />
     <Content Include="Views\PublicationModel\Delete.cshtml" />
     <Content Include="Views\PublicationModel\Search.cshtml" />
-    <Content Include="Views\Profile\FollowedByList.cshtml" />
-    <Content Include="Views\Profile\FollowingList.cshtml" />
     <Content Include="Views\Profile\TierFollowers.cshtml" />
     <Content Include="Views\PatentModel\MyPatent.cshtml" />
     <Content Include="Views\Profile\EditPortfolio.cshtml" />
     <Content Include="Views\Profile\PostJob.cshtml" />
     <Content Include="Views\Profile\SearchJobs.cshtml" />
-    <Content Include="Views\PublicationModel\Create_JS.cshtml" />
     <Content Include="Views\Profile\FollowPeopleRecommendation.cshtml" />
     <Content Include="Views\Profile\JobRecommendation.cshtml" />
     <Content Include="Views\Profile\ViewBookmarkJobs.cshtml" />
@@ -3474,7 +3471,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>65068</DevelopmentServerPort>
+          <DevelopmentServerPort>49442</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

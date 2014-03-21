@@ -6,12 +6,10 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Data.Entity;
 using FollowPeers.Models;
-//using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR;
 
 namespace FollowPeers
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
 
     public class MvcApplication : System.Web.HttpApplication
     {
