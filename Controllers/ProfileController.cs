@@ -2375,27 +2375,75 @@ namespace FollowPeers.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult EditProfile(FormCollection formCollection)
         {
-            
+
             string name = Membership.GetUser().UserName;
             UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
 
-            userprofile.FirstName = formCollection[3];
-            userprofile.LastName = formCollection[4];
-            userprofile.Gender = formCollection[5];
-            userprofile.Status = formCollection[6];
-            //birthday giving issues
-            //userprofile.Birthday = Convert.ToDateTime(formCollection[8]);
-            userprofile.AboutMe = formCollection[9];
+            //birthday is still an issue here
+            foreach (String key in formCollection.AllKeys)
+            {
+                switch (key)
+                {
+                    case "FirstName":
+                        if (formCollection.Get(key) == null)
+                        {
+                            ModelState.AddModelError("", "First Name cannot be left blank.");
+                        }
+                        userprofile.FirstName = formCollection.Get(key);
+                        break;
+                    case "LastName":
+                        userprofile.LastName = formCollection.Get(key);
+                        break;
+                    case "Gender":
+                        userprofile.Gender = formCollection.Get(key);
+                        break;
+                    case "Status":
+                        userprofile.Status = formCollection.Get(key);
+                        break;
+                    case "AboutMe":
+                        userprofile.AboutMe = formCollection.Get(key);
+                        break;
+                    case "Contact.Street1":
+                        userprofile.Contact.Street1 = formCollection.Get(key);
+                        break;
+                    case "Contact.Street2":
+                        userprofile.Contact.Street2 = formCollection.Get(key);
+                        break;
+                    case "Contact.City":
+                        userprofile.Contact.City = formCollection.Get(key);
+                        break;
+                    case "Contact.Country":
+                        userprofile.Contact.Country = formCollection.Get(key);
+                        break;
+                    case "Contact.Mobile":
+                        userprofile.Contact.Mobile = formCollection.Get(key);
+                        break;
+                    case "Contact.Phone":
+                        userprofile.Contact.Phone = formCollection.Get(key);
+                        break;
+                    case "Contact.Fax":
+                        userprofile.Contact.Fax = formCollection.Get(key);
+                        break;
+                    case "Contact.Email":
+                        userprofile.Contact.Email = formCollection.Get(key);
+                        break;
+                    case "Contact.Website":
+                        userprofile.Contact.Website = formCollection.Get(key);
+                        break;
+                    default:
+                        break;
+                }
+            }
 
-      
-           
+
+
             CreateUpdates("Profile information updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
             followPeersDB.Entry(userprofile).State = EntityState.Modified;
             followPeersDB.SaveChanges();
             return RedirectToAction("Index", "Profile", new { message = "Successfully Updated", id = userprofile.UserProfileId });
-            
 
-           
+
+
             //if (userprofile.FirstName == null) ModelState.AddModelError("", "First Name cannot be left blank.");
             //if (userprofile.LastName == null) ModelState.AddModelError("", "Last Name cannot be left blank.");
             //ModelState.AddModelError("", "Update Failed");

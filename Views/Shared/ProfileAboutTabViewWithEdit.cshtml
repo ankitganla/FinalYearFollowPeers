@@ -398,7 +398,8 @@
                                     @Html.LabelFor(model => model.Contact.Street1, "Address Line1")
                                 </div>
                                 <div class="editor-field">
-                                    @Html.TextBoxFor(model => model.Contact.Street1, new { style = "width: 200px; margin-left: 2px;" })
+                                    
+                                    @Html.TextBoxFor(model => model.Contact.Street1, new { style = "width: 200px; margin-left: 2px;", name ="contactStreet1"})
                                     @Html.ValidationMessageFor(model => model.Contact.Street1)
                                 </div>
                             </td>
