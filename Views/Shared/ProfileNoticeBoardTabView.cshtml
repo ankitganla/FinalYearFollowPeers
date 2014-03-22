@@ -77,10 +77,17 @@
         
         string name = Membership.GetUser().UserName;
         FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-        
+          <div>
+            @if (Membership.GetUser().UserName == Model.UserName)
+            {
+                @Html.Partial("SimplePostBar")
+                <hr />
+
+            }
+        </div>
         //first name of whoever the model refers to at that time
-        
-        
+
+
         int count = 0;
         if (toCheck == false || showNoticeBoard == true)
         {

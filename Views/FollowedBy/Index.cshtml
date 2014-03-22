@@ -5,6 +5,60 @@
     <link rel="shortcut icon" href="Content/images/logo.ico" type="image/x-icon" />
 </head>
 @Html.Partial("_Header")
+<style media="screen" type="text/css">
+        .profilepagetabs ul
+        {
+            padding: 0px;
+            margin: 0px;
+            margin-left: 0px;
+            width: 180px;
+        }
+
+            .profilepagetabs ul li
+            {
+                display: block;
+                height: auto;
+                width: 180px;
+                text-align: center;
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+
+                .profilepagetabs ul li a
+                {
+                    /* The following four lines are to make the top left and top right corners of the content area rounded. */
+                    -moz-border-radius-topleft: 4px;
+                    border-top-left-radius: 4px;
+                    -moz-border-radius-topright: 4px;
+                    border-top-right-radius: 4px;
+                    -moz-border-radius-bottomleft: 4px;
+                    border-bottom-left-radius: 4px;
+                    -moz-border-radius-bottomright: 4px;
+                    border-bottom-right-radius: 4px;
+                    margin-left: 0px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    border: solid;
+                    border-width: 1px;
+                    border-color: #45aeea;
+                    font-weight: bold;
+                    color: #45aeea;
+                }
+
+                    .profilepagetabs ul li a:hover
+                    {
+                        text-decoration: underline;
+                    }
+
+
+        .profilepagetabs li.current a
+        {
+            background-color: #45aeea;
+            color: white;
+        }
+
+    
+    </style>
 @{
     string name = Membership.GetUser().UserName;
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
@@ -22,21 +76,27 @@
      }
 <div class="container" id="main">
 <div class="row">
- @Html.Partial("_SideBar1", new ViewDataDictionary { { "PhotoUrl", @myprofile.PhotoUrl }, { "ProfileName", @myprofile.UserProfileId }, { "Name", @myprofile.FirstName + " " + myprofile.LastName }, { "Myself", myself } })
+     @*Left Sidebar*@
+    <div class="span2">
+    @Html.Partial("_SideBar_ProfilePage", new ViewDataDictionary { { "Name", myprofile.FirstName + " " + myprofile.LastName } })
+    <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+    <div class="profilepagetabs" style="border: none;">
+        <ul class="menu nav nav-tabs nav-stacked" id="myTab" style="list-style: none; margin-top: 15px;">           
+            <li id="li_tab1" class="active" onclick="tab('tab1')"><a>All Peers</a></li>
+            <li id="li_tab2" onclick="tab('tab2')"><a>General Peers</a></li>
+            <li id="li_tab3" onclick="tab('tab3')"><a>Premium Peers</a></li>
+        </ul>
+    </div>
+    </div> 
+    </div>
+
     <div class="span10" style="margin-left:20px">
-        
-          <ul class="nav nav-tabs" id="myTab"> 
-                <li id="li_tab1" class="active" onclick="tab('tab1')"><a>All</a></li>
-                <li id="li_tab2" onclick="tab('tab2')"><a>Free</a></li>
-                <li id="li_tab3" onclick="tab('tab3')"><a>Premium</a></li>
-                <!--li id="li_tab4" onclick="tab('tab4')"><a>Updated Profiles</a></!--li-->
-            </ul>   
         <div class="tab-content">
         <div id="tab1" style="display: none;margin-left:10px;" class="tab-pane active" >
         <table >
         <tr>
-        <td><h4 style="float: left; text-align:center"> Following (@AllFollowing.Count())</h4></td>
-        <td><h4 style="float: left; text-align:center"> Follower (@AllFollowers.Count())</h4></td>
+        <td><h4 style="float: left; text-align:center"> Followees (@AllFollowing.Count())</h4></td>
+        <td><h4 style="float: left; text-align:center"> Followers (@AllFollowers.Count())</h4></td>
         </tr>
         
         <tr>
@@ -125,8 +185,8 @@
         <div id="tab2" style="display: none;margin-left:10px;" class="tab-pane" >
         <table>
         <tr>
-        <td><h4 style="float: left; text-align:center"> Following (@IndividualFollowing.Count())</h4></td>
-        <td><h4 style="float: left; text-align:center"> Follower (@IndividualFollowers.Count())</h4></td>
+        <td><h4 style="float: left; text-align:center"> Followees (@IndividualFollowing.Count())</h4></td>
+        <td><h4 style="float: left; text-align:center"> Followers (@IndividualFollowers.Count())</h4></td>
         </tr>
         <tr>
         <td style="width:400px;">
@@ -207,8 +267,8 @@
        <div id="tab3" style="display: none;margin-left:10px;" class="tab-pane" >            
         <table>
         <tr>
-        <td><h4 style="float: left; text-align:center"> Following (@CorporateFollowing.Count())</h4></td>
-        <td><h4 style="float: left; text-align:center"> Follower (@CorporateFollowers.Count())</h4></td>
+        <td><h4 style="float: left; text-align:center"> Followees (@CorporateFollowing.Count())</h4></td>
+        <td><h4 style="float: left; text-align:center"> Followers (@CorporateFollowers.Count())</h4></td>
         </tr>
         <tr>
         <td style="width:400px;">
