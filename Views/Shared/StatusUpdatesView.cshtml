@@ -50,7 +50,7 @@
                                         if (peer.personBName == OwnerProfile.UserName)
                                         {
                                             //L: display type 2 updates ( status msg update)
-                                            if (peerupdates.Own == true && peerupdates.type == 2)
+                                            if (peerupdates.Own == true && peerupdates.type == 2 && peerupdates.message != "")
                                             {
 
                                                 UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);

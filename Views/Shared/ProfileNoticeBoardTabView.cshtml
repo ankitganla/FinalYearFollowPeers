@@ -98,7 +98,7 @@
                 foreach (var currentUpdate in newList)
                 {
                     //need to display only own's updates
-                    if (currentUpdate.Own == true)
+                    if (currentUpdate.Own == true && currentUpdate.message != "")
                     {
 
                         UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == currentUpdate.owner);

@@ -52,7 +52,7 @@
                                         if (peer.personBName == OwnerProfile.UserName)
                                         {
                                             //L: display all updates except type 3(comments)
-                                            if (peerupdates.Own == true && peerupdates.type != 3)
+                                            if (peerupdates.Own == true && peerupdates.type != 3 && peerupdates.message != "")
                                             {
 
                                                 UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
@@ -64,21 +64,21 @@
                         <div style="margin-left: 8px; float: left; width: 88%;">
                             <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
                             @if (peerupdates.type == 4)
-                            {
-                                Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.message == peerupdates.message && p.type == 5);
-                                int tempuserprofileID = tempupdate.UserProfiles.ElementAt(0).UserProfileId;
-                                UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempuserprofileID);
+                                {
+                                    Update tempupdate = followPeersDB.Updates.SingleOrDefault(p => p.message == peerupdates.message && p.type == 5);
+                                    int tempuserprofileID = tempupdate.UserProfiles.ElementAt(0).UserProfileId;
+                                    UserProfile tempprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == tempuserprofileID);
                               
-                                <text>Wrote: </text>@peerupdates.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
-                                          <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
-                            }
-                            else if (peerupdates.type == 9)
-                            {
-                                <span class="label label-info">Broadcast</span> <br /> @peerupdates.message
-                            }
-                            else
-                            {@peerupdates.message}
-                            <br />
+                                    <text>Wrote: </text>@peerupdates.message <text>on</text> <a style='cursor:pointer;' href='/Profile/Index/@tempprofile.UserProfileId'>@tempprofile.FirstName</a><text>'s
+                                              <a style='cursor:pointer;' href='/Notice/Index/@tempprofile.UserProfileId'>Notice Board</a></text>
+                                }
+                                else if (peerupdates.type == 9)
+                                {
+                                    <span class="label label-info">Broadcast</span> <br /> @peerupdates.message
+                                }
+                                else
+                                {@peerupdates.message}
+                                <br />
 
                             @{
                             string id1 = "comment1" + @count;
@@ -133,6 +133,7 @@
                                     @{count++;}
                                 </div>}
                             }
+                     
                         </div>
                         <div style="clear: both;">
                         </div>
