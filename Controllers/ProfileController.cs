@@ -684,6 +684,7 @@ namespace FollowPeers.Controllers
 
 
         }
+
         private void UpdateEducation(string[] Organization, string[] startYear, string[] endYear, string[] Degree, string[] Country, UserProfile userprofile)
         {
             //if new organization, add to the DB
@@ -695,6 +696,8 @@ namespace FollowPeers.Controllers
                 }
 
             }
+
+            //removing education
             int count = userprofile.Educations.Count();
             for (int i = 0; i < count; i++)
             {
@@ -702,6 +705,8 @@ namespace FollowPeers.Controllers
                 followPeersDB.Educations.Remove(tempEdu);
                 //       userprofile.Educations.Remove(tempEdu);
             }
+
+            //adding the education records
             for (int i = 0; i < Organization.Count(); i++)
             {
                 if (Organization != null)
@@ -711,7 +716,9 @@ namespace FollowPeers.Controllers
                     string tempEnd = endYear.ElementAt(i);
                     string tempDegree = Degree.ElementAt(i);
                     string tempCountry = Country.ElementAt(i);
+
                     Education tempEdu = new Education
+
                     {
                         UniversityName = tempUni,
                         startYear = Convert.ToInt16(tempStart),
@@ -719,6 +726,8 @@ namespace FollowPeers.Controllers
                         Degree = tempDegree,
                         country = tempCountry
                     };
+
+                    
                     userprofile.Educations.Add(tempEdu);
                     tempEdu.UserProfile = userprofile;
                 }
@@ -1802,6 +1811,7 @@ namespace FollowPeers.Controllers
                 return View();
             }
         }
+
         internal List<Organization> FindOrganization(string searchText, int maxResults)
         {
             var result = from n in followPeersDB.Organizations
@@ -1812,6 +1822,7 @@ namespace FollowPeers.Controllers
             return result.Take(maxResults).ToList();
 
         }
+
         [HttpPost]
         public JsonResult FindOrganizationNames(string searchText, int maxResults)
         {
@@ -1829,6 +1840,7 @@ namespace FollowPeers.Controllers
             return result.Take(maxResults).ToList();
 
         }
+
         [HttpPost]
         public JsonResult FindDepartmentNames(string searchText, int maxResults)
         {
@@ -1896,12 +1908,14 @@ namespace FollowPeers.Controllers
             return result.Take(maxResults).ToList();
 
         }
+        
         [HttpPost]
         public JsonResult FindCountryNames(string searchText, int maxResults)
         {
             var result = FindCountry(searchText, maxResults);
             return Json(result);
         }
+       
         public ActionResult TierFollowers()
         {
             string name = Membership.GetUser().UserName;
@@ -1909,6 +1923,7 @@ namespace FollowPeers.Controllers
 
             return View(myprofile);
         }
+        
         public ActionResult Privacy()
         {
             string name = Membership.GetUser().UserName;
@@ -1999,6 +2014,8 @@ namespace FollowPeers.Controllers
 
             return View(userprofile);
         }
+
+
         [HttpPost]
         public ActionResult UpdateStatus(string message, bool Ischecked)
         {
@@ -2063,6 +2080,8 @@ namespace FollowPeers.Controllers
             followPeersDB.SaveChanges();
             return RedirectToAction("Index", "Notice", new { id = userprofile.UserProfileId });
         }
+
+
         [HttpPost]
         public ActionResult PosttoNoticeBoard(string message, string redirect, bool Ischecked = false)
         {
@@ -2147,6 +2166,8 @@ namespace FollowPeers.Controllers
 
             return RedirectToAction("Index", "Notice", new { id = id });
         }
+
+
         [HttpPost]
         public ActionResult AddComment(int commentid, string message, int redirect)
         {
@@ -2382,6 +2403,11 @@ namespace FollowPeers.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult EditProfile(FormCollection formCollection)
         {
+            List<String> organizationStrings = new List<String>();
+            List<String> countryStrings = new List<String>();
+            List<String> degreeStrings = new List<String>();
+            List<String> startYearStrings = new List<String>();
+            List<String> endYearStrings = new List<String>();
 
             string name = Membership.GetUser().UserName;
             UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
@@ -2437,15 +2463,47 @@ namespace FollowPeers.Controllers
                     case "Contact.Website":
                         userprofile.Contact.Website = formCollection.Get(key);
                         break;
+
                     case "Organization":
-                        userprofile.Organization = formCollection.Get(key);
-                        ////if this is a new organization
-                        //if ((followPeersDB.Organizations.SingleOrDefault(p => p.Name == userprofile.Organization)) == null)
-                        //{
-                        //    followPeersDB.Organizations.Add(new Organization { Name = userprofile.Organization });
-                        //}
+                        foreach(String s in formCollection.Get(key).Split(',')){
+                            organizationStrings.Add(s);
+                        }
+                        
+                        break;
+                    case "Country":
+                        foreach (String s in formCollection.Get(key).Split(','))
+                        {
+                            countryStrings.Add(s);
+                        }
+                        break;
+                    case "Degree":
+                        foreach (String s in formCollection.Get(key).Split(','))
+                        {
+                            degreeStrings.Add(s);
+                        }
+                        break;
+                    case "startYear":
+                        foreach (String s in formCollection.Get(key).Split(','))
+                        {
+                            startYearStrings.Add(s);
+                        }
+                        break;
+                    case "endYear":
+                        foreach (String s in formCollection.Get(key).Split(','))
+                        {
+                            endYearStrings.Add(s);
+                        }
                         break;
 
+
+                    case "Company":
+                        userprofile.Organization = formCollection.Get(key);
+                        //if this is a new organization
+                        if ((followPeersDB.Organizations.SingleOrDefault(p => p.Name == userprofile.Organization)) == null)
+                        {
+                            followPeersDB.Organizations.Add(new Organization { Name = userprofile.Organization });
+                        }
+                        break;
                     case "Departments":
                         userprofile.Departments = formCollection.Get(key);
                         //if a user adds a new Department
@@ -2468,9 +2526,10 @@ namespace FollowPeers.Controllers
                     default:
                         break;
                 }
+
             }
 
-
+            UpdateEducation(organizationStrings.ToArray(), startYearStrings.ToArray(), endYearStrings.ToArray(), degreeStrings.ToArray(), countryStrings.ToArray(), userprofile);
 
             CreateUpdates("Profile information updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
             followPeersDB.Entry(userprofile).State = EntityState.Modified;
