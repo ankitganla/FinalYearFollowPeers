@@ -1005,23 +1005,30 @@ namespace FollowPeers.Controllers
         {
             if (Specialization != null)
             {
+                //specializations currently selected 
                 var selectedSpecializations = new HashSet<int>(Specialization);
+
+                //specializations already attached to user
                 var existingSpecializations = new HashSet<int>
                     (userprofile.Specializations.Select(c => c.SpecializationId));
+
+                //all specializations in the DB
                 foreach (var s in followPeersDB.Specializations)
                 {
-                    //if new choices match with the database entries
+                    //if the specialization is among those selected
                     if (selectedSpecializations.Contains(s.SpecializationId))
                     {
-                        //if existing choices do not contain, add this new
+                        //and does not exit in the existing user specs, add it
                         if (!existingSpecializations.Contains(s.SpecializationId))
                         {
                             userprofile.Specializations.Add(s);
                             s.UserProfiles.Add(userprofile);
                         }
                     }
+                    //if spec is not among those selected
                     else
                     {
+                        //but was attached to this user, remove it
                         if (existingSpecializations.Contains(s.SpecializationId))
                         {
                             userprofile.Specializations.Remove(s);
@@ -2429,6 +2436,34 @@ namespace FollowPeers.Controllers
                         break;
                     case "Contact.Website":
                         userprofile.Contact.Website = formCollection.Get(key);
+                        break;
+                    case "Organization":
+                        userprofile.Organization = formCollection.Get(key);
+                        ////if this is a new organization
+                        //if ((followPeersDB.Organizations.SingleOrDefault(p => p.Name == userprofile.Organization)) == null)
+                        //{
+                        //    followPeersDB.Organizations.Add(new Organization { Name = userprofile.Organization });
+                        //}
+                        break;
+
+                    case "Departments":
+                        userprofile.Departments = formCollection.Get(key);
+                        //if a user adds a new Department
+                        if ((followPeersDB.Departments.SingleOrDefault(p => p.Name == userprofile.Departments)) == null)
+                        {
+                            followPeersDB.Departments.Add(new Department { Name = userprofile.Departments });
+                        }
+                        break;
+
+                    case "Specialization":
+                        String[] specStringArray = formCollection.Get(key).Split(',');
+                        int[] specIntArray = new int [specStringArray.Length]; 
+                        int i =0;
+                        foreach(String s in specStringArray) {
+                            specIntArray[i] = Int32.Parse(s);
+                            i++;
+                        }
+                        UpdateSpecializations(specIntArray, userprofile);
                         break;
                     default:
                         break;

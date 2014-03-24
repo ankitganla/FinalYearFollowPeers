@@ -398,8 +398,8 @@
                                     @Html.LabelFor(model => model.Contact.Street1, "Address Line1")
                                 </div>
                                 <div class="editor-field">
-                                    
-                                    @Html.TextBoxFor(model => model.Contact.Street1, new { style = "width: 200px; margin-left: 2px;", name ="contactStreet1"})
+
+                                    @Html.TextBoxFor(model => model.Contact.Street1, new { style = "width: 200px; margin-left: 2px;", name = "contactStreet1" })
                                     @Html.ValidationMessageFor(model => model.Contact.Street1)
                                 </div>
                             </td>
@@ -541,10 +541,11 @@
             
                             i = i + 1;
                         }
-                        <p>
-                            <a class="btn" id="Add" style="" title="Click to add another record."><i class="icon-plus"></i></a>
 
-                        </p>
+
+                    </div>
+                    <div>
+                        <a class="btn" id="Add" style="" title="Click to add another record."><i class="icon-plus"></i></a>
 
                     </div>
                 }
@@ -571,7 +572,7 @@
                     </div>
                     <div id="Specialization" style="display: none; height: 22px;"></div>
                     <div class="editor-label">
-                        @Html.LabelFor(model => model.Specializations, "Primary Field of Research")
+                        @Html.LabelFor(model => model.Specializations, "Primary Field of Interest")
                     </div>
                     <div class="editor-field" style="float: left; width: auto">
                         <select multiple="multiple" name="Specialization" style="width: 300px; height: 150px">
@@ -585,16 +586,20 @@
                         int j = 0;
                         foreach (string entry in Query)
                         {
+
                             IQueryable<FollowPeers.Models.Specialization> Query2 = from specialization in db.Specializations orderby specialization.Field where specialization.Field == entry select specialization;
+@*If there is no such specialization whose field  is same as entry*@
+                            j = j + Query2.Count();
+
                             if (Model.Specializations.Where(p => p.Field == @entry).Count() == 0)
                             {
                                 <option value="@j">@entry</option>
                             }
                             else
                             {
-                                <option value="@i" selected="selected">@entry</option>
+                                <option value="@j" selected="selected">@entry</option>
                             }
-                            j = j + Query2.Count();
+
                         }
                             }
 
