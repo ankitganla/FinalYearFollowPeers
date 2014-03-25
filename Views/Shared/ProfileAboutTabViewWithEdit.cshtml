@@ -40,6 +40,22 @@
     <script type="text/javascript">
         $(document).ready(function () {
             counter = 0;
+            var adbutton = document.getElementById('Add');
+            adbutton.onclick() = function () {
+
+                if (document.getElementById('education2').getAttribute('display') == "none") {
+                    document.getElementById('education2').setAttribute('display', 'block');
+                    return false;
+                }
+                else if (document.getElementById('education3').getAttribute('display') == "none") {
+                    document.getElementById('education3').setAttribute('display', 'block');
+                    return false;
+                }
+                else {
+                    alert("You can add a maximum of 3 Education Records");
+                }
+            }
+
             if ($('#Edu0').length) { AutoComplete(0); counter++; $('#Delete0').click(function () { Delete(0); }); }
             if ($('#Edu1').length) { AutoComplete(1); counter++; $('#Delete1').click(function () { Delete(1); }); }
             if ($('#Edu2').length) { AutoComplete(2); counter++; $('#Delete2').click(function () { Delete(2); }); }
@@ -73,6 +89,17 @@
                         })
                     },
                 });
+            }
+
+
+            function addEduRecord(newRecordNum) {
+                if (newRecordNum > 3) {
+                    alert("You can add a maximum of 3 Education Records");
+                }
+                else {
+                    document.getElementById('education' + newRecordNum).setAttribute("display", "block");
+                }
+
             }
 
 
@@ -125,16 +152,11 @@
             return str;
         }
 
+
+
         var dd, val;
         $(document).ready(function () {
             $(".rte-zone").rte("/Content/css/rte.css", "/Content/css/images/");
-            $(":input[data-datepicker]").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                dateFormat: 'dd-mm-yy',
-                yearRange: '1920:1996'
-            });
-
 
             var options = new Object();
             options.select = select_handler;
@@ -147,7 +169,8 @@
                 $('#interest' + num).slideUp('slow', function () { $('#interest' + num).remove(); });
                 counter--;
                 if (num == 1) int1 = 0;
-                if (num == 2) int2 = 0;
+                if (num ==
+                    2) int2 = 0;
                 if (num == 3) int3 = 0;
             }
 
@@ -365,7 +388,14 @@
                                 </div>
                                 <div class="editor-field">
                                     @Html.HiddenFor(model => model.Birthday)
-                                    <input id="EventDate" class="small" type="date" name="EventDate" value= "@Model.Birthday" data-datepicker="datepicker">
+                                    @{
+                                      DateTime newDateTime = (DateTime)Model.Birthday;
+                                      DateTime date = newDateTime.Date;
+                                      String dateString = date.ToShortDateString();
+                                    }
+
+                                    <input id="Birthday" type="date" name="Birthday" value="@date.ToString("yyyy-MM-dd")">
+
                                     @Html.ValidationMessageFor(model => model.Birthday)
                                 </div>
                             </td>
@@ -485,113 +515,100 @@
                 <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
 
 
-
                 <fieldset>
                     <a id="education_section"></a>
                     <legend>Education History</legend>
-                    @{ int i = 0;
+                    <div id="EducationFields">
+                        @{int i = 0;
+                          if (Model.Educations.Count() == 0)
+                          {
+                            <div>
 
-                       if (Model.Educations.Count() == 0)
-                       {
-                                          
-                           
-                        <div>
-                            <div style="float: right; background: lightGrey; color: dimGray; padding: 0px 6px; cursor: pointer;" title="Click to delete this record.">
-                                x
-                            </div>
-                            <div class="editor-label">
-                                @Html.LabelFor(model => model.Organization, "Institution")
-                            </div>
-                            <div class="editor-field">
-                                <input type="text" id="" name="Organization" style="margin-left: 2px; width: 210px" value=" " />
-                            </div>
-                            <div class="editor-label">
-                                Country
-                            </div>
-                            <div class="editor-field">
-                                <input type="text" name="Country" id="" style="margin-left: 2px; width: 210px" value=" " />
-                            </div>
-                            <div class="editor-label">
-                                Degree
-                            </div>
-                            <div class="editor-field">
-                                <input type="text" name="Degree" value=" " />
-                            </div>
+                                <div style="float: right; background: lightGrey; color: dimGray; padding: 0px 6px; cursor: pointer;" title="Click to delete this record.">
+                                    x
+                                </div>
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Organization, "Institution")
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" id="" name="Organization" style="margin-left: 2px; width: 210px" value=" " />
+                                </div>
+                                <div class="editor-label">
+                                    Country
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="Country" id="" style="margin-left: 2px; width: 210px" value=" " />
+                                </div>
+                                <div class="editor-label">
+                                    Degree
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="Degree" value=" " />
+                                </div>
 
-                            <div class="editor-label">
-                                Start Year (yyyy)
-                            </div>
-                            <div class="editor-field">
-                                <input type="text" name="startYear" value=" " />
-                            </div>
-                            <div class="editor-label">
-                                End Year (yyyy)
-                            </div>
-                            <div class="editor-field">
-                                <input type="text" name="endYear" value=" " />
-                            </div>
+                                <div class="editor-label">
+                                    Start Year (yyyy)
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="startYear" value=" " />
+                                </div>
+                                <div class="editor-label">
+                                    End Year (yyyy)
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="endYear" value=" " />
+                                </div>
+                            </div> 
+                          }
 
+                          foreach (var E in Model.Educations)
+                          {
+                            <div>
+                                @*<div style="float: right; background: lightGrey; color: dimGray; padding: 0px 6px; cursor: pointer;" title="Click to delete this record.">
+                                    x
+                                </div>*@
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Organization, "Institution")
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" id="" name="Organization" style="margin-left:2px;width:210px" value="@Model.Educations.ElementAt(i).UniversityName"/>
+                                </div>
+                                <div class="editor-label">
+                                    Country
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="Country" id="" style="margin-left:2px;width:210px" value="@Html.Encode(Model.Educations.ElementAt(i).country)" />
+                                </div>
+                                <div class="editor-label">
+                                    Degree
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="Degree" value="@Model.Educations.ElementAt(i).Degree" />
+                                </div>
 
-                        </div>
-                       }
+                                <div class="editor-label">
+                                    Start Year (yyyy)
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="startYear" value="@Model.Educations.ElementAt(i).startYear" />
+                                </div>
+                                <div class="editor-label">
+                                    End Year (yyyy)
+                                </div>
+                                <div class="editor-field">
+                                    <input type="text" name="endYear" value="@Model.Educations.ElementAt(i).endYear" />
+                                </div>
+                            </div>
+                              i = i + 1;
+                          }
+                        }
+                    </div>
 
-                       else
-                       {
+                    @*<div>
+                        <a class="btn" id="Add" style="" title="Click to add another record."><i class="icon-plus"></i></a>
 
-                           foreach (var E in Model.Educations)
-                           {
-                        <div>
-                            <div style="float: right; background: lightGrey; color: dimGray; padding: 0px 6px; cursor: pointer;" title="Click to delete this record.">
-                                x
-                            </div>
-                            <div class="editor-label">
-                                @Html.LabelFor(model => model.Organization, "Institution")
-                            </div>
-                            <div class="editor-field">
-                                <input type="text" id="" name="Organization" style="margin-left:2px;width:210px" value="@Model.Educations.ElementAt(i).UniversityName"/>
-                            </div>
-                            <div class="editor-label">
-                                Country
-                            </div>
-                            <div class="editor-field">
-                                <input type="text" name="Country" id="" style="margin-left:2px;width:210px" value="@Html.Encode(Model.Educations.ElementAt(i).country)" />
-                            </div>
-                            <div class="editor-label">
-                                Degree
-                            </div>
-                            <div class="editor-field">
-                                <input type="text" name="Degree" value="@Model.Educations.ElementAt(i).Degree" />
-                            </div>
-
-                            <div class="editor-label">
-                                Start Year (yyyy)
-                            </div>
-                            <div class="editor-field">
-                                <input type="text" name="startYear" value="@Model.Educations.ElementAt(i).startYear" />
-                            </div>
-                            <div class="editor-label">
-                                End Year (yyyy)
-                            </div>
-                            <div class="editor-field">
-                                <input type="text" name="endYear" value="@Model.Educations.ElementAt(i).endYear" />
-                            </div>
-
-
-                        </div>
-                        
-                               i = i + 1;
-                           }
-                       }
-                        <div>
-                            <a class="btn" id="Add" style="" title="Click to add another record."><i class="icon-plus"></i></a>
-
-                        </div>
-                    }
-                    
-
+                    </div>*@
                 </fieldset>
-
-
 
 
                 <a href="#pagetop" style="font-size: x-small; float: right;">[back to top]</a>
@@ -621,29 +638,29 @@
                         <select multiple="multiple" name="Specialization" style="width: 300px; height: 150px">
                             @{ 
                             
-                       FollowPeers.Models.FollowPeersDBEntities db = new FollowPeers.Models.FollowPeersDBEntities();
+                          FollowPeers.Models.FollowPeersDBEntities db = new FollowPeers.Models.FollowPeersDBEntities();
 
-                       IQueryable<string> Query = (from entry in db.Specializations
-                                                   orderby entry.Field
-                                                   select entry.Field).Distinct();
-                       int j = 0;
-                       foreach (string entry in Query)
-                       {
+                          IQueryable<string> Query = (from entry in db.Specializations
+                                                      orderby entry.Field
+                                                      select entry.Field).Distinct();
+                          int j = 0;
+                          foreach (string entry in Query)
+                          {
 
-                           IQueryable<FollowPeers.Models.Specialization> Query2 = from specialization in db.Specializations orderby specialization.Field where specialization.Field == entry select specialization;
+                              IQueryable<FollowPeers.Models.Specialization> Query2 = from specialization in db.Specializations orderby specialization.Field where specialization.Field == entry select specialization;
 @*If there is no such specialization whose field  is same as entry*@
-                           j = j + Query2.Count();
+                              j = j + Query2.Count();
 
-                           if (Model.Specializations.Where(p => p.Field == @entry).Count() == 0)
-                           {
+                              if (Model.Specializations.Where(p => p.Field == @entry).Count() == 0)
+                              {
                                 <option value="@j">@entry</option>
-                           }
-                           else
-                           {
+                              }
+                              else
+                              {
                                 <option value="@j" selected="selected">@entry</option>
-                           }
+                              }
 
-                       }
+                          }
                             }
 
                         </select>

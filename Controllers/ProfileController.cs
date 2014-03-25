@@ -2433,6 +2433,11 @@ namespace FollowPeers.Controllers
                     case "Status":
                         userprofile.Status = formCollection.Get(key);
                         break;
+                    case "Birthday":
+                        String[] bdayString = formCollection.Get(key).Split(',');
+                        String bdate = bdayString[bdayString.Length - 1];
+                        userprofile.Birthday = DateTime.Parse(bdate);
+                        break;
                     case "AboutMe":
                         userprofile.AboutMe = formCollection.Get(key);
                         break;
