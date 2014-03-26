@@ -107,7 +107,7 @@
 @Html.Partial("_Header")
 @*Container*@
 <div class="container">
-   
+
     @*rows within container*@
     <div class="row">
 
@@ -159,6 +159,7 @@
                         </ul>
                     </div>
                     }
+
                     else
                     {
 
@@ -172,6 +173,27 @@
                     </div>
                     
                     }
+
+                    if (ownProfile == true)
+                    {
+                    <div align="center">
+                        <h4 style="text-align: center; color: green">Add New</h4>
+                        @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
+                        {
+                            
+               
+                            <a class="btn btn-success" style="position: relative; top: 10px;">New Photo</a>
+                            <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -85px; top: 10px; width: 80px; height: 30px; opacity: 0;" />
+                            <a class="btn btn-success" href="/PublicationModel/Create/1">New Publication</a>
+                            <a class="btn btn-success" href="@Url.Content("~/Jobs/Create/1")">New Job</a>
+                            <a class="btn btn-success" href="@Url.Content("~/Course/Create")">New Course</a>
+                        
+                        }
+
+
+                    </div>
+                    
+                    }
                     
                 }
             </div>
@@ -180,7 +202,7 @@
 
 
         <div class="span8 main-content">
-   
+
             <div class="box">
                 @{
                     if (ownProfile == true)
@@ -220,7 +242,7 @@
 
 
                         @Html.Partial("ProfilePhotoTabView")
-                        
+
 
                     </div>
                     
@@ -285,13 +307,13 @@
             </div>
         </div>
 
-       
+
     </div>
-    
-    </div>
-     
-        @Html.Partial("_Footer")
-    </div>
+
+</div>
+
+@Html.Partial("_Footer")
+</div>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
