@@ -13,6 +13,7 @@ using System.Data.Objects;
 using System.Data.SqlClient;
 using System.Web.Helpers;
 using System.IO;
+using System.Data.Entity.Validation;
 
 namespace FollowPeers.Controllers
 {
@@ -37,9 +38,9 @@ namespace FollowPeers.Controllers
                 followPeersDB.SaveChanges();
             }
 
-            if (id == myprofile.UserProfileId && viewerprofile.firsttime == true )
+            if (id == myprofile.UserProfileId && viewerprofile.firsttime == true)
             {
-               
+
                 return RedirectToAction("CompleteProfile", "Profile", new { id = viewerprofile.UserProfileId });
 
             }
@@ -305,7 +306,7 @@ namespace FollowPeers.Controllers
             return View(myprofile);
         }
 
-       
+
 
         public ActionResult PostJob(string message)
         {
@@ -315,7 +316,7 @@ namespace FollowPeers.Controllers
             return View(myprofile);
         }
 
-        
+
         public ActionResult UploadPhoto()
         {
             string name = Membership.GetUser().UserName;
@@ -467,9 +468,9 @@ namespace FollowPeers.Controllers
         }
 
 
-        
 
-        
+
+
         public void CreateUpdates(string message, string link, int type, int id)
         {
             string myname = Membership.GetUser().UserName;
@@ -512,7 +513,7 @@ namespace FollowPeers.Controllers
 
 
 
-        
+
         private void UpdateEducation(string[] Organization, string[] startYear, string[] endYear, string[] Degree, string[] Country, UserProfile userprofile)
         {
             //if new organization, add to the DB
@@ -545,25 +546,31 @@ namespace FollowPeers.Controllers
                     string tempDegree = Degree.ElementAt(i);
                     string tempCountry = Country.ElementAt(i);
 
-                    Education tempEdu = new Education
+                    if (tempUni == null || tempUni == "" || tempUni == " ")
+                    { }
 
+                    else
                     {
-                        UniversityName = tempUni,
-                        startYear = Convert.ToInt16(tempStart),
-                        endYear = Convert.ToInt16(tempEnd),
-                        Degree = tempDegree,
-                        country = tempCountry
-                    };
+                        Education tempEdu = new Education
 
-                    
-                    userprofile.Educations.Add(tempEdu);
-                    tempEdu.UserProfile = userprofile;
+                        {
+                            UniversityName = tempUni,
+                            startYear = Convert.ToInt16(tempStart),
+                            endYear = Convert.ToInt16(tempEnd),
+                            Degree = tempDegree,
+                            country = tempCountry
+                        };
+
+
+                        userprofile.Educations.Add(tempEdu);
+                        tempEdu.UserProfile = userprofile;
+                    }
                 }
             }
         }
 
 
-        
+
         private void UpdateEmployment(string[] EmployerName, string[] startYear, string[] endYear, string[] Description, string[] Role, UserProfile userprofile)
         {
             foreach (var org in EmployerName)
@@ -611,7 +618,7 @@ namespace FollowPeers.Controllers
                 }
             }
         }
-      
+
         private void UpdateAchievement(string[] Title, string[] Description, string[] startYear, string[] endYear, string[] Keyword, string[] link, UserProfile userprofile)
         {
             int count = userprofile.Achievements.Count();
@@ -652,7 +659,7 @@ namespace FollowPeers.Controllers
                 }
             }
         }
-     
+
         private void UpdatePortfolio(string[] Name, string[] Field, string[] Country, string[] Year, string[] Status, string[] Website, string[] MoreInfo, UserProfile userprofile)
         {
             int count = userprofile.Portfolios.Count();
@@ -1599,14 +1606,14 @@ namespace FollowPeers.Controllers
             return result.Take(maxResults).ToList();
 
         }
-        
+
         [HttpPost]
         public JsonResult FindCountryNames(string searchText, int maxResults)
         {
             var result = FindCountry(searchText, maxResults);
             return Json(result);
         }
-       
+
         public ActionResult TierFollowers()
         {
             string name = Membership.GetUser().UserName;
@@ -1614,7 +1621,7 @@ namespace FollowPeers.Controllers
 
             return View(myprofile);
         }
-        
+
         public ActionResult Privacy()
         {
             string name = Membership.GetUser().UserName;
@@ -2230,9 +2237,18 @@ namespace FollowPeers.Controllers
 
             UpdateEducation(organizationStrings.ToArray(), startYearStrings.ToArray(), endYearStrings.ToArray(), degreeStrings.ToArray(), countryStrings.ToArray(), userprofile);
 
+            
             CreateUpdates("Profile information updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
             followPeersDB.Entry(userprofile).State = EntityState.Modified;
-            followPeersDB.SaveChanges();
+            try
+            {
+                followPeersDB.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                return RedirectToAction("Index", "Profile", new { message = "Profile Not Updated", id = userprofile.UserProfileId });
+            }
+            
             return RedirectToAction("Index", "Profile", new { message = "Successfully Updated", id = userprofile.UserProfileId });
 
 

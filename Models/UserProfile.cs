@@ -16,19 +16,28 @@ namespace FollowPeers.Models
         public int UserProfileId { get; set; }
         [ScaffoldColumn(false)]
         public string UserName { get; set; }
+        
         [DisplayName("First Name")]
-        [Required(ErrorMessage = "Your First Name please.")]
+        [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
+        
         [DisplayName("Last Name")]
+        [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
+
         public string Profession { get; set; }
         public string PhotoUrl { get; set; }
     //    [Required(ErrorMessage = "Your Age please. We're all young at heart. Yes.")]
-       
+
+        [Required(ErrorMessage = "Birthday is required")]
         public DateTime? Birthday { get; set; }
-    //    [Required(ErrorMessage = "Your Gender please.")]
+
+      [Required(ErrorMessage = "Gender is required")]
         public string Gender { get; set; }
+
+        [Required(ErrorMessage = "Status is required")]
         public string Status { get; set; }
+
         public string StatusMessage { get; set; }
       //  [Required(ErrorMessage = "Where are you located again?")]
         public int Default { get; set; }

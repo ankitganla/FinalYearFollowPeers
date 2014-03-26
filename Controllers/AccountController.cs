@@ -145,7 +145,6 @@ namespace FollowPeers.Controllers
                     MembershipCreateStatus createStatus;
                     //changed from model.UserName to model.Email of parameter 1
                     Membership.CreateUser(model.Email, model.Password, model.Email, "question", "answer", true, null, out createStatus);
-
                     if (createStatus == MembershipCreateStatus.Success)
                     {
                         FormsAuthentication.SetAuthCookie(model.Email, false /* createPersistentCookie */);
