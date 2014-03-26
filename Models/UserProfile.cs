@@ -17,7 +17,7 @@ namespace FollowPeers.Models
         [ScaffoldColumn(false)]
         public string UserName { get; set; }
         [DisplayName("First Name")]
-      //  [Required(ErrorMessage = "Your First Name please.")]
+        [Required(ErrorMessage = "Your First Name please.")]
         public string FirstName { get; set; }
         [DisplayName("Last Name")]
         public string LastName { get; set; }

@@ -42,7 +42,7 @@ namespace FollowPeers
             //RouteTable.Routes.MapHubs();
 
             //Database.SetInitializer(new SampleData());
-
+            Database.SetInitializer<Models.FollowPeersDBEntities>(null);
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
