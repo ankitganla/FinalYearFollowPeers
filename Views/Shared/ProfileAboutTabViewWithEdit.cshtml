@@ -389,12 +389,25 @@
                                 <div class="editor-field">
                                     @Html.HiddenFor(model => model.Birthday)
                                     @{
-                                      DateTime newDateTime = (DateTime)Model.Birthday;
-                                      DateTime date = newDateTime.Date;
-                                      String dateString = date.ToShortDateString();
+                                        DateTime newDateTime;
+                                        DateTime date;
+                                        if (Model.Birthday == null)
+                                        {
+                                            <input id="Birthday" type="date" name="Birthday" value="@Model.Birthday"/>
+                                        }
+                                        else
+                                        {
+
+                                            newDateTime = (DateTime)Model.Birthday;
+                                            date = newDateTime.Date;
+                                            <input id="Birthday2" type="date" name="Birthday" value="@date.ToString("yyyy-MM-dd")"/>
+                                            
+                                        }
+                                      
+                                      
                                     }
 
-                                    <input id="Birthday" type="date" name="Birthday" value="@date.ToString("yyyy-MM-dd")">
+                                    
 
                                     @Html.ValidationMessageFor(model => model.Birthday)
                                 </div>
