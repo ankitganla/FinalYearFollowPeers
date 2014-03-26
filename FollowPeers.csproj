@@ -3284,7 +3284,7 @@
     <Content Include="TODELETE\EditContact.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profile\UploadPhoto.cshtml" />
+    <Content Include="TODELETE\UploadPhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
@@ -3470,7 +3470,7 @@
     <Content Include="Views\Forum\TopicList.cshtml" />
     <Content Include="Views\Jobs\SearchJob.cshtml" />
     <Content Include="Views\Jobs\Search.cshtml" />
-    <Content Include="Views\Profile\UploadFile.cshtml" />
+    <Content Include="TODELETE\UploadFile.cshtml" />
     <Content Include="Views\Groups\AddGroup.cshtml" />
     <Content Include="Views\Groups\Index.cshtml" />
     <Content Include="Views\Groups\Create.cshtml" />
