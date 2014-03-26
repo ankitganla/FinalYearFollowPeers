@@ -62,15 +62,15 @@
     <WarningLevel>4</WarningLevel>
     <PublishDatabaseSettings>
       <Objects>
-        <ObjectGroup Name="FollowPeersDBEntities-Deployment" Order="1">
-          <Destination Path="" />
+        <ObjectGroup Name="FollowPeersDBEntities-Deployment" Order="1" xmlns="">
+          <Destination Path="Data Source=tcp:yuchl5v8o8.database.windows.net,1433%3bInitial Catalog=FollowPeersDB%3bUser ID=SQLAdmin%40yuchl5v8o8%3bPassword=FollowMyPeer1" />
           <Object Type="DbFullSql">
             <PreSource Path="Data Source=|DataDirectory|FollowPeersDB.sdf" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
             <Source Path="obj\Release\AutoScripts\FollowPeersDBEntities-Deployment_SchemaOnly.sql" Transacted="True" />
           </Object>
         </ObjectGroup>
-        <ObjectGroup Name="ApplicationServices-Deployment" Order="2">
-          <Destination Path="Data Source=tcp:ulvxpy9dec.database.windows.net,1433%3bInitial Catalog=master%3bPersist Security Info=True%3bUser ID=SQLAdmin%40ulvxpy9dec%3bPassword=FollowMyPeer1" />
+        <ObjectGroup Name="ApplicationServices-Deployment" Order="2" xmlns="">
+          <Destination Path="Data Source=tcp:yuchl5v8o8.database.windows.net,1433%3bInitial Catalog=FollowMyPeer%3bUser ID=SQLAdmin%40yuchl5v8o8%3bPassword=FollowMyPeer1" />
           <Object Type="DbFullSql">
             <PreSource Path="Data Source=.\SQLEXPRESS%3bAttachDbFilename=|DataDirectory|aspnetdb.mdf%3bIntegrated Security=True%3bUser Instance=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
             <Source Path="obj\Release\AutoScripts\ApplicationServices-Deployment_SchemaOnly.sql" Transacted="True" />
