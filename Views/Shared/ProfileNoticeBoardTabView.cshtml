@@ -77,12 +77,18 @@
         
         string name = Membership.GetUser().UserName;
         FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+        string thisUsersName = Membership.GetUser().UserName;
+        String thisUsersName2 = Model.UserName;
+        FollowPeers.Models.UserProfile thisProfile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == thisUsersName2);
           <div>
             @if (Membership.GetUser().UserName == Model.UserName)
             {
                 @Html.Partial("SimplePostBar")
                 <hr />
 
+            }
+              else{
+                @Html.Partial("PostToOther", thisProfile);
             }
         </div>
         //first name of whoever the model refers to at that time
