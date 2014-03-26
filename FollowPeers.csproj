@@ -268,8 +268,6 @@
     <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
     <Content Include="bin\Newtonsoft.Json.dll" />
     <Content Include="bin\Owin.dll" />
-    <Content Include="bin\System.Data.SqlServerCe.dll" />
-    <Content Include="bin\System.Data.SqlServerCe.Entity.dll" />
     <Content Include="bin\WebMatrix.Data.dll" />
     <Content Include="bin\x86\Microsoft.VC90.CRT\msvcr90.dll" />
     <Content Include="bin\x86\Microsoft.VC90.CRT\README_ENU.txt" />
