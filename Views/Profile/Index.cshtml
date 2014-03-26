@@ -228,7 +228,7 @@
                     <div runat="server" id="noticeboard">
                         @if (ownProfile == true || confirmedPeer == true)
                         {
-                            <h3>Updates from @Html.Raw(firstName)</h3>
+                            <h3>@Html.Raw(firstName)'s Notice Board</h3>
                         }
                         @Html.Partial("ProfileNoticeBoardTabView")
                     </div>
