@@ -41,7 +41,7 @@ namespace FollowPeers
             // Register the default hubs route: ~/signalr/hubs
             //RouteTable.Routes.MapHubs();
 
-            Database.SetInitializer(new SampleData());
+            //Database.SetInitializer(new SampleData());
 
             AreaRegistration.RegisterAllAreas();
 
