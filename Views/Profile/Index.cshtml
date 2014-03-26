@@ -107,7 +107,7 @@
 @Html.Partial("_Header")
 @*Container*@
 <div class="container">
-
+   
     @*rows within container*@
     <div class="row">
 
@@ -180,6 +180,7 @@
 
 
         <div class="span8 main-content">
+   
             <div class="box">
                 @{
                     if (ownProfile == true)
@@ -188,11 +189,11 @@
                     }
                     else if (confirmedPeer == false)
                     {
-                    <div style="float:right;margin-top:10px;">
+                    <div style="float: right; margin-top: 10px;">
                         @using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                         {  
                             <input type="hidden" name="username" value="@Model.UserName" />
-                            <input class="btn btn-success btn-large" type="submit" value="Follow" style="font-family:'Segoe UI';font-weight:bold;width:130px;align-content:center;"/>
+                            <input class="btn btn-success btn-large" type="submit" value="Follow" style="font-family: 'Segoe UI'; font-weight: bold; width: 130px; align-content: center;" />
                         }
                     </div>
                     }
@@ -207,7 +208,7 @@
                     <div runat="server" id="noticeboard">
                         @if (ownProfile == true || confirmedPeer == true)
                         {
-                        <h3>Updates from @Html.Raw(firstName)</h3>
+                            <h3>Updates from @Html.Raw(firstName)</h3>
                         }
                         @Html.Partial("ProfileNoticeBoardTabView")
                     </div>
@@ -219,6 +220,7 @@
 
 
                         @Html.Partial("ProfilePhotoTabView")
+                        
 
                     </div>
                     
@@ -247,16 +249,16 @@
                         <h3 style="display: inline-block;">About @Html.Raw(firstName)</h3>
                         @if (ownProfile == false && confirmedPeer == true)
                         {
-                            <div style="float:right;">
+                            <div style="float: right;">
                                 @using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                                 {
-                                <input type="hidden" name="username" value="@Model.UserName" />
-                                <input class="btn btn-success" type="submit" value="UnFollow" style="margin-top: 15px;" />
+                                    <input type="hidden" name="username" value="@Model.UserName" />
+                                    <input class="btn btn-success" type="submit" value="UnFollow" style="margin-top: 15px;" />
                                 }
                             </div>
                         }
                         
-                        @*if user, then edit privileges*@
+@*if user, then edit privileges*@
                         @if (Membership.GetUser().UserName == Model.UserName)
                         {
                             @Html.Partial("ProfileAboutTabViewWithEdit")
@@ -283,9 +285,11 @@
             </div>
         </div>
 
-
+       
     </div>
-    <div class="row">
+    
+    </div>
+     
         @Html.Partial("_Footer")
     </div>
 </div>

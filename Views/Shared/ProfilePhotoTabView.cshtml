@@ -70,17 +70,26 @@
             }
         </div>
     </div>
-    <div class="span2">
-        @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
+    @{
+        FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+        string name = Membership.GetUser().UserName;
+        FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+        if (Model.UserProfileId == myprofile.UserProfileId)
         {
+        <div class="span2">
+            @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
+            {
                             
-            <div style="display: inline-block; float: right;">
-                <a class="btn btn-success" style="position: relative; top: 10px;">New Photo</a>
-                <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -85px; top: 10px; width: 80px; height: 30px; opacity: 0;" />
-            </div>
-        }
+                <div style="display: inline-block; float: right;">
+                    <a class="btn btn-success" style="position: relative; top: 10px;">New Photo</a>
+                    <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -85px; top: 10px; width: 80px; height: 30px; opacity: 0;" />
+                </div>
+            }
 
-    </div>
+        </div>
+        }
+    }
+
 </div>
 
 
