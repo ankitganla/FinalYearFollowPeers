@@ -371,7 +371,7 @@ namespace FollowPeers.Controllers
                 }
                 if (publicationmodel.year == null)
                 {
-                    publicationmodel.year = 2012;
+                    publicationmodel.year = 2014;
                 }
                 if (publicationmodel.viewCount == 0)
                 {
