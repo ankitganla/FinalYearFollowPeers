@@ -113,6 +113,9 @@
                                             <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
                                             <div id="Author">Author(s) : @item.author</div>
                                             <div id="Year">Year of Publication : @item.year</div>
+                                            <div>@Html.ActionLink("Fav", "FavouritePub", 
+    "PublicationModel", new {id = item.publicationID , Pubname = item.title}, null)</div>
+
                                             <div id="@mouseid2" class="accordion-body collapse" >
                                                 @{if (@item.keyword != null)
                                                   {<div id="keyword">Keyword(s) : @item.keyword</div>}}

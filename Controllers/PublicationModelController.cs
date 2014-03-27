@@ -42,17 +42,16 @@ namespace FollowPeers.Controllers
                 Favourite FoundMatch = user.Favourites.FirstOrDefault(p => p.ItemTypeId == Item.ItemTypeId && p.ItemType == Item.ItemType);
                 if (FoundMatch != null)
                 {
-                    user.Favourites.Add(Item);
-                    followPeersDB.Entry(user).State = EntityState.Modified;
-                    followPeersDB.SaveChanges();
-
-                    ViewBag.FavouriteAdded = "true";
-                    CreateUpdates("Favourited a new publication titled " + Pubname, "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
+                    CreateUpdates("The publication " + Pubname+" is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
+                    return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
                 }
+                user.Favourites.Add(Item);
+                followPeersDB.Entry(user).State = EntityState.Modified;
+                followPeersDB.SaveChanges();
 
-
+                ViewBag.FavouriteAdded = "true";
+                CreateUpdates("Favourited a new publication titled " + Pubname, "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
             }
-
             return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
         }
 
