@@ -37,17 +37,23 @@ namespace FollowPeers.Controllers
                 Item.ItemName = Pubname;
                 Item.ItemType = 6;
                 Item.ItemTypeId = Convert.ToInt32(id);
-                user.Favourites.Add(Item);
 
                 //Add only if Favourite doesn't already exist
                 Favourite FoundMatch = user.Favourites.FirstOrDefault(p => p.ItemTypeId == Item.ItemTypeId && p.ItemType == Item.ItemType);
+                if (FoundMatch != null)
+                {
+                    user.Favourites.Add(Item);
+                    followPeersDB.Entry(user).State = EntityState.Modified;
+                    followPeersDB.SaveChanges();
 
-                followPeersDB.Entry(user).State = EntityState.Modified;
-                followPeersDB.SaveChanges();
+                    ViewBag.FavouriteAdded = "true";
+                    CreateUpdates("Favourited a new publication titled " + Pubname, "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
+                }
 
-                ViewBag.FavouriteAdded = "true";
+
             }
-            return RedirectToAction("Index", "PublicationModel");
+
+            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
         }
 
         public ActionResult Recommend(int id, string NameId)
