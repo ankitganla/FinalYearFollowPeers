@@ -4,73 +4,74 @@
 }
 @Html.Partial("_Header")
 <div class="container">
-
     <div class="span10 main-content">
-
         <div class="row">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.UserProfileId)
+            @Html.HiddenFor(model => model.UserName)
+            @Html.HiddenFor(model => model.activated)
 
-            @using (Html.BeginForm("UploadFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data" }))
-            {
-                @Html.ValidationSummary(true)
-                @Html.HiddenFor(model => model.UserProfileId)
-                @Html.HiddenFor(model => model.UserName)
-                @Html.HiddenFor(model => model.activated)
-               
-                <div>
-                    @{
-                string path = HttpRuntime.AppDomainAppPath;
-                string newpath = path + "\\Content\\Files\\";
-                string userpath = newpath + Model.UserName + "\\Photos\\";
-                var directoryInfo = new DirectoryInfo(userpath);
-                if (directoryInfo.Exists)
-                {
-                    string[] photoFiles = Directory.GetFiles(userpath);
-                    if (photoFiles == null || photoFiles.Length == 0)
+            <div>
+                @{
+                    string path = HttpRuntime.AppDomainAppPath;
+                    string newpath = path + "\\Content\\Files\\";
+                    string userpath = newpath + Model.UserName + "\\Photos\\";
+                    var directoryInfo = new DirectoryInfo(userpath);
+                    if (directoryInfo.Exists)
                     {
-                                
-                        <p>There are no uploaded files</p>
-                                    
-                    }
-
-                    else
-                    {
-                        foreach (string fileName in photoFiles)
+                        string[] photoFiles = Directory.GetFiles(userpath);
+                        if (photoFiles == null || photoFiles.Length == 0)
                         {
-                            string sourcelink = fileName;  
-                        <div class="span2">
+                                
+                    <p>There are no uploaded files</p>
+                                    
+                        }
 
-                            <img src="sourcelink" style="width: 200px; height: 200px;" />
+                        else
+                        {
+                            foreach (string fileName in photoFiles)
+                            {
+                                string sourcelink = fileName;  
+                    <div class="span2">
 
-                            @{
-                            string[] justFiles = fileName.Split('\\');
-                            string displayName = justFiles[justFiles.Length - 1];
-                            }
-                            <p>
-                                @Html.Raw(displayName)
-                                @Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName })
-                                @Html.ActionLink("Delete", "Delete_File", new { delPath = fileName })
-                            </p>
-                        </div>
+                        <img src="sourcelink" style="width: 200px; height: 200px;" />
+
+                        @{
+                                string[] justFiles = fileName.Split('\\');
+                                string displayName = justFiles[justFiles.Length - 1];
+                        }
+                        <p>
+                            @Html.Raw(displayName)
+                            @*Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserName + "\\" + fileName })
+                            @Html.ActionLink("Delete", "Delete_File", new { delPath = fileName })*@
+                        </p>
+                    </div>
                             
                             
                          
                         
 
+                            }
                         }
                     }
-                }
 
-                else
-                {
-                        <p>There are no uploaded files</p> 
-                }
+                    else
+                    {
+                        try{ 
+                            directoryInfo.Create();
+                        }catch (IOException e){
+                            Console.Write(e.StackTrace);
+                        }
+                        
+                    <p>There are no uploaded files</p> 
                     }
-                </div>
-    
-            }
+                }
+            </div>
+
+
         </div>
     </div>
-    
+
 
 </div>
 
