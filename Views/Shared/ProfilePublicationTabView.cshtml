@@ -108,16 +108,7 @@
                                 <td>
 
                                     <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
-                                        <div style="float: left;" id="mouse" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="@mouseid1" >
-                                            @if (item.imagename != "" && item.imagename != null)
-                                            {
-                                                <img class="mouseover" src="../../Content/Files/@item.UserProfile.UserName/Publications/@item.imagename" alt="" style="margin-left: auto; margin-right: auto;width: 50px;"/>
-                                            }
-                                            else
-                                            {
-                                                <img src="../../Content/images/Pub1.png" alt="" style="margin-left: auto; margin-right: auto; width: 50px;" />
-                                            }
-                                        </div>
+                                        
                                         <div style="margin-left: 8px; float: left;">
                                             <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
                                             <div id="Author">Author(s) : @item.author</div>
