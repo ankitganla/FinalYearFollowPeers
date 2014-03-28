@@ -45,11 +45,12 @@
 
 }
 
-<head>
+<head> 
     <title>Profile</title>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://arrow.scrolltotop.com/arrow88.js"></script>
     <style media="screen" type="text/css">
+
         .profilepagetabs ul
         {
             padding: 0px;
@@ -180,9 +181,9 @@
                         <h4 style="text-align: center; color: green">Add New</h4>
                         @using (Html.BeginForm("UploadPhotoFile", "Profile", FormMethod.Post, new { @encType = "multipart/form-data", @name = "files" }))
                         {
-                            <a class="btn btn-success" style="position: relative; top: 10px; margin-bottom: -15px; width:80%;">New Photo</a>
+                            <a class="btn btn-success" style="position: relative; top: 10px; margin-bottom: -15px; width: 80%;">New Photo</a>
                             <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -5px; top: -5px; width: 150px; height: 30px; opacity: 0;" />
-                            <a class="btn btn-success" href="/PublicationModel/Create/1" style="margin-bottom: 5px; width:80%;">New Publication</a>
+                            <a class="btn btn-success" href="/PublicationModel/Create/1" style="margin-bottom: 5px; width: 80%;">New Publication</a>
                             <a class="btn btn-success" href="@Url.Content("~/Jobs/Create/1")" style="margin-bottom:5px; width:80%;">New Job</a>
                             <a class="btn btn-success" href="@Url.Content("~/Course/Create")" style="margin-bottom:5px; width:80%;">New Course</a>
                         

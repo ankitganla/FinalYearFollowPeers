@@ -77,9 +77,16 @@
         
         string name = Membership.GetUser().UserName;
         FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-        string thisUsersName = Model.UserName; 
+        string thisUsersName = Model.UserName;
         FollowPeers.Models.UserProfile thisProfile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == thisUsersName);
-        <div>
+
+        //first name of whoever the model refers to at that time
+
+
+        int count = 0;
+        if (toCheck == false || showNoticeBoard == true)
+        {
+            <div>
             @if (Membership.GetUser().UserName == Model.UserName)
             {
                 @Html.Partial("SimplePostBar")
@@ -89,15 +96,9 @@
             else
             {
                 @Html.Partial("PostToOther", thisProfile);
-                
+
             }
         </div>
-        //first name of whoever the model refers to at that time
-
-
-        int count = 0;
-        if (toCheck == false || showNoticeBoard == true)
-        {
             if (Model.Updates != null)
             {
                 var newList = Model.Updates.OrderByDescending(x => x.Time).ToList();
