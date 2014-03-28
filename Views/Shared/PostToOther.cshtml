@@ -1,0 +1,90 @@
+﻿@model FollowPeers.Models.UserProfile
+@using FollowPeers.Models;
+
+<head>
+    <title>PostToOTher</title>
+    <style media="screen" type="text/css">
+        #postbartabs ul
+        {
+            padding: 0px;
+            margin: 0px;
+            margin-left: 0px;
+            padding-right: 10px;
+        }
+
+            #postbartabs ul li
+            {
+                display: inline-block;
+                height: auto;
+            }
+
+                #postbartabs ul li a
+                {
+                    /* The following four lines are to make the top left and top right corners of the content area rounded. */
+                    -moz-border-radius-topleft: 4px;
+                    border-top-left-radius: 4px;
+                    -moz-border-radius-topright: 4px;
+                    border-top-right-radius: 4px;
+                    -moz-border-radius-bottomleft: 4px;
+                    border-bottom-left-radius: 4px;
+                    -moz-border-radius-bottomright: 4px;
+                    border-bottom-right-radius: 4px;
+                    margin-left: 0px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    width: auto;
+                    border: solid;
+                    border-width: 1px;
+                    border-color: #45aeea;
+                    font-weight: bold;
+                    color: #45aeea;
+                }
+
+                    #postbartabs ul li a:hover
+                    {
+                        text-decoration: underline;
+                    }
+
+        #postbartabs li.current a
+        {
+            background-color: #45aeea;
+            color: white;
+        }
+
+        textarea
+        {
+            width: 100%;
+            resize: none;
+            border: 1px solid #45aeea;
+            outline: none;
+            margin-left: 0;
+            margin-right: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+
+
+<div id="status_form" style="display: block;">
+    <form action="/Profile/PosttoNoticeBoard" method="post">
+        <textarea name="message" placeholder="Write on @Html.Raw(Model.FirstName)'s NoticeBoard..." style="margin-bottom: 1px;"></textarea>
+        <div class="box" style="padding-left: 1px;">
+            <input class="btn btn-success" type="submit" value="Share" style="float: right;" />
+        </div>
+        @{
+            String id = Model.UserProfileId.ToString();
+            <input type="hidden" id="redirect" name="redirect" value="@id" />
+        }
+        
+        <div id="broadcast_check" style="display: none;">
+            <label type="checkbox">
+                <span class="label label-info" style="padding: 5px">Broadcast this post?</span>
+                <input type="checkbox" id="Ischecked" value="true" name="Ischecked" style="padding-left: 100px" />
+            </label>
+            <input type="hidden" name="Ischecked" value="false" />
+        </div>
+    </form>
+</div>
+
+

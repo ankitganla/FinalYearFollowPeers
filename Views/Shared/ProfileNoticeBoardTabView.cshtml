@@ -77,12 +77,19 @@
         
         string name = Membership.GetUser().UserName;
         FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-          <div>
+        string thisUsersName = Model.UserName; 
+        FollowPeers.Models.UserProfile thisProfile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == thisUsersName);
+        <div>
             @if (Membership.GetUser().UserName == Model.UserName)
             {
                 @Html.Partial("SimplePostBar")
-                <hr />
+               
 
+            }
+            else
+            {
+                @Html.Partial("PostToOther", thisProfile);
+                
             }
         </div>
         //first name of whoever the model refers to at that time
@@ -158,25 +165,25 @@
                           {
                               if (cmt.update.UpdateId == currentUpdate.UpdateId)
                               {   <div style="border-bottom: 1px solid #ddd;">
-                                                      @{
+                                  @{
                                   IQueryable<UserProfile> custQuery2 = from cust in followPeersDB.UserProfiles where cust.UserProfileId == cmt.commenterId select cust;
                                   foreach (UserProfile user in custQuery2)
                                   {
-                                                          <div style="float: left; margin: 3px; height: 30px; overflow: hidden;">
-                                                              <img src="@Html.Encode(user.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:30px;"/>
-                                                          </div>
-                                                          <div style="margin-left: 8px; float: left;">
-                                                              <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
-                                                          </div>
+                                      <div style="float: left; margin: 3px; height: 30px; overflow: hidden;">
+                                          <img src="@Html.Encode(user.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:30px;"/>
+                                      </div>
+                                      <div style="margin-left: 8px; float: left;">
+                                          <a href="/Profile/Index/@user.UserProfileId"><b>@user.FirstName @user.LastName</b></a><text> @cmt.message </text>
+                                      </div>
                                       
                                       if (user.UserProfileId == myprofile.UserProfileId)
                                       {<div id="mydiv" style="float: right; margin-right: 5px; color: #888; font-size: 15px; cursor: pointer;">@Html.ActionLink("x", "DeleteComment", "Notice", new { id = cmt.NoticeCommentId, redirect = Model.UserProfileId }, null)
-                                                          </div>}
-                                                          <div style="clear: both;">
-                                                          </div>
+                                      </div>}
+                                      <div style="clear: both;">
+                                      </div>
                                   }
-                                                      }
-                                                  </div>
+                                  }
+                              </div>
                               } //end of if
                           }
                         }

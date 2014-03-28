@@ -5,6 +5,7 @@
 
 <head>
     <title>Edit Profile</title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="@Url.Content("~/Scripts/modernizr-1.7.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery-ui-1.8.11.js")" type="text/javascript"></script>
@@ -40,6 +41,8 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
+            $('#aboutform').validate();
             counter = 0;
             var adbutton = document.getElementById('Add');
             adbutton.onclick() = function () {
@@ -314,7 +317,7 @@
     <div class="row">
 
         @*Main Content*@
-        @using (Html.BeginForm("EditProfile", "Profile", FormMethod.Post))
+        @using (Html.BeginForm("EditProfile", "Profile", FormMethod.Post, new { id = "aboutform" }))
         {
             <div class="span8 main-content">
 
@@ -390,25 +393,25 @@
                                 <div class="editor-field">
                                     @Html.HiddenFor(model => model.Birthday)
                                     @{
-                                        DateTime newDateTime;
-                                        DateTime date;
-                                        if (Model.Birthday == null)
-                                        {
-                                            <input id="Birthday" type="date" name="Birthday" value="@Model.Birthday"/>
-                                        }
-                                        else
-                                        {
+                                      DateTime newDateTime;
+                                      DateTime date;
+                                      if (Model.Birthday == null)
+                                      {
+                                        <input id="Birthday" type="date" name="Birthday" value="@Model.Birthday"/>
+                                      }
+                                      else
+                                      {
 
-                                            newDateTime = (DateTime)Model.Birthday;
-                                            date = newDateTime.Date;
-                                            <input id="Birthday2" type="date" name="Birthday" value="@date.ToString("yyyy-MM-dd")"/>
+                                          newDateTime = (DateTime)Model.Birthday;
+                                          date = newDateTime.Date;
+                                        <input id="Birthday2" type="date" name="Birthday" value="@date.ToString("yyyy-MM-dd")"/>
                                             
-                                        }
+                                      }
                                       
                                       
                                     }
 
-                                    
+
 
                                     @Html.ValidationMessageFor(model => model.Birthday)
                                 </div>

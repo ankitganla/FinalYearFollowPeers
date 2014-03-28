@@ -1,0 +1,52 @@
+﻿@model FollowPeers.Models.UserProfile 
+@{
+    ViewBag.Title = @Model.FirstName + " " + @Model.LastName + " Update Your Profile";
+}
+
+<head>
+    <title>Complete your Profile</title>
+</head>
+
+@*Header*@
+@Html.Partial("_Header")
+@*Container*@
+<div class="container">
+
+    @*rows within container*@
+    <div class="row">
+        @*Left Sidebar*@
+        @Html.Partial("_ProfilePhotoSidebar")
+
+        @*Main Content*@
+        <div class="span8 main-content">
+            <div class="box">
+ 
+                <h2>Update Your Profile</h2>
+                @if (Model.firsttime == true)
+                {
+                    Model.firsttime = false;
+                    <div class="alert">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Complete Your Profile!</strong>
+                    </div>
+                }
+                @{var message = ViewData["message"];}
+
+                <div>
+                    @Html.Partial("ProfileAboutTabViewWithEdit")
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        @Html.Partial("_Footer")
+    </div>
+
+</div>
+

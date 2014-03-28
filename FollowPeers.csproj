@@ -3183,7 +3183,7 @@
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Profile\EditAchievement.cshtml" />
+    <Content Include="TODELETE\EditAchievement.cshtml" />
     <Content Include="Views\Shared\_ProfilepageRightSidebar.cshtml" />
     <Content Include="Views\Tags\Index.cshtml" />
     <Content Include="Views\Tags\MyTags.cshtml" />
@@ -3193,14 +3193,12 @@
     <Content Include="Views\Course\CourseAddVideo.cshtml" />
     <Content Include="Views\Shared\CourseRightSideBar.cshtml" />
     <Content Include="Views\Message\Reply.cshtml" />
-    <Content Include="Views\Profile\EditEmployment.cshtml" />
+    <Content Include="TODELETE\EditEmployment.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Shared\MultiInputBox.cshtml" />
     <Content Include="Views\Shared\_ProfilePhotoSidebar.cshtml" />
     <Content Include="Views\Shared\Publication_multi_input.cshtml" />
-    <Content Include="Views\Profile\NewProfileView.cshtml" />
     <Content Include="Views\Shared\ProfilePublicationTabView.cshtml" />
-    <Content Include="Views\Profile\ProfilePage.cshtml" />
     <Content Include="Views\Shared\SimplePostBar.cshtml" />
     <Content Include="Views\Shared\ProfileNoticeBoardTabView.cshtml" />
     <Content Include="Views\Shared\ProfileAboutTabView.cshtml" />
@@ -3215,6 +3213,8 @@
     <Content Include="Views\Shared\PublicationUpdatesView.cshtml" />
     <Content Include="Views\Shared\JobUpdatesView.cshtml" />
     <Content Include="Views\Shared\FavouriteUpdatesView.cshtml" />
+    <Content Include="Views\Profile\CompleteProfile.cshtml" />
+    <Content Include="Views\Shared\PostToOther.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\TempImages\" />
@@ -3230,25 +3230,25 @@
     <Content Include="Views\Profile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SignUp\Index.cshtml" />
+    <Content Include="TODELETE\SignUp\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SignUp\Details.cshtml" />
+    <Content Include="TODELETE\SignUp\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SignUp\Create.cshtml" />
+    <Content Include="TODELETE\SignUp\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SignUp\Edit.cshtml" />
+    <Content Include="TODELETE\SignUp\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\SignUp\Delete.cshtml" />
+    <Content Include="TODELETE\SignUp\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Footer.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profile\Edit.cshtml" />
+    <Content Include="TODELETE\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Profile\Search.cshtml" />
@@ -3257,16 +3257,16 @@
     <Content Include="Views\Profile\Following.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profile\EditResearch.cshtml" />
+    <Content Include="TODELETE\EditResearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profile\EditEducation.cshtml" />
+    <Content Include="TODELETE\EditEducation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profile\EditContact.cshtml" />
+    <Content Include="TODELETE\EditContact.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profile\UploadPhoto.cshtml" />
+    <Content Include="TODELETE\UploadPhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\DateTime.cshtml" />
@@ -3369,7 +3369,7 @@
     <Content Include="Views\Notice\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profile\EditStudents.cshtml" />
+    <Content Include="TODELETE\EditStudents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\PatentModel\Create.cshtml" />
@@ -3399,7 +3399,7 @@
     <Content Include="Views\PublicationModel\Search.cshtml" />
     <Content Include="Views\Profile\TierFollowers.cshtml" />
     <Content Include="Views\PatentModel\MyPatent.cshtml" />
-    <Content Include="Views\Profile\EditPortfolio.cshtml" />
+    <Content Include="TODELETE\EditPortfolio.cshtml" />
     <Content Include="Views\Profile\PostJob.cshtml" />
     <Content Include="Views\Profile\SearchJobs.cshtml" />
     <Content Include="Views\Profile\FollowPeopleRecommendation.cshtml" />
@@ -3452,7 +3452,7 @@
     <Content Include="Views\Forum\TopicList.cshtml" />
     <Content Include="Views\Jobs\SearchJob.cshtml" />
     <Content Include="Views\Jobs\Search.cshtml" />
-    <Content Include="Views\Profile\UploadFile.cshtml" />
+    <Content Include="TODELETE\UploadFile.cshtml" />
     <Content Include="Views\Groups\AddGroup.cshtml" />
     <Content Include="Views\Groups\Index.cshtml" />
     <Content Include="Views\Groups\Create.cshtml" />

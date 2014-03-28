@@ -108,20 +108,14 @@
                                 <td>
 
                                     <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
-                                        <div style="float: left;" id="mouse" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="@mouseid1" >
-                                            @if (item.imagename != "" && item.imagename != null)
-                                            {
-                                                <img class="mouseover" src="../../Content/Files/@item.UserProfile.UserName/Publications/@item.imagename" alt="" style="margin-left: auto; margin-right: auto;width: 50px;"/>
-                                            }
-                                            else
-                                            {
-                                                <img src="../../Content/images/Pub1.png" alt="" style="margin-left: auto; margin-right: auto; width: 50px;" />
-                                            }
-                                        </div>
+                                        
                                         <div style="margin-left: 8px; float: left;">
                                             <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
                                             <div id="Author">Author(s) : @item.author</div>
                                             <div id="Year">Year of Publication : @item.year</div>
+                                            <div>@Html.ActionLink("Fav", "FavouritePub", 
+    "PublicationModel", new {id = item.publicationID , Pubname = item.title}, null)</div>
+
                                             <div id="@mouseid2" class="accordion-body collapse" >
                                                 @{if (@item.keyword != null)
                                                   {<div id="keyword">Keyword(s) : @item.keyword</div>}}
@@ -247,9 +241,6 @@
 
     </div>
     <div class="span2 profilepagetabs">
-
-        <a class="btn btn-success" href="/PublicationModel/Create/1">New Publication</a>
-
         <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
             <li class="current" id="li_tab1" onclick="tab('tab1')"><a>Uploaded</a></li>
             <li id="li_tab3" onclick="tab('tab3')"><a>Favourites</a></li>

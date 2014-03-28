@@ -13,6 +13,7 @@ using System.Data.Objects;
 using System.Data.SqlClient;
 using System.Web.Helpers;
 using System.IO;
+using System.Data.Entity.Validation;
 
 namespace FollowPeers.Controllers
 {
@@ -37,9 +38,10 @@ namespace FollowPeers.Controllers
                 followPeersDB.SaveChanges();
             }
 
-            if (viewerprofile.firsttime == true && id == myprofile.UserProfileId)
+            if (id == myprofile.UserProfileId && viewerprofile.firsttime == true)
             {
-                return RedirectToAction("Edit", "Profile", new { id = viewerprofile.UserProfileId });
+
+                return RedirectToAction("CompleteProfile", "Profile", new { id = viewerprofile.UserProfileId });
 
             }
             else
@@ -296,15 +298,15 @@ namespace FollowPeers.Controllers
             return PartialView();
         }
 
-
-
-        public ActionResult Edit(string message)
+        public ActionResult CompleteProfile(string message)
         {
             if (message != null) ViewData["message"] = message;
             string name = Membership.GetUser().UserName;
             myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
             return View(myprofile);
         }
+
+
 
         public ActionResult PostJob(string message)
         {
@@ -314,63 +316,7 @@ namespace FollowPeers.Controllers
             return View(myprofile);
         }
 
-        public ActionResult EditResearch(string message)
-        {
-            if (message != null) ViewData["message"] = message;
-            string name = Membership.GetUser().UserName;
-            myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            return View(myprofile);
-        }
-        public ActionResult EditStudents(string message)
-        {
-            if (message != null) ViewData["message"] = message;
-            string name = Membership.GetUser().UserName;
-            myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            return View(myprofile);
-        }
 
-        public ActionResult EditEducation(string message)
-        {
-            if (message != null) ViewData["message"] = message;
-            string name = Membership.GetUser().UserName;
-            myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            ViewBag.CountryId = new SelectList(followPeersDB.Countries, "CountryId", "Name");
-            return View(myprofile);
-        }
-
-        public ActionResult EditEmployment(string message)
-        {
-            if (message != null) ViewData["message"] = message;
-            string name = Membership.GetUser().UserName;
-            myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            ViewBag.CountryId = new SelectList(followPeersDB.Countries, "CountryId", "Name");
-            return View(myprofile);
-        }
-
-        public ActionResult EditAchievement(string message)
-        {
-            if (message != null) ViewData["message"] = message;
-            string name = Membership.GetUser().UserName;
-            myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            return View(myprofile);
-        }
-
-        public ActionResult EditPortfolio(string message)
-        {
-            if (message != null) ViewData["message"] = message;
-            string name = Membership.GetUser().UserName;
-            myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            ViewBag.CountryId = new SelectList(followPeersDB.Countries, "CountryId", "Name");
-            return View(myprofile);
-        }
-
-        public ActionResult EditContact(string message)
-        {
-            if (message != null) ViewData["message"] = message;
-            string name = Membership.GetUser().UserName;
-            myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            return View(myprofile);
-        }
         public ActionResult UploadPhoto()
         {
             string name = Membership.GetUser().UserName;
@@ -522,95 +468,9 @@ namespace FollowPeers.Controllers
         }
 
 
-        //
-        // POST: /Profile/Edit/5
-        [HttpPost, ValidateInput(false)]
-        public ActionResult Edit(FormCollection formCollection, int[] Specialization)
-        {
-            string name = Membership.GetUser().UserName;
-            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-
-            bool toadd = false;
-            if (userprofile.Organization == null) toadd = true;
-            // if (ModelState.IsValid && userprofile.FirstName != null && userprofile.LastName != null)
-
-            if (TryUpdateModel(userprofile, "", new string[] { "Country", "FirstName", "LastName", "Gender", "Status", "Birthday", "Organization", "AboutMe", "Departments" }, new string[] { "PhotoUrl", "Status", "StatusMessage", "Specializations", "Educations", "Contact" }))
-            {
-                //if a user adds a new organization
-                if ((followPeersDB.Organizations.SingleOrDefault(p => p.Name == userprofile.Organization)) == null)
-                {
-                    followPeersDB.Organizations.Add(new Organization { Name = userprofile.Organization });
-                }
-
-                //if a user adds a new Department
-                if ((followPeersDB.Departments.SingleOrDefault(p => p.Name == userprofile.Departments)) == null)
-                {
-                    followPeersDB.Departments.Add(new Department { Name = userprofile.Departments });
-                }
-
-                UpdateSpecializations(Specialization, userprofile);
-
-                userprofile.firsttime = false;
-
-                if (userprofile.SignUpProgress + 0.2F <= 1.1F && toadd == true) userprofile.SignUpProgress += 0.20F;
-                if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
-                {
-                    CreateUpdates("Profile information updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
-                }
-                followPeersDB.Entry(userprofile).State = EntityState.Modified;
-                followPeersDB.SaveChanges();
-                if (userprofile.PhotoUrl == "/Content/TempImages/default.jpg") return RedirectToAction("UploadPhoto", "Profile");
-
-                return RedirectToAction("Edit", "Profile", new { message = "Successfully Updated" });
-            }
-
-            if (userprofile.FirstName == null) ModelState.AddModelError("", "First Name cannot be left blank.");
-            if (userprofile.LastName == null) ModelState.AddModelError("", "Last Name cannot be left blank.");
-            ModelState.AddModelError("", "Update Failed");
 
 
-            return View(userprofile);
 
-
-        }
-
-        [HttpPost]
-        public ActionResult EditResearch(FormCollection formCollection, int[] Specialization)
-        {
-            string name = Membership.GetUser().UserName;
-            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            bool toadd = false;
-            if (userprofile.Specializations.Count() == 0) toadd = true;
-
-            if (TryUpdateModel(userprofile, "", null, new string[] { "Specializations" }))
-            {
-                //if a user adds a new organization
-                if ((followPeersDB.Organizations.SingleOrDefault(p => p.Name == userprofile.Organization)) == null)
-                {
-                    followPeersDB.Organizations.Add(new Organization { Name = userprofile.Organization });
-                }
-                UpdateSpecializations(Specialization, userprofile);
-
-                userprofile.firsttime = false;
-                if (userprofile.SignUpProgress + 0.2F <= 1.1F && toadd == true) userprofile.SignUpProgress += 0.20F;
-                if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
-                {
-                    CreateUpdates("Research interest updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
-                }
-
-
-                followPeersDB.Entry(userprofile).State = EntityState.Modified;
-                followPeersDB.SaveChanges();
-                if (myprofile.Educations.Count() == 0) return RedirectToAction("EditEducation", "Profile");
-                return RedirectToAction("EditResearch", "Profile", new { message = "Successfully Updated" });
-            }
-
-            if (userprofile.FirstName == null) ModelState.AddModelError("", "First Name cannot be left blank.");
-            if (userprofile.LastName == null) ModelState.AddModelError("", "Last Name cannot be left blank.");
-
-            return View(userprofile);
-
-        }
         public void CreateUpdates(string message, string link, int type, int id)
         {
             string myname = Membership.GetUser().UserName;
@@ -653,37 +513,6 @@ namespace FollowPeers.Controllers
 
 
 
-        [HttpPost]
-        public ActionResult EditEducation(FormCollection formCollection, string[] Organization, string[] startYear, string[] endYear, string[] Degree, string[] Country)
-        {
-            string name = Membership.GetUser().UserName;
-            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            bool toadd = false;
-            if (userprofile.Educations.Count() == 0) toadd = true;
-
-            if (TryUpdateModel(userprofile, "", null, new string[] { "Organization", "Specializations", "FirstName", "LastName", "Profession", "Gender", "Status" }))
-            {
-
-                UpdateEducation(Organization, startYear, endYear, Degree, Country, userprofile);
-
-                userprofile.firsttime = false;
-                if (userprofile.SignUpProgress + 0.2F <= 1.1F) userprofile.SignUpProgress += 0.20F;
-                userprofile.SignUpProgress = 1.0F;
-                if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
-                {
-                    CreateUpdates("Education updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
-                }
-                followPeersDB.Entry(userprofile).State = EntityState.Modified;
-                followPeersDB.SaveChanges();
-                if (myprofile.Contact == null) return RedirectToAction("EditEmployment", "Profile");
-
-                return RedirectToAction("EditEducation", "Profile", new { message = "Successfully Updated" });
-            }
-
-            return View(userprofile);
-
-
-        }
 
         private void UpdateEducation(string[] Organization, string[] startYear, string[] endYear, string[] Degree, string[] Country, UserProfile userprofile)
         {
@@ -717,55 +546,31 @@ namespace FollowPeers.Controllers
                     string tempDegree = Degree.ElementAt(i);
                     string tempCountry = Country.ElementAt(i);
 
-                    Education tempEdu = new Education
+                    if (tempUni == null || tempUni == "" || tempUni == " ")
+                    { }
 
+                    else
                     {
-                        UniversityName = tempUni,
-                        startYear = Convert.ToInt16(tempStart),
-                        endYear = Convert.ToInt16(tempEnd),
-                        Degree = tempDegree,
-                        country = tempCountry
-                    };
+                        Education tempEdu = new Education
 
-                    
-                    userprofile.Educations.Add(tempEdu);
-                    tempEdu.UserProfile = userprofile;
+                        {
+                            UniversityName = tempUni,
+                            startYear = Convert.ToInt16(tempStart),
+                            endYear = Convert.ToInt16(tempEnd),
+                            Degree = tempDegree,
+                            country = tempCountry
+                        };
+
+
+                        userprofile.Educations.Add(tempEdu);
+                        tempEdu.UserProfile = userprofile;
+                    }
                 }
             }
         }
 
 
-        [HttpPost]
-        public ActionResult EditEmployment(FormCollection formCollection, string[] EmployerName, string[] startYear, string[] endYear, string[] Description, string[] Role)
-        {
-            string name = Membership.GetUser().UserName;
-            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            bool toadd = false;
-            if (userprofile.Employments.Count() == 0) toadd = true;
 
-            if (TryUpdateModel(userprofile, "", null, new string[] { "Organization", "Specializations", "FirstName", "LastName", "Profession", "Gender", "Status" }))
-            {
-
-                UpdateEmployment(EmployerName, startYear, endYear, Description, Role, userprofile);
-
-                userprofile.firsttime = false;
-                if (userprofile.SignUpProgress + 0.1F <= 1.1F && toadd == true) userprofile.SignUpProgress += 0.10F;
-                userprofile.SignUpProgress = 1.0F;
-                if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
-                {
-                    CreateUpdates("Employment updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
-                }
-                followPeersDB.Entry(userprofile).State = EntityState.Modified;
-                followPeersDB.SaveChanges();
-                if (myprofile.Contact == null) return RedirectToAction("EditAchievement", "Profile");
-
-                return RedirectToAction("EditEmployment", "Profile", new { message = "Successfully Updated" });
-            }
-
-            return View(userprofile);
-
-
-        }
         private void UpdateEmployment(string[] EmployerName, string[] startYear, string[] endYear, string[] Description, string[] Role, UserProfile userprofile)
         {
             foreach (var org in EmployerName)
@@ -814,38 +619,6 @@ namespace FollowPeers.Controllers
             }
         }
 
-
-        [HttpPost]
-        public ActionResult EditAchievement(FormCollection formCollection, string[] Title, string[] Description, string[] startYear, string[] endYear, string[] Keyword, string[] link)
-        {
-            string name = Membership.GetUser().UserName;
-            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            bool toadd = false;
-            if (userprofile.Achievements.Count() == 0) toadd = true;
-
-            if (TryUpdateModel(userprofile, "", null, new string[] { "Organization", "Specializations", "FirstName", "LastName", "Profession", "Gender", "Status" }))
-            {
-
-                UpdateAchievement(Title, Description, startYear, endYear, Keyword, link, userprofile);
-
-                userprofile.firsttime = false;
-                if (userprofile.SignUpProgress + 0.1F < 1.0F) userprofile.SignUpProgress += 0.10F;
-                //userprofile.SignUpProgress = 1.0F;
-                if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
-                {
-                    CreateUpdates("Achievements updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
-                }
-                followPeersDB.Entry(userprofile).State = EntityState.Modified;
-                followPeersDB.SaveChanges();
-                if (myprofile.Contact == null) return RedirectToAction("EditContact", "Profile");
-
-                return RedirectToAction("EditContact", "Profile", new { message = "Successfully Updated" });
-            }
-            else
-            {
-                return RedirectToAction("EditAchievement", "Profile", new { message = "Achievements not updated" });
-            }
-        }
         private void UpdateAchievement(string[] Title, string[] Description, string[] startYear, string[] endYear, string[] Keyword, string[] link, UserProfile userprofile)
         {
             int count = userprofile.Achievements.Count();
@@ -887,22 +660,6 @@ namespace FollowPeers.Controllers
             }
         }
 
-
-        [HttpPost]
-        public ActionResult EditPortfolio(FormCollection formCollection, string[] Name, string[] Field, string[] Country, string[] Year, string[] Status, string[] Website, string[] MoreInfo)
-        {
-            string name = Membership.GetUser().UserName;
-            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-
-            if (TryUpdateModel(userprofile, "", null, new string[] { "Organization", "Educations", "Specializations", "FirstName", "LastName", "Profession", "Gender", "Status" }))
-            {
-                UpdatePortfolio(Name, Field, Country, Year, Status, Website, MoreInfo, userprofile);
-                followPeersDB.Entry(userprofile).State = EntityState.Modified;
-                followPeersDB.SaveChanges();
-                return RedirectToAction("EditPortfolio", "Profile", new { message = "Successfully Updated" });
-            }
-            return View(userprofile);
-        }
         private void UpdatePortfolio(string[] Name, string[] Field, string[] Country, string[] Year, string[] Status, string[] Website, string[] MoreInfo, UserProfile userprofile)
         {
             int count = userprofile.Portfolios.Count();
@@ -940,37 +697,6 @@ namespace FollowPeers.Controllers
             }
         }
 
-
-        [HttpPost]
-        public ActionResult EditStudents(FormCollection formCollection, string[] Name, string[] Type, string[] StartYear, string[] EndYear, string[] About, string[] Link)
-        {
-            string name = Membership.GetUser().UserName;
-            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            bool toadd = false;
-            if (userprofile.Students.Count() == 0) toadd = true;
-
-            // if (TryUpdateModel(userprofile, "", null, new string[] { "Students","Education","Organization", "Specializations", "FirstName", "LastName", "Profession", "Gender", "Status" }))
-            {
-
-                UpdateStudent(Name, Type, StartYear, EndYear, About, Link, userprofile);
-
-                userprofile.firsttime = false;
-                // userprofile.SignUpProgress = 1.0F;
-                // if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
-                {
-                    //       CreateUpdates("Education updated.", "/Profile/Index/" + userprofile.UserProfileId, 1); //CreateUpdates(message,link,type)
-                }
-                followPeersDB.Entry(userprofile).State = EntityState.Modified;
-                followPeersDB.SaveChanges();
-                if (userprofile.Contact == null) return RedirectToAction("EditContact", "Profile");
-
-                return RedirectToAction("EditStudents", "Profile", new { message = "Successfully Updated" });
-            }
-
-            //   return View(userprofile);
-
-
-        }
         private void UpdateStudent(string[] Name, string[] Type, string[] StartYear, string[] EndYear, string[] About, string[] Link, UserProfile userprofile)
         {
             int count = userprofile.Students.Count();
@@ -1008,7 +734,6 @@ namespace FollowPeers.Controllers
                 }
             }
         }
-
 
         private void UpdateSpecializations(int[] Specialization, UserProfile userprofile)
         {
@@ -1070,33 +795,6 @@ namespace FollowPeers.Controllers
 
 
             }
-        }
-
-        [HttpPost]
-        public ActionResult EditContact(FormCollection formCollection)
-        {
-            string name = Membership.GetUser().UserName;
-            UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            bool toadd = false;
-            if (userprofile.Contact == null) toadd = true;
-
-            if (TryUpdateModel(userprofile, "", null, new string[] { "Country", "Educations", "Organization", "Specializations", "FirstName", "LastName", "Profession", "Gender", "Status" }))
-            {
-                userprofile.firsttime = false;
-                if (userprofile.SignUpProgress + 0.1F <= 1.1F) userprofile.SignUpProgress += 0.10F;
-                if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
-                {
-                    CreateUpdates("Contact information updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
-                }
-
-                followPeersDB.Entry(userprofile).State = EntityState.Modified;
-                followPeersDB.SaveChanges();
-
-                return RedirectToAction("EditContact", "Profile", new { message = "Successfully Updated" });
-            }
-            ModelState.AddModelError("", "Last Name cannot be left blank.");
-            return View(userprofile);
-
         }
 
         public ActionResult ChangeTier(string id, string tier)
@@ -1908,14 +1606,14 @@ namespace FollowPeers.Controllers
             return result.Take(maxResults).ToList();
 
         }
-        
+
         [HttpPost]
         public JsonResult FindCountryNames(string searchText, int maxResults)
         {
             var result = FindCountry(searchText, maxResults);
             return Json(result);
         }
-       
+
         public ActionResult TierFollowers()
         {
             string name = Membership.GetUser().UserName;
@@ -1923,7 +1621,7 @@ namespace FollowPeers.Controllers
 
             return View(myprofile);
         }
-        
+
         public ActionResult Privacy()
         {
             string name = Membership.GetUser().UserName;
@@ -2412,6 +2110,9 @@ namespace FollowPeers.Controllers
             string name = Membership.GetUser().UserName;
             UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
 
+            //set first time view to false
+            userprofile.firsttime = false;
+
             //birthday is still an issue here
             foreach (String key in formCollection.AllKeys)
             {
@@ -2434,9 +2135,14 @@ namespace FollowPeers.Controllers
                         userprofile.Status = formCollection.Get(key);
                         break;
                     case "Birthday":
+
                         String[] bdayString = formCollection.Get(key).Split(',');
                         String bdate = bdayString[bdayString.Length - 1];
-                        userprofile.Birthday = DateTime.Parse(bdate);
+                        try { userprofile.Birthday = DateTime.Parse(bdate); }
+                        catch (FormatException e)
+                        {
+                            
+                        }
                         break;
                     case "AboutMe":
                         userprofile.AboutMe = formCollection.Get(key);
@@ -2536,9 +2242,18 @@ namespace FollowPeers.Controllers
 
             UpdateEducation(organizationStrings.ToArray(), startYearStrings.ToArray(), endYearStrings.ToArray(), degreeStrings.ToArray(), countryStrings.ToArray(), userprofile);
 
+            
             CreateUpdates("Profile information updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
             followPeersDB.Entry(userprofile).State = EntityState.Modified;
-            followPeersDB.SaveChanges();
+            try
+            {
+                followPeersDB.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                return RedirectToAction("Index", "Profile", new { message = "Profile Not Updated", id = userprofile.UserProfileId });
+            }
+            
             return RedirectToAction("Index", "Profile", new { message = "Successfully Updated", id = userprofile.UserProfileId });
 
 
