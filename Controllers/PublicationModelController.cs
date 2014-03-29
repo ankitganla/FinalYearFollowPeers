@@ -42,7 +42,7 @@ namespace FollowPeers.Controllers
                 Favourite FoundMatch = user.Favourites.FirstOrDefault(p => p.ItemTypeId == Item.ItemTypeId && p.ItemType == Item.ItemType);
                 if (FoundMatch != null)
                 {
-                    CreateUpdates("The publication " + Pubname+" is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
+                    CreateUpdates("The publication " + Pubname + " is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
                     return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
                 }
                 user.Favourites.Add(Item);
@@ -55,48 +55,67 @@ namespace FollowPeers.Controllers
             return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
         }
 
-        public ActionResult Recommend(int id, string NameId)
+        public ActionResult Recommend(int id, string Names)
         {
             UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            Bookmark model = new Bookmark();
-
-            if (NameId != null && NameId != "")
+            string[] usersToRec = Names.Split(';');
+            if (usersToRec.Length != 0)
             {
-                int recommendid = Convert.ToInt32(NameId);
-                UserProfile invitee = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == recommendid);
-
-                try
+                foreach (string fullUserName in usersToRec)
                 {
-                    if (user.UserProfileId != recommendid)
+                    String[] splitNames = fullUserName.Split(' ');
+                    if (splitNames.Length > 0)
                     {
-                        model.bookmarkType = "Publication";
-                        model.itemID = id;
-                        model.userID = recommendid;
-                        followPeersDB.Bookmarks.Add(model);
-                        followPeersDB.SaveChanges();
-
-                        //Adding a notification item to the recommended person
-                        PublicationModel book = followPeersDB.PublicationModels.SingleOrDefault(b => b.publicationID == id);
-                        Notification newnoti = new Notification
+                        String userFirstName = splitNames[0];
+                        UserProfile userFromFirstName = followPeersDB.UserProfiles.SingleOrDefault(p => p.FirstName == userFirstName);
+                        if (splitNames.Length > 1)
                         {
-                            message = user.FirstName + user.LastName + " has recommeded you a publication : " + book.title,
-                            link = "/PublicationModel/Details/" + id,
-                            New = true,
-                            imagelink = user.PhotoUrl,
-                        };
+                            String userLastName = splitNames[1];
+                            UserProfile userFromLastName = followPeersDB.UserProfiles.SingleOrDefault(p => p.LastName == userLastName);
+                            if (userFromFirstName.UserName == userFromLastName.UserName)
+                            {
+                                return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+                            }
 
-                        invitee.Notifications.Add(newnoti);
-                        followPeersDB.Entry(invitee).State = EntityState.Modified;
-                        followPeersDB.SaveChanges();
+                        }
+
+                        int recommendid = userFromFirstName.UserProfileId;
+                        UserProfile invitee = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == recommendid);
+                        Bookmark model = new Bookmark();
+
+                        try
+                        {
+                            if (user.UserProfileId != recommendid)
+                            {
+                                model.bookmarkType = "Publication";
+                                model.itemID = id;
+                                model.userID = recommendid;
+                                followPeersDB.Bookmarks.Add(model);
+                                followPeersDB.SaveChanges();
+
+                                //Adding a notification item to the recommended person
+                                PublicationModel book = followPeersDB.PublicationModels.SingleOrDefault(b => b.publicationID == id);
+                                Notification newnoti = new Notification
+                                {
+                                    message = user.FirstName + user.LastName + " has recommeded you a publication : " + book.title,
+                                    link = "/PublicationModel/Details/" + id,
+                                    New = true,
+                                    imagelink = user.PhotoUrl,
+                                };
+
+                                invitee.Notifications.Add(newnoti);
+                                followPeersDB.Entry(invitee).State = EntityState.Modified;
+                                followPeersDB.SaveChanges();
+                            }
+
+                        }
+                        catch
+                        {
+                        }
                     }
-
-                }
-                catch
-                {
                 }
             }
-            string result = "#";
-            return Json(result);
+            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
         }
 
 
