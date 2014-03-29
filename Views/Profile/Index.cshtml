@@ -246,11 +246,8 @@
                     </div>
                     
                     <div id="publications" style="display: none;">
-
                         <h3 style="display: inline-block;">@Html.Raw(firstName)'s Publications</h3>
-
-
-                        @Html.Partial("ProfilePublicationTabView", Model.Publication)
+                        @Html.Partial("ProfilePublicationTabView", Model.Publication,new ViewDataDictionary { {"thisUserName", Model.UserName} })
                     </div>
                     
                     <div id="jobs" style="display: none;">

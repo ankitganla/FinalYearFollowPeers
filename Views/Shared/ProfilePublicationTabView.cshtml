@@ -2,11 +2,16 @@
 @using FollowPeers.Models;
 @using WebMatrix.Data;
 @{
+    
+    
     ViewBag.Title = "My Publication";
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
     string name = Membership.GetUser().UserName;
     ViewBag.UserName = name;
-    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == name);
+    
+
+    String thisProfileUserName = Convert.ToString(ViewData["thisUserName"]);
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == thisProfileUserName);
 
     var Fields = (from u in followPeersDB.Specializations
                   select u.Field).Distinct();
