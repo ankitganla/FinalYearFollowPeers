@@ -34,6 +34,14 @@
 }
 <head>
     <title>ProfilePubView</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var data = ["Boston Celtics", "Chicago Bulls", "Miami Heat", "Orlando Magic", "Atlanta Hawks", "Philadelphia Sixers", "New York Knicks", "Indiana Pacers", "Charlotte Bobcats", "Milwaukee Bucks", "Detroit Pistons", "New Jersey Nets", "Toronto Raptors", "Washington Wizards", "Cleveland Cavaliers"];
+            $("#tagSearch").autocomplete(data);
+        });
+    </script>
     <style media="screen" type="text/css">
         .profilepagetabs ul
         {
@@ -89,10 +97,9 @@
 </head>
 <div class="container" style="padding: 0;">
     <div class="span8 main-content">
-
-
         <div class="tab-content">
             <div id="tab1" style="display: block;" class="tab-pane active">
+                <input id="tagSearch" name="tagSearch"/>
                 @{
                     if (Model.Count() != 0)
                     {
@@ -108,14 +115,25 @@
                                 <td>
 
                                     <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
-                                        
+
                                         <div style="margin-left: 8px; float: left;">
                                             <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
                                             <div id="Author">Author(s) : @item.author</div>
                                             <div id="Year">Year of Publication : @item.year</div>
-                                            <div>@Html.ActionLink("Fav", "FavouritePub", 
-    "PublicationModel", new {id = item.publicationID , Pubname = item.title}, null)</div>
+                                            <div>@Html.ActionLink("Fav", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, null)</div>
+                                            <div>
+                                                @using (Html.BeginForm("Recommend", "PublicationModel"))
+                                                {
+                                                    //<input type="hidden" name="id" value="@item.publicationID" />
 
+                                                    //<input type="submit" id="Recommend" value="Recommend" />
+
+
+                                                }
+                                                <input id="RecSearch" />
+
+
+                                            </div>
                                             <div id="@mouseid2" class="accordion-body collapse" >
                                                 @{if (@item.keyword != null)
                                                   {<div id="keyword">Keyword(s) : @item.keyword</div>}}

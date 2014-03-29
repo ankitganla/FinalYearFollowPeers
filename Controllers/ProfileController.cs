@@ -1528,8 +1528,13 @@ namespace FollowPeers.Controllers
             return Json(result);
         }
 
+
+        
+
         internal List<Department> FindDepartment(string searchText, int maxResults)
         {
+           
+
             var result = from n in followPeersDB.Departments
                          where n.Name.Contains(searchText)
                          orderby n.Name
