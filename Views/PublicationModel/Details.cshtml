@@ -14,14 +14,14 @@
 }
 <div class="container">
     <div class="row">
-        @Html.Partial("_SideBar1")
+        
         @Script("jquery.validate.min.js")
         @Script("jquery.validate.unobtrusive.min.js")
         @Script("jquery.bgiframe.js")
         @Script("jquery.mcdropdown.js")
         <link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
         <link href="../../Content/css/jquery-ui.css" rel="stylesheet" type="text/css" />
-        <div class="span7">
+        <div class="span9">
             <h3>@Html.DisplayFor(model => model.title)</h3>
             <div>
                 <h4>By @Html.DisplayFor(model => model.author)</h4>
@@ -177,7 +177,7 @@
                     </div>         
                     <text>View Count: @Model.viewCount </text> 
                     <br />                                     
-                    @Html.ActionLink("Back to Publication Db", "Index");
+                   
 
                     }
                     else
@@ -262,7 +262,7 @@
                 }
             </div>
             <hr />
-            @Html.Partial("_PubModelSideBar");
+            @Html.Partial("_PubModelSideBar")
         </div>
     </div>
 </div>
