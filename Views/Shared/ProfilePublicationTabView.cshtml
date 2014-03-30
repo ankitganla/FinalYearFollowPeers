@@ -126,18 +126,18 @@
                                                 <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
                                                 <div id="Author">Author(s) : @item.author</div>
                                                 <div id="Year">Year of Publication : @item.year</div>
-                                                <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, new { @style = "background-color:#45aeea; color:white;display:inline" })</div>
-                                                
+                                                <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, null)</div>
+
                                                 <p>Recommend Publication:</p>
-                                                
-                                                    @using (Html.BeginForm("Recommend", "PublicationModel"))
-                                                    {
-                                                        <input type="hidden" name="id" value="@item.publicationID" />
-                                                        <input id="recommend" name="Names" style="width: 150px" />
-                                                        <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
+
+                                                @using (Html.BeginForm("Recommend", "PublicationModel"))
+                                                {
+                                                    <input type="hidden" name="id" value="@item.publicationID" />
+                                                    <input id="recommend" name="Names" style="width: 150px" />
+                                                    <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
                             
-                                                    }
-                                                
+                                                }
+
                                                 <div id="@mouseid2" class="accordion-body collapse" >
                                                     @{if (@item.keyword != null)
                                                       {<div id="keyword">Keyword(s) : @item.keyword</div>}}
@@ -174,15 +174,25 @@
                         <table class="span7">
                             @foreach (var item in FavouriteList)
                             {
+                                
                                 <tr>
                                     <td>
+
                                         <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
-                                            @{ link = link + item.ItemLink;}
-                                            <a href="@Url.Content(link)" id="title"><b>@item.ItemName</b></a>
-                                            @if (@item.ItemType == 6)
-                                            {
-                                                <div id="Author">Type : Publication </div>
-                                            }
+
+                                            <div style="margin-left: 8px; float: left;">
+                                                <a href="/PublicationModel/Details/@item.ItemId" id="title"><b>@item.ItemName</b></a>
+                                                @*can place remove from fav code here*@
+                                                <p>Recommend Publication:</p>
+
+                                                @using (Html.BeginForm("Recommend", "PublicationModel"))
+                                                {
+                                                    <input type="hidden" name="id" value="@item.ItemId" />
+                                                    <input id="recommend" name="Names" style="width: 150px" />
+                                                    <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
+                            
+                                                }
+                                            </div>
                                         </div>
                                         <hr />
                                     </td>
@@ -201,54 +211,25 @@
                         if (RecommendedList.Count() != 0)
                         {
                         <span class="label label-info">Number of publications: @RecommendedList.Count()</span>
-                        <a class="pull-right">@Html.DropDownList("Category", new SelectList(@Fields))</a>
                         <table class="span7">
 
                             @foreach (var item in RecommendedList)
                             {
-                                string mouseid1 = "#mouse" + @item.publicationID;
-                                string mouseid2 = "mouse" + @item.publicationID;
-                
                                 <tr>
                                     <td>
 
                                         <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
-                                            <div style="float: left;" id="mouse" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="@mouseid1" >
-                                                @if (item.imagename != "" && item.imagename != null)
-                                                {
-                                                    <img class="mouseover" src="../../Content/Files/@item.UserProfile.UserName/Publications/@item.imagename" alt="" style="margin-left: auto; margin-right: auto;width: 50px;"/>
-                                                }
-                                                else
-                                                {
-                                                    <img src="../../Content/images/Pub1.png" alt="" style="margin-left: auto; margin-right: auto; width: 50px;" />
-                                                }
-                                            </div>
+
                                             <div style="margin-left: 8px; float: left;">
                                                 <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
-                                                <div id="Author">Author(s) : @item.author</div>
-                                                <div id="Year">Year of Publication : @item.year</div>
-                                                <div id="@mouseid2" class="accordion-body collapse" >
-                                                    @{if (@item.keyword != null)
-                                                      {<div id="keyword">Keyword(s) : @item.keyword</div>}}
-                                                    @{if (@item.journal != null)
-                                                      {<div id="journal">Journal : @item.journal</div>}}
-                                                    @{if (@item.conference != null)
-                                                      {<div id="conference">Conference : @item.conference</div>}}
-                                                    @{if (@item.university != null)
-                                                      {<div id="university">University : @item.university</div>}}
-                                                </div>
-                                            </div>
-                                            <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
-                                                | @Html.DisplayFor(modelItem => item.status)  |
-                    <div style="float: right; font-size: 15px; margin-left: 5px;">
-                        @Html.ActionLink("More>>", "Details", new { id = item.publicationID })
-                    </div>
+                                                
+                                                 <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, null)</div>
+                                                @*can place remove from recommended code here*@
                                             </div>
                                         </div>
                                         <hr />
                                     </td>
                                 </tr>
-   
                             }
                         </table>
                         }
