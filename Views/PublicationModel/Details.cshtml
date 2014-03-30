@@ -14,7 +14,7 @@
 }
 <div class="container">
     <div class="row">
-        
+
         @Script("jquery.validate.min.js")
         @Script("jquery.validate.unobtrusive.min.js")
         @Script("jquery.bgiframe.js")
@@ -130,35 +130,35 @@
                 }
             </div>
 
-            <div style="width:100%">
-<fieldset><legend>Comments</legend></fieldset>
-            @{
+            <div style="width: 100%">
+                <fieldset><legend>Comments</legend></fieldset>
+                @{
                 
                 
-               <div>@{Html.RenderAction("Index", "Comment", new { ParentType = "PublicationModel", ParentId = Model.publicationID, });}</div>
+                    <div>@{Html.RenderAction("Index", "Comment", new { ParentType = "PublicationModel", ParentId = Model.publicationID, });}</div>
                 
                     
-                <div>
-                    @using (Html.BeginForm("Create", "Comment", FormMethod.Post, new { ParentType = "PublicationModel", ParentId = Model.publicationID, SubmittedBy = Membership.GetUser().UserName, TimeSent = DateTime.Now, Flagged = false, Starred = false }))
-                    {
+                    <div>
+                        @using (Html.BeginForm("Create", "Comment", FormMethod.Post, new { ParentType = "PublicationModel", ParentId = Model.publicationID, SubmittedBy = Membership.GetUser().UserName, TimeSent = DateTime.Now, Flagged = false, Starred = false }))
+                        {
                                 
-                        <input type="hidden" name="ParentType" value="PublicationModel" />
-                        <input type="hidden" name="ParentId" value="@Model.publicationID" />
-                        <input type="hidden" name="SubmittedBy" value="@ViewBag.UserName" />
+                            <input type="hidden" name="ParentType" value="PublicationModel" />
+                            <input type="hidden" name="ParentId" value="@Model.publicationID" />
+                            <input type="hidden" name="SubmittedBy" value="@ViewBag.UserName" />
 
                         
-                        <div style="width:100%;">
-                            <textarea name="CommentBody" rows="2" style="width:100%; resize:none;"></textarea>
+                            <div style="width: 100%;">
+                                <textarea name="CommentBody" rows="2" style="width: 100%; resize: none;"></textarea>
 
-                        </div>
-                        <input class="btn btn-primary" type="submit" value="Post Comment" />
+                            </div>
+                            <input class="btn btn-primary" type="submit" value="Post Comment" />
                                 
-                    }
-                </div>
-            }
+                        }
+                    </div>
+                }
 
             </div>
-            
+
             <input id="publicationIdAJAX" style="display:none" type="text" value="@Model.publicationID" >
         </div>
         <div class="span3">
@@ -171,10 +171,21 @@
                     @Html.ActionLink("Delete", "Delete", new { id = Model.publicationID })
                     <br />
                     <br />
+                    <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = Model.publicationID, Pubname = Model.title }, new { @style="background-color:#45aeea; color:white" })</div>
+                    <br />
                     <text>Recommend Publication:</text>
-                    <div class="editor-field" id="RecommendList">
+                    <div>
+                        @using (Html.BeginForm("Recommend", "PublicationModel"))
+                        {
+                            <input type="hidden" name="id" value="@Model.publicationID" />
+                            <input id="recommend" name="Names" style="width: 150px" />
+                            <input type="submit" id="Recommend" value="GO" style="background-color:#45aeea" />
+                            
+                        }
+                    </div>
+                    @*<div class="editor-field" id="RecommendList">
                         <input type="text" id="Recommend" name="Recommend" style="width: 150px" />&nbsp;<a id="Click1" style="height: 50px;" class="icon-hand-right"></a>
-                    </div>         
+                    </div>*@        
                     <text>View Count: @Model.viewCount </text> 
                     <br />                                     
                    

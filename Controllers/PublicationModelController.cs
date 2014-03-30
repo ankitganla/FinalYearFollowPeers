@@ -68,6 +68,10 @@ namespace FollowPeers.Controllers
                     {
                         String userFirstName = splitNames[0];
                         UserProfile userFromFirstName = followPeersDB.UserProfiles.SingleOrDefault(p => p.FirstName == userFirstName);
+                        if (userFromFirstName == null)
+                        {
+                            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+                        }
                         if (splitNames.Length > 1)
                         {
                             String userLastName = splitNames[1];

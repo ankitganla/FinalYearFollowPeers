@@ -8,7 +8,7 @@
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
     string name = Membership.GetUser().UserName;
     ViewBag.UserName = name;
-    
+
 
     String thisProfileUserName = Convert.ToString(ViewData["thisUserName"]);
     FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == thisProfileUserName);
@@ -126,15 +126,18 @@
                                                 <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
                                                 <div id="Author">Author(s) : @item.author</div>
                                                 <div id="Year">Year of Publication : @item.year</div>
-                                                <div>@Html.ActionLink("Fav", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, null)</div>
-                                                <div>
+                                                <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, new { @style = "background-color:#45aeea; color:white;display:inline" })</div>
+                                                
+                                                <p>Recommend Publication:</p>
+                                                
                                                     @using (Html.BeginForm("Recommend", "PublicationModel"))
                                                     {
                                                         <input type="hidden" name="id" value="@item.publicationID" />
-                                                        <input id="recommend" name="Names" />
-                                                        <input type="submit" id="Recommend" value="Recommend" />
+                                                        <input id="recommend" name="Names" style="width: 150px" />
+                                                        <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
+                            
                                                     }
-                                                </div>
+                                                
                                                 <div id="@mouseid2" class="accordion-body collapse" >
                                                     @{if (@item.keyword != null)
                                                       {<div id="keyword">Keyword(s) : @item.keyword</div>}}
