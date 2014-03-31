@@ -489,7 +489,7 @@ namespace FollowPeers.Controllers
                 followPeersDB.Entry(user).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
 
-                return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+                return RedirectToAction("Details", "PublicationModel", new { id = publicationmodel.publicationID });
                 //return RedirectToAction("Index");
             }
 
