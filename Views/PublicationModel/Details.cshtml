@@ -168,10 +168,11 @@
                     if (myprofile.UserProfileId == Model.ownerID)
                     {
                     @Html.ActionLink("Edit", "Edit", new { id = Model.publicationID }) <text>|</text>
-                    @Html.ActionLink("Delete", "Delete", new { id = Model.publicationID })
+                    <button style="color:red" onclick="confirmDelete(@Model.publicationID, @Model.ownerID)">Delete</button>
+                    @Html.ActionLink("Delete", "Delete", new { id = Model.publicationID }, new { style = "color:red" })
                     <br />
                     <br />
-                    <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = Model.publicationID, Pubname = Model.title }, new { @style="background-color:#45aeea; color:white" })</div>
+                    <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = Model.publicationID, Pubname = Model.title }, new { @style = "background-color:#45aeea; color:white" })</div>
                     <br />
                     <text>Recommend Publication:</text>
                     <div>
@@ -179,11 +180,11 @@
                         {
                             <input type="hidden" name="id" value="@Model.publicationID" />
                             <input id="recommend" name="Names" style="width: 150px" />
-                            <input type="submit" id="Recommend" value="GO" style="background-color:#45aeea" />
+                            <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
                             
                         }
                     </div>
-                    @*<div class="editor-field" id="RecommendList">
+@*<div class="editor-field" id="RecommendList">
                         <input type="text" id="Recommend" name="Recommend" style="width: 150px" />&nbsp;<a id="Click1" style="height: 50px;" class="icon-hand-right"></a>
                     </div>*@        
                     <text>View Count: @Model.viewCount </text> 
@@ -284,7 +285,20 @@
 }
 
 <script type="text/javascript" language="javascript">
+    function confirmDelete(pubId, ownerId) {
+        var r = confirm("Are you sure you want to Delete this publication?");
+        if (r == true) {
+            $.post("@Url.Action("Delete", "PublicationModel")", { id: pubId }, function(){window.location = "/Profile/Index/" + ownerId;});
+        }
+        else {
+        }
+    }
+
     $(document).ready(function () {
+
+
+
+
         tab('tab1');
         ftab('ftab1');
         if ($('#RecommendList').length) {

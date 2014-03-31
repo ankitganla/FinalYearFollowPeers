@@ -678,11 +678,12 @@ namespace FollowPeers.Controllers
         [HttpPost]
         public ActionResult Edit(PublicationModel publicationmodel)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
                 followPeersDB.Entry(publicationmodel).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-                return RedirectToAction("MyPublication");
+                return RedirectToAction("Details", "PublicationModel", new { id = publicationmodel.publicationID });
             }
             return View(publicationmodel);
         }
@@ -714,7 +715,7 @@ namespace FollowPeers.Controllers
                     }
                 }
             }
-            return View(publicationmodel);
+            return RedirectToAction("Index", "Profile", new {id = userprofile.UserProfileId });
         }
 
         public ActionResult Like(int id, string NameId)

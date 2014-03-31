@@ -14,7 +14,7 @@ namespace FollowPeers.Models
 
         [Required(ErrorMessage = "Title is required.")]
         public string title { set; get; }
-
+        
         //list
         public string status { get; set; }
 

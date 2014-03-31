@@ -3215,6 +3215,7 @@
     <Content Include="Views\Shared\FavouriteUpdatesView.cshtml" />
     <Content Include="Views\Profile\CompleteProfile.cshtml" />
     <Content Include="Views\Shared\PostToOther.cshtml" />
+    <Content Include="Views\PublicationModel\EditPublication.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\TempImages\" />
