@@ -125,14 +125,11 @@
                     @{
                         if (Model.Count() != 0)
                         {
-                        <span class="label label-info">Number of publications: @Model.Count()</span>
+                        <span class="label label-info">Uploaded publications: @Model.Count()</span>
                         <table class="span7">
 
                             @foreach (var item in Model)
                             {
-                                string mouseid1 = "#mouse" + @item.publicationID;
-                                string mouseid2 = "mouse" + @item.publicationID;
-                
                                 <tr>
                                     <td>
 
@@ -153,17 +150,6 @@
                                                     <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
                             
                                                 }
-
-                                                <div id="@mouseid2" class="accordion-body collapse" >
-                                                    @{if (@item.keyword != null)
-                                                      {<div id="keyword">Keyword(s) : @item.keyword</div>}}
-                                                    @{if (@item.journal != null)
-                                                      {<div id="journal">Journal : @item.journal</div>}}
-                                                    @{if (@item.conference != null)
-                                                      {<div id="conference">Conference : @item.conference</div>}}
-                                                    @{if (@item.university != null)
-                                                      {<div id="university">University : @item.university</div>}}
-                                                </div>
                                             </div>
                                             <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
                                                 | @Html.DisplayFor(modelItem => item.status)
@@ -245,16 +231,6 @@
                                                 <div id="Author">Author(s) : @item.author</div>
                                                 <div id="Year">Year of Publication : @item.year</div>
                                                 <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, null)</div>
-
-                                                <p>Recommend Publication:</p>
-
-                                                @using (Html.BeginForm("Recommend", "PublicationModel"))
-                                                {
-                                                    <input type="hidden" name="id" value="@item.publicationID" />
-                                                    <input id="recommend" name="Names" style="width: 150px" />
-                                                    <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
-                            
-                                                }
                                             </div>
                                             <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
                                                 | @Html.DisplayFor(modelItem => item.status)
