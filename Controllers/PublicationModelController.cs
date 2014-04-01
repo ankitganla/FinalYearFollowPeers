@@ -715,7 +715,7 @@ namespace FollowPeers.Controllers
                     }
                 }
             }
-            return RedirectToAction("Index", "Profile", new {id = userprofile.UserProfileId });
+            return RedirectToAction("Index", "Profile", new { id = userprofile.UserProfileId });
         }
 
         public ActionResult Like(int id, string NameId)
@@ -752,9 +752,21 @@ namespace FollowPeers.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             PublicationModel publicationmodel = followPeersDB.PublicationModels.Find(id);
+            String Pubname = publicationmodel.title;
             followPeersDB.PublicationModels.Remove(publicationmodel);
+
+            List<FollowPeers.Models.Favourite> FavouriteList = new List<FollowPeers.Models.Favourite>();
+            FavouriteList = followPeersDB.Favourites.Where(p => p.ItemTypeId == id).ToList();
+
+            foreach (Favourite favPub in FavouriteList)
+            {
+                followPeersDB.Favourites.Remove(favPub);
+            }
+
             followPeersDB.SaveChanges();
-            return RedirectToAction("Index");
+            UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            CreateUpdates("Deleted the publication titled " + Pubname, null, 6, user.UserProfileId, null);
+            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
         }
 
         protected override void Dispose(bool disposing)

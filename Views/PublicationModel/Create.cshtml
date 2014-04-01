@@ -11,14 +11,7 @@
 @Html.Partial("_Header")
 <div class="container">
     <div class="row">
-        @if (ViewData["SideBar"].ToString() == "2")
-        {
-            @Html.Partial("_SideBar2");
-        }
-        else
-        {
-            @Html.Partial("_SideBar1");
-        }
+        
         @Script("jquery.validate.min.js")
         @Script("jquery.validate.unobtrusive.min.js")
         @Script("jquery.bgiframe.js")
