@@ -1,5 +1,4 @@
 ﻿@model FollowPeers.Models.Course
-
 @{
     ViewBag.Title = "Create New Course";
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
@@ -10,19 +9,20 @@
 @Html.Partial("_Header")
 
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-        <script src=@Url.Content("~/Scripts/jquery.bgiframe.js") type="text/javascript"></script>
-        <script src=@Url.Content("~/Scripts/jquery.mcdropdown.js") type="text/javascript"></script>
-        <link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src=@Url.Content("~/Scripts/jquery.bgiframe.js") type="text/javascript"></script>
+<script src=@Url.Content("~/Scripts/jquery.mcdropdown.js") type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
 
-@Html.Partial("_SideBar1")
-<div class="grid_9">
+<div class="container">
     <div class="box">
-        <h2>Create Course</h2>
-        @using (Html.BeginForm()) {
+    <div class="span8 main-content">
+        <h3>Create Course</h3>
+        @using (Html.BeginForm())
+        {
             @Html.ValidationSummary(true)
             <fieldset>
-                <legend>Course</legend>
+                
                 <div class="editor-label">
                     @Html.LabelFor(model => model.CourseName)
                 </div>
@@ -68,9 +68,10 @@
         }
 
         <div>
-            @Html.ActionLink("Back to my Courses", "Mine","Course")
+            @Html.ActionLink("Back to my Courses", "Mine", "Course")
         </div>
     </div>
+</div>
 </div>
 
 @Html.Partial("_Footer")
