@@ -18,20 +18,36 @@
     string link = "~/";
     List<FollowPeers.Models.PublicationModel> UploadedPub = new List<FollowPeers.Models.PublicationModel>();
     UploadedPub = followPeersDB.PublicationModels.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId).ToList();
-    List<FollowPeers.Models.Favourite> FavouriteList = new List<FollowPeers.Models.Favourite>();
-    FavouriteList = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 6).ToList();
+    //List<FollowPeers.Models.Favourite> FavouriteList = new List<FollowPeers.Models.Favourite>();
+    //FavouriteList = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 6).ToList();
     List<FollowPeers.Models.PublicationModel> RecommendedList = new List<FollowPeers.Models.PublicationModel>();
     List<FollowPeers.Models.Bookmark> BookmarkedPublication = followPeersDB.Bookmarks.Where(p => p.bookmarkType == "Publication" && p.userID == myprofile.UserProfileId).ToList();
-    PublicationModel temp = new PublicationModel();
-    var db = Database.Open("FollowPeersDB");
+
+    List<FollowPeers.Models.PublicationModel> FavouriteList = new List<FollowPeers.Models.PublicationModel>();
+    List<FollowPeers.Models.Favourite> FavouritePublications = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 6).ToList();
+
     List<FollowPeers.Models.PublicationModel> RankedPub = followPeersDB.PublicationModels.OrderByDescending(p => p.Rank).ToList();
 
+    var db = Database.Open("FollowPeersDB");
+
+    PublicationModel temp = new PublicationModel();
     if (BookmarkedPublication.Count() != 0)
     {
         foreach (var id in BookmarkedPublication)
         {
             temp = followPeersDB.PublicationModels.SingleOrDefault(p => p.publicationID == id.itemID);
             RecommendedList.Add(temp);
+        }
+
+    }
+
+    PublicationModel temp2 = new PublicationModel();
+    if (FavouritePublications.Count() != 0)
+    {
+        foreach (var id in FavouritePublications)
+        {
+            temp2 = followPeersDB.PublicationModels.SingleOrDefault(p => p.publicationID == id.ItemTypeId);
+            FavouriteList.Add(temp2);
         }
 
     }
@@ -163,7 +179,7 @@
                         }
                         else
                         {
-                        <span class="label label-info">Number of publications uploaded: @Model.Count()</span>
+                        <span class="label label-info">No publications uploaded</span>
                         }
                     }
                 </div>
@@ -174,24 +190,28 @@
                         <table class="span7">
                             @foreach (var item in FavouriteList)
                             {
-                                
                                 <tr>
                                     <td>
 
                                         <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
 
                                             <div style="margin-left: 8px; float: left;">
-                                                <a href="/PublicationModel/Details/@item.ItemId" id="title"><b>@item.ItemName</b></a>
-                                                @*can place remove from fav code here*@
-                                                <p>Recommend Publication:</p>
+                                                <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
+                                                <div id="Author">Author(s) : @item.author</div>
+                                                <div id="Year">Year of Publication : @item.year</div>
 
+                                                <p>Recommend Publication:</p>
                                                 @using (Html.BeginForm("Recommend", "PublicationModel"))
                                                 {
-                                                    <input type="hidden" name="id" value="@item.ItemId" />
+                                                    <input type="hidden" name="id" value="@item.publicationID" />
                                                     <input id="recommend" name="Names" style="width: 150px" />
                                                     <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
                             
                                                 }
+                                            </div>
+                                            <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
+                                                | @Html.DisplayFor(modelItem => item.status)
+
                                             </div>
                                         </div>
                                         <hr />
@@ -202,7 +222,7 @@
                     }
                     else
                     {
-                        <span class="label label-info">No Favourite Publications Found</span>
+                        <span class="label label-info">No Favourite Publications</span>
                     }
                 </div>
 
@@ -210,7 +230,7 @@
                     @{
                         if (RecommendedList.Count() != 0)
                         {
-                        <span class="label label-info">Number of publications: @RecommendedList.Count()</span>
+                        <span class="label label-info">Recommended publications: @RecommendedList.Count()</span>
                         <table class="span7">
 
                             @foreach (var item in RecommendedList)
@@ -222,9 +242,23 @@
 
                                             <div style="margin-left: 8px; float: left;">
                                                 <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
-                                                
-                                                 <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, null)</div>
-                                                @*can place remove from recommended code here*@
+                                                <div id="Author">Author(s) : @item.author</div>
+                                                <div id="Year">Year of Publication : @item.year</div>
+                                                <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, null)</div>
+
+                                                <p>Recommend Publication:</p>
+
+                                                @using (Html.BeginForm("Recommend", "PublicationModel"))
+                                                {
+                                                    <input type="hidden" name="id" value="@item.publicationID" />
+                                                    <input id="recommend" name="Names" style="width: 150px" />
+                                                    <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
+                            
+                                                }
+                                            </div>
+                                            <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
+                                                | @Html.DisplayFor(modelItem => item.status)
+
                                             </div>
                                         </div>
                                         <hr />
@@ -235,7 +269,7 @@
                         }
                         else
                         {
-                        <span class="label label-info">Number of recommended publications: @RecommendedList.Count()</span>
+                        <span class="label label-info">No recommended publications</span>
                         }
                     }
                 </div>
