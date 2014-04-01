@@ -26,15 +26,20 @@
                 <img src="@Html.Encode(photourl)" class="img" alt=""/></a>
             <h4>@name</h4>
             @if (myself == 1)
-            {<a style="font-size:x-small;"href="/Profile/UploadPhoto">[Change Picture]</a>}
+            {
+                using (Html.BeginForm("UploadProfilePhoto", "Profile", FormMethod.Post, new { @encType = "multipart/form-data"}))
+                {
+                <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: -5px; top: -5px; width: 150px; height: 30px; opacity: 1;" />
+                }
+            }
         </div>
-        
+
         @{
             char[] delimiterChars = { ' ' };
             string name2 = name.ToString();
 
             string[] firstname = name2.Split(delimiterChars);
         }
-        
+
     </div>
 }
