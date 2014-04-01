@@ -13,6 +13,7 @@
 
             <div>
                 @{
+                    
                     string path = HttpRuntime.AppDomainAppPath;
                     string newpath = path + "\\Content\\Files\\";
                     string userpath = newpath + Model.UserName + "\\Photos\\";
@@ -34,11 +35,18 @@
                                 string sourcelink = fileName;  
                     <div class="span2">
 
-                        <img src="sourcelink" style="width: 200px; height: 200px;" />
+
 
                         @{
-                                string[] justFiles = fileName.Split('\\');
+                                
+                                string tempPath = fileName.Replace("\\", "/");
+                                string displayPath = tempPath.Replace("//", "/");
+                                string[] justFiles = displayPath.Split('/');
                                 string displayName = justFiles[justFiles.Length - 1];
+
+
+                                string actualPath = Url.Content("~/Content/Files/user6@gmail.com/Photos/"+displayName);
+                            <img src="@Html.Encode(actualPath)" style="width: 200px; height: 200px;" />
                         }
                         <p>
                             @Html.Raw(displayName)
@@ -57,9 +65,12 @@
 
                     else
                     {
-                        try{ 
+                        try
+                        {
                             directoryInfo.Create();
-                        }catch (IOException e){
+                        }
+                        catch (IOException e)
+                        {
                             Console.Write(e.StackTrace);
                         }
                         

@@ -335,8 +335,7 @@ namespace FollowPeers.Controllers
         {
             string name = Membership.GetUser().UserName;
             UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            //bool toadd = false;
-            //if (userprofile.PhotoUrl == "/Content/TempImages/default.jpg") toadd = true;
+
             string path = HttpRuntime.AppDomainAppPath;
             string profilePicPath = path + "\\Content\\Files\\" + name + "\\ProfilePicture";
 
@@ -358,22 +357,13 @@ namespace FollowPeers.Controllers
                 var filename = Path.GetFileName(image.FileName);
                 string toSaveString = profilePicPath + "/" + filename;
                 image.Save(toSaveString);
-                //string fullfilename = userprofile.UserProfileId.ToString() + filename;
-                //fullfilename.Replace("  ", string.Empty);
-                //image.Save(Path.Combine("../Content/Files/" + name + "/ProfilePicture", fullfilename));
                 string filePath = "~/Content/Files/" + name + "/ProfilePicture/" + filename;
-
-                //if (userprofile.SignUpProgress + 0.2F <= 1.0F && toadd == true) userprofile.SignUpProgress += 0.20F;
-
                 userprofile.PhotoUrl = Url.Content(filePath);
-                //if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
-                //{
+
                 CreateUpdates("Changed Profile Picture", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
-                //}
+
                 followPeersDB.Entry(userprofile).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-                //if (userprofile.Specializations.Count() == 0) return RedirectToAction("EditResearch", "Profile");
-
                 return RedirectToAction("Index", "Profile", new { message = "Successfully Updated", id = userprofile.UserProfileId });
 
             }
