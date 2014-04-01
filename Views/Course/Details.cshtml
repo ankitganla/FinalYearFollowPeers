@@ -1,6 +1,6 @@
 ﻿@model FollowPeers.Models.Course
 @{
-    ViewBag.Title = "New Conversation";
+    ViewBag.Title = "Course Details";
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
     string name = Membership.GetUser().UserName;
     FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
@@ -17,86 +17,98 @@
 <div class="container">
     <div class="box">
         <div class="span8 main-content">
-            <h2 style="height: 20px">Course Details</h2>
-            <fieldset>
-                @{
-                    
-                    if (false)
-                    {
-                    <p>You have not followed anyone & no body is following you. Please follow someone to send them a message.</p>
-                    }
-                    else
-                    {   <legend style="width: 80%; height: 40px; padding-top: 10px;"><img src="@Model.PhotoUrl" style="width:24px; height:24px; padding:5px 2px 5px 2px; display:inline-block; float:left;"/>@Html.DisplayFor(m => Model.CourseName)</legend>
+            <h3>@Model.CourseName</h3>
+            <div>
+                <h4>By @Html.DisplayFor(model => model.Owner.FirstName)</h4>
+            </div>
+            <div>
+                <fieldset><legend>Description</legend></fieldset>
+                @Html.DisplayFor(model => model.CourseDescription)
+
+                <fieldset>
+                    <legend>Details</legend>
+
                     <table>
                         <tr>
-                            <td>
-                                <div style="padding: 5px 0px 5px 5px; font-size: 0.9em; font-weight: normal; border: 0 none black;">Description: @Model.CourseDescription</div>
-                            </td>
-                        </tr>
-
-                        @if (Model.StartDate != null)
-                        {
-                            <tr>
-                                <td>
-                                    <div style="padding: 5px 0px 5px 5px; font-size: 0.9em; font-weight: normal; border: 0 none black;">Course Starts: @Model.StartDate</div>
-                                </td>
-                            </tr>
-                        }
-                        @if (Model.EndDate != null)
-                        {
-                            <tr>
-                                <td>
-                                    <div style="padding: 5px 0px 5px 5px; font-size: 0.9em; font-weight: normal; border: 0 none black;">Course Ends: @Model.EndDate</div>
-                                </td>
-                            </tr>
-                        }
-                        @{
-                        string path = HttpRuntime.AppDomainAppPath;
-                        string newpath = path + "\\Content\\Files\\" + Model.Owner.UserName + "\\Courses\\" + Model.CourseName + "\\";
-                        var directoryInfo = new DirectoryInfo(newpath);
-                        if (directoryInfo.Exists)
-                        {
-                            string[] readtext = File.ReadAllLines(newpath + "uploadedList.txt");
-                            if (readtext == null || readtext.Length == 0)
+                            <td style="font-weight: bold">Starts:</td>
+                            @if (Model.StartDate == null)
                             {
-                                
-                            <p>There are no uploaded files</p>
-                                    
+                                <td>@Html.Label("NA")</td>
                             }
-
                             else
                             {
-                            <p>Course Videos</p>
-                                int LectureNumber = 1;
-                                foreach (string fileName in readtext)
-                                {
-                                    int dot = fileName.IndexOf(".");
-                                    if (dot > 0)
-                                    {
-                                        string OnlyFileName = fileName.Substring(0, dot);
-                            <tr>
-                                <td>
-                                    <div>
-                                        <p>Lecture @LectureNumber: @OnlyFileName</p>
-                                        <video poster="http://www.dieckmann-aroma-kaffee.de/video/start_video_528.jpg" width="320" height="240" controls>
-                                            <source src="/Content/Files/@Model.Owner.UserName/Courses/@Model.CourseName/@fileName" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
-                                        </video>
-                                    </div>
-                                </td>
-                            </tr>
-                                    }
-                                    LectureNumber += 1;
-                                }
+                                <td>@Html.DisplayFor(model => model.StartDate)</td>
                             }
-                        }
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">Ends:</td>
+                            @if (Model.EndDate == null)
+                            {
+                                <td>@Html.Label("NA")</td>
+                            }
+                            else
+                            {
+                                <td>@Html.DisplayFor(model => model.EndDate)</td>
+                            }
+                        </tr>
+                    </table>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Files & Other Links</legend>
+                </fieldset>
+            </div>
+
+            <fieldset>
+                <legend></legend>
+
+                @{  
+
+                    string path = HttpRuntime.AppDomainAppPath;
+                    string newpath = path + "\\Content\\Files\\" + Model.Owner.UserName + "\\Courses\\" + Model.CourseName + "\\";
+                    var directoryInfo = new DirectoryInfo(newpath);
+                    if (directoryInfo.Exists)
+                    {
+                        string[] readtext = File.ReadAllLines(newpath + "uploadedList.txt");
+                        if (readtext == null || readtext.Length == 0)
+                        {
+                                
+                    <p>There are no uploaded files</p>
+                                    
                         }
 
-                    </table>
+                        else
+                        {
+                    <p>Course Videos</p>
+                            int LectureNumber = 1;
+                            foreach (string fileName in readtext)
+                            {
+                                int dot = fileName.IndexOf(".");
+                                if (dot > 0)
+                                {
+                                    string OnlyFileName = fileName.Substring(0, dot);
+                            
+                    <div>
+                        <p>Lecture @LectureNumber: @OnlyFileName</p>
+                        <video poster="http://www.dieckmann-aroma-kaffee.de/video/start_video_528.jpg" width="320" height="240" controls>
+                            <source src="/Content/Files/@Model.Owner.UserName/Courses/@Model.CourseName/@fileName" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+                        </video>
+                    </div>
+                               
+                                }
+                                LectureNumber += 1;
+                            }
+                        }
+                    }
+                        
+
+                    
                        
                     <div>
                         @Html.ActionLink("Add Videos To This Course", "CourseAddVideo", new { id = Model.CourseId })
                     </div>
-                    }
+                    
                 }
 
             </fieldset>
