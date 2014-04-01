@@ -16,59 +16,61 @@
 
 <div class="container">
     <div class="box">
-    <div class="span8 main-content">
-        <h3>Create Course</h3>
-        @using (Html.BeginForm())
-        {
-            @Html.ValidationSummary(true)
-            <fieldset>
-                
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.CourseName)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.CourseName)
-                    @Html.ValidationMessageFor(model => model.CourseName)
-                </div>
+        <div class="span8 main-content">
+            <h3>Create Course</h3>
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                <fieldset>
 
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.PhotoUrl)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.PhotoUrl)
-                    @Html.ValidationMessageFor(model => model.PhotoUrl)
-                </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.CourseName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.CourseName)
+                        @Html.ValidationMessageFor(model => model.CourseName)
+                    </div>
 
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.CourseDescription)
-                </div>
-                <div class="editor-field">
-                    @Html.TextBoxFor(model => model.CourseDescription)
-                    @Html.ValidationMessageFor(model => model.CourseDescription)
-                </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.PhotoUrl)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.PhotoUrl)
+                        @Html.ValidationMessageFor(model => model.PhotoUrl)
+                    </div>
 
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.StartDate)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.StartDate)
-                    @Html.ValidationMessageFor(model => model.StartDate)
-                </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.StartDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.StartDate)
+                        @Html.ValidationMessageFor(model => model.StartDate)
+                    </div>
 
-                <div class="editor-label">
-                    @Html.LabelFor(model => model.EndDate)
-                </div>
-                <div class="editor-field">
-                    @Html.EditorFor(model => model.EndDate)
-                    @Html.ValidationMessageFor(model => model.EndDate)
-                </div>
-                <input class="btn btn-primary" type="submit" value="Create" />
-            </fieldset>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EndDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.EndDate)
+                        @Html.ValidationMessageFor(model => model.EndDate)
+                    </div>
+
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.CourseDescription)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.CourseDescription, new { cols = "49", rows = "8", style = "resize:none; width: 500px;" })
+                        @Html.ValidationMessageFor(model => model.CourseDescription)
+                    </div>
+
+
+                    <input class="btn btn-primary" type="submit" value="Create" />
+                </fieldset>
             
-        }
+            }
 
+        </div>
     </div>
-</div>
 </div>
 
 @Html.Partial("_Footer")
