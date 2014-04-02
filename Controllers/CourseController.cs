@@ -177,7 +177,7 @@ namespace FollowPeers.Controllers
                 }
                 //-----------End of Adding Tags
                 db.SaveChanges();
-                return RedirectToAction("Mine");
+                return RedirectToAction("Details", "Course", new { id = course.CourseId });
             }
 
             return View(course);
@@ -349,7 +349,7 @@ namespace FollowPeers.Controllers
             {
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Course", new { id = course.CourseId });
             }
             return View(course);
         }
