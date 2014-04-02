@@ -13,8 +13,6 @@ namespace FollowPeers.Models
         [Required]
         public string CourseName { get; set; }
         [Required]
-        public string PhotoUrl { get; set; }
-        [Required]
         public string CourseDescription { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
