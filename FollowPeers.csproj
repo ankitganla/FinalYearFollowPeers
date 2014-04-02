@@ -3339,7 +3339,7 @@
     <Content Include="Views\Comment\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Course\Index.cshtml" />
+    <Content Include="TODELETE\courseIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Course\Details.cshtml" />
@@ -3351,13 +3351,13 @@
     <Content Include="Views\Course\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Course\Delete.cshtml" />
+    <Content Include="TODELETE\courseDelete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_CourseSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Course\Mine.cshtml" />
+    <Content Include="TODELETE\courseMine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_CommentBox.cshtml" />
