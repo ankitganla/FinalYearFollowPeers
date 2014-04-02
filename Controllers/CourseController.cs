@@ -96,10 +96,41 @@ namespace FollowPeers.Controllers
         // POST: /Course/Create
 
         [HttpPost]
-        public ActionResult Create(Course course)
+        public ActionResult Create(Course course, FormCollection formCollection)
         {
             string name = Membership.GetUser().UserName;
             UserProfile user = db.UserProfiles.SingleOrDefault(p => p.UserName == name);
+
+            foreach (String key in formCollection.AllKeys)
+            {
+                switch (key)
+                {
+                    case "StartDate":
+                        try
+                        {
+                            DateTime dt = DateTime.Parse(formCollection.Get(key));
+                            course.StartDate = (DateTime?)dt;
+                        }
+                        catch
+                        {
+                        }
+                        break;
+                    case "EndDate":
+                        try
+                        {
+                            DateTime dt = DateTime.Parse(formCollection.Get(key));
+                            course.EndDate = (DateTime?)dt;
+                        }
+                        catch
+                        {
+                        }
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 user.Courses.Add(course);
