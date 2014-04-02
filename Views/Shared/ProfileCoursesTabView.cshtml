@@ -114,15 +114,15 @@
 
     <div class="span2 profilepagetabs">
         <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
-            <li class="current" id="li_hosting" onclick="tab('hosting')"><a>Hosting</a></li>
-            <li id="li_attending" onclick="tab('attending')"><a>Attending</a></li>
+            <li class="current" id="li_hosting" onclick="courseSubTabs('hosting')"><a>Hosting</a></li>
+            <li id="li_attending" onclick="courseSubTabs('attending')"><a>Attending</a></li>
         </ul>
     </div>
 </div>
 
 
 <script type="text/javascript" language="javascript">
-    function tab(tab) {
+    function courseSubTabs(tab) {
         document.getElementById('hosting').style.display = 'none';
         document.getElementById('attending').style.display = 'none';
 

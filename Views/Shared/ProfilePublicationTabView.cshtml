@@ -120,7 +120,7 @@
     <div class="container" style="padding: 0;">
         <div class="span8 main-content">
             <div class="tab-content">
-                <div id="tab1" style="display: block;" class="tab-pane active">
+                <div id="tab1" style="display: block;">
 
                     @{
                         if (Model.Count() != 0)
@@ -169,7 +169,8 @@
                         }
                     }
                 </div>
-                <div id="tab3" style="display: none;" class="tab-pane">
+
+                <div id="tab3" style="display: none;">
                     @if (FavouriteList.Count() != 0)
                     {
                         <span class="label label-info">Favourite Publications: @FavouriteList.Count()</span>
@@ -212,7 +213,7 @@
                     }
                 </div>
 
-                <div id="tab4" style="display: none;" class="tab-pane">
+                <div id="tab4" style="display: none;">
                     @{
                         if (RecommendedList.Count() != 0)
                         {
