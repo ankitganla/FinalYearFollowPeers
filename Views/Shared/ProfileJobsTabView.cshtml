@@ -12,8 +12,22 @@
     UploadedJob = followPeersDB.Jobs.Where(p => p.ownerID == myprofile.UserProfileId).ToList();
     List<Jobs> Appliedjobs = new List<FollowPeers.Models.Jobs>();
     Appliedjobs = myprofile.AppliedJobs.ToList();
-    List<FollowPeers.Models.Favourite> Savedjobs = new List<FollowPeers.Models.Favourite>();
-    Savedjobs = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 4).ToList();   
+
+
+    List<FollowPeers.Models.Jobs> SavedList = new List<FollowPeers.Models.Jobs>();
+    List<FollowPeers.Models.Favourite> Savedjobs = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 4).ToList();
+
+    Jobs temp2 = new Jobs();
+    if (Savedjobs.Count() != 0)
+    {
+        foreach (var id in Savedjobs)
+        {
+            temp2 = followPeersDB.Jobs.SingleOrDefault(p => p.JobId == id.ItemTypeId);
+            SavedList.Add(temp2);
+        }
+
+    }
+     
 }
 <head>
     <title>Jobs Tab</title>
@@ -136,7 +150,33 @@
             </div>
 
             <div id="savedJobs" style="display: none;">
-                
+                @{ 
+                    if (SavedList.Count() != 0)
+                    {
+                    <span class="label label-info">No. of Jobs Hiring: @SavedList.Count()</span>
+                    <table class="span7">
+                        @foreach (var item in SavedList)
+                        {
+                            <tr>
+                                <td>
+                                    <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
+                                        <div style="margin-left: 8px;">
+                                            <a href="/Jobs/Details/@item.JobId" id="title"><b>@item.Title</b></a>
+                                        </div>
+                                        <div style="margin-left: 8px; float: left;">
+                                            <b>Company: @item.Company    |   Location: @item.Country   |  Apply By: @item.publishDate</b>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                    }
+                    else
+                    {
+                    <span class="label label-info">No saved jobs</span><br />
+                    }
+                }
             </div>
 
             <div id="searchJobs" style="display: none">
