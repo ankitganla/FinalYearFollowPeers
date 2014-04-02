@@ -731,7 +731,7 @@ namespace FollowPeers.Controllers
             return RedirectToAction("Index", "Profile", new { id = userprofile.UserProfileId });
         }
 
-        public ActionResult Like(int id, string NameId)
+        public ActionResult Like(int id)
         {
             PublicationModel publicationmodel = followPeersDB.PublicationModels.Find(id);
             publicationmodel.Likes = publicationmodel.Likes + 1;
@@ -746,17 +746,25 @@ namespace FollowPeers.Controllers
             achievement.UserProfile = user;
             user.AchievementLikes.Add(achievement);
             followPeersDB.SaveChanges();
-            return Json(id);
+            return RedirectToAction("Details", "PublicationModel", new { id = id });
         }
 
-        public ActionResult Unlike(int id, int pubId, string NameId)
+        public ActionResult Unlike(int id)
         {
-            PublicationModel publicationmodel = followPeersDB.PublicationModels.Find(pubId);
-            publicationmodel.Likes = publicationmodel.Likes - 1;
-            AchievementLike achievementmodel = followPeersDB.AchievementLikes.Find(id);
-            followPeersDB.AchievementLikes.Remove(achievementmodel);
+            PublicationModel publicationmodel = followPeersDB.PublicationModels.Find(id);
+            if (publicationmodel.Likes != 0)
+                publicationmodel.Likes = publicationmodel.Likes - 1;
+
+            AchievementLike achievementmodel = followPeersDB.AchievementLikes.SingleOrDefault(p => p.AchievementId == id);
+            try
+            {
+                followPeersDB.AchievementLikes.Remove(achievementmodel);
+            }
+            catch
+            {
+            }
             followPeersDB.SaveChanges();
-            return Json(id);
+            return RedirectToAction("Details", "PublicationModel", new { id = id });
         }
         //
         // POST: /PublicationModel/Delete/5

@@ -228,18 +228,24 @@
      
                     if (@achmodel == null)
                     {
-                    <span class="label label-default" style="background-color: green">
-                        <input type="image" src="../../Content/images/icons/16x16/thumb_up.png" value="submit" />
-                        Like Publication
-                    </span> 
-                       
+                    <form action="/PublicationModel/Like" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.publicationID" />
+                        <span class="label label-default" style="background-color: green">
+                            <input type="image" src="../../Content/images/icons/16x16/thumb_up.png" value="submit" />
+                            Like Publication
+                        </span>
+                    </form>
                     }
                     else
                     {
-                    <span class="label label-default" style="background-color: red">
+                        <form action="/PublicationModel/Unlike" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.publicationID" />
+                        <span class="label label-default" style="background-color: red">
                         <input type="image" src="../../Content/images/icons/16x16/thumb_down.png" value="submit" />
                         Unlike Publication
-                    </span> 
+                    </span>
+                    </form>
+                     
                     }
                     <br />
                     <br />
