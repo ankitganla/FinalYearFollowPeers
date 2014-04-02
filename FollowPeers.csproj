@@ -3434,7 +3434,7 @@
     <None Include="ClassDiagram1.cd" />
     <Content Include="Views\Shared\_PubHeader.cshtml" />
     <Content Include="TODELETE\ViewPage1.cshtml" />
-    <Content Include="Views\Shared\sidetemp.cshtml" />
+    <Content Include="TODELETE\sidetemp.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\Headertemp.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
