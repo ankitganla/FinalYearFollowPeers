@@ -754,8 +754,13 @@ namespace FollowPeers.Controllers
             PublicationModel publicationmodel = followPeersDB.PublicationModels.Find(id);
             if (publicationmodel.Likes != 0)
                 publicationmodel.Likes = publicationmodel.Likes - 1;
+           
+            string name = Membership.GetUser().UserName;
+            int userID;
+            UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            userID = user.UserProfileId;
 
-            AchievementLike achievementmodel = followPeersDB.AchievementLikes.SingleOrDefault(p => p.AchievementId == id);
+            AchievementLike achievementmodel = followPeersDB.AchievementLikes.SingleOrDefault(p => p.AchievementId == id &&  p.UserProfileId == userID);
             try
             {
                 followPeersDB.AchievementLikes.Remove(achievementmodel);
