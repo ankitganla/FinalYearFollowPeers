@@ -18,7 +18,7 @@ namespace FollowPeers.Controllers
 {
     public class CourseController : Controller
     {
-        FollowPeersDBEntities db = new FollowPeersDBEntities();
+        private FollowPeersDBEntities db = new FollowPeersDBEntities();
         string name = Membership.GetUser().UserName;
         static UserProfile myprofile;
         //
@@ -154,7 +154,7 @@ namespace FollowPeers.Controllers
                         Tag Item = db.Tags.FirstOrDefault(p => p.TagName.ToLower() == Trimtagname.ToLower());
                         if (Item != null)
                         {
-                            if (AddedTags.Contains(Item) != true && !(Item.Courses.Any(p => p.CourseId== course.CourseId)))
+                            if (AddedTags.Contains(Item) != true && !(Item.Courses.Any(p => p.CourseId == course.CourseId)))
                             {
                                 Item.TagLinkedItems += 1;
                                 course.Tags.Add(Item);
@@ -191,7 +191,7 @@ namespace FollowPeers.Controllers
             int coursenumber = db.Courses.Count() + 1;
             if (category != null)
             {
-                if(category.Contains(';'))
+                if (category.Contains(';'))
                 {
                     string[] Tagnames = category.Split(';');
                     CategoryPost post = new CategoryPost
@@ -311,8 +311,40 @@ namespace FollowPeers.Controllers
         // POST: /Course/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(Course course)
+        public ActionResult Edit(Course course, FormCollection formCollection)
         {
+            foreach (String key in formCollection.AllKeys)
+            {
+                switch (key)
+                {
+                    case "StartDate":
+                        try
+                        {
+                            String[] get = formCollection.Get(key).Split(',');
+                            DateTime dt = DateTime.Parse(get[get.Length-1]);
+                            course.StartDate = (DateTime?)dt;
+                        }
+                        catch
+                        {
+                        }
+                        break;
+                    case "EndDate":
+                        try
+                        {
+                            String[] get = formCollection.Get(key).Split(',');
+                            DateTime dt = DateTime.Parse(get[get.Length - 1]);
+                            course.EndDate = (DateTime?)dt;
+                        }
+                        catch
+                        {
+                        }
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(course).State = EntityState.Modified;
