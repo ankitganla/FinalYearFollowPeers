@@ -52,7 +52,7 @@ namespace FollowPeers.Controllers
                 ViewBag.FavouriteAdded = "true";
                 CreateUpdates("Favourited a new publication titled " + Pubname, "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
             }
-            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+            return RedirectToAction("Details", "PublicationModel", new { id = id });
         }
 
         public ActionResult Recommend(int id, string Names)

@@ -139,17 +139,7 @@
                                                 <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
                                                 <div id="Author">Author(s) : @item.author</div>
                                                 <div id="Year">Year of Publication : @item.year</div>
-                                                <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, null)</div>
-
-                                                <p>Recommend Publication:</p>
-
-                                                @using (Html.BeginForm("Recommend", "PublicationModel"))
-                                                {
-                                                    <input type="hidden" name="id" value="@item.publicationID" />
-                                                    <input id="recommend" name="Names" style="width: 150px" />
-                                                    <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
-                            
-                                                }
+                                                
                                             </div>
                                             <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
                                                 | @Html.DisplayFor(modelItem => item.status)
@@ -187,14 +177,7 @@
                                                 <div id="Author">Author(s) : @item.author</div>
                                                 <div id="Year">Year of Publication : @item.year</div>
 
-                                                <p>Recommend Publication:</p>
-                                                @using (Html.BeginForm("Recommend", "PublicationModel"))
-                                                {
-                                                    <input type="hidden" name="id" value="@item.publicationID" />
-                                                    <input id="recommend" name="Names" style="width: 150px" />
-                                                    <input type="submit" id="Recommend" value="GO" style="background-color: #45aeea" />
-                            
-                                                }
+                                                
                                             </div>
                                             <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
                                                 | @Html.DisplayFor(modelItem => item.status)
@@ -231,7 +214,6 @@
                                                 <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
                                                 <div id="Author">Author(s) : @item.author</div>
                                                 <div id="Year">Year of Publication : @item.year</div>
-                                                <div>@Html.ActionLink("Mark as Favourite", "FavouritePub", "PublicationModel", new { id = item.publicationID, Pubname = item.title }, null)</div>
                                             </div>
                                             <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
                                                 | @Html.DisplayFor(modelItem => item.status)
