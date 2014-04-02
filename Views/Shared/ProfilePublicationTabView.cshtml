@@ -256,9 +256,9 @@
         </div>
         <div class="span2 profilepagetabs">
             <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
-                <li class="current" id="li_tab1" onclick="tab('tab1')"><a>Uploaded</a></li>
-                <li id="li_tab3" onclick="tab('tab3')"><a>Favourites</a></li>
-                <li id="li_tab4" onclick="tab('tab4')"><a>Recommended</a></li>
+                <li class="current" id="li_tab1" onclick="profileSubTabs('tab1')"><a>Uploaded</a></li>
+                <li id="li_tab3" onclick="profileSubTabs('tab3')"><a>Favourites</a></li>
+                <li id="li_tab4" onclick="profileSubTabs('tab4')"><a>Recommended</a></li>
 
             </ul>
         </div>
@@ -301,7 +301,7 @@
         $('#University' + id).hide();
     });
 
-    function tab(tab) {
+    function profileSubTabs(tab) {
         document.getElementById('tab1').style.display = 'none';
         document.getElementById('tab3').style.display = 'none';
         document.getElementById('tab4').style.display = 'none';
