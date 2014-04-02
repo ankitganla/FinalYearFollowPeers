@@ -55,6 +55,19 @@ namespace FollowPeers.Controllers
             return RedirectToAction("Details", "PublicationModel", new { id = id });
         }
 
+        public ActionResult UnFavouritePub(int id)
+        {
+            List<FollowPeers.Models.Favourite> FavouriteList = new List<FollowPeers.Models.Favourite>();
+            FavouriteList = followPeersDB.Favourites.Where(p => p.ItemTypeId == id).ToList();
+
+            foreach (Favourite favPub in FavouriteList)
+            {
+                followPeersDB.Favourites.Remove(favPub);
+            }
+            followPeersDB.SaveChanges();
+            return RedirectToAction("Details", "PublicationModel", new { id = id });
+        }
+
         public ActionResult Recommend(int id, string Names)
         {
             UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);

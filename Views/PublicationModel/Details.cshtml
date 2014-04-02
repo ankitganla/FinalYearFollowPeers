@@ -188,22 +188,27 @@
 
                     if (favMatched == true)
                     { //pub is a favourite
-                    <span class="label label-default" style="background-color: green">
-                        <img src="../../Content/images/icons/16x16/accept.png" />
-                        Favourited
-                    </span>    
+                    <form action="/PublicationModel/UnFavouritePub" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.publicationID" />
+
+                        <span class="label label-default" style="background-color: white; color: black">
+                            <input type="image" src="../../Content/images/icons/16x16/cross.png" value="submit" />
+                            Remove Favourite
+                        </span>
+                    </form>
+                        
                     }
                     else
                     { // pub is not a fav
-                        using (Html.BeginForm("FavouritePub", "PublicationModel"))
-                        { 
-                    <input type="hidden" name="id" value="@Model.publicationID" />
-                    <input type="hidden" name="Pubname" value="@Model.title" />
-                    <span class="label label-default" style="background-color: white; color:black">
-                        <input type="image" src="../../Content/images/icons/16x16/accept.png" value="submit" />
-                        Mark Favourite
-                    </span>
-                        }
+                    <form action="/PublicationModel/FavouritePub" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.publicationID" />
+                        <input type="hidden" name="Pubname" value="@Model.title" />
+                        <span class="label label-default" style="background-color: white; color: black">
+                            <input type="image" src="../../Content/images/icons/16x16/accept.png" value="submit" />
+                            Mark Favourite
+                        </span>
+                    </form>
+                        
                     }
                     <br />
                     <br />
