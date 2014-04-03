@@ -4,89 +4,141 @@
     ViewBag.Title = "Job Details";
 }
 @Html.Partial("_Header")
- @{
-     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
-     string name = Membership.GetUser().UserName;
-     ViewBag.UserName = name;
-     FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == name);
+@{
+    FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
+    string name = Membership.GetUser().UserName;
+    ViewBag.UserName = name;
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == name);
 }
-<div class="container" id="main">
-<div class="row">
-     @Html.Partial("_SideBar1")
-    <div class="span7">
+<div class="container">
+    <div class="row">
+
         @Script("jquery.validate.min.js")
         @Script("jquery.validate.unobtrusive.min.js")
         @Script("jquery.bgiframe.js")
         @Script("jquery.mcdropdown.js")
         <link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
         <link href="../../Content/css/jquery-ui.css" rel="stylesheet" type="text/css" />
-                @*-----------JobId-----------*@
-                @Html.HiddenFor(model => model.JobId)
-                @*-----------OwnerID-----------*@
-                @Html.HiddenFor(model => model.ownerID)
-            <div class="box" style="border: 1px solid #eee; padding-left:5px;">
-             <h3>@Html.DisplayFor(model => model.Title)</h3>
-             <h4>@Html.DisplayFor(model => model.Company)   |   @Html.DisplayFor(model => model.Country)</h4></div>
-            <hr />
-            <h4 style="color:Black">Job Description</h4>
-            <div class="display-field">
-                @Html.DisplayFor(model => model.Description)
+        <div class="span9">
+            @*-----------JobId-----------*@
+            @Html.HiddenFor(model => model.JobId)
+            @*-----------OwnerID-----------*@
+            @Html.HiddenFor(model => model.ownerID)
+            <div class="box" style="border: 1px solid #eee; padding-left: 5px;">
+                <h3>@Html.DisplayFor(model => model.Title)</h3>
+                <h4>@Html.DisplayFor(model => model.Company)   |   @Html.DisplayFor(model => model.Country)</h4>
             </div>
-            <hr />
-             <h4 style="color:Black">Desired Skills and Experience</h4>
-            <div class="display-field">
-                @Html.DisplayFor(model => model.Requirements)
-            </div> 
-            <hr />  
-            <h4 style="color:Black">Additional Information</h4><br />
+
+            <fieldset><legend>Description</legend></fieldset>
+            @Html.DisplayFor(model => model.Description)
+
+            <fieldset><legend>Requirements</legend></fieldset>
+            @Html.DisplayFor(model => model.Requirements)
+
+            <fieldset><legend>More Details</legend></fieldset>
             <table>
-            <tr><td style="font-weight:bold">Posted:    </td><td>@Html.DisplayFor(model => model.publishDate)</td></tr>
-            <tr><td style="font-weight:bold">Type:  </td><td>@Html.DisplayFor(model => model.Type)</td></tr>
-            <tr><td style="font-weight:bold">Industry:  </td><td>@Html.DisplayFor(model => model.Industry)</td></tr>
-            <tr><td style="font-weight:bold">Job Function:  </td><td>@Html.DisplayFor(model => model.Jobfunction)</td></tr>
-            <tr><td style="font-weight:bold">Job ID:    </td><td>@Html.DisplayFor(model => model.JobId)</td></tr>
-            </table>  
+                <tr>
+                    <td style="font-weight: bold">Experience:    </td>
+                    <td>@Html.DisplayFor(model => model.Experience)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Type:  </td>
+                    <td>@Html.DisplayFor(model => model.Type)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Industry:  </td>
+                    <td>@Html.DisplayFor(model => model.Industry)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Contact:  </td>
+                    <td>@Html.DisplayFor(model => model.Email)</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; color: red">Application Closes:    </td>
+                    <td>@Html.DisplayFor(model => model.publishDate)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="span3" style="text-align: left; border-left: 1px solid #eee; padding-left: 10px;">
+            <div class="scrollspy" data-spy="scroll" data-target=".navlist" style="margin-left: 5px">
+
+                @{
+                    if (myprofile.UserProfileId == Model.ownerID)
+                    {
+                    @Html.ActionLink("Edit", "Edit", new { id = Model.JobId }) <text>|</text>
+                    <button style="color:red; border:none; background: none; padding:0;" onclick="confirmDelete(@Model.JobId, @Model.ownerID)">Delete</button>
+                    <br />
+                    <br />
+                    }
+
+                    Favourite AppliedJob = followPeersDB.Favourites.SingleOrDefault(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 4);
+                    bool favMatchedApplied = false;
+
+                    if (AppliedJob != null)
+                    {
+                        favMatchedApplied = true;
+                    }
+
+                    Favourite SavedJob = followPeersDB.Favourites.SingleOrDefault(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 14);
+                    bool favMatchedSaved = false;
+
+                    if (SavedJob != null)
+                    {
+                        favMatchedSaved = true;
+                    }
+
+
+                    if (favMatchedSaved == true)
+                    { //track this job
+                    <form action="/Jobs/UnSave" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.JobId" />
+
+                        <span class="label label-default" style="background-color: white; color: black">
+                            <input type="image" src="../../Content/images/icons/16x16/cross.png" value="submit" />
+                            Stop Tracking
+                        </span>
+                    </form>
+                        
+                    }
+                    else
+                    { //do not track this job
+                    <form action="/Jobs/FavouritePub" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.JobId" />
+                        <input type="hidden" name="Pubname" value="@Model.Title" />
+                        <span class="label label-default" style="background-color: white; color: black">
+                            <input type="image" src="../../Content/images/icons/16x16/accept.png" value="submit" />
+                            Track Job
+                        </span>
+                    </form>
+                        
+                    }
+                    <br />
+                    <br />
+                    
+                }
+            </div>
+        </div>
     </div>
-     <div class="span3" style=" text-align:left; border-left: 1px solid #eee; padding-left:10px;">
-      <input id="JobId" style="display:none" type="text" value="@Model.JobId" >
-    @{
-        if (Model.ownerID != myprofile.UserProfileId)
-        {
-   
-         <button class="btn-warning" style="width:150px;">@Html.ActionLink("Apply Now", "AppliedJob", new { id = Model.JobId, Jobname = Model.Title })</button>    
-    <br />
-    <br />
-       @Html.ActionLink("Save Job", "SavedJob", new { id = Model.JobId, Jobname = Model.Title }) 
-    <br />             
-    @Html.Label("Reccomend Job: ") 
-                    <div class="editor-field" id="RecommendList2">
-                    <input type="text" id="Recommend2" name="Recommend2" style="width:150px" />&nbsp;<a id="Click2" style="height:50px;"class="icon-hand-right"></a>
-                    </div> 
-        }
-        else
-        {
-           @Html.ActionLink("Delete Job", "Delete", new { id = Model.JobId })
-        <br />
-           @Html.ActionLink("Edit Job", "Edit", new { id = Model.JobId })
-        <br />
-            @Html.ActionLink("Search Job", "Search", new { id = Model.JobId })
-        <br />
-        @Html.Label("Reccomend Job: ") 
-                    <div class="editor-field" id="RecommendList">
-                    <input type="text" id="Recommend" name="Recommend" style="width:150px" />&nbsp;<a id="Click1" style="height:50px;"class="icon-hand-right"></a>
-                    </div> 
-        }
-        }
-         </div>
 </div>
-</div>
+
 @Html.Partial("_Footer")
 @helper Script(string scriptName)
-    {
+{
     <script src="@Url.Content("~/Scripts/" + scriptName)" type="text/javascript"></script>
 }
 
 <script type="text/javascript" language="javascript">
+
+    function confirmDelete(pubId, ownerId) {
+        var r = confirm("Are you sure you want to Delete this publication?");
+        if (r == true) {
+            $.post("@Url.Action("Delete", "PublicationModel")", { id: pubId }, function () { window.location = "/Profile/Index/" + ownerId; });
+        }
+        else {
+        }
+    }
+
     $("#Save_it").click(function () {
         // Get publication ID
         var id1 = $("#JobId").val();
