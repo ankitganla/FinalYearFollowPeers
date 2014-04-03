@@ -22,7 +22,7 @@ namespace FollowPeers.Controllers
         string name = Membership.GetUser().UserName;
         static UserProfile myprofile;
 
- 
+
         public ActionResult Attending(int id, string courseName)
         {
             UserProfile user = db.UserProfiles.SingleOrDefault(p => p.UserName == name);
@@ -40,7 +40,7 @@ namespace FollowPeers.Controllers
                 if (alreadyAttending != null)
                 {
                     //CreateUpdates("The publication " + courseName + " is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
-                    
+
                     return RedirectToAction("Details", "Course", new { id = id });
                 }
                 //thisCourse.attendingCount++;
@@ -52,14 +52,25 @@ namespace FollowPeers.Controllers
             }
             return RedirectToAction("Details", "Course", new { id = id });
         }
-        
-        
-        
-        
-        
-        
-        
-        
+
+        public ActionResult NotAttending(int id)
+        {
+            Favourite attending = db.Favourites.SingleOrDefault(p => p.ItemTypeId == id);
+            if (attending != null)
+            {
+                db.Favourites.Remove(attending);
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("Details", "Course", new { id = id });
+        }
+
+
+
+
+
+
+
         //
         // GET: /Course/
 
@@ -360,7 +371,7 @@ namespace FollowPeers.Controllers
                         try
                         {
                             String[] get = formCollection.Get(key).Split(',');
-                            DateTime dt = DateTime.Parse(get[get.Length-1]);
+                            DateTime dt = DateTime.Parse(get[get.Length - 1]);
                             course.StartDate = (DateTime?)dt;
                         }
                         catch
