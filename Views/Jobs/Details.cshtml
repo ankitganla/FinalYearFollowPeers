@@ -72,15 +72,7 @@
                     <br />
                     }
 
-                    Favourite AppliedJob = followPeersDB.Favourites.SingleOrDefault(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 4);
-                    bool favMatchedApplied = false;
-
-                    if (AppliedJob != null)
-                    {
-                        favMatchedApplied = true;
-                    }
-
-                    Favourite SavedJob = followPeersDB.Favourites.SingleOrDefault(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 14);
+                    Favourite SavedJob = followPeersDB.Favourites.SingleOrDefault(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 4 && p.ItemTypeId == @Model.JobId);
                     bool favMatchedSaved = false;
 
                     if (SavedJob != null)
@@ -90,10 +82,9 @@
 
 
                     if (favMatchedSaved == true)
-                    { //track this job
-                    <form action="/Jobs/UnSave" method="post" style="margin: 0">
+                    { //tracking this job
+                    <form action="/Jobs/UnSaveJob" method="post" style="margin: 0">
                         <input type="hidden" name="id" value="@Model.JobId" />
-
                         <span class="label label-default" style="background-color: white; color: black">
                             <input type="image" src="../../Content/images/icons/16x16/cross.png" value="submit" />
                             Stop Tracking
@@ -102,10 +93,10 @@
                         
                     }
                     else
-                    { //do not track this job
-                    <form action="/Jobs/FavouritePub" method="post" style="margin: 0">
+                    { //not tracking this job
+                    <form action="/Jobs/SaveJob" method="post" style="margin: 0">
                         <input type="hidden" name="id" value="@Model.JobId" />
-                        <input type="hidden" name="Pubname" value="@Model.Title" />
+                        <input type="hidden" name="Jobname" value="@Model.Title" />
                         <span class="label label-default" style="background-color: white; color: black">
                             <input type="image" src="../../Content/images/icons/16x16/accept.png" value="submit" />
                             Track Job
@@ -133,7 +124,7 @@
     function confirmDelete(pubId, ownerId) {
         var r = confirm("Are you sure you want to Delete this publication?");
         if (r == true) {
-            $.post("@Url.Action("Delete", "PublicationModel")", { id: pubId }, function () { window.location = "/Profile/Index/" + ownerId; });
+            $.post("@Url.Action("Delete", "Jobs")", { id: pubId }, function () { window.location = "/Profile/Index/" + ownerId; });
         }
         else {
         }

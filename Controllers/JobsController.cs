@@ -25,7 +25,7 @@ namespace FollowPeers.Controllers
 
         public ActionResult AppliedJob(int id)
         {
-            
+
             myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
             // UserProfile followerProfile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == username);
             // UserProfile followerProfile = new UserProfile();
@@ -136,7 +136,7 @@ namespace FollowPeers.Controllers
                 return View(result.ToList());
             }
         }
-        public ActionResult SavedJob(int id, string Jobname)
+        public ActionResult SaveJob(int id, string Jobname)
         {
             string name = Membership.GetUser().UserName;
             UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
@@ -147,25 +147,36 @@ namespace FollowPeers.Controllers
                 Item.ItemName = Jobname;
                 Item.ItemType = 4;
                 Item.ItemTypeId = Convert.ToInt32(id);
-                user.Favourites.Add(Item);
 
                 //Add only if Favourite doesn't already exist
                 Favourite FoundMatch = user.Favourites.FirstOrDefault(p => p.ItemTypeId == Item.ItemTypeId && p.ItemType == Item.ItemType);
+                if (FoundMatch != null)
+                {
+                    //there is already a fav here
+                    return RedirectToAction("Details", "Jobs", new { id = id });
+                }
 
+                user.Favourites.Add(Item);
                 followPeersDB.Entry(user).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-
                 ViewBag.FavouriteAdded = "true";
             }
-
-            myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            // UserProfile followerProfile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == username);
-            // UserProfile followerProfile = new UserProfile();
-            Jobs job = followPeersDB.Jobs.SingleOrDefault(p => p.JobId == id);
-            myprofile.Jobs.Add(job);
-            followPeersDB.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Jobs", new { id = id });
         }
+
+        public ActionResult UnSaveJob(int id)
+        {
+            Favourite toUnsave = followPeersDB.Favourites.SingleOrDefault(p => p.ItemTypeId == id && p.ItemType == 4);
+
+            if (toUnsave != null)
+            {
+                followPeersDB.Favourites.Remove(toUnsave);
+                followPeersDB.SaveChanges();
+            }
+
+            return RedirectToAction("Details", "Jobs", new { id = id });
+        }
+
 
         public ViewResult Index()
         {
@@ -263,12 +274,8 @@ namespace FollowPeers.Controllers
                 CreateUpdates("Published a new job titled " + jobmodel.Title, "/Jobs/Details/" + jobid, 6, user.UserProfileId, jobmodel.Description);
                 //followPeersDB.Entry(user).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-                if (Sidebarnumber == 2)
-                {
-                    Sidebarnumber = 1;
-                    return RedirectToAction("Mine", "Course");
-                }
-                return RedirectToAction("Index");
+
+                return RedirectToAction("Details", "Jobs", new { id= jobmodel.JobId});
             }
             return View(jobmodel);
         }
@@ -292,18 +299,18 @@ namespace FollowPeers.Controllers
             userprofile.Updates.Add(record); //add own update record
 
             //---------------Add To Category Post
-                CategoryPost post = new CategoryPost
-                {
-                    TimeStamp = DateTime.Now,
-                    PostMessage = message,
-                    Link = link,
-                    Type = 7,
-                    Postedby = myprofile.UserProfileId,
-                    Category = category,
-                };
+            CategoryPost post = new CategoryPost
+            {
+                TimeStamp = DateTime.Now,
+                PostMessage = message,
+                Link = link,
+                Type = 7,
+                Postedby = myprofile.UserProfileId,
+                Category = category,
+            };
 
-                userprofile.CategoryPosts.Add(post);
-                //---------------End OF Category Post
+            userprofile.CategoryPosts.Add(post);
+            //---------------End OF Category Post
 
             string name = userprofile.UserName;
             IQueryable<string> custQuery = from cust in followPeersDB.Relationships where cust.personBName == name select cust.personAName;
@@ -358,14 +365,21 @@ namespace FollowPeers.Controllers
         public ActionResult Delete(int id)
         {
             Jobs jobmodel = followPeersDB.Jobs.Find(id);
-            followPeersDB.Jobs.Remove(jobmodel);
-            List<Favourite> favmodel = followPeersDB.Favourites.Where(p => p.ItemTypeId == id).ToList();
-            foreach (var item in favmodel)
+            int ownersId = jobmodel.ownerID;
+
+            if (jobmodel != null)
             {
-                followPeersDB.Favourites.Remove(item);
+                followPeersDB.Jobs.Remove(jobmodel);
+                Favourite favmodel = followPeersDB.Favourites.SingleOrDefault(p => p.ItemTypeId == id && p.ItemType == 4);
+                if (favmodel != null)
+                {
+                    followPeersDB.Favourites.Remove(favmodel);
+                }
+                followPeersDB.SaveChanges();
+                return RedirectToAction("Index", "Profile", new { id = ownersId});
             }
-            followPeersDB.SaveChanges();
-            return RedirectToAction("Index");
+            
+            return View(jobmodel);
         }
 
         public ActionResult Edit(int id)
@@ -381,7 +395,7 @@ namespace FollowPeers.Controllers
             {
                 followPeersDB.Entry(jobmodel).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-                return RedirectToAction("Details", "Jobs", new { id= jobmodel.JobId});
+                return RedirectToAction("Details", "Jobs", new { id = jobmodel.JobId });
             }
             return View(jobmodel);
         }
