@@ -21,6 +21,41 @@ namespace FollowPeers.Controllers
         private FollowPeersDBEntities db = new FollowPeersDBEntities();
         string name = Membership.GetUser().UserName;
         static UserProfile myprofile;
+
+ 
+        public ActionResult Attending(int id, string courseName)
+        {
+            UserProfile user = db.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            if ((courseName != "" && courseName != null))
+            {
+                Favourite Item = new Favourite();
+                Item.ItemLink = "Course/Details/" + id;
+                Item.ItemName = courseName;
+                Item.ItemType = 13;
+                Item.ItemTypeId = Convert.ToInt32(id);
+
+                //Add only if Favourite doesn't already exist
+                Favourite alreadyAttending = user.Favourites.FirstOrDefault(p => p.ItemTypeId == Item.ItemTypeId && p.ItemType == Item.ItemType);
+                if (alreadyAttending != null)
+                {
+                    //CreateUpdates("The publication " + courseName + " is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
+                    user.Favourites.Add(Item);
+                    db.Entry(user).State = EntityState.Modified;
+                    db.SaveChanges();
+                    ViewBag.FavouriteAdded = "true";
+                    return RedirectToAction("Details", "Course", new { id = id });
+                }    
+            }
+            return RedirectToAction("Details", "Course", new { id = id });
+        }
+        
+        
+        
+        
+        
+        
+        
+        
         //
         // GET: /Course/
 
@@ -370,9 +405,13 @@ namespace FollowPeers.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Find(id);
+
+            String courseName = course.CourseName;
             db.Courses.Remove(course);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            UserProfile user = db.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            //CreateUpdates("Deleted the publication titled " + courseName, null, 6, user.UserProfileId, null);
+            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
         }
 
         //
