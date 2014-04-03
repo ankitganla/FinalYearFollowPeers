@@ -148,6 +148,7 @@ namespace FollowPeers.Controllers
         [HttpPost]
         public ActionResult Create(Course course, FormCollection formCollection)
         {
+            course.PhotoUrl="";
             string name = Membership.GetUser().UserName;
             UserProfile user = db.UserProfiles.SingleOrDefault(p => p.UserName == name);
 
@@ -363,6 +364,7 @@ namespace FollowPeers.Controllers
         [HttpPost]
         public ActionResult Edit(Course course, FormCollection formCollection)
         {
+            course.PhotoUrl = "";
             foreach (String key in formCollection.AllKeys)
             {
                 switch (key)

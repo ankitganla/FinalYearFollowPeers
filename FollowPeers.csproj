@@ -247,7 +247,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\FollowPeersDB.sdf" />
     <Content Include="bin\EntityFramework.dll" />
     <Content Include="bin\Microsoft.AspNet.SignalR.Client.dll" />
     <Content Include="bin\Microsoft.AspNet.SignalR.Core.dll" />
@@ -3218,6 +3217,7 @@
     <Content Include="TODELETE\EditPublication.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Content\TempImages\" />
     <Folder Include="Views\RecentUpdates\" />
   </ItemGroup>
@@ -3489,7 +3489,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>49442</DevelopmentServerPort>
+          <DevelopmentServerPort>51625</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

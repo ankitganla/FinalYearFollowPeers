@@ -21,6 +21,7 @@
             @using (Html.BeginForm("Create", "Course"))
             {
                 @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.PhotoUrl)
                 <fieldset>
 
                     <div class="editor-label">
