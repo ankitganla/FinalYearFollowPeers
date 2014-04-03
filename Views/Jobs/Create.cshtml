@@ -70,7 +70,7 @@
                 @Html.ValidationSummary(true)
 
 @*-----------Job ID-----------*@
-                @Html.HiddenFor(model => model.JobId)
+               <input type="hidden" name="jobID" value="@jobid" />
 
                 <table>
                     <tr>
@@ -258,7 +258,7 @@
 
                 <div>
                     <input type="submit" value="Post New Job" class="btn btn-primary" />
-                </div>x   
+                </div>  
             }
         </div>
     </div>
