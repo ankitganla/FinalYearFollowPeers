@@ -754,13 +754,13 @@ namespace FollowPeers.Controllers
             PublicationModel publicationmodel = followPeersDB.PublicationModels.Find(id);
             if (publicationmodel.Likes != 0)
                 publicationmodel.Likes = publicationmodel.Likes - 1;
-           
+
             string name = Membership.GetUser().UserName;
             int userID;
             UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
             userID = user.UserProfileId;
 
-            AchievementLike achievementmodel = followPeersDB.AchievementLikes.SingleOrDefault(p => p.AchievementId == id &&  p.UserProfileId == userID);
+            AchievementLike achievementmodel = followPeersDB.AchievementLikes.SingleOrDefault(p => p.AchievementId == id && p.UserProfileId == userID);
             try
             {
                 followPeersDB.AchievementLikes.Remove(achievementmodel);
@@ -781,10 +781,9 @@ namespace FollowPeers.Controllers
             String Pubname = publicationmodel.title;
             followPeersDB.PublicationModels.Remove(publicationmodel);
 
-            List<FollowPeers.Models.Favourite> FavouriteList = new List<FollowPeers.Models.Favourite>();
-            FavouriteList = followPeersDB.Favourites.Where(p => p.ItemTypeId == id).ToList();
-
-            foreach (Favourite favPub in FavouriteList)
+            //remove from favourites if exists
+            Favourite favPub = followPeersDB.Favourites.SingleOrDefault(p => p.ItemTypeId == id && p.ItemType == 6);
+            if (favPub != null)
             {
                 followPeersDB.Favourites.Remove(favPub);
             }

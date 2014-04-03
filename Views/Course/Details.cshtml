@@ -1,4 +1,5 @@
 ﻿@model FollowPeers.Models.Course
+@using FollowPeers.Models;
 @{
     ViewBag.Title = "Course Details";
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
@@ -128,6 +129,47 @@
                     <br />
                     <br />
                     }
+
+                    List<FollowPeers.Models.Favourite> AttendingCourses = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 13).ToList();
+                    bool favMatched = false;
+
+                    foreach (Favourite attending in AttendingCourses)
+                    {
+                        if (attending.ItemTypeId == Model.CourseId)
+                        {
+                            favMatched = true;
+                            break;
+                        }
+                    }
+
+                    if (favMatched == true)
+                    { //attending this course
+                    <form action="/Course/NotAttending" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.CourseId" />
+                        <span class="label label-default" style="background-color: white; color: black">
+                            <input type="image" src="../../Content/images/icons/16x16/cross.png" value="submit" />
+                            Will Not Attend
+                        </span>
+                    </form>
+                        
+                    }
+                    else
+                    { // not attending
+                    <form action="/Course/Attending" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.CourseId" />
+                        <input type="hidden" name="courseName" value="@Model.CourseName" />
+                        <span class="label label-default" style="background-color: white; color: black">
+                            <input type="image" src="../../Content/images/icons/16x16/accept.png" value="submit" />
+                            Attend Course
+                        </span>
+                    </form>
+                        
+                    }
+                    <br />
+                    <br />
+                    
+                    @*<span class="label label-default">Attending: @Model.attendingCount </span>*@
+                    
                 }
             </div>
         </div>

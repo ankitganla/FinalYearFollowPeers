@@ -14,6 +14,7 @@ namespace FollowPeers.Models
         public string CourseName { get; set; }
         [Required]
         public string CourseDescription { get; set; }
+        //public int attendingCount { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public virtual UserProfile Owner { get; set; }

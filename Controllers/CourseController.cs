@@ -26,6 +26,7 @@ namespace FollowPeers.Controllers
         public ActionResult Attending(int id, string courseName)
         {
             UserProfile user = db.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            Course thisCourse = db.Courses.SingleOrDefault(p => p.CourseId == id);
             if ((courseName != "" && courseName != null))
             {
                 Favourite Item = new Favourite();
@@ -39,12 +40,15 @@ namespace FollowPeers.Controllers
                 if (alreadyAttending != null)
                 {
                     //CreateUpdates("The publication " + courseName + " is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
-                    user.Favourites.Add(Item);
-                    db.Entry(user).State = EntityState.Modified;
-                    db.SaveChanges();
-                    ViewBag.FavouriteAdded = "true";
+                    
                     return RedirectToAction("Details", "Course", new { id = id });
-                }    
+                }
+                //thisCourse.attendingCount++;
+                user.Favourites.Add(Item);
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                ViewBag.FavouriteAdded = "true";
+
             }
             return RedirectToAction("Details", "Course", new { id = id });
         }
@@ -405,9 +409,16 @@ namespace FollowPeers.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Find(id);
-
             String courseName = course.CourseName;
             db.Courses.Remove(course);
+
+            //remove from attending if exists
+            Favourite attendingCourse = db.Favourites.SingleOrDefault(p => p.ItemTypeId == id && p.ItemType == 13);
+            if (attendingCourse != null)
+            {
+                db.Favourites.Remove(attendingCourse);
+            }
+
             db.SaveChanges();
             UserProfile user = db.UserProfiles.SingleOrDefault(p => p.UserName == name);
             //CreateUpdates("Deleted the publication titled " + courseName, null, 6, user.UserProfileId, null);
