@@ -381,7 +381,7 @@ namespace FollowPeers.Controllers
             {
                 followPeersDB.Entry(jobmodel).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Jobs", new { id= jobmodel.JobId});
             }
             return View(jobmodel);
         }
