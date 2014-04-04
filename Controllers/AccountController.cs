@@ -175,8 +175,10 @@ namespace FollowPeers.Controllers
                             Specializations = new List<Specialization>(),
                             Tiers = new List<Tier>(),
                             Keywords = new List<Keyword>(),
-                            Contact = new Contact()
-
+                            Contact = new Contact(),
+                            Birthday = DateTime.Parse("01/01/1991"),
+                            Status = "Single",
+                            Gender = "Male"
                         };
                         //myprofile.UserName = model.Email;
                         //   myprofile.UserName.Replace(" ", string.Empty);
