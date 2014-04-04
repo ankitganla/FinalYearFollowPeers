@@ -784,6 +784,19 @@ namespace FollowPeers.Controllers
                 followPeersDB.Favourites.Remove(favPub);
             }
 
+            List<FollowPeers.Models.Bookmark> deleteMark = followPeersDB.Bookmarks.Where(p => p.bookmarkType == "Publication").ToList();
+            foreach (Bookmark thisM in deleteMark)
+            {
+                followPeersDB.Bookmarks.Remove(thisM);
+            }
+
+            //remove recommended
+            Bookmark bookPub = followPeersDB.Bookmarks.SingleOrDefault(p => p.itemID == id && p.bookmarkType == "Publication");
+            if (bookPub != null)
+            {
+                followPeersDB.Bookmarks.Remove(bookPub);
+            }
+
             followPeersDB.SaveChanges();
             UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
             CreateUpdates("Deleted the publication titled " + Pubname, null, 6, user.UserProfileId, null);
