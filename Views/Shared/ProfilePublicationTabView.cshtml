@@ -2,25 +2,35 @@
 @using FollowPeers.Models;
 @using WebMatrix.Data;
 @{
+    
+    
     ViewBag.Title = "My Publication";
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
     string name = Membership.GetUser().UserName;
     ViewBag.UserName = name;
-    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == name);
+
+
+    String thisProfileUserName = Convert.ToString(ViewData["thisUserName"]);
+    FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == thisProfileUserName);
 
     var Fields = (from u in followPeersDB.Specializations
                   select u.Field).Distinct();
     string link = "~/";
     List<FollowPeers.Models.PublicationModel> UploadedPub = new List<FollowPeers.Models.PublicationModel>();
     UploadedPub = followPeersDB.PublicationModels.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId).ToList();
-    List<FollowPeers.Models.Favourite> FavouriteList = new List<FollowPeers.Models.Favourite>();
-    FavouriteList = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 6).ToList();
+    //List<FollowPeers.Models.Favourite> FavouriteList = new List<FollowPeers.Models.Favourite>();
+    //FavouriteList = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 6).ToList();
     List<FollowPeers.Models.PublicationModel> RecommendedList = new List<FollowPeers.Models.PublicationModel>();
     List<FollowPeers.Models.Bookmark> BookmarkedPublication = followPeersDB.Bookmarks.Where(p => p.bookmarkType == "Publication" && p.userID == myprofile.UserProfileId).ToList();
-    PublicationModel temp = new PublicationModel();
-    var db = Database.Open("FollowPeersDB");
+
+    List<FollowPeers.Models.PublicationModel> FavouriteList = new List<FollowPeers.Models.PublicationModel>();
+    List<FollowPeers.Models.Favourite> FavouritePublications = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 6).ToList();
+
     List<FollowPeers.Models.PublicationModel> RankedPub = followPeersDB.PublicationModels.OrderByDescending(p => p.Rank).ToList();
 
+    var db = Database.Open("FollowPeersDB");
+
+    PublicationModel temp = new PublicationModel();
     if (BookmarkedPublication.Count() != 0)
     {
         foreach (var id in BookmarkedPublication)
@@ -30,10 +40,29 @@
         }
 
     }
+
+    PublicationModel temp2 = new PublicationModel();
+    if (FavouritePublications.Count() != 0)
+    {
+        foreach (var id in FavouritePublications)
+        {
+            temp2 = followPeersDB.PublicationModels.SingleOrDefault(p => p.publicationID == id.ItemTypeId);
+            FavouriteList.Add(temp2);
+        }
+
+    }
     
 }
 <head>
     <title>ProfilePubView</title>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var data = ["Boston Celtics", "Chicago Bulls", "Miami Heat", "Orlando Magic", "Atlanta Hawks", "Philadelphia Sixers", "New York Knicks", "Indiana Pacers", "Charlotte Bobcats", "Milwaukee Bucks", "Detroit Pistons", "New Jersey Nets", "Toronto Raptors", "Washington Wizards", "Cleveland Cavaliers"];
+            $("#recommend").autocomplete(data);
+        });
+    </script>
     <style media="screen" type="text/css">
         .profilepagetabs ul
         {
@@ -87,168 +116,137 @@
         }
     </style>
 </head>
-<div class="container" style="padding: 0;">
-    <div class="span8 main-content">
+<body>
+    <div class="container" style="padding: 0;">
+        <div class="span8 main-content">
+            <div class="tab-content">
+                <div id="tab1" style="display: block;">
 
-
-        <div class="tab-content">
-            <div id="tab1" style="display: block;" class="tab-pane active">
-                @{
-                    if (Model.Count() != 0)
-                    {
-                    <span class="label label-info">Number of publications: @Model.Count()</span>
-                    <table class="span7">
-
-                        @foreach (var item in Model)
+                    @{
+                        if (Model.Count() != 0)
                         {
-                            string mouseid1 = "#mouse" + @item.publicationID;
-                            string mouseid2 = "mouse" + @item.publicationID;
-                
-                            <tr>
-                                <td>
+                        <span class="label label-info">Uploaded publications: @Model.Count()</span>
+                        <table class="span7">
 
-                                    <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
-                                        
-                                        <div style="margin-left: 8px; float: left;">
-                                            <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
-                                            <div id="Author">Author(s) : @item.author</div>
-                                            <div id="Year">Year of Publication : @item.year</div>
-                                            <div>@Html.ActionLink("Fav", "FavouritePub", 
-    "PublicationModel", new {id = item.publicationID , Pubname = item.title}, null)</div>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
 
-                                            <div id="@mouseid2" class="accordion-body collapse" >
-                                                @{if (@item.keyword != null)
-                                                  {<div id="keyword">Keyword(s) : @item.keyword</div>}}
-                                                @{if (@item.journal != null)
-                                                  {<div id="journal">Journal : @item.journal</div>}}
-                                                @{if (@item.conference != null)
-                                                  {<div id="conference">Conference : @item.conference</div>}}
-                                                @{if (@item.university != null)
-                                                  {<div id="university">University : @item.university</div>}}
+                                        <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
+
+                                            <div style="margin-left: 8px; float: left;">
+                                                <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
+                                                <div id="Author">Author(s) : @item.author</div>
+                                                <div id="Year">Year of Publication : @item.year</div>
+                                                
+                                            </div>
+                                            <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
+                                                | @Html.DisplayFor(modelItem => item.status)
+
                                             </div>
                                         </div>
-                                        <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
-                                            | @Html.DisplayFor(modelItem => item.status)
-
-                                        </div>
-                                    </div>
-                                    <hr />
-                                </td>
-                            </tr>
+                                        <hr />
+                                    </td>
+                                </tr>
    
+                            }
+                        </table>
                         }
-                    </table>
+                        else
+                        {
+                        <span class="label label-info">No publications uploaded</span>
+                        }
+                    }
+                </div>
+
+                <div id="tab3" style="display: none;">
+                    @if (FavouriteList.Count() != 0)
+                    {
+                        <span class="label label-info">Favourite Publications: @FavouriteList.Count()</span>
+                        <table class="span7">
+                            @foreach (var item in FavouriteList)
+                            {
+                                <tr>
+                                    <td>
+
+                                        <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
+
+                                            <div style="margin-left: 8px; float: left;">
+                                                <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
+                                                <div id="Author">Author(s) : @item.author</div>
+                                                <div id="Year">Year of Publication : @item.year</div>
+
+                                                
+                                            </div>
+                                            <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
+                                                | @Html.DisplayFor(modelItem => item.status)
+
+                                            </div>
+                                        </div>
+                                        <hr />
+                                    </td>
+                                </tr>
+                            }
+                        </table>
                     }
                     else
                     {
-                    <span class="label label-info">Number of publications uploaded: @Model.Count()</span>
+                        <span class="label label-info">No Favourite Publications</span>
                     }
-                }
-            </div>
-            <div id="tab3" style="display: none;" class="tab-pane">
-                @if (FavouriteList.Count() != 0)
-                {
-                    <span class="label label-info">Favourite Publications: @FavouriteList.Count()</span>
-                    <table class="span7">
-                        @foreach (var item in FavouriteList)
+                </div>
+
+                <div id="tab4" style="display: none;">
+                    @{
+                        if (RecommendedList.Count() != 0)
                         {
-                            <tr>
-                                <td>
-                                    <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
-                                        @{ link = link + item.ItemLink;}
-                                        <a href="@Url.Content(link)" id="title"><b>@item.ItemName</b></a>
-                                        @if (@item.ItemType == 6)
-                                        {
-                                            <div id="Author">Type : Publication </div>
-                                        }
-                                    </div>
-                                    <hr />
-                                </td>
-                            </tr>
-                        }
-                    </table>
-                }
-                else
-                {
-                    <span class="label label-info">No Favourite Publications Found</span>
-                }
-            </div>
+                        <span class="label label-info">Recommended publications: @RecommendedList.Count()</span>
+                        <table class="span7">
 
-            <div id="tab4" style="display: none;" class="tab-pane">
-                @{
-                    if (RecommendedList.Count() != 0)
-                    {
-                    <span class="label label-info">Number of publications: @RecommendedList.Count()</span>
-                    <a class="pull-right">@Html.DropDownList("Category", new SelectList(@Fields))</a>
-                    <table class="span7">
+                            @foreach (var item in RecommendedList)
+                            {
+                                <tr>
+                                    <td>
 
-                        @foreach (var item in RecommendedList)
-                        {
-                            string mouseid1 = "#mouse" + @item.publicationID;
-                            string mouseid2 = "mouse" + @item.publicationID;
-                
-                            <tr>
-                                <td>
+                                        <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
 
-                                    <div style="border-bottom: 1px solid grey; margin: 10px 0px;">
-                                        <div style="float: left;" id="mouse" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="@mouseid1" >
-                                            @if (item.imagename != "" && item.imagename != null)
-                                            {
-                                                <img class="mouseover" src="../../Content/Files/@item.UserProfile.UserName/Publications/@item.imagename" alt="" style="margin-left: auto; margin-right: auto;width: 50px;"/>
-                                            }
-                                            else
-                                            {
-                                                <img src="../../Content/images/Pub1.png" alt="" style="margin-left: auto; margin-right: auto; width: 50px;" />
-                                            }
-                                        </div>
-                                        <div style="margin-left: 8px; float: left;">
-                                            <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
-                                            <div id="Author">Author(s) : @item.author</div>
-                                            <div id="Year">Year of Publication : @item.year</div>
-                                            <div id="@mouseid2" class="accordion-body collapse" >
-                                                @{if (@item.keyword != null)
-                                                  {<div id="keyword">Keyword(s) : @item.keyword</div>}}
-                                                @{if (@item.journal != null)
-                                                  {<div id="journal">Journal : @item.journal</div>}}
-                                                @{if (@item.conference != null)
-                                                  {<div id="conference">Conference : @item.conference</div>}}
-                                                @{if (@item.university != null)
-                                                  {<div id="university">University : @item.university</div>}}
+                                            <div style="margin-left: 8px; float: left;">
+                                                <a href="/PublicationModel/Details/@item.publicationID" id="title"><b>@item.title</b></a>
+                                                <div id="Author">Author(s) : @item.author</div>
+                                                <div id="Year">Year of Publication : @item.year</div>
+                                            </div>
+                                            <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
+                                                | @Html.DisplayFor(modelItem => item.status)
+
                                             </div>
                                         </div>
-                                        <div style="float: right; margin-right: 5px; color: #888; font-size: 15px;">@Html.DisplayFor(modelItem => item.type)
-                                            | @Html.DisplayFor(modelItem => item.status)  |
-                    <div style="float: right; font-size: 15px; margin-left: 5px;">
-                        @Html.ActionLink("More>>", "Details", new { id = item.publicationID })
-                    </div>
-                                        </div>
-                                    </div>
-                                    <hr />
-                                </td>
-                            </tr>
-   
+                                        <hr />
+                                    </td>
+                                </tr>
+                            }
+                        </table>
                         }
-                    </table>
+                        else
+                        {
+                        <span class="label label-info">No recommended publications</span>
+                        }
                     }
-                    else
-                    {
-                    <span class="label label-info">Number of recommended publications: @RecommendedList.Count()</span>
-                    }
-                }
+                </div>
+
             </div>
 
         </div>
+        <div class="span2 profilepagetabs">
+            <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
+                <li class="current" id="li_tab1" onclick="profileSubTabs('tab1')"><a>Uploaded</a></li>
+                <li id="li_tab3" onclick="profileSubTabs('tab3')"><a>Favourites</a></li>
+                <li id="li_tab4" onclick="profileSubTabs('tab4')"><a>Recommended</a></li>
 
+            </ul>
+        </div>
     </div>
-    <div class="span2 profilepagetabs">
-        <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
-            <li class="current" id="li_tab1" onclick="tab('tab1')"><a>Uploaded</a></li>
-            <li id="li_tab3" onclick="tab('tab3')"><a>Favourites</a></li>
-            <li id="li_tab4" onclick="tab('tab4')"><a>Recommended</a></li>
+</body>
 
-        </ul>
-    </div>
-</div>
 
 
 
@@ -285,7 +283,7 @@
         $('#University' + id).hide();
     });
 
-    function tab(tab) {
+    function profileSubTabs(tab) {
         document.getElementById('tab1').style.display = 'none';
         document.getElementById('tab3').style.display = 'none';
         document.getElementById('tab4').style.display = 'none';

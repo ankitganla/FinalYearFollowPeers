@@ -14,14 +14,14 @@
 }
 <div class="container">
     <div class="row">
-        @Html.Partial("_SideBar1")
+
         @Script("jquery.validate.min.js")
         @Script("jquery.validate.unobtrusive.min.js")
         @Script("jquery.bgiframe.js")
         @Script("jquery.mcdropdown.js")
         <link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
         <link href="../../Content/css/jquery-ui.css" rel="stylesheet" type="text/css" />
-        <div class="span7">
+        <div class="span9">
             <h3>@Html.DisplayFor(model => model.title)</h3>
             <div>
                 <h4>By @Html.DisplayFor(model => model.author)</h4>
@@ -130,35 +130,35 @@
                 }
             </div>
 
-            <div style="width:100%">
-<fieldset><legend>Comments</legend></fieldset>
-            @{
+            <div style="width: 100%">
+                <fieldset><legend>Comments</legend></fieldset>
+                @{
                 
                 
-               <div>@{Html.RenderAction("Index", "Comment", new { ParentType = "PublicationModel", ParentId = Model.publicationID, });}</div>
+                    <div>@{Html.RenderAction("Index", "Comment", new { ParentType = "PublicationModel", ParentId = Model.publicationID, });}</div>
                 
                     
-                <div>
-                    @using (Html.BeginForm("Create", "Comment", FormMethod.Post, new { ParentType = "PublicationModel", ParentId = Model.publicationID, SubmittedBy = Membership.GetUser().UserName, TimeSent = DateTime.Now, Flagged = false, Starred = false }))
-                    {
+                    <div>
+                        @using (Html.BeginForm("Create", "Comment", FormMethod.Post, new { ParentType = "PublicationModel", ParentId = Model.publicationID, SubmittedBy = Membership.GetUser().UserName, TimeSent = DateTime.Now, Flagged = false, Starred = false }))
+                        {
                                 
-                        <input type="hidden" name="ParentType" value="PublicationModel" />
-                        <input type="hidden" name="ParentId" value="@Model.publicationID" />
-                        <input type="hidden" name="SubmittedBy" value="@ViewBag.UserName" />
+                            <input type="hidden" name="ParentType" value="PublicationModel" />
+                            <input type="hidden" name="ParentId" value="@Model.publicationID" />
+                            <input type="hidden" name="SubmittedBy" value="@ViewBag.UserName" />
 
                         
-                        <div style="width:100%;">
-                            <textarea name="CommentBody" rows="2" style="width:100%; resize:none;"></textarea>
+                            <div style="width: 100%;">
+                                <textarea name="CommentBody" rows="2" style="width: 100%; resize: none;"></textarea>
 
-                        </div>
-                        <input class="btn btn-primary" type="submit" value="Post Comment" />
+                            </div>
+                            <input class="btn btn-primary" type="submit" value="Post Comment" />
                                 
-                    }
-                </div>
-            }
+                        }
+                    </div>
+                }
 
             </div>
-            
+
             <input id="publicationIdAJAX" style="display:none" type="text" value="@Model.publicationID" >
         </div>
         <div class="span3">
@@ -168,101 +168,107 @@
                     if (myprofile.UserProfileId == Model.ownerID)
                     {
                     @Html.ActionLink("Edit", "Edit", new { id = Model.publicationID }) <text>|</text>
-                    @Html.ActionLink("Delete", "Delete", new { id = Model.publicationID })
+                    <button style="color:red; border:none; background: none; padding:0;" onclick="confirmDelete(@Model.publicationID, @Model.ownerID)">Delete</button>
+                    
                     <br />
                     <br />
-                    <text>Recommend Publication:</text>
-                    <div class="editor-field" id="RecommendList">
-                        <input type="text" id="Recommend" name="Recommend" style="width: 150px" />&nbsp;<a id="Click1" style="height: 50px;" class="icon-hand-right"></a>
-                    </div>         
-                    <text>View Count: @Model.viewCount </text> 
-                    <br />                                     
-                    @Html.ActionLink("Back to Publication Db", "Index");
+                    }
 
+                    List<FollowPeers.Models.Favourite> FavouritePublications = followPeersDB.Favourites.Where(p => p.UserProfile.UserProfileId == myprofile.UserProfileId && p.ItemType == 6).ToList();
+                    bool favMatched = false;
+
+                    foreach (Favourite thisFav in FavouritePublications)
+                    {
+                        if (thisFav.ItemTypeId == Model.publicationID)
+                        {
+                            favMatched = true;
+                            break;
+                        }
+                    }
+
+                    if (favMatched == true)
+                    { //pub is a favourite
+                    <form action="/PublicationModel/UnFavouritePub" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.publicationID" />
+
+                        <span class="label label-default" style="background-color: white; color: black">
+                            <input type="image" src="../../Content/images/icons/16x16/cross.png" value="submit" />
+                            Remove Favourite
+                        </span>
+                    </form>
+                        
                     }
                     else
-                    {   
-                    <br />
-                    <table>
-                        <tr>
-                            @Html.ActionLink("Mark As Favourite", "FavouritePub", new { id = Model.publicationID, Pubname = Model.title })
-                            @if (@Model.Likes != 0)
-                            {
-                                <td>
-                                    <span class="label label-default">@Model.Likes
-                                        <img src="../../Content/images/icons/16x16/thumb_up.png" />
-                                    </span></td>
-                            }
-                            else
-                            {
-                                <td>
-                                    <span class="label label-default">0 
-                                                        <img src="../../Content/images/icons/16x16/thumb_up.png" />
-                                    </span></td>
-                            }
-                            @if (@achmodel == null)
-                            {
-                                <td>
-                                    <div class="btn-group">
-                                        <button class="btn btn-mini" style="width: 50px">
-                                            <img id="Likepub" src="../../Content/images/icons/16x16/thumb_up.png" />
-                                        </button>
-                                    </div>
-                                </td>
-                            }
-                            else
-                            {
-                                <td>
-                                    <input type="hidden" id="achid" value="@achmodel.AchievementlikeId" />
-                                    <div class="btn-group">
-                                        <button class="btn btn-mini" style="width: 50px">
-
-                                            <img id="Unlikepub" src="../../Content/images/icons/16x16/thumb_down.png" />
-
-                                        </button>
-                                    </div>
-                                </td>
-                            }
-                        </tr>
-                    </table>
-                    <br />
-                    <br />
-                    <text>Recommend Publication: </text> 
-                    <div class="editor-field" id="RecommendList2">
-                        <input type="text" id="Recommend2" name="Recommend2" style="width: 150px" />&nbsp;<a id="Click2" style="height: 50px;" class="icon-hand-right"></a>
-                    </div> 
-                            List<int> ranks = new List<int>();
-
-                            for (int i = 1; i <= 5; i++)
-                            {
-                                ranks.Add(i);
-                            }
-                    
-                    <text>Select Rank: </text> @Html.DropDownList("Ranks", new SelectList(ranks), new { style = "width:45px" })
-                    
-                    <br />
-                  
-                            if (@Model.filename != null)
-                            {
-                                string path = HttpRuntime.AppDomainAppPath;
-                                string newpath = path + "\\Content\\Files\\";
-                                var directoryInfo = new DirectoryInfo(newpath + Model.UserProfile.UserName + "\\Publications\\");
-                                if (directoryInfo.Exists)
-                                {
-                                    string downloadPath = newpath + Model.UserProfile.UserName + "\\Publications\\" + @Model.filename;
-                    <button class="btn btn-success">
-                        <i class="icon-download"></i>@Html.ActionLink("Download", "Download", new { downloadPath = newpath + Model.UserProfile.UserName + "\\" + Model.filename })
-                    </button> 
-                                }
-                            }
-                    <br />
-                    <br />
-                    @Html.ActionLink("Back to Publication Db", "Index");
+                    { // pub is not a fav
+                    <form action="/PublicationModel/FavouritePub" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.publicationID" />
+                        <input type="hidden" name="Pubname" value="@Model.title" />
+                        <span class="label label-default" style="background-color: white; color: black">
+                            <input type="image" src="../../Content/images/icons/16x16/accept.png" value="submit" />
+                            Mark Favourite
+                        </span>
+                    </form>
+                        
                     }
+                    <br />
+                    <br />
+                    
+                    <text>Recommend Publication:</text>
+                    <div>
+                        @using (Html.BeginForm("Recommend", "PublicationModel"))
+                        {
+                                
+                            <input type="hidden" name="id" value="@Model.publicationID" />
+                            <span>
+                                <input id="recommend" name="Names" style="width: 150px" />
+                                <input type="image" src="../../Content/images/icons/16x16/arrow_right.png" value="submit" />
+                            </span>
+                        }
+                    </div>
+     
+                    if (@achmodel == null)
+                    {
+                    <form action="/PublicationModel/Like" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.publicationID" />
+                        <span class="label label-default" style="background-color: green">
+                            <input type="image" src="../../Content/images/icons/16x16/thumb_up.png" value="submit" />
+                            Like Publication
+                        </span>
+                    </form>
+                    }
+                    else
+                    {
+                        <form action="/PublicationModel/Unlike" method="post" style="margin: 0">
+                        <input type="hidden" name="id" value="@Model.publicationID" />
+                        <span class="label label-default" style="background-color: red">
+                        <input type="image" src="../../Content/images/icons/16x16/thumb_down.png" value="submit" />
+                        Unlike Publication
+                    </span>
+                    </form>
+                     
+                    }
+                    <br />
+                    <br />
+                    
+                    List<int> ranks = new List<int>();
+
+                    for (int i = 1; i <= 5; i++)
+                    {
+                        ranks.Add(i);
+                    }
+                    <text>Select Rank: </text> @Html.DropDownList("Ranks", new SelectList(ranks), new { style = "width:45px" })
+                    <br />
+                    <br />
+                    
+                    <span class="label label-default">View Count: @Model.viewCount </span> 
+                    <span class="label label-default" style="margin-left: 10px; background-color: green;">@Model.Likes
+                        <img src="../../Content/images/icons/16x16/thumb_up.png" />
+                    </span>
                 }
+
             </div>
-            <hr />
-            @Html.Partial("_PubModelSideBar");
+
+
         </div>
     </div>
 </div>
@@ -273,7 +279,20 @@
 }
 
 <script type="text/javascript" language="javascript">
+    function confirmDelete(pubId, ownerId) {
+        var r = confirm("Are you sure you want to Delete this publication?");
+        if (r == true) {
+            $.post("@Url.Action("Delete", "PublicationModel")", { id: pubId }, function () { window.location = "/Profile/Index/" + ownerId; });
+        }
+        else {
+        }
+    }
+
     $(document).ready(function () {
+
+
+
+
         tab('tab1');
         ftab('ftab1');
         if ($('#RecommendList').length) {

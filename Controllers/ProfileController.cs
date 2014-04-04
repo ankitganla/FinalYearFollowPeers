@@ -331,12 +331,21 @@ namespace FollowPeers.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadPhoto(FormCollection formCollection)
+        public ActionResult UploadProfilePhoto(FormCollection formCollection)
         {
             string name = Membership.GetUser().UserName;
             UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            bool toadd = false;
-            if (userprofile.PhotoUrl == "/Content/TempImages/default.jpg") toadd = true;
+
+            string path = HttpRuntime.AppDomainAppPath;
+            string profilePicPath = path + "\\Content\\Files\\" + name + "\\ProfilePicture";
+
+            var profileDir = new DirectoryInfo(profilePicPath);
+
+            if (!profileDir.Exists)
+            {
+                System.IO.Directory.CreateDirectory(profilePicPath);
+            }
+
             var image = WebImage.GetImageFromRequest();
             if (image != null)
             {
@@ -346,22 +355,16 @@ namespace FollowPeers.Controllers
                 }
 
                 var filename = Path.GetFileName(image.FileName);
-                string fullfilename = userprofile.UserProfileId.ToString() + filename;
-                fullfilename.Replace("  ", string.Empty);
-                image.Save(Path.Combine("../Content/TempImages", fullfilename));
-                filename = Path.Combine("~/Content/TempImages", fullfilename);
-                if (userprofile.SignUpProgress + 0.2F <= 1.0F && toadd == true) userprofile.SignUpProgress += 0.20F;
+                string toSaveString = profilePicPath + "/" + filename;
+                image.Save(toSaveString);
+                string filePath = "~/Content/Files/" + name + "/ProfilePicture/" + filename;
+                userprofile.PhotoUrl = Url.Content(filePath);
 
-                userprofile.PhotoUrl = Url.Content(filename);
-                if (toadd == false) //this means the user is NOT editing the specialization records for the first time.. thus need to create an update record
-                {
-                    CreateUpdates("New photo uploaded.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
-                }
+                CreateUpdates("Changed Profile Picture", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
+
                 followPeersDB.Entry(userprofile).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-                if (userprofile.Specializations.Count() == 0) return RedirectToAction("EditResearch", "Profile");
-
-                return View("Index", new { id = userprofile.UserProfileId });
+                return RedirectToAction("Index", "Profile", new { message = "Successfully Updated", id = userprofile.UserProfileId });
 
             }
 
@@ -1528,8 +1531,13 @@ namespace FollowPeers.Controllers
             return Json(result);
         }
 
+
+
+
         internal List<Department> FindDepartment(string searchText, int maxResults)
         {
+
+
             var result = from n in followPeersDB.Departments
                          where n.Name.Contains(searchText)
                          orderby n.Name
@@ -2034,7 +2042,7 @@ namespace FollowPeers.Controllers
                     HttpPostedFileBase postedFile = uploadFile;
                     if (postedFile.FileName == "")
                     {
-                        return RedirectToAction("UploadFile", "Profile", null);
+                        return RedirectToAction("Index", "Profile", new { id = userprofile.UserProfileId });
                     }
 
                     var splitstring = postedFile.FileName.Split('.');
@@ -2050,7 +2058,7 @@ namespace FollowPeers.Controllers
                         case "jpeg":
                             break;
                         default:
-                            return RedirectToAction("UploadFile", "Profile", null);
+                            return RedirectToAction("Index", "Profile", new { id = userprofile.UserProfileId });
                     }
 
 
@@ -2141,7 +2149,7 @@ namespace FollowPeers.Controllers
                         try { userprofile.Birthday = DateTime.Parse(bdate); }
                         catch (FormatException e)
                         {
-                            
+
                         }
                         break;
                     case "AboutMe":
@@ -2176,10 +2184,11 @@ namespace FollowPeers.Controllers
                         break;
 
                     case "Organization":
-                        foreach(String s in formCollection.Get(key).Split(',')){
+                        foreach (String s in formCollection.Get(key).Split(','))
+                        {
                             organizationStrings.Add(s);
                         }
-                        
+
                         break;
                     case "Country":
                         foreach (String s in formCollection.Get(key).Split(','))
@@ -2226,9 +2235,10 @@ namespace FollowPeers.Controllers
 
                     case "Specialization":
                         String[] specStringArray = formCollection.Get(key).Split(',');
-                        int[] specIntArray = new int [specStringArray.Length]; 
-                        int i =0;
-                        foreach(String s in specStringArray) {
+                        int[] specIntArray = new int[specStringArray.Length];
+                        int i = 0;
+                        foreach (String s in specStringArray)
+                        {
                             specIntArray[i] = Int32.Parse(s);
                             i++;
                         }
@@ -2242,7 +2252,7 @@ namespace FollowPeers.Controllers
 
             UpdateEducation(organizationStrings.ToArray(), startYearStrings.ToArray(), endYearStrings.ToArray(), degreeStrings.ToArray(), countryStrings.ToArray(), userprofile);
 
-            
+
             CreateUpdates("Profile information updated.", "/Profile/Index/" + userprofile.UserProfileId, 1, userprofile.UserProfileId); //CreateUpdates(message,link,type)
             followPeersDB.Entry(userprofile).State = EntityState.Modified;
             try
@@ -2253,7 +2263,7 @@ namespace FollowPeers.Controllers
             {
                 return RedirectToAction("Index", "Profile", new { message = "Profile Not Updated", id = userprofile.UserProfileId });
             }
-            
+
             return RedirectToAction("Index", "Profile", new { message = "Successfully Updated", id = userprofile.UserProfileId });
 
 

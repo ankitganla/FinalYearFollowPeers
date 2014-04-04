@@ -11,14 +11,7 @@
 @Html.Partial("_Header")
 <div class="container">
     <div class="row">
-        @if (ViewData["SideBar"].ToString() == "2")
-        {
-            @Html.Partial("_SideBar2");
-        }
-        else
-        {
-            @Html.Partial("_SideBar1");
-        }
+        
         @Script("jquery.validate.min.js")
         @Script("jquery.validate.unobtrusive.min.js")
         @Script("jquery.bgiframe.js")
@@ -231,13 +224,13 @@
                     }
                 }  *@ 
                 
-                <fieldset>
+                @*<fieldset>
                     <legend>Attach a File</legend>
                     <input type='file' name='photo' id='photo' />
-                </fieldset>
+                </fieldset>*@
                 
                 <div>
-                    <input type="submit" value="Submit New Publication" style="float: right; padding: 3px 8px;" class="btn btn-primary" />
+                    <input type="submit" value="Submit New Publication" style="padding: 3px 8px;" class="btn btn-primary" />
                 </div>
              
             }

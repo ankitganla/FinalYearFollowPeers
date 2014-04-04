@@ -42,7 +42,7 @@ namespace FollowPeers.Controllers
                 Favourite FoundMatch = user.Favourites.FirstOrDefault(p => p.ItemTypeId == Item.ItemTypeId && p.ItemType == Item.ItemType);
                 if (FoundMatch != null)
                 {
-                    CreateUpdates("The publication " + Pubname+" is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
+                    CreateUpdates("The publication " + Pubname + " is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
                     return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
                 }
                 user.Favourites.Add(Item);
@@ -52,51 +52,87 @@ namespace FollowPeers.Controllers
                 ViewBag.FavouriteAdded = "true";
                 CreateUpdates("Favourited a new publication titled " + Pubname, "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
             }
-            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+            return RedirectToAction("Details", "PublicationModel", new { id = id });
         }
 
-        public ActionResult Recommend(int id, string NameId)
+        public ActionResult UnFavouritePub(int id)
+        {
+            List<FollowPeers.Models.Favourite> FavouriteList = new List<FollowPeers.Models.Favourite>();
+            FavouriteList = followPeersDB.Favourites.Where(p => p.ItemTypeId == id).ToList();
+
+            foreach (Favourite favPub in FavouriteList)
+            {
+                followPeersDB.Favourites.Remove(favPub);
+            }
+            followPeersDB.SaveChanges();
+            return RedirectToAction("Details", "PublicationModel", new { id = id });
+        }
+
+        public ActionResult Recommend(int id, string Names)
         {
             UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-            Bookmark model = new Bookmark();
-
-            if (NameId != null && NameId != "")
+            string[] usersToRec = Names.Split(';');
+            if (usersToRec.Length != 0)
             {
-                int recommendid = Convert.ToInt32(NameId);
-                UserProfile invitee = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == recommendid);
-
-                try
+                foreach (string fullUserName in usersToRec)
                 {
-                    if (user.UserProfileId != recommendid)
+                    String[] splitNames = fullUserName.Split(' ');
+                    if (splitNames.Length > 0)
                     {
-                        model.bookmarkType = "Publication";
-                        model.itemID = id;
-                        model.userID = recommendid;
-                        followPeersDB.Bookmarks.Add(model);
-                        followPeersDB.SaveChanges();
-
-                        //Adding a notification item to the recommended person
-                        PublicationModel book = followPeersDB.PublicationModels.SingleOrDefault(b => b.publicationID == id);
-                        Notification newnoti = new Notification
+                        String userFirstName = splitNames[0];
+                        UserProfile userFromFirstName = followPeersDB.UserProfiles.SingleOrDefault(p => p.FirstName == userFirstName);
+                        if (userFromFirstName == null)
                         {
-                            message = user.FirstName + user.LastName + " has recommeded you a publication : " + book.title,
-                            link = "/PublicationModel/Details/" + id,
-                            New = true,
-                            imagelink = user.PhotoUrl,
-                        };
+                            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+                        }
+                        if (splitNames.Length > 1)
+                        {
+                            String userLastName = splitNames[1];
+                            UserProfile userFromLastName = followPeersDB.UserProfiles.SingleOrDefault(p => p.LastName == userLastName);
+                            if (userFromFirstName.UserName == userFromLastName.UserName)
+                            {
+                                return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+                            }
 
-                        invitee.Notifications.Add(newnoti);
-                        followPeersDB.Entry(invitee).State = EntityState.Modified;
-                        followPeersDB.SaveChanges();
+                        }
+
+                        int recommendid = userFromFirstName.UserProfileId;
+                        UserProfile invitee = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == recommendid);
+                        Bookmark model = new Bookmark();
+
+                        try
+                        {
+                            if (user.UserProfileId != recommendid)
+                            {
+                                model.bookmarkType = "Publication";
+                                model.itemID = id;
+                                model.userID = recommendid;
+                                followPeersDB.Bookmarks.Add(model);
+                                followPeersDB.SaveChanges();
+
+                                //Adding a notification item to the recommended person
+                                PublicationModel book = followPeersDB.PublicationModels.SingleOrDefault(b => b.publicationID == id);
+                                Notification newnoti = new Notification
+                                {
+                                    message = user.FirstName + user.LastName + " has recommeded you a publication : " + book.title,
+                                    link = "/PublicationModel/Details/" + id,
+                                    New = true,
+                                    imagelink = user.PhotoUrl,
+                                };
+
+                                invitee.Notifications.Add(newnoti);
+                                followPeersDB.Entry(invitee).State = EntityState.Modified;
+                                followPeersDB.SaveChanges();
+                            }
+
+                        }
+                        catch
+                        {
+                        }
                     }
-
-                }
-                catch
-                {
                 }
             }
-            string result = "#";
-            return Json(result);
+            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
         }
 
 
@@ -466,7 +502,7 @@ namespace FollowPeers.Controllers
                 followPeersDB.Entry(user).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
 
-                return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+                return RedirectToAction("Details", "PublicationModel", new { id = publicationmodel.publicationID });
                 //return RedirectToAction("Index");
             }
 
@@ -655,11 +691,12 @@ namespace FollowPeers.Controllers
         [HttpPost]
         public ActionResult Edit(PublicationModel publicationmodel)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
                 followPeersDB.Entry(publicationmodel).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-                return RedirectToAction("MyPublication");
+                return RedirectToAction("Details", "PublicationModel", new { id = publicationmodel.publicationID });
             }
             return View(publicationmodel);
         }
@@ -691,10 +728,10 @@ namespace FollowPeers.Controllers
                     }
                 }
             }
-            return View(publicationmodel);
+            return RedirectToAction("Index", "Profile", new { id = userprofile.UserProfileId });
         }
 
-        public ActionResult Like(int id, string NameId)
+        public ActionResult Like(int id)
         {
             PublicationModel publicationmodel = followPeersDB.PublicationModels.Find(id);
             publicationmodel.Likes = publicationmodel.Likes + 1;
@@ -709,17 +746,30 @@ namespace FollowPeers.Controllers
             achievement.UserProfile = user;
             user.AchievementLikes.Add(achievement);
             followPeersDB.SaveChanges();
-            return Json(id);
+            return RedirectToAction("Details", "PublicationModel", new { id = id });
         }
 
-        public ActionResult Unlike(int id, int pubId, string NameId)
+        public ActionResult Unlike(int id)
         {
-            PublicationModel publicationmodel = followPeersDB.PublicationModels.Find(pubId);
-            publicationmodel.Likes = publicationmodel.Likes - 1;
-            AchievementLike achievementmodel = followPeersDB.AchievementLikes.Find(id);
-            followPeersDB.AchievementLikes.Remove(achievementmodel);
+            PublicationModel publicationmodel = followPeersDB.PublicationModels.Find(id);
+            if (publicationmodel.Likes != 0)
+                publicationmodel.Likes = publicationmodel.Likes - 1;
+
+            string name = Membership.GetUser().UserName;
+            int userID;
+            UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            userID = user.UserProfileId;
+
+            AchievementLike achievementmodel = followPeersDB.AchievementLikes.SingleOrDefault(p => p.AchievementId == id && p.UserProfileId == userID);
+            try
+            {
+                followPeersDB.AchievementLikes.Remove(achievementmodel);
+            }
+            catch
+            {
+            }
             followPeersDB.SaveChanges();
-            return Json(id);
+            return RedirectToAction("Details", "PublicationModel", new { id = id });
         }
         //
         // POST: /PublicationModel/Delete/5
@@ -728,9 +778,20 @@ namespace FollowPeers.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             PublicationModel publicationmodel = followPeersDB.PublicationModels.Find(id);
+            String Pubname = publicationmodel.title;
             followPeersDB.PublicationModels.Remove(publicationmodel);
+
+            //remove from favourites if exists
+            Favourite favPub = followPeersDB.Favourites.SingleOrDefault(p => p.ItemTypeId == id && p.ItemType == 6);
+            if (favPub != null)
+            {
+                followPeersDB.Favourites.Remove(favPub);
+            }
+
             followPeersDB.SaveChanges();
-            return RedirectToAction("Index");
+            UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            CreateUpdates("Deleted the publication titled " + Pubname, null, 6, user.UserProfileId, null);
+            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
         }
 
         protected override void Dispose(bool disposing)

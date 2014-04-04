@@ -22,19 +22,24 @@
     <div class="span2" style="margin-left: 0px;">
         <!--<div class="span2"><div class="hero-unit"></div></div>-->
         <div class="thumbnail" style="text-align: center;">
-            <a href=""../../Profile/Index/@profilename"">
+            <a href="../../Profile/Index/@profilename">
                 <img src="@Html.Encode(photourl)" class="img" alt=""/></a>
-            <h4>@name</h4>
+            <h4 style="margin-bottom: 0">@name</h4>
             @if (myself == 1)
-            {<a style="font-size:x-small;"href="/Profile/UploadPhoto">[Change Picture]</a>}
+            {
+                <a style="position: relative; top: 10px; margin-bottom: -15px; width: 80%; font-size: x-small; color: #45aeea;">Change Profile Photo</a>
+                <form action="/Profile/UploadProfilePhoto" enctype="multipart/form-data" method="post" style="margin: 0;">
+                    <input type='file' multiple name='files' id='files' onchange="this.form.submit()" style="position: relative; left: 0px; top: -15px; width: 150px; height: 30px; opacity: 0; cursor: pointer" />
+                </form>                
+            }
         </div>
-        
+
         @{
             char[] delimiterChars = { ' ' };
             string name2 = name.ToString();
 
             string[] firstname = name2.Split(delimiterChars);
         }
-        
+
     </div>
 }

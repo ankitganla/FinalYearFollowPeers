@@ -18,9 +18,59 @@ namespace FollowPeers.Controllers
 {
     public class CourseController : Controller
     {
-        FollowPeersDBEntities db = new FollowPeersDBEntities();
+        private FollowPeersDBEntities db = new FollowPeersDBEntities();
         string name = Membership.GetUser().UserName;
         static UserProfile myprofile;
+
+
+        public ActionResult Attending(int id, string courseName)
+        {
+            UserProfile user = db.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            Course thisCourse = db.Courses.SingleOrDefault(p => p.CourseId == id);
+            if ((courseName != "" && courseName != null))
+            {
+                Favourite Item = new Favourite();
+                Item.ItemLink = "Course/Details/" + id;
+                Item.ItemName = courseName;
+                Item.ItemType = 13;
+                Item.ItemTypeId = Convert.ToInt32(id);
+
+                //Add only if Favourite doesn't already exist
+                Favourite alreadyAttending = user.Favourites.FirstOrDefault(p => p.ItemTypeId == Item.ItemTypeId && p.ItemType == Item.ItemType);
+                if (alreadyAttending != null)
+                {
+                    //CreateUpdates("The publication " + courseName + " is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
+
+                    return RedirectToAction("Details", "Course", new { id = id });
+                }
+                //thisCourse.attendingCount++;
+                user.Favourites.Add(Item);
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                ViewBag.FavouriteAdded = "true";
+
+            }
+            return RedirectToAction("Details", "Course", new { id = id });
+        }
+
+        public ActionResult NotAttending(int id)
+        {
+            Favourite attending = db.Favourites.SingleOrDefault(p => p.ItemTypeId == id);
+            if (attending != null)
+            {
+                db.Favourites.Remove(attending);
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("Details", "Course", new { id = id });
+        }
+
+
+
+
+
+
+
         //
         // GET: /Course/
 
@@ -96,10 +146,41 @@ namespace FollowPeers.Controllers
         // POST: /Course/Create
 
         [HttpPost]
-        public ActionResult Create(Course course)
+        public ActionResult Create(Course course, FormCollection formCollection)
         {
             string name = Membership.GetUser().UserName;
             UserProfile user = db.UserProfiles.SingleOrDefault(p => p.UserName == name);
+
+            foreach (String key in formCollection.AllKeys)
+            {
+                switch (key)
+                {
+                    case "StartDate":
+                        try
+                        {
+                            DateTime dt = DateTime.Parse(formCollection.Get(key));
+                            course.StartDate = (DateTime?)dt;
+                        }
+                        catch
+                        {
+                        }
+                        break;
+                    case "EndDate":
+                        try
+                        {
+                            DateTime dt = DateTime.Parse(formCollection.Get(key));
+                            course.EndDate = (DateTime?)dt;
+                        }
+                        catch
+                        {
+                        }
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 user.Courses.Add(course);
@@ -123,7 +204,7 @@ namespace FollowPeers.Controllers
                         Tag Item = db.Tags.FirstOrDefault(p => p.TagName.ToLower() == Trimtagname.ToLower());
                         if (Item != null)
                         {
-                            if (AddedTags.Contains(Item) != true && !(Item.Courses.Any(p => p.CourseId== course.CourseId)))
+                            if (AddedTags.Contains(Item) != true && !(Item.Courses.Any(p => p.CourseId == course.CourseId)))
                             {
                                 Item.TagLinkedItems += 1;
                                 course.Tags.Add(Item);
@@ -146,7 +227,7 @@ namespace FollowPeers.Controllers
                 }
                 //-----------End of Adding Tags
                 db.SaveChanges();
-                return RedirectToAction("Mine");
+                return RedirectToAction("Details", "Course", new { id = course.CourseId });
             }
 
             return View(course);
@@ -160,7 +241,7 @@ namespace FollowPeers.Controllers
             int coursenumber = db.Courses.Count() + 1;
             if (category != null)
             {
-                if(category.Contains(';'))
+                if (category.Contains(';'))
                 {
                     string[] Tagnames = category.Split(';');
                     CategoryPost post = new CategoryPost
@@ -280,13 +361,45 @@ namespace FollowPeers.Controllers
         // POST: /Course/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(Course course)
+        public ActionResult Edit(Course course, FormCollection formCollection)
         {
+            foreach (String key in formCollection.AllKeys)
+            {
+                switch (key)
+                {
+                    case "StartDate":
+                        try
+                        {
+                            String[] get = formCollection.Get(key).Split(',');
+                            DateTime dt = DateTime.Parse(get[get.Length - 1]);
+                            course.StartDate = (DateTime?)dt;
+                        }
+                        catch
+                        {
+                        }
+                        break;
+                    case "EndDate":
+                        try
+                        {
+                            String[] get = formCollection.Get(key).Split(',');
+                            DateTime dt = DateTime.Parse(get[get.Length - 1]);
+                            course.EndDate = (DateTime?)dt;
+                        }
+                        catch
+                        {
+                        }
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Course", new { id = course.CourseId });
             }
             return View(course);
         }
@@ -307,9 +420,20 @@ namespace FollowPeers.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Find(id);
+            String courseName = course.CourseName;
             db.Courses.Remove(course);
+
+            //remove from attending if exists
+            Favourite attendingCourse = db.Favourites.SingleOrDefault(p => p.ItemTypeId == id && p.ItemType == 13);
+            if (attendingCourse != null)
+            {
+                db.Favourites.Remove(attendingCourse);
+            }
+
             db.SaveChanges();
-            return RedirectToAction("Index");
+            UserProfile user = db.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            //CreateUpdates("Deleted the publication titled " + courseName, null, 6, user.UserProfileId, null);
+            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
         }
 
         //

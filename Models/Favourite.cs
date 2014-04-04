@@ -19,3 +19,7 @@ namespace FollowPeers.Models
         public virtual UserProfile UserProfile { get; set; }
     }
 }
+//item type
+//publication: 6
+//job: 4
+//course: 13

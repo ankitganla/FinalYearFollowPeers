@@ -1,83 +1,76 @@
 ﻿@model FollowPeers.Models.Course
-
 @{
     ViewBag.Title = "Edit";
 }
-
-<h2>Edit</h2>
-
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@Html.Partial("_Header")
+<div class="container">
+    <div class="row">
+        <div class="span8 main-content">
+            <h3>Edit Course</h3>
 
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
-    <fieldset>
-        <legend>Course</legend>
+            @using (Html.BeginForm("Edit", "Course"))
+            {
+                @Html.ValidationSummary(true)
+@*-----------PublicationId-----------*@
+                @Html.HiddenFor(model => model.CourseId)
+                <fieldset>
 
-        @Html.HiddenFor(model => model.CourseId)
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.CourseName)
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.CourseName)
+                        @Html.ValidationMessageFor(model => model.CourseName)
+                    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CourseName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CourseName)
-            @Html.ValidationMessageFor(model => model.CourseName)
-        </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.StartDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.HiddenFor(model => model.StartDate)
+                        @if (Model.StartDate != null)
+                        {
+                            <input type="datetime-local" name="StartDate" id="StartDate" value="@Model.StartDate" />
+                        }
+                        else
+                        {
+                            <input type="datetime-local" name="StartDate" id="StartDate" />
+                        }
+                        @Html.ValidationMessageFor(model => model.StartDate)
+                    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.PhotoUrl)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.PhotoUrl)
-            @Html.ValidationMessageFor(model => model.PhotoUrl)
-        </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.EndDate)
+                    </div>
+                    <div class="editor-field">
+                        @Html.HiddenFor(model => model.EndDate)
+                        @if (Model.EndDate != null)
+                        {
+                            
+                            DateTime display = (DateTime)@Model.EndDate;
+                            <input type="datetime-local" name="EndDate" id="EndDate"  value="@display.ToString("mm/dd/yyyy hh:mm")"/>
+                        }
+                        else
+                        {
+                            <input type="datetime-local" name="EndDate" id="EndDate" />
+                        }
+                        @Html.ValidationMessageFor(model => model.EndDate)
+                    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CreatedBy)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CreatedBy)
-            @Html.ValidationMessageFor(model => model.CreatedBy)
-        </div>
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.CourseDescription)
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextAreaFor(model => model.CourseDescription, new { cols = "49", rows = "8", style = "resize:none; width: 500px;" })
+                        @Html.ValidationMessageFor(model => model.CourseDescription)
+                    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.CourseDescription)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.CourseDescription)
-            @Html.ValidationMessageFor(model => model.CourseDescription)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.SubmittedBy)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SubmittedBy)
-            @Html.ValidationMessageFor(model => model.SubmittedBy)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StartDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.StartDate)
-            @Html.ValidationMessageFor(model => model.StartDate)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.EndDate)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.EndDate)
-            @Html.ValidationMessageFor(model => model.EndDate)
+                    <input class="btn btn-primary" type="submit" value="Save Changes" />
+                </fieldset>
+            }
         </div>
 
-        <p>
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    </div>
 </div>
