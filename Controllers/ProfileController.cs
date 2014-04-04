@@ -364,11 +364,11 @@ namespace FollowPeers.Controllers
 
                 followPeersDB.Entry(userprofile).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-                return RedirectToAction("Index", "Profile", new { message = "Successfully Updated", id = userprofile.UserProfileId });
+                return RedirectToAction("Index", "Profile", new { message = "Successfully Updated Profile Photo", id = userprofile.UserProfileId });
 
             }
 
-            return View(userprofile);
+            return RedirectToAction("Index", "Profile", new { message = "Profile Photo could not be uploaded", id = userprofile.UserProfileId });
         }
 
         public FileResult Download(string downloadPath)

@@ -3187,16 +3187,14 @@
     <Content Include="Views\Tags\Index.cshtml" />
     <Content Include="Views\Tags\MyTags.cshtml" />
     <Content Include="Views\Shared\_SideBar6%28Tags%29.cshtml" />
-    <Content Include="Views\PublicationModel\AddTopic.cshtml" />
-    <Content Include="Views\PublicationModel\_PubModelSideBar.cshtml" />
+    <Content Include="TODELETE\AddTopic.cshtml" />
+    <Content Include="TODELETE\_PubModelSideBar.cshtml" />
     <Content Include="Views\Course\CourseAddVideo.cshtml" />
-    <Content Include="Views\Shared\CourseRightSideBar.cshtml" />
     <Content Include="Views\Message\Reply.cshtml" />
     <Content Include="TODELETE\EditEmployment.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Shared\MultiInputBox.cshtml" />
     <Content Include="Views\Shared\_ProfilePhotoSidebar.cshtml" />
-    <Content Include="Views\Shared\Publication_multi_input.cshtml" />
     <Content Include="Views\Shared\ProfilePublicationTabView.cshtml" />
     <Content Include="Views\Shared\SimplePostBar.cshtml" />
     <Content Include="Views\Shared\ProfileNoticeBoardTabView.cshtml" />
@@ -3215,6 +3213,10 @@
     <Content Include="Views\Profile\CompleteProfile.cshtml" />
     <Content Include="Views\Shared\PostToOther.cshtml" />
     <Content Include="TODELETE\EditPublication.cshtml" />
+    <Content Include="TODELETE\JobRecommendation.cshtml" />
+    <Content Include="TODELETE\PostJob.cshtml" />
+    <Content Include="TODELETE\ViewBookmarkJobs.cshtml" />
+    <Content Include="TODELETE\ViewRecommendedJobs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -3255,7 +3257,7 @@
     <Content Include="Views\Profile\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profile\Following.cshtml" />
+    <Content Include="TODELETE\fromprofile\Following.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TODELETE\EditResearch.cshtml" />
@@ -3279,7 +3281,7 @@
     <Content Include="Views\Profile\Privacy.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Profile\FollowedBy.cshtml" />
+    <Content Include="TODELETE\fromprofile\FollowedBy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_SideBar1.cshtml" />
@@ -3354,7 +3356,7 @@
     <Content Include="TODELETE\courseDelete.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_CourseSideBar.cshtml" />
+    <Content Include="TODELETE\_CourseSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TODELETE\courseMine.cshtml" />
@@ -3381,8 +3383,8 @@
     <Content Include="Views\PatentModel\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_Header2.cshtml" />
-    <Content Include="Views\Shared\_Header3.cshtml" />
+    <Content Include="TODELETE\_Header2.cshtml" />
+    <Content Include="TODELETE\_Header3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_PatentSideBar.cshtml" />
@@ -3401,12 +3403,12 @@
     <Content Include="Views\Profile\TierFollowers.cshtml" />
     <Content Include="Views\PatentModel\MyPatent.cshtml" />
     <Content Include="TODELETE\EditPortfolio.cshtml" />
-    <Content Include="Views\Profile\PostJob.cshtml" />
-    <Content Include="Views\Profile\SearchJobs.cshtml" />
-    <Content Include="Views\Profile\FollowPeopleRecommendation.cshtml" />
-    <Content Include="Views\Profile\JobRecommendation.cshtml" />
-    <Content Include="Views\Profile\ViewBookmarkJobs.cshtml" />
-    <Content Include="Views\Profile\ViewRecommendedJobs.cshtml" />
+    <Content Include="TODELETE\fromprofile\PostJob.cshtml" />
+    <Content Include="TODELETE\fromprofile\SearchJobs.cshtml" />
+    <Content Include="TODELETE\fromprofile\FollowPeopleRecommendation.cshtml" />
+    <Content Include="TODELETE\fromprofile\JobRecommendation.cshtml" />
+    <Content Include="TODELETE\fromprofile\ViewBookmarkJobs.cshtml" />
+    <Content Include="TODELETE\fromprofile\ViewRecommendedJobs.cshtml" />
     <Content Include="Views\Shared\_SideBar5.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -3436,7 +3438,6 @@
     <Content Include="TODELETE\ViewPage1.cshtml" />
     <Content Include="TODELETE\sidetemp.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
-    <Content Include="Views\Shared\Headertemp.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Event\AddEvent.cshtml" />
     <Content Include="Views\Jobs\Create.cshtml" />
@@ -3489,7 +3490,6 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>63450</DevelopmentServerPort>
           <DevelopmentServerPort>51625</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
