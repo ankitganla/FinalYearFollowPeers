@@ -119,7 +119,7 @@
                 }
             </div>
 
-            <div id="appliedJobs" style="display: none;">
+            @* <div id="appliedJobs" style="display: none;">
                 @{ 
                     if (Appliedjobs.Count() != 0)
                     {
@@ -148,6 +148,7 @@
                     }
                 }
             </div>
+            *@
 
             <div id="savedJobs" style="display: none;">
                 @{ 
@@ -241,7 +242,7 @@
     <div class="span2 profilepagetabs">
         <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
             <li class="current" id="li_uploadedJobs" onclick="JSTabs('uploadedJobs')"><a>Hiring</a></li>
-            <li id="li_appliedJobs" onclick="JSTabs('appliedJobs')"><a>Applied Jobs</a></li>
+            @*<li id="li_appliedJobs" onclick="JSTabs('appliedJobs')"><a>Applied Jobs</a></li>*@
             <li id="li_savedJobs" onclick="JSTabs('savedJobs')"><a>Saved Jobs</a></li>
             <li id="li_searchJobs" onclick="JSTabs('searchJobs')"><a>Search Jobs</a></li>
         </ul>
@@ -256,15 +257,15 @@
 
     function JSTabs(tab) {
         document.getElementById('uploadedJobs').style.display = 'none';
-        document.getElementById('appliedJobs').style.display = 'none';
+        //document.getElementById('appliedJobs').style.display = 'none';
         document.getElementById('savedJobs').style.display = 'none';
         document.getElementById('searchJobs').style.display = 'none';
 
         document.getElementById('li_uploadedJobs').setAttribute("class", "");
-        document.getElementById('li_appliedJobs').setAttribute("class", "");
+        //document.getElementById('li_appliedJobs').setAttribute("class", "");
         document.getElementById('li_savedJobs').setAttribute("class", "");
         document.getElementById('li_searchJobs').setAttribute("class", "");
-        
+
         document.getElementById(tab).style.display = 'block';
         document.getElementById('li_' + tab).setAttribute("class", "current");
     }

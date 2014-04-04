@@ -1,4 +1,5 @@
 ﻿@model FollowPeers.Models.PublicationModel
+@using FollowPeers.Models
 @using WebMatrix.Data;
 @{
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
@@ -7,6 +8,20 @@
     FollowPeers.Models.UserProfile myprofile = followPeersDB.UserProfiles.First(p => p.UserName == name);
     int publicationnumber = 1;
     ViewBag.Title = "Add Publication";
+
+    PublicationModel testPublication = new PublicationModel();
+    int pubId = 0;
+    for (int i = 1; i < 65536; i++)
+    {
+        testPublication = followPeersDB.PublicationModels.Find(i);
+        if (testPublication == null)
+        {
+            pubId = i;
+            break;
+        }
+
+    }
+    
 }
 @Html.Partial("_Header")
 <div class="container">
@@ -22,7 +37,7 @@
         @Script("jquery.rte.js")
         <div style="margin-left: 10px; padding-bottom: 10px;" class="span7">
 
-            <h4>Add New Publication</h4>
+            <h3>Add New Publication</h3>
             <hr />
 
 
@@ -34,7 +49,9 @@
 @*-----------OwnerId-----------*@
                 <input id="OwnerId" name="OwnerId" type="hidden" value="@ViewBag.userID" />
 @*-----------ViewCount-----------*@
-                <input id="ViewCount" name="ViewCount" type="hidden" value="0" />              
+                <input id="ViewCount" name="ViewCount" type="hidden" value="0" />
+@*-----------PublicationId-----------*@     
+                <input name ="pubId" type="hidden" value="@pubId" />                        
                 
 @*-----------Title-----------*@
                 

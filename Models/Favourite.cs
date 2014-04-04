@@ -21,5 +21,5 @@ namespace FollowPeers.Models
 }
 //item type
 //publication: 6
-//job: 4
+//savedjob: 4
 //course: 13

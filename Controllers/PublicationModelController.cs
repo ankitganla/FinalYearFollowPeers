@@ -350,8 +350,11 @@ namespace FollowPeers.Controllers
         // POST: /PublicationModel/Create
 
         [HttpPost]
-        public ActionResult Create(PublicationModel publicationmodel, string[] keywordsId, string keyword, FormCollection formCollection)
+        public ActionResult Create(PublicationModel publicationmodel, string[] keywordsId, string keyword, int pubId)
         {
+            string name = Membership.GetUser().UserName;
+            UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            publicationmodel.publicationID = pubId;
             if (ModelState.IsValid)
             {
                 if (publicationmodel.author == null)
@@ -489,26 +492,19 @@ namespace FollowPeers.Controllers
                 }
                 //-----------End of Adding Tags
 
-                string name = Membership.GetUser().UserName;
-                UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-                publicationmodel.UserProfile = user;
+               
+                
                 user.Publication.Add(publicationmodel);
-
-                int publicationmodelid = followPeersDB.PublicationModels.Count() + 1;
-
-                CreateUpdates("Published a new publication titled " + publicationmodel.title, "/PublicationModel/Details/" + publicationmodelid, 6, user.UserProfileId, publicationmodel.keyword);
+                CreateUpdates("Published a new publication titled " + publicationmodel.title, "/PublicationModel/Details/" + publicationmodel.publicationID.ToString(), 6, user.UserProfileId, publicationmodel.keyword);
 
                 //followPeersDB.PublicationModels.Add(publicationmodel);
                 followPeersDB.Entry(user).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
 
-                return RedirectToAction("Details", "PublicationModel", new { id = publicationmodel.publicationID });
-                //return RedirectToAction("Index");
+                return RedirectToAction("Details", "PublicationModel", new { id = publicationmodel.publicationID }); 
             }
 
-            string name2 = Membership.GetUser().UserName;
-            UserProfile user2 = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name2);
-            return RedirectToAction("Index", "Profile", new { id = user2.UserProfileId });
+            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
             //return View(publicationmodel);
 
         }
@@ -786,6 +782,19 @@ namespace FollowPeers.Controllers
             if (favPub != null)
             {
                 followPeersDB.Favourites.Remove(favPub);
+            }
+
+            List<FollowPeers.Models.Bookmark> deleteMark = followPeersDB.Bookmarks.Where(p => p.bookmarkType == "Publication").ToList();
+            foreach (Bookmark thisM in deleteMark)
+            {
+                followPeersDB.Bookmarks.Remove(thisM);
+            }
+
+            //remove recommended
+            Bookmark bookPub = followPeersDB.Bookmarks.SingleOrDefault(p => p.itemID == id && p.bookmarkType == "Publication");
+            if (bookPub != null)
+            {
+                followPeersDB.Bookmarks.Remove(bookPub);
             }
 
             followPeersDB.SaveChanges();
