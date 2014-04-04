@@ -3183,7 +3183,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="TODELETE\EditAchievement.cshtml" />
-    <Content Include="Views\Shared\_ProfilepageRightSidebar.cshtml" />
+    <Content Include="TODELETE\_ProfilepageRightSidebar.cshtml" />
     <Content Include="Views\Tags\Index.cshtml" />
     <Content Include="Views\Tags\MyTags.cshtml" />
     <Content Include="Views\Shared\_SideBar6%28Tags%29.cshtml" />
@@ -3194,7 +3194,7 @@
     <Content Include="TODELETE\EditEmployment.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Shared\MultiInputBox.cshtml" />
-    <Content Include="Views\Shared\_ProfilePhotoSidebar.cshtml" />
+    <Content Include="TODELETE\_ProfilePhotoSidebar.cshtml" />
     <Content Include="Views\Shared\ProfilePublicationTabView.cshtml" />
     <Content Include="Views\Shared\SimplePostBar.cshtml" />
     <Content Include="Views\Shared\ProfileNoticeBoardTabView.cshtml" />
@@ -3284,10 +3284,10 @@
     <Content Include="TODELETE\fromprofile\FollowedBy.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_SideBar1.cshtml" />
+    <Content Include="TODELETE\_SideBar1.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_SideBar2.cshtml" />
+    <Content Include="TODELETE\_SideBar2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_SideBar3.cshtml" />
@@ -3434,17 +3434,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
-    <Content Include="Views\Shared\_PubHeader.cshtml" />
+    <Content Include="TODELETE\_PubHeader.cshtml" />
     <Content Include="TODELETE\ViewPage1.cshtml" />
     <Content Include="TODELETE\sidetemp.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Event\AddEvent.cshtml" />
     <Content Include="Views\Jobs\Create.cshtml" />
-    <Content Include="Views\Jobs\Index.cshtml" />
     <Content Include="Views\Jobs\Details.cshtml" />
     <Content Include="Views\Jobs\Edit.cshtml" />
-    <Content Include="Views\Shared\_HomepageRightSidebar.cshtml" />
+    <Content Include="TODELETE\_HomepageRightSidebar.cshtml" />
     <Content Include="Views\Notice\RecentUpdates.cshtml" />
     <Content Include="Views\Notice\RecentInterestCategoryUpdates.cshtml" />
     <Content Include="Views\Shared\_Sidebar_ProfilePage.cshtml" />
