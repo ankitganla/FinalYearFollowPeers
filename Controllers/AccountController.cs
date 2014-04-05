@@ -135,7 +135,6 @@ namespace FollowPeers.Controllers
                     if (model.Profession != "Company")
                     {
                         ModelState.AddModelError("", "Please select an account type");
-
                     }
 
                     else
@@ -144,10 +143,7 @@ namespace FollowPeers.Controllers
                     }
 
                     return View(model);
-
                 }
-
-
                 // Attempt to register the user
                 MembershipCreateStatus createStatus;
                 //changed from model.UserName to model.Email of parameter 1
@@ -169,36 +165,50 @@ namespace FollowPeers.Controllers
                      * */
                     //System.Data.Entity.Database.SetInitializer(new SampleData());
                     CultureInfo provider = CultureInfo.InvariantCulture;
+
+
                     UserProfile myprofile = new UserProfile
                     {
+                        //required attributes
                         UserName = model.Email.Trim(),
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         Profession = model.Profession,
+                        Birthday = DateTime.Parse("01/01/1991"),
+                        Status = "Single",
+                        Gender = "Male",
+                        PhotoUrl = "/Content/TempImages/default.jpg",
+
+                        //additional attributes
                         activated = true,
                         firsttime = true,
                         Default = 2,
-                        PhotoUrl = "/Content/TempImages/default.jpg",
                         Specializations = new List<Specialization>(),
                         Tiers = new List<Tier>(),
                         Keywords = new List<Keyword>(),
                         Contact = new Contact(),
-                        Birthday = DateTime.Parse("01/01/1991"),
-                        Status = "Single",
-                        Gender = "Male"
+                        Educations = new List<Education>()
+
                     };
-                    //myprofile.UserName = model.Email;
-                    //   myprofile.UserName.Replace(" ", string.Empty);
+
+
+                    Education firstEdu = new Education
+                    {
+                        UserProfileId = myprofile.UserProfileId,
+                        UniversityName = "default",
+
+                    };
+
+                    myprofile.Educations.Add(firstEdu);
+                    
                     myprofile.UserName.Trim();
                     myprofile.Tiers.Add(new Tier { Level = 1, Email = 1, Phone = 0, Mobile = 0, Address = 0, Education = 1, Publication = 1, Patent = 1, Noticeboard = 0, AboutMe = 0 });
                     myprofile.Tiers.Add(new Tier { Level = 2, Email = 1, Phone = 1, Mobile = 0, Address = 0, Education = 1, Publication = 1, Patent = 1, Noticeboard = 1, AboutMe = 1 });
                     myprofile.Tiers.Add(new Tier { Level = 3, Email = 1, Phone = 1, Mobile = 1, Address = 1, Education = 1, Publication = 1, Patent = 1, Noticeboard = 1, AboutMe = 1 });
+                    
                     followPeersDB.UserProfiles.Add(myprofile);
                     followPeersDB.SaveChanges();
-
-
                     return RedirectToAction("Index", "Profile", new { id = myprofile.UserProfileId });
-                    //return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -209,8 +219,6 @@ namespace FollowPeers.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
-
-
         }
 
         //

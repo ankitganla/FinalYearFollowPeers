@@ -21,16 +21,15 @@
         <div class="span8 main-content">
             <div class="box">
  
-                <h2>Update Your Profile</h2>
+                <h2>Update Your Profile!</h2>
+                @Html.ValidationSummary(true)
                 @if (Model.firsttime == true)
                 {
-                    Model.firsttime = false;
                     <div class="alert">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
                         <strong>Complete Your Profile!</strong>
                     </div>
                 }
-                @{var message = ViewData["message"];}
 
                 <div>
                     @Html.Partial("ProfileAboutTabViewWithEdit")

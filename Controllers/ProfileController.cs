@@ -2219,7 +2219,7 @@ namespace FollowPeers.Controllers
                     case "Company":
                         userprofile.Organization = formCollection.Get(key);
                         //if this is a new organization
-                        if ((followPeersDB.Organizations.SingleOrDefault(p => p.Name == userprofile.Organization)) == null)
+                        if ((followPeersDB.Organizations.Where(p => p.Name == userprofile.Organization)) == null)
                         {
                             followPeersDB.Organizations.Add(new Organization { Name = userprofile.Organization });
                         }
@@ -2227,7 +2227,7 @@ namespace FollowPeers.Controllers
                     case "Departments":
                         userprofile.Departments = formCollection.Get(key);
                         //if a user adds a new Department
-                        if ((followPeersDB.Departments.SingleOrDefault(p => p.Name == userprofile.Departments)) == null)
+                        if ((followPeersDB.Departments.Where(p => p.Name == userprofile.Departments)) == null)
                         {
                             followPeersDB.Departments.Add(new Department { Name = userprofile.Departments });
                         }

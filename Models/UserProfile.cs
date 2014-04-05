@@ -7,39 +7,46 @@ using System;
 
 namespace FollowPeers.Models
 {
-    
+
     public class UserProfile
     {
         //Basic info: userId, username, name, languages, thumbnail, profilepic, age, gender, description, location
-        [ScaffoldColumn(false)]
+
+        [ScaffoldColumn(false)] //means this value will never be displayed in the web browser
         [Key]
         public int UserProfileId { get; set; }
+
+
         [ScaffoldColumn(false)]
+        [Required]
         public string UserName { get; set; }
-        
+
+        [Required]
         [DisplayName("First Name")]
-        [Required(ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
-        
+
+        [Required]
         [DisplayName("Last Name")]
-        [Required(ErrorMessage = "Last Name is required")]
         public string LastName { get; set; }
 
-        public string Profession { get; set; }
-        public string PhotoUrl { get; set; }
-    //    [Required(ErrorMessage = "Your Age please. We're all young at heart. Yes.")]
-
-        [Required(ErrorMessage = "Birthday is required")]
+        [Required]
         public DateTime? Birthday { get; set; }
 
-      [Required(ErrorMessage = "Gender is required")]
+        [Required]
         public string Gender { get; set; }
 
-        [Required(ErrorMessage = "Status is required")]
+        [Required]
         public string Status { get; set; }
 
+        [Required]
+        public string PhotoUrl { get; set; }
+
+        [Required]
+        public string Profession { get; set; }
+        
+       
+
         public string StatusMessage { get; set; }
-      //  [Required(ErrorMessage = "Where are you located again?")]
         public int Default { get; set; }
         [ScaffoldColumn(false)]
         public float SignUpProgress { get; set; }
@@ -52,7 +59,7 @@ namespace FollowPeers.Models
         [AllowHtml]
         public string AboutMe { get; set; }
         public virtual Contact Contact { get; set; }
-        public virtual ICollection<Education> Educations { get; set; }
+        public virtual IList<Education> Educations { get; set; }
         public virtual ICollection<PublicationModel> Publication { get; set; }
         public virtual ICollection<Course> Courses { get; set; }
         public virtual ICollection<PatentModel> Patent { get; set; }
