@@ -25,8 +25,8 @@ namespace FollowPeers.Controllers
         {
             return View(model);
         }
-        
-        
+
+
         //
         // GET: /Account/LogOn
 
@@ -45,7 +45,7 @@ namespace FollowPeers.Controllers
             {
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
-                    Session.Add("username",model.UserName);
+                    Session.Add("username", model.UserName);
                     ViewData["link"] = Session["username"].ToString();
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
@@ -130,80 +130,87 @@ namespace FollowPeers.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.Profession != "Free")
+                if (model.Profession != "Individual")
                 {
-                    if (model.Profession != "Premium")
+                    if (model.Profession != "Company")
                     {
                         ModelState.AddModelError("", "Please select an account type");
-                        return View(model);
+
                     }
+
+                    else
+                    {
+                        ModelState.AddModelError("", "Company accounts are not yet activated. We apologize, and we are working on it!");
+                    }
+
+                    return View(model);
 
                 }
 
 
-                    // Attempt to register the user
-                    MembershipCreateStatus createStatus;
-                    //changed from model.UserName to model.Email of parameter 1
-                    Membership.CreateUser(model.Email, model.Password, model.Email, "question", "answer", true, null, out createStatus);
-                    if (createStatus == MembershipCreateStatus.Success)
+                // Attempt to register the user
+                MembershipCreateStatus createStatus;
+                //changed from model.UserName to model.Email of parameter 1
+                Membership.CreateUser(model.Email, model.Password, model.Email, "question", "answer", true, null, out createStatus);
+                if (createStatus == MembershipCreateStatus.Success)
+                {
+                    FormsAuthentication.SetAuthCookie(model.Email, false /* createPersistentCookie */);
+                    string authorizationCode = CalculateMD5Hash(model.Email + "followpeers");
+                    string messagetosend = "<a href='http://localhost:9832/Account/Verify?code=" + authorizationCode + "&email=" + model.Email + "'>Click to verify your account</a>";
+
+                    /*     MailMessage message = new MailMessage("followpeers@isp.c0m", "ppp@nus.edu.sg", "Testing", messagetosend);
+                         SmtpClient smtpClient = new SmtpClient();
+                         smtpClient.UseDefaultCredentials = false;
+                         smtpClient.Host = "smtp.gmail.com";
+                         smtpClient.Port = 587;
+                         smtpClient.Credentials = new NetworkCredential("followpeers@gmail.com", "followpeers123!");
+                         smtpClient.EnableSsl = true;
+                         smtpClient.Send(message);
+                     * */
+                    //System.Data.Entity.Database.SetInitializer(new SampleData());
+                    CultureInfo provider = CultureInfo.InvariantCulture;
+                    UserProfile myprofile = new UserProfile
                     {
-                        FormsAuthentication.SetAuthCookie(model.Email, false /* createPersistentCookie */);
-                        string authorizationCode = CalculateMD5Hash(model.Email + "followpeers");
-                        string messagetosend = "<a href='http://localhost:9832/Account/Verify?code=" + authorizationCode + "&email=" + model.Email + "'>Click to verify your account</a>";
-
-                        /*     MailMessage message = new MailMessage("followpeers@isp.c0m", "ppp@nus.edu.sg", "Testing", messagetosend);
-                             SmtpClient smtpClient = new SmtpClient();
-                             smtpClient.UseDefaultCredentials = false;
-                             smtpClient.Host = "smtp.gmail.com";
-                             smtpClient.Port = 587;
-                             smtpClient.Credentials = new NetworkCredential("followpeers@gmail.com", "followpeers123!");
-                             smtpClient.EnableSsl = true;
-                             smtpClient.Send(message);
-                         * */
-                        //System.Data.Entity.Database.SetInitializer(new SampleData());
-                        CultureInfo provider = CultureInfo.InvariantCulture;
-                        UserProfile myprofile = new UserProfile
-                        {
-                            UserName = model.Email.Trim(),
-                            FirstName = model.FirstName,
-                            LastName = model.LastName,
-                            Profession = model.Profession,
-                            activated = true,
-                            firsttime = true,
-                            Default = 2,
-                            PhotoUrl = "/Content/TempImages/default.jpg",
-                            Specializations = new List<Specialization>(),
-                            Tiers = new List<Tier>(),
-                            Keywords = new List<Keyword>(),
-                            Contact = new Contact(),
-                            Birthday = DateTime.Parse("01/01/1991"),
-                            Status = "Single",
-                            Gender = "Male"
-                        };
-                        //myprofile.UserName = model.Email;
-                        //   myprofile.UserName.Replace(" ", string.Empty);
-                        myprofile.UserName.Trim();
-                        myprofile.Tiers.Add(new Tier { Level = 1, Email = 1, Phone = 0, Mobile = 0, Address = 0, Education = 1, Publication = 1, Patent = 1, Noticeboard = 0, AboutMe = 0 });
-                        myprofile.Tiers.Add(new Tier { Level = 2, Email = 1, Phone = 1, Mobile = 0, Address = 0, Education = 1, Publication = 1, Patent = 1, Noticeboard = 1, AboutMe = 1 });
-                        myprofile.Tiers.Add(new Tier { Level = 3, Email = 1, Phone = 1, Mobile = 1, Address = 1, Education = 1, Publication = 1, Patent = 1, Noticeboard = 1, AboutMe = 1 });
-                        followPeersDB.UserProfiles.Add(myprofile);
-                        followPeersDB.SaveChanges();
+                        UserName = model.Email.Trim(),
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Profession = model.Profession,
+                        activated = true,
+                        firsttime = true,
+                        Default = 2,
+                        PhotoUrl = "/Content/TempImages/default.jpg",
+                        Specializations = new List<Specialization>(),
+                        Tiers = new List<Tier>(),
+                        Keywords = new List<Keyword>(),
+                        Contact = new Contact(),
+                        Birthday = DateTime.Parse("01/01/1991"),
+                        Status = "Single",
+                        Gender = "Male"
+                    };
+                    //myprofile.UserName = model.Email;
+                    //   myprofile.UserName.Replace(" ", string.Empty);
+                    myprofile.UserName.Trim();
+                    myprofile.Tiers.Add(new Tier { Level = 1, Email = 1, Phone = 0, Mobile = 0, Address = 0, Education = 1, Publication = 1, Patent = 1, Noticeboard = 0, AboutMe = 0 });
+                    myprofile.Tiers.Add(new Tier { Level = 2, Email = 1, Phone = 1, Mobile = 0, Address = 0, Education = 1, Publication = 1, Patent = 1, Noticeboard = 1, AboutMe = 1 });
+                    myprofile.Tiers.Add(new Tier { Level = 3, Email = 1, Phone = 1, Mobile = 1, Address = 1, Education = 1, Publication = 1, Patent = 1, Noticeboard = 1, AboutMe = 1 });
+                    followPeersDB.UserProfiles.Add(myprofile);
+                    followPeersDB.SaveChanges();
 
 
-                        return RedirectToAction("Index", "Profile", new { id = myprofile.UserProfileId });
-                        //return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", ErrorCodeToString(createStatus));
-                    }
-                
+                    return RedirectToAction("Index", "Profile", new { id = myprofile.UserProfileId });
+                    //return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                }
+
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
-            
- 
+
+
         }
 
         //
@@ -268,7 +275,7 @@ namespace FollowPeers.Controllers
             switch (createStatus)
             {
                 case MembershipCreateStatus.DuplicateUserName:
-                    return "User name already exists. Please enter a different user name.";
+                    return "That email id is already registered. Login, or enter a different email id.";
 
                 case MembershipCreateStatus.DuplicateEmail:
                     return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
