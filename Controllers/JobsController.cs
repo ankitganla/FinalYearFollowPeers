@@ -212,10 +212,8 @@ namespace FollowPeers.Controllers
 
 
         [HttpPost]
-        public ActionResult Create(Jobs jobmodel, string[] TagsId, string tag, int jobID)
+        public ActionResult Create(Jobs jobmodel, string[] TagsId, string tag)
         {
-            jobmodel.JobId = jobID;
-
             if (ModelState.IsValid)
             {
                 string name = Membership.GetUser().UserName;

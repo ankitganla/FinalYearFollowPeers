@@ -6,17 +6,6 @@
     ViewBag.Title = "New Job Listing";
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
 
-    int jobid = 0;
-    for (int i = 1; i < 65536; i++)
-    {
-        Jobs testJob = followPeersDB.Jobs.Find(i);
-        if (testJob == null)
-        {
-            jobid = i;
-            break;
-        }
-    }
-
     var db = Database.Open("FollowPeersDB");
 }
 <head>
@@ -81,8 +70,7 @@
                 @Html.ValidationSummary(true)
 
 @*-----------Job ID-----------*@
-                <input type="hidden" name="jobID" value="@jobid" />
-
+                
                 <table>
                     <tr>
                         <td class="left-col">
