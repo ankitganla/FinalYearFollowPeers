@@ -6,16 +6,17 @@
     
     var keywords = ViewData["keywords"];
     
+
 }
 
-<div class="grid_10">
-    <div class="box">
-        <h2>
+<div class="container" id="main">
+ <div class="span8">  
+        <h3>
             @ViewBag.searchstring
-        </h2>
+        </h3>
         @if (Model.Count() == 0)
         {
-            <div style="padding:10px;">No Results Found</div>
+            <div style="padding:10px;"><p style="font-family:'Segoe UI';"><b>No Results Found.</b></p></div>
         }
         else
         {
@@ -39,7 +40,8 @@
                          using (Html.BeginForm("UnFollow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                          {
                             <input type="hidden" name="username" value="@item.UserName" />
-                            <input type="submit" value="UnFollow" style="padding: 8px 20px;width:90px;color:gray;float: right;cursor: pointer;font-weight: bold;" />
+                     <input style="display:block;padding: 8px 20px;width:90px;float: right;cursor: pointer;font-weight: bold;" class="btn btn-danger btn-small" type="submit" value="UnFollow" />
+                            <!--input type="submit" value="UnFollow" style="padding: 8px 20px;width:90px;color:gray;float: right;cursor: pointer;font-weight: bold;" /-->
                          }
                      }
                      else
@@ -47,7 +49,8 @@
                          using (Html.BeginForm("Follow", "Profile", new { url = HttpContext.Current.Request.Url.AbsoluteUri }))
                          {
                             <input type="hidden" name="username" value="@item.UserName" />
-                            <input type="submit" value="Follow" style="padding: 8px 20px;width:90px;float: right;cursor: pointer;font-weight: bold;" />
+                      <input class="btn btn-success btn-small" type="submit" value="Follow" style="padding: 8px 20px;width:90px;float: right;cursor: pointer;font-weight: bold;" />
+                            <!--input type="submit" value="Follow" style="padding: 8px 20px;width:90px;float: right;cursor: pointer;font-weight: bold;" /-->
                          }
                      }
                  }</div>

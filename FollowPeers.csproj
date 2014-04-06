@@ -63,9 +63,9 @@
     <PublishDatabaseSettings>
       <Objects>
         <ObjectGroup Name="FollowPeersDBEntities-Deployment" Order="1" xmlns="">
-          <Destination Path="Data Source=tcp:yuchl5v8o8.database.windows.net,1433%3bInitial Catalog=FollowMyPeer%3bUser ID=SQLAdmin%40yuchl5v8o8%3bPassword=FollowMyPeer1" />
-          <Object Type="DbFullSql">
-            <PreSource Path="Data Source=|DataDirectory|FollowPeersDB.sdf" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+          <Destination Path="Data Source=tcp:yuchl5v8o8.database.windows.net,1433%3bInitial Catalog=FollowPeersDB%3bPersist Security Info=True%3bUser ID=SQLAdmin%40yuchl5v8o8%3bPassword=FollowMyPeer1" />
+          <Object Type="DbFullSql" Enabled="True">
+            <PreSource Path="Data Source=.\SQLEXPRESS%3bAttachDbFilename=|DataDirectory|FollowPeersDB.mdf%3bIntegrated Security=True%3bUser Instance=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
             <Source Path="obj\Release\AutoScripts\FollowPeersDBEntities-Deployment_SchemaOnly.sql" Transacted="True" />
           </Object>
         </ObjectGroup>
@@ -3126,6 +3126,8 @@
     <Content Include="Scripts\jquery-1.5.1.js" />
     <Content Include="Scripts\jquery-1.5.1.min.js" />
     <None Include="Properties\PublishProfiles\followmypeer %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\followmypeer %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\followmypeer %284%29.pubxml" />
     <None Include="Properties\PublishProfiles\followmypeer.pubxml" />
     <None Include="Properties\PublishProfiles\followmypeer1.pubxml" />
     <None Include="Properties\PublishProfiles\followmypeertest.pubxml" />
@@ -3220,7 +3222,6 @@
     <Content Include="TODELETE\ViewRecommendedJobs.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Content\TempImages\" />
     <Folder Include="Views\RecentUpdates\" />
   </ItemGroup>
