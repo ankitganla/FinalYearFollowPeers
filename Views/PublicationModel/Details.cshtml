@@ -1,6 +1,7 @@
 ﻿@model FollowPeers.Models.PublicationModel
 @using FollowPeers.Models;
 @{
+    String messageRec = Convert.ToString(ViewData["message"]);
     ViewBag.Title = "Publication Details";
 }
 @Html.Partial("_Header")
@@ -22,6 +23,13 @@
         <link rel="stylesheet" type="text/css" href="../../Content/css/jquery.mcdropdown.css" />
         <link href="../../Content/css/jquery-ui.css" rel="stylesheet" type="text/css" />
         <div class="span9">
+            @if (messageRec != "")
+            {
+                <div class="alert">
+                    <button type="button" class="close" data-dismiss="alert" style="color: lightgreen">&times;</button>
+                    <strong>@messageRec</strong>
+                </div>
+            }
             <h3>@Html.DisplayFor(model => model.title)</h3>
             <div>
                 <h4>By @Html.DisplayFor(model => model.author)</h4>
@@ -238,12 +246,12 @@
                     }
                     else
                     {
-                        <form action="/PublicationModel/Unlike" method="post" style="margin: 0">
+                    <form action="/PublicationModel/Unlike" method="post" style="margin: 0">
                         <input type="hidden" name="id" value="@Model.publicationID" />
                         <span class="label label-default" style="background-color: red">
-                        <input type="image" src="../../Content/images/icons/16x16/thumb_down.png" value="submit" />
-                        Unlike Publication
-                    </span>
+                            <input type="image" src="../../Content/images/icons/16x16/thumb_down.png" value="submit" />
+                            Unlike Publication
+                        </span>
                     </form>
                      
                     }

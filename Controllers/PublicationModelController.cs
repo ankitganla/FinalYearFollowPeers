@@ -693,7 +693,7 @@ namespace FollowPeers.Controllers
             {
                 followPeersDB.Entry(publicationmodel).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
-                return RedirectToAction("Details", "PublicationModel", new { id = publicationmodel.publicationID });
+                return RedirectToAction("Details", "PublicationModel", new { message ="Publication Successfully Edited", id = publicationmodel.publicationID });
             }
             return View(publicationmodel);
         }

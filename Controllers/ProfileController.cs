@@ -1788,7 +1788,7 @@ namespace FollowPeers.Controllers
             }
             followPeersDB.Entry(userprofile).State = EntityState.Modified;
             followPeersDB.SaveChanges();
-            return RedirectToAction("Index", "Notice", new { id = userprofile.UserProfileId });
+            return RedirectToAction("Index", "Profile", new { id = userprofile.UserProfileId });
         }
 
 
@@ -1874,7 +1874,7 @@ namespace FollowPeers.Controllers
             }
 
 
-            return RedirectToAction("Index", "Notice", new { id = id });
+            return RedirectToAction("Index", "Profile", new { id = id });
         }
 
 
@@ -1993,7 +1993,7 @@ namespace FollowPeers.Controllers
                 }
             }
 
-            return RedirectToAction("Index", "Notice", new { id = redirect });
+            return RedirectToAction("Index", "Profile", new { id = redirect });
         }
 
 
