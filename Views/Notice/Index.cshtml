@@ -93,14 +93,14 @@
             <div class="profilepagetabs" style="border: none;">
                 <!-- Nav tabs -->
                 <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">           
-                    <li class="current" id="li_all" onclick="tabresponse('all')"><a><i class="icon-home" style="float:left;"></i>All Updates</a></li>
-                    <li id="li_status" onclick="tabresponse('status')"><a><i class="icon-pencil" style="float:left;"></i>Status</a></li>
-                    <li id="li_photo" onclick="tabresponse('photo')"><a><i class="icon-picture" style="float:left;"></i>Photo</a></li>
-                    <li id="li_course" onclick="tabresponse('course')"><a><i class="icon-book" style="float:left;"></i>Course</a></li>                           
-                    <li id="li_publication" onclick="tabresponse('publication')"><a><i class="icon-file" style="float:left;"></i>Publication</a></li>
-                    <li id="li_job" onclick="tabresponse('job')"><a><i class="icon-tag" style="float:left;"></i>Job</a></li>
-                    <!--li id="li_group" onclick="tabresponse('group')"><a><i class="icon-user" style="float:left;"></i>Group</a></!--li-->
-                    <!--li id="li_favourite" onclick="tabresponse('favourite')"><a><i class="icon-heart" style="float:left;"></i>Favourite</a></!--li-->
+                    <li class="current" id="li_all" onclick="hometabresponse('all')"><a><i class="icon-home" style="float:left;"></i>All Updates</a></li>
+                    <li id="li_status" onclick="hometabresponse('status')"><a><i class="icon-pencil" style="float:left;"></i>Status</a></li>
+                    <li id="li_photo" onclick="hometabresponse('photo')"><a><i class="icon-picture" style="float:left;"></i>Photo</a></li>
+                    <li id="li_course" onclick="hometabresponse('course')"><a><i class="icon-book" style="float:left;"></i>Course</a></li>                           
+                    <li id="li_publication" onclick="hometabresponse('publication')"><a><i class="icon-file" style="float:left;"></i>Publication</a></li>
+                    <li id="li_job" onclick="hometabresponse('job')"><a><i class="icon-tag" style="float:left;"></i>Job</a></li>
+                    <!--li id="li_group" onclick="hometabresponse('group')"><a><i class="icon-user" style="float:left;"></i>Group</a></!--li-->
+                    <!--li id="li_favourite" onclick="hometabresponse('favourite')"><a><i class="icon-heart" style="float:left;"></i>Favourite</a></!--li-->
                 </ul>
             </div>
         </div> 
@@ -116,7 +116,7 @@
                 List<FollowPeers.Models.Relationship> following = followPeersDB.Relationships.Where(p => p.personAName == Model.UserName && p.tier == 2).ToList();     
             }
         <!-- Tab panes -->
-            <div class="box" style="margin-left:15px; height: auto; padding-top:10px; padding-left:10px; padding-right:10px; padding-bottom:0px; background-color: #f5f5f5; border: 1px solid #ddd; -webkit-border-radius: 4px;">       
+            <div class="box" style="margin-left:15px; height: auto; padding-top:10px; padding-left:10px; padding-right:5px; padding-bottom:0px; background-color: #f5f5f5; border: 1px solid #ddd; -webkit-border-radius: 4px;">       
                               
                 <ul class="nav nav-tabs">
                     <li class="active">
@@ -132,7 +132,7 @@
                                 <form action="/Profile/UpdateStatus" method="post">
                                 <div>
                                     <div class="input-append">
-                                        <input id="appendedInputButton" name="message" type="text" value="" style="width: 85%;" />
+                                        <input id="appendedInputButton" name="message" type="text" value="" style="width: 86%;" />
                                  
                                         <input class="btn" type="submit" value="Post" /> 
                                         </div>
@@ -238,7 +238,7 @@
 
 <script type="text/javascript">
     //scripts for the tabs on home page
-    function tabresponse(tab) {
+    function hometabresponse(tab) {
         //document.getElementById('Form_Area').style.display = 'none'; //hide all forms
         document.getElementById('all').style.display = 'none';
         document.getElementById('status').style.display = 'none';
