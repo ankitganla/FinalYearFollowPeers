@@ -45,7 +45,7 @@
                                 string displayName = justFiles[justFiles.Length - 1];
 
 
-                                string actualPath = Url.Content("~/Content/Files/user6@gmail.com/Photos/"+displayName);
+                                string actualPath = Url.Content("~/Content/Files/" + Model.UserName+ "/Photos/"+displayName);
                             <img src="@Html.Encode(actualPath)" style="width: 200px; height: 200px;" />
                         }
                         <p>
