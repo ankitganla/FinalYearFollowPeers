@@ -5,14 +5,7 @@
        @Html.Partial("_Header")
     
     var keywords = ViewData["keywords"];
-    if (keywords != null)
-    {
-        @Html.Partial("_SideBar4", new { keywords = keywords })
-    }
-    else
-    {
-        @Html.Partial("_SideBar4")
-    }
+    
 }
 
 <div class="grid_10">
