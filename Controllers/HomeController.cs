@@ -15,18 +15,24 @@ namespace FollowPeers.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                //return View();
-                string name = Membership.GetUser().UserName;
-                UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-                if (myprofile == null) //if the database stores a wrong info about name
-                {
-                    name = " " + name;
-                    myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
-                    myprofile.UserName.Trim();
-                    followPeersDB.SaveChanges();
-                }
-                ViewBag.username = name;
+                try
+                {//return View();
+                    string name = Membership.GetUser().UserName;
+                    UserProfile myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+                    if (myprofile == null) //if the database stores a wrong info about name
+                    {
+                        name = " " + name;
+                        myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+                        myprofile.UserName.Trim();
+                        followPeersDB.SaveChanges();
+                    }
+                    ViewBag.username = name;
                     return RedirectToAction("Index", "Notice", new { id = myprofile.UserProfileId });
+                }
+                catch
+                {
+                    return View();
+                }
             }
             else // load the home page
             {
