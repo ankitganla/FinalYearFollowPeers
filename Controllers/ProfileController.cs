@@ -24,8 +24,9 @@ namespace FollowPeers.Controllers
         // GET: /Profile/
         FollowPeersDBEntities followPeersDB = new FollowPeersDBEntities();
         static UserProfile myprofile;
-        public ActionResult Index(int id)
+        public ActionResult Index(int id, String message)
         {
+            ViewData["message"] = message;
             string name = Membership.GetUser().UserName;
             UserProfile viewerprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == id);
             myprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
@@ -38,6 +39,7 @@ namespace FollowPeers.Controllers
                 followPeersDB.SaveChanges();
             }
 
+            //my profile and first time viewing
             if (id == myprofile.UserProfileId && viewerprofile.firsttime == true)
             {
 
@@ -364,6 +366,8 @@ namespace FollowPeers.Controllers
 
                 followPeersDB.Entry(userprofile).State = EntityState.Modified;
                 followPeersDB.SaveChanges();
+     
+                ViewData["message"] = "Successfully updated profile photo";
                 return RedirectToAction("Index", "Profile", new { message = "Successfully Updated Profile Photo", id = userprofile.UserProfileId });
 
             }
@@ -2042,7 +2046,7 @@ namespace FollowPeers.Controllers
                     HttpPostedFileBase postedFile = uploadFile;
                     if (postedFile.FileName == "")
                     {
-                        return RedirectToAction("Index", "Profile", new { id = userprofile.UserProfileId });
+                        return RedirectToAction("Index", "Profile", new { message="The filename is invalid" , id = userprofile.UserProfileId });
                     }
 
                     var splitstring = postedFile.FileName.Split('.');
@@ -2058,7 +2062,7 @@ namespace FollowPeers.Controllers
                         case "jpeg":
                             break;
                         default:
-                            return RedirectToAction("Index", "Profile", new { id = userprofile.UserProfileId });
+                            return RedirectToAction("Index", "Profile", new { message="The file format is unrecognized", id = userprofile.UserProfileId });
                     }
 
 
@@ -2099,7 +2103,7 @@ namespace FollowPeers.Controllers
             }
 
             //return View("Index", new { id = userprofile.UserProfileId });
-            return RedirectToAction("Index", "Profile", new { id = userprofile.UserProfileId });
+            return RedirectToAction("Index", "Profile", new {message="Photo was successfully uploaded", id = userprofile.UserProfileId });
             //return RedirectToAction("UploadPhoto", "Profile", null);
             //return View(userprofile);
 
@@ -2261,10 +2265,10 @@ namespace FollowPeers.Controllers
             }
             catch (DbEntityValidationException e)
             {
-                return RedirectToAction("Index", "Profile", new { message = "Profile Not Updated", id = userprofile.UserProfileId });
+                return RedirectToAction("Index", "Profile", new { message = "Profile Information Not Updated", id = userprofile.UserProfileId });
             }
 
-            return RedirectToAction("Index", "Profile", new { message = "Successfully Updated", id = userprofile.UserProfileId });
+            return RedirectToAction("Index", "Profile", new { message = "Profile Information Successfully Updated", id = userprofile.UserProfileId });
 
 
 

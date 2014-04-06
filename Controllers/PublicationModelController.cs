@@ -42,8 +42,8 @@ namespace FollowPeers.Controllers
                 Favourite FoundMatch = user.Favourites.FirstOrDefault(p => p.ItemTypeId == Item.ItemTypeId && p.ItemType == Item.ItemType);
                 if (FoundMatch != null)
                 {
-                    CreateUpdates("The publication " + Pubname + " is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
-                    return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+                    //CreateUpdates("The publication " + Pubname + " is already a favourite", "/PublicationModel/Details/" + id, 6, user.UserProfileId, null);
+                    return RedirectToAction("Index", "Profile", new { message ="The Publication is already a favourite" , id = user.UserProfileId });
                 }
                 user.Favourites.Add(Item);
                 followPeersDB.Entry(user).State = EntityState.Modified;
@@ -83,15 +83,15 @@ namespace FollowPeers.Controllers
                         UserProfile userFromFirstName = followPeersDB.UserProfiles.SingleOrDefault(p => p.FirstName == userFirstName);
                         if (userFromFirstName == null)
                         {
-                            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+                            return RedirectToAction("Details", "PublicationModel", new { message = "No user with that First Name exists" , id = id });
                         }
                         if (splitNames.Length > 1)
                         {
                             String userLastName = splitNames[1];
                             UserProfile userFromLastName = followPeersDB.UserProfiles.SingleOrDefault(p => p.LastName == userLastName);
-                            if (userFromFirstName.UserName == userFromLastName.UserName)
+                            if (userFromFirstName.UserName != userFromLastName.UserName)
                             {
-                                return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+                                return RedirectToAction("Details", "PublicationModel", new { message = "No such user exists", id = id });
                             }
 
                         }
@@ -123,6 +123,7 @@ namespace FollowPeers.Controllers
                                 invitee.Notifications.Add(newnoti);
                                 followPeersDB.Entry(invitee).State = EntityState.Modified;
                                 followPeersDB.SaveChanges();
+                                return RedirectToAction("Details", "PublicationModel", new { message = "Recommendation sent", id = id });
                             }
 
                         }
@@ -132,7 +133,7 @@ namespace FollowPeers.Controllers
                     }
                 }
             }
-            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+            return RedirectToAction("Details", "PublicationModel", new { message = "Enter at least one user to recommend", id = id });
         }
 
 
@@ -504,7 +505,7 @@ namespace FollowPeers.Controllers
                 return RedirectToAction("Details", "PublicationModel", new { id = publicationmodel.publicationID }); 
             }
 
-            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+            return RedirectToAction("Index", "Profile", new { message="Publication could not be created, please try again", id = user.UserProfileId });
             //return View(publicationmodel);
 
         }
@@ -800,7 +801,7 @@ namespace FollowPeers.Controllers
             followPeersDB.SaveChanges();
             UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
             CreateUpdates("Deleted the publication titled " + Pubname, null, 6, user.UserProfileId, null);
-            return RedirectToAction("Index", "Profile", new { id = user.UserProfileId });
+            return RedirectToAction("Index", "Profile", new {message="Publication successfully deleted", id = user.UserProfileId });
         }
 
         protected override void Dispose(bool disposing)
