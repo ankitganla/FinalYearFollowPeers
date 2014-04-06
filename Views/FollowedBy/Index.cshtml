@@ -85,9 +85,9 @@
     <div class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">
     <div class="profilepagetabs" style="border: none;">
         <ul class="menu nav nav-tabs nav-stacked" id="myTab" style="list-style: none; margin-top: 15px;">           
-            <li id="li_tab1" class="active" onclick="tab('tab1')"><a>All Members</a></li>
-            <li id="li_tab2" onclick="tab('tab2')"><a>Standard</a></li>
-            <li id="li_tab3" onclick="tab('tab3')"><a>Premium</a></li>
+            <li id="li_tab1" class="active" onclick="tab('tab1')"><a>All Users</a></li>
+            <li id="li_tab2" onclick="tab('tab2')"><a>Individual</a></li>
+            <li id="li_tab3" onclick="tab('tab3')"><a>Company</a></li>
         </ul>
     </div>
     </div> 
@@ -109,7 +109,8 @@
             @{
                 if (AllFollowing.Count() == 0)
                 {
-                    <text>@myprofile.FirstName @myprofile.LastName does not follow any one yet.</text>
+                    <br/>
+                    <p style="font-family:'Segoe UI';"><b>@myprofile.FirstName, you haven't follow any one yet.</b></p>
               
                 }
             }
@@ -148,7 +149,8 @@
             @{
                 if (AllFollowers.Count() == 0)
                 {
-                    <text>@myprofile.FirstName @myprofile.LastName does not follow any one yet.</text>
+                    <br/>
+                    <p style="font-family:'Segoe UI';"><b>@myprofile.FirstName, nobody hasn't followed you yet.</b></p>
                 }
             }
             @foreach (var item2 in AllFollowers)
@@ -197,7 +199,8 @@
         @{
             if (IndividualFollowing.Count() == 0)
             {
-                <text>@myprofile.FirstName @myprofile.LastName does not follow any one yet.</text> 
+                <br/>
+                    <p style="font-family:'Segoe UI';"><b>@myprofile.FirstName, you haven't follow any one yet.</b></p>
             }
         }
         @foreach (var item in IndividualFollowing)
@@ -231,7 +234,8 @@
             @{
                 if (IndividualFollowers.Count() == 0)
                 {
-                    <text>You do not follow any one yet.</text>
+                    <br/>
+                    <p style="font-family:'Segoe UI';"><b>@myprofile.FirstName, nobody hasn't followed you yet.</b></p>
                 }
             }
             @foreach (var item in IndividualFollowers)
@@ -279,7 +283,8 @@
             @{
                 if (CorporateFollowing.Count() == 0)
                 {
-                    <text>You do not follow any one yet.</text>
+                    <br/>
+                    <p style="font-family:'Segoe UI';"><b>@myprofile.FirstName, you haven't follow any one yet.</b></p>
                 }
             }
             @foreach (var item in CorporateFollowing)
@@ -312,7 +317,8 @@
             @{
                 if (CorporateFollowers.Count() == 0)
                 {
-                <div>You do not follow anyone yet</div>
+                <br/>
+                    <p style="font-family:'Segoe UI';"><b>@myprofile.FirstName, nobody hasn't followed you yet.</b></p>
            
                 }
             }            
