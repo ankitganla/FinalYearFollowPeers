@@ -1,8 +1,6 @@
-﻿
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
     <title>FollowMyPeers</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,79 +14,64 @@
 
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 
-  </head>
+</head>
 
-  <body>
+<body>
+    @Html.Partial(_Header_PreLogin)
+    <div class="container" style="height: 100%;">
+        
 
-    <div class="container" style="height:100%;">
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+        <div class="row" style="margin-top: 20px;">
+            <div class="span8" style="margin-top: 20px;">
+                <div id="myCarousel" class="carousel slide">
+                    <!-- Carousel items -->
+                    <div class="carousel-inner">
+                        <div class="active item">
+                            <img src="Content/images/s1.jpg" /></div>
+                        <div class="item">
+                            <img src="Content/images/s6.jpg" /></div>
 
-          </a>
-            
-          <a class="brand" href="." style="font-family:'Germania One';font-size:x-large">FollowMyPeers</a>
-          <div class="nav-collapse collapse">
-                @Html.Partial("_LogOnPartial")
-              
-          </div><!--/.nav-collapse -->
-            
-        </div>
-      </div>
-    </div>
 
-    <div class="row" style="margin-top:20px;">
-      	<div class="span8" style="margin-top:20px;">
-      		<div id="myCarousel" class="carousel slide">
-			  <!-- Carousel items -->
-			  <div class="carousel-inner">
-			    <div class="active item"><img src="Content/images/s1.jpg"/></div>
-                 <div class="item"><img src="Content/images/s6.jpg"/></div>
-
-			   
-			  </div>
-			  <!-- Carousel nav -->
-			  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-			  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
-			</div>
-      	</div>
-      	<div class="span4">
-      		<h2 style="font-family:Arial;">New User?</h2>
-            <h6 style="font-family:Arial;">Sign Up Now! It's Always Quick and Easy!</h6>
+                    </div>
+                    <!-- Carousel nav -->
+                    <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                    <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                </div>
+            </div>
+            <div class="span4">
+                <h2 style="font-family: Arial;">New User?</h2>
+                <h6 style="font-family: Arial;">Sign Up Now! It's Always Quick and Easy!</h6>
                 @Html.Partial("_RegisterPartial")
-		</div>
+            </div>
 
-     
-        <div class="span6">
-          <h4 style="font-family:'Segoe UI';">Individual Account</h4>
-          <p>Connect with your peers worldwide for academic communication, research collaboration and technology innovation.</p>
-          
-        </div>
-        <div class="span6">
-          <h4 style="font-family:'Segoe UI';">Company Account</h4>
-          <p>Register as an organization to connect with individuals and other organizations and increase your ability to identify and connect with extraordinary opportunities!</p>
+
+            <div class="span6">
+                <h4 style="font-family: 'Segoe UI';">Individual Account</h4>
+                <p>Connect with your peers worldwide for academic communication, research collaboration and technology innovation.</p>
+
+            </div>
+            <div class="span6">
+                <h4 style="font-family: 'Segoe UI';">Company Account</h4>
+                <p>Register as an organization to connect with individuals and other organizations and increase your ability to identify and connect with extraordinary opportunities!</p>
+            </div>
         </div>
     </div>
-    </div> <!-- /container -->
+    <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="Scripts/jquery.js"></script>
     <script src="Scripts/bootstrap.js"></script>
-   	<script type="text/javascript">
-   	    $('.carousel').carousel({
-   	        interval: 3000
-   	    });
-   	    $('#myModal').modal()
+    <script type="text/javascript">
+        $('.carousel').carousel({
+            interval: 3000
+        });
+        $('#myModal').modal()
         $('#myModal').modal('hide')
     </script>
 
-  </body>
-    
-        @Html.Partial("_Footer")
+</body>
+
+@Html.Partial("_Footer")
 </html>

@@ -34,7 +34,7 @@
 
 
         <p>
-            @Html.PasswordFor(m => m.Password, new { @placeholder = "Create Password", @class = "input-xlarge" })
+            @Html.PasswordFor(m => m.Password, new { @placeholder = "Create Password*", @class = "input-xlarge" })
             @Html.ValidationMessageFor(m => m.Password)
         </p>
 
@@ -53,7 +53,10 @@
             @Html.DropDownList("Profession", new SelectList(profession))
         </p>
         <input class="btn btn-success" type="submit" value="Sign Up" style="font-family:'Segoe UI';font-weight:bold;width:130px;align-content:center;"/>
-       
+       <p style="font-size: x-small">
+           *Min 6 characters, at least 1 non-alphanumeric
+
+       </p>
 
     </div>
     

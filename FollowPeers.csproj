@@ -3220,6 +3220,7 @@
     <Content Include="TODELETE\PostJob.cshtml" />
     <Content Include="TODELETE\ViewBookmarkJobs.cshtml" />
     <Content Include="TODELETE\ViewRecommendedJobs.cshtml" />
+    <Content Include="Views\Shared\_Header_PreLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\TempImages\" />
