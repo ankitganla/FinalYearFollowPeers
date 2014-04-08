@@ -95,10 +95,10 @@
                 <ul class="menu nav nav-tabs nav-stacked" style="list-style: none; margin-top: 15px;">           
                     <li class="current" id="li_all" onclick="hometabresponse('all')"><a><i class="icon-home" style="float:left;"></i>All Updates</a></li>
                     <li id="li_status" onclick="hometabresponse('status')"><a><i class="icon-pencil" style="float:left;"></i>Status</a></li>
-                    <li id="li_photo" onclick="hometabresponse('photo')"><a><i class="icon-picture" style="float:left;"></i>Photo</a></li>
-                    <li id="li_course" onclick="hometabresponse('course')"><a><i class="icon-book" style="float:left;"></i>Course</a></li>                           
-                    <li id="li_publication" onclick="hometabresponse('publication')"><a><i class="icon-file" style="float:left;"></i>Publication</a></li>
-                    <li id="li_job" onclick="hometabresponse('job')"><a><i class="icon-tag" style="float:left;"></i>Job</a></li>
+                    <li id="li_profile" onclick="hometabresponse('profile')"><a><i class="icon-picture" style="float:left;"></i>Profile</a></li>
+                    <li id="li_publication" onclick="hometabresponse('publication')"><a><i class="icon-file" style="float:left;"></i>Publications</a></li>
+                    <li id="li_job" onclick="hometabresponse('job')"><a><i class="icon-tag" style="float:left;"></i>Jobs</a></li>
+                    <li id="li_course" onclick="hometabresponse('course')"><a><i class="icon-book" style="float:left;"></i>Courses</a></li>      
                     <!--li id="li_group" onclick="hometabresponse('group')"><a><i class="icon-user" style="float:left;"></i>Group</a></!--li-->
                     <!--li id="li_favourite" onclick="hometabresponse('favourite')"><a><i class="icon-heart" style="float:left;"></i>Favourite</a></!--li-->
                 </ul>
@@ -164,14 +164,10 @@
                     @Html.Partial("StatusUpdatesView")
                 </div>
             
-                <div id="photo" style="display: none;">
-                    @Html.Partial("PhotoUpdatesView")        
+                <div id="profile" style="display: none;">
+                    @Html.Partial("ProfileUpdatesView")     
                 </div>
-            
-                <div id="course" style="display: none;">
-                    @Html.Partial("CourseUpdatesView")                       
-                </div>
-            
+
                 <div id="publication" style="display: none;">
                     @Html.Partial("PublicationUpdatesView")       
                 </div>
@@ -179,6 +175,12 @@
                 <div id="job" style="display: none;">
                     @Html.Partial("JobUpdatesView")                          
                 </div>
+
+                        
+                <div id="course" style="display: none;">
+                    @Html.Partial("CourseUpdatesView")                       
+                </div>
+            
             
                 @*<div id="favourite" style="display: none;">
                     @Html.Partial("FavouriteUpdatesView")     
@@ -242,7 +244,7 @@
         //document.getElementById('Form_Area').style.display = 'none'; //hide all forms
         document.getElementById('all').style.display = 'none';
         document.getElementById('status').style.display = 'none';
-        document.getElementById('photo').style.display = 'none';
+        document.getElementById('profile').style.display = 'none';
         document.getElementById('course').style.display = 'none';
         document.getElementById('publication').style.display = 'none';
         document.getElementById('job').style.display = 'none';
@@ -250,7 +252,7 @@
         //document.getElementById('favourite').style.display = 'none';
         document.getElementById('li_all').setAttribute("class", "");
         document.getElementById('li_status').setAttribute("class", "");
-        document.getElementById('li_photo').setAttribute("class", "");
+        document.getElementById('li_profile').setAttribute("class", "");
         document.getElementById('li_course').setAttribute("class", "");
         document.getElementById('li_publication').setAttribute("class", "");
         document.getElementById('li_job').setAttribute("class", "");
@@ -271,18 +273,14 @@
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "current");
         }
-
-        if (tab == 'photo') {
-            document.getElementById('photo').style.display = 'block';
+        
+        if (tab == 'profile') {
+            document.getElementById('profile').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "current");
         }
+        
 
-        if (tab == 'course') {
-            document.getElementById('course').style.display = 'block';
-            document.getElementById('li_' + tab).setAttribute("class", "active");
-            document.getElementById('li_' + tab).setAttribute("class", "current");
-        }
 
         if (tab == 'publication') {
             document.getElementById('publication').style.display = 'block';
@@ -292,6 +290,12 @@
 
         if (tab == 'job') {
             document.getElementById('job').style.display = 'block';
+            document.getElementById('li_' + tab).setAttribute("class", "active");
+            document.getElementById('li_' + tab).setAttribute("class", "current");
+        }
+
+        if (tab == 'course') {
+            document.getElementById('course').style.display = 'block';
             document.getElementById('li_' + tab).setAttribute("class", "active");
             document.getElementById('li_' + tab).setAttribute("class", "current");
         }

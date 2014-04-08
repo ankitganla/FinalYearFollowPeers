@@ -52,10 +52,14 @@
                                         if (peer.personBName == OwnerProfile.UserName)
                                         {
                                             //L: display other types of updates and contains job info
-                                            if (peerupdates.Own == true && peerupdates.type != 1 && peerupdates.type != 2 && peerupdates.type != 3 && peerupdates.message.Contains("job"))
+                                            if (peerupdates.Own == true && peerupdates.type == 6 && peerupdates.message.Contains("job"))
                                             {
 
                                                 UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
+
+                                                Jobs peersJob = followPeersDB.Jobs.SingleOrDefault(p => p.ownerID == peerupdates.owner && peerupdates.message.Contains(p.Title));
+                                                
+                                                
                     <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-bottom: 5px;">
                         <div style="float: left; height: 50px; overflow: hidden;">
                             <a href="../../Profile/Index/@userprofile.UserProfileId">
@@ -64,7 +68,7 @@
                         <div style="margin-left: 8px; float: left; width: 88%;">
                             <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
                             
-                            @peerupdates.message<a href="/Jobs/Index/"><i class="icon-search" style="float:right;"></i></a>
+                            @peerupdates.message<a href="/Jobs/Details/@peersJob.JobId"><i class="icon-search" style="float:right;"></i></a>
                             <br />
 
                             @{
