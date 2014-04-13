@@ -55,7 +55,7 @@ namespace FollowPeers.Controllers
 
         public ActionResult NotAttending(int id)
         {
-            Favourite attending = db.Favourites.SingleOrDefault(p => p.ItemTypeId == id);
+            Favourite attending = db.Favourites.SingleOrDefault(p => p.ItemTypeId == id && p.ItemType == 13);
             if (attending != null)
             {
                 db.Favourites.Remove(attending);
