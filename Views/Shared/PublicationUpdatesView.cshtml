@@ -11,8 +11,6 @@
     following = followPeersDB.Relationships.Where(p => p.personAName == Model.UserName && p.tier == 2).ToList();
                    
     
-    
-    
     DateTime curr = System.DateTime.Now;
     FollowPeers.Models.Update peerupdates;
     
@@ -47,24 +45,31 @@
 
                                     //L: identify the owner of updates.
                                     FollowPeers.Models.UserProfile OwnerProfile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
+                                    FollowPeers.Models.PublicationModel peersPublication = followPeersDB.PublicationModels.SingleOrDefault(p => p.ownerID == peerupdates.owner && peerupdates.message.Contains(p.title));
+    
+                                    
                                     foreach (var peer in following)
                                     {
+
                                         if (peer.personBName == OwnerProfile.UserName)
                                         {
                                             //L: display other types of updates and contain publication
-                                            if (peerupdates.Own == true && peerupdates.type != 1 && peerupdates.type != 2 && peerupdates.type != 3 && peerupdates.message.Contains("publication"))
+                                            if (peerupdates.Own == true && peerupdates.type == 6 && peerupdates.message.Contains("publication"))
                                             {
 
-                                                UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
+                                                //UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
+                                                
+                                                
+                                                
                     <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-bottom: 5px;">
                         <div style="float: left; height: 50px; overflow: hidden;">
-                            <a href="../../Profile/Index/@userprofile.UserProfileId">
-                                <img src="@Html.Encode(userprofile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:50px;"/></a>
+                            <a href="../../Profile/Index/@OwnerProfile.UserProfileId">
+                                <img src="@Html.Encode(OwnerProfile.PhotoUrl)" style="margin-left:auto; margin-right:auto; width:50px;"/></a>
                         </div>
                         <div style="margin-left: 8px; float: left; width: 88%;">
-                            <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
+                            <a href="/Profile/Index/@OwnerProfile.UserProfileId"><b>@OwnerProfile.FirstName @OwnerProfile.LastName</b></a><br />
                             
-                            @peerupdates.message<a href="/PublicationModel/Index/"><i class="icon-search" style="float:right;"></i></a>
+                            @peerupdates.message<a href="/PublicationModel/Details/@peersPublication.publicationID"><i class="icon-search" style="float:right;"></i></a>
                             <br />
 
                             @{

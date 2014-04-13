@@ -3208,7 +3208,7 @@
     <Content Include="Views\Shared\ProfileCoursesTabView.cshtml" />
     <Content Include="Views\Shared\AllUpdatesView.cshtml" />
     <Content Include="Views\Shared\StatusUpdatesView.cshtml" />
-    <Content Include="Views\Shared\PhotoUpdatesView.cshtml" />
+    <Content Include="Views\Shared\ProfileUpdatesView.cshtml" />
     <Content Include="Views\Shared\CourseUpdatesView.cshtml" />
     <Content Include="Views\Shared\PublicationUpdatesView.cshtml" />
     <Content Include="Views\Shared\JobUpdatesView.cshtml" />

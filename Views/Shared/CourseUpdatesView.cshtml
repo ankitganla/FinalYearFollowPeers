@@ -11,8 +11,6 @@
     following = followPeersDB.Relationships.Where(p => p.personAName == Model.UserName && p.tier == 2).ToList();
                    
     
-    
-    
     DateTime curr = System.DateTime.Now;
     FollowPeers.Models.Update peerupdates;
     
@@ -52,10 +50,13 @@
                                         if (peer.personBName == OwnerProfile.UserName)
                                         {
                                             //L: display other types of updates and contain course
-                                            if (peerupdates.Own == true && peerupdates.type != 1 && peerupdates.type != 2 && peerupdates.type != 3 && peerupdates.message.Contains("Course"))
+                                            if (peerupdates.Own == true && peerupdates.type == 6 && peerupdates.message.Contains("Course"))
                                             {
 
                                                 UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
+                                               //Course peersCourse = followPeersDB.Courses.SingleOrDefault(p => p.Owner == peerupdates.owner && peerupdates.message.Contains(p.CourseName)); 
+                                                Course peersCourse = followPeersDB.Courses.SingleOrDefault(p => peerupdates.message.Contains(p.CourseName));
+                                                
                     <div style="border-bottom: 1px solid #eee; margin: 10px 0px; padding-bottom: 5px;">
                         <div style="float: left; height: 50px; overflow: hidden;">
                             <a href="../../Profile/Index/@userprofile.UserProfileId">
@@ -64,7 +65,7 @@
                         <div style="margin-left: 8px; float: left; width: 88%;">
                             <a href="/Profile/Index/@userprofile.UserProfileId"><b>@userprofile.FirstName @userprofile.LastName</b></a><br />
                             
-                            @peerupdates.message<a href="/Course/Index/"><i class="icon-search" style="float:right;"></i></a>
+                            @peerupdates.message<a href="/Course/Details/@peersCourse.CourseId"><i class="icon-search" style="float:right;"></i></a>
                             <br />
 
                             @{

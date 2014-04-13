@@ -2,7 +2,7 @@
 @using FollowPeers.Models;
 
 @{
-    ViewBag.Title = "PhotoUpdatesView";
+    ViewBag.Title = "ProfileUpdatesView";
     FollowPeers.Models.FollowPeersDBEntities followPeersDB = new FollowPeers.Models.FollowPeersDBEntities();
     string name = Membership.GetUser().UserName;
   
@@ -52,7 +52,7 @@
                                         if (peer.personBName == OwnerProfile.UserName)
                                         {
                                             //L: display only type 1 update(all profile updates) and contains photo info
-                                            if (peerupdates.Own == true && peerupdates.type == 1 && peerupdates.message.Contains("photo"))                                               
+                                            if (peerupdates.Own == true && peerupdates.type == 1)                                               
                                             {
 
                                                 UserProfile userprofile = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserProfileId == peerupdates.owner);
