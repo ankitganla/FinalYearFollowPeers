@@ -166,7 +166,9 @@ namespace FollowPeers.Controllers
 
         public ActionResult UnSaveJob(int id)
         {
-            Favourite toUnsave = followPeersDB.Favourites.SingleOrDefault(p => p.ItemTypeId == id && p.ItemType == 4);
+            string name = Membership.GetUser().UserName;
+            UserProfile user = followPeersDB.UserProfiles.SingleOrDefault(p => p.UserName == name);
+            Favourite toUnsave = user.Favourites.SingleOrDefault(p => p.ItemTypeId == id && p.ItemType == 4);
 
             if (toUnsave != null)
             {
